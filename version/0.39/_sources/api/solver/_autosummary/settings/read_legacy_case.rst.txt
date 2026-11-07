@@ -1,0 +1,21 @@
+:orphan:
+
+.. _read_legacy_case:
+
+read_legacy_case
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.read_legacy_case
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

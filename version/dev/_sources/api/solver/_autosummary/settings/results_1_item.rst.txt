@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _results_1_item:
+
+results_item
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.results_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===========================================
+
+Attribute                                                                      Summary
+
+========================================   ===========================================
+:ref:`file_name <file_name_56>`                                             File Name.
+
+:ref:`observable <observable_3>`                                      Observable name.
+
+:ref:`value <value_40>`                                               Objective value.
+
+:ref:`weight <weight_7>`                   Objective weight for multiobjective design.
+
+:ref:`expected_change <expected_change>`                              Objective value.
+
+========================================   ===========================================
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`results <results_1>`   Design results information.
+
+==========================   ===========================
+

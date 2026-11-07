@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _copy_user_source_file:
+
+copy_user_source_file
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.copy_user_source_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =========================
+
+Parent                                                       Summary
+
+========================================   =========================
+:ref:`customized_udf <customized_udf>`     Customized UDFs settings.
+
+:ref:`customized_udf <customized_udf_1>`   Customized UDFs settings.
+
+========================================   =========================
+

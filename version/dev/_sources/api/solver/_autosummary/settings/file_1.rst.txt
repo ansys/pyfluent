@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _file_1:
+
+file
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.file_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   =============
+
+Parent                       Summary
+
+====================   =============
+:ref:`read <read_2>`   'read' child.
+
+====================   =============
+

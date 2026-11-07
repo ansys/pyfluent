@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _smoothed_density_stabilization_method:
+
+smoothed_density_stabilization_method
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.smoothed_density_stabilization_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================================================
+
+Parent                                                                                   Summary
+
+==========================================   ===================================================
+:ref:`pseudo_transient <pseudo_transient>`   Pseudo-Time stability controls for multiphase flow.
+
+==========================================   ===================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _listing:
+
+listing
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.listing
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================================
+
+Parent                                                                                      Summary
+
+====================================================   ============================================
+:ref:`interpreted_functions <interpreted_functions>`       Load interpreted user-defined functions.
+
+====================================================   ============================================
+

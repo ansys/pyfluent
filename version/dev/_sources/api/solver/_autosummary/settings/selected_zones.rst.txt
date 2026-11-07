@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _selected_zones:
+
+selected_zones
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.selected_zones
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`scalar_item <scalar_item>`   'child_object_type' of scalar.
+
+================================   ==============================
+

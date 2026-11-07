@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_LIC:
+
+LIC
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.Results.Graphics.LIC
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`LIC <ref_solver_datamodel_flicing_Case_Results_Graphics_LIC__LIC>`
+
+``LIC`` is organised like a dictionary. You can access each :ref:`LIC <ref_solver_datamodel_flicing_Case_Results_Graphics_LIC__LIC>` by name using ``LIC['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _LIC/_LIC_contents

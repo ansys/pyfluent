@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _track_single_particle_stream_1:
+
+track_single_particle_stream
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.track_single_particle_stream_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ====================================
+
+Attribute                                                   Summary
+
+============================   ====================================
+:ref:`enabled <enabled_79>`    Enable track single particle stream.
+
+:ref:`stream_id <stream_id>`                             Stream ID.
+
+============================   ====================================
+
+.. rubric:: Included in:
+
+=========================   ==========================================
+
+Parent                                                         Summary
+
+=========================   ==========================================
+:ref:`option <option_80>`   Check the Particle-tracks control options.
+
+=========================   ==========================================
+

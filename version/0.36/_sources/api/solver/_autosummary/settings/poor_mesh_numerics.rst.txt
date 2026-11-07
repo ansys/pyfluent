@@ -1,0 +1,40 @@
+:orphan:
+
+.. _poor_mesh_numerics:
+
+poor_mesh_numerics
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.poor_mesh_numerics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================   ========================================================================
+
+Attribute                                                                                                                                               Summary
+
+====================================================================================   ========================================================================
+:ref:`enable <enable_26>`                                                                                                    Enable/disable poor mesh numerics.
+
+:ref:`orthogonal_quality_threshold_enabled <orthogonal_quality_threshold_enabled_1>`             Enable/disable poor mesh numerics based on orthogonal quality.
+
+:ref:`orthogonal_quality_threshold <orthogonal_quality_threshold_1>`                                       Orthogonal quality threshold for poor mesh numerics.
+
+:ref:`tangent_skewness_threshold_enabled <tangent_skewness_threshold_enabled_1>`           Enable/disable poor mesh numerics based on tangent skewness quality.
+
+:ref:`tangent_skewness_threshold <tangent_skewness_threshold_1>`                                             Tangent skewness threshold for poor mesh numerics.
+
+====================================================================================   ========================================================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================
+
+Parent                                                                            Summary
+
+==================================================   ====================================
+:ref:`poor_mesh_robustness <poor_mesh_robustness>`       The poor mesh robustness object.
+
+==================================================   ====================================
+

@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_19_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.phase_19_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================================
+
+Attribute                                                                Summary
+
+============================   =================================================
+:ref:`periodic <periodic_1>`   Periodic boundary condition settings for threads.
+
+:ref:`geometry <geometry_9>`             Geometry settings for periodic threads.
+
+============================   =================================================
+
+.. rubric:: Included in:
+
+=======================   ==================================
+
+Parent                                               Summary
+
+=======================   ==================================
+:ref:`phase <phase_19>`   Domain name to define settings on.
+
+=======================   ==================================
+

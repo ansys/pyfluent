@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _clustering_algorithm:
+
+clustering_algorithm
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.clustering_algorithm
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================
+
+Parent                                                                  Summary
+
+================================================   ============================
+:ref:`clustering_settings <clustering_settings>`   Clustering related settings.
+
+================================================   ============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_species_int_ph_overall_udf:
+
+mt_species_int_ph_overall_udf
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_species_int_ph_overall_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ===================================
+
+Parent                                                                                 Summary
+
+========================================================   ===================================
+:ref:`mt_species_int_phase_mt <mt_species_int_phase_mt>`       Interphase mass transfer class.
+
+========================================================   ===================================
+

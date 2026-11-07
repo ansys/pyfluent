@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cross_section_multicomponent_item:
+
+cross_section_multicomponent_item
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cross_section_multicomponent_item
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`cross_section_multicomponent_item_item <cross_section_multicomponent_item_item>`
+
+``cross_section_multicomponent_item`` is organised like a dictionary. You can access each :ref:`cross_section_multicomponent_item_item <cross_section_multicomponent_item_item>` by name using ``cross_section_multicomponent_item['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================================   =================================================================
+
+Parent                                                                                                                         Summary
+
+==================================================================   =================================================================
+:ref:`cross_section_multicomponent <cross_section_multicomponent>`   Manages cross-section data for multicomponent collision modeling.
+
+==================================================================   =================================================================
+

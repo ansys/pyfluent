@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _porous_jump:
+
+porous_jump
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.porous_jump
+
+.. rubric:: Methods
+
+==========================================   =====================================
+
+Method                                                                     Summary
+
+==========================================   =====================================
+:ref:`create <create_6>`                                      Create new boundary.
+
+:ref:`delete <delete_2>`                                  Delete selected objects.
+
+:ref:`rename <rename>`                                          Rename the object.
+
+:ref:`list <list_1>`                                List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                      Create a copy of the object.
+
+==========================================   =====================================
+
+.. rubric:: Named object type
+
+:ref:`porous_jump_item <porous_jump_item>`
+
+``porous_jump`` is organised like a dictionary. You can access each :ref:`porous_jump_item <porous_jump_item>` by name using ``porous_jump['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`boundaries <boundaries>`   Defines physics boundaries for a volume region.
+
+==============================   ===============================================
+

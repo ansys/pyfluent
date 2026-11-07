@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _from_:
+
+from_
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.from_
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ============================
+
+Parent                                                  Summary
+
+================================   ============================
+:ref:`make_a_copy <make_a_copy>`   Create a copy of the object.
+
+================================   ============================
+

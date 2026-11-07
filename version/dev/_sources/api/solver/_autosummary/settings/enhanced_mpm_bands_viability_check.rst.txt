@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enhanced_mpm_bands_viability_check:
+
+enhanced_mpm_bands_viability_check
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enhanced_mpm_bands_viability_check
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =================================================
+
+Parent                                                               Summary
+
+========================   =================================================
+:ref:`expert <expert_6>`   Configure expert parameters for turbo interfaces.
+
+========================   =================================================
+

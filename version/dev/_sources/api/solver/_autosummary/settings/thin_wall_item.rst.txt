@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thin_wall_item:
+
+thin_wall_item
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.thin_wall_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ========
+
+Attribute                         Summary
+
+==============================   ========
+:ref:`thickness <thickness_1>`   Element.
+
+:ref:`material <material_8>`     Element.
+
+:ref:`qdot <qdot>`               Element.
+
+==============================   ========
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`thin_wall <thin_wall>`   Conduction Layer.
+
+============================   =================
+

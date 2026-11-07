@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fan_hub_rad:
+
+fan_hub_rad
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fan_hub_rad
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`fan_zone <fan_zone>`   Allows to change fan-zone model variables or settings.
+
+==========================   ======================================================
+

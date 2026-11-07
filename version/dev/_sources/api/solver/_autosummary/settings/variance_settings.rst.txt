@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _variance_settings:
+
+variance_settings
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.variance_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ============================
+
+Attribute                                                                               Summary
+
+================================================================   ============================
+:ref:`variance_method <variance_method>`                                       Variance Method.
+
+:ref:`algebraic_variance_constant <algebraic_variance_constant>`   Algebraic Variance Constant.
+
+================================================================   ============================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`premix <premix>`   PDF Premix Options.
+
+======================   ===================
+

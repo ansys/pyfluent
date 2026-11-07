@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _under_relaxation_3_item:
+
+under_relaxation_item
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.under_relaxation_3_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================================
+
+Parent                                                                           Summary
+
+============================================   =========================================
+:ref:`under_relaxation <under_relaxation_3>`   Adjoint under-relaxation controls object.
+
+============================================   =========================================
+

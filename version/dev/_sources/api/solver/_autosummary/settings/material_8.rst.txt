@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _material_8:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.material_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`conduction_layers_item <conduction_layers_item>`   'child_object_type' of conduction_layers.
+
+:ref:`thin_wall_item <thin_wall_item>`                           'child_object_type' of thin_wall.
+
+======================================================   =========================================
+

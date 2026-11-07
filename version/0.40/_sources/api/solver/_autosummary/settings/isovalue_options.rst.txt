@@ -1,0 +1,36 @@
+:orphan:
+
+.. _isovalue_options:
+
+isovalue_options
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.isovalue_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ====================================================================
+
+Attribute                                                                                       Summary
+
+================================   ====================================================================
+:ref:`hide_volume <hide_volume>`              Provide whether to hide volume to clearly see iso-values.
+
+:ref:`settings <settings_6>`              Provide options for isovalue(s) to highlight inside a volume.
+
+:ref:`reset <reset_2>`                 Specifies whether to resets the values to precalculated default.
+
+================================   ====================================================================
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`volumes_4_child <volumes_4_child>`       'child_object_type' of volumes.
+
+========================================   ===================================
+

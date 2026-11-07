@@ -1,0 +1,336 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_5:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.name_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ====================================================
+
+Parent                                                                                                                      Summary
+
+============================================================================   ====================================================
+:ref:`multiband_item <multiband_item>`                                                            'child_object_type' of multiband.
+
+:ref:`heat_exchanger_item <heat_exchanger_item>`                                             'child_object_type' of heat_exchanger.
+
+:ref:`cores_item <cores_item>`                                                                        'child_object_type' of cores.
+
+:ref:`injections_item <injections_item>`                                                         'child_object_type' of injections.
+
+:ref:`beams_item <beams_item>`                                                                        'child_object_type' of beams.
+
+:ref:`reactions_item <reactions_1_item>`                                                          'child_object_type' of reactions.
+
+:ref:`mechanisms_item <mechanisms_item>`                                                         'child_object_type' of mechanisms.
+
+:ref:`contact_resistance_locations_item <contact_resistance_locations_item>`   'child_object_type' of contact_resistance_locations.
+
+:ref:`fluid_item <fluid_1_item>`                                                                      'child_object_type' of fluid.
+
+:ref:`solid_item <solid_2_item>`                                                                      'child_object_type' of solid.
+
+:ref:`groups_item <groups_1_item>`                                                                   'child_object_type' of groups.
+
+:ref:`groups_item <groups_item>`                                                                     'child_object_type' of groups.
+
+:ref:`fluid_item <fluid_2_item>`                                                                      'child_object_type' of fluid.
+
+:ref:`netm_solid_region <netm_solid_region>`                                                 Define settings for NETM solid region.
+
+:ref:`solid_item <solid_3_item>`                                                                      'child_object_type' of solid.
+
+:ref:`axis_item <axis_6_item>`                                                                         'child_object_type' of axis.
+
+:ref:`netm_solid_wall <netm_solid_wall>`                                                       Define settings for NETM solid wall.
+
+:ref:`degassing_item <degassing_item>`                                                            'child_object_type' of degassing.
+
+:ref:`exhaust_fan_item <exhaust_fan_item>`                                                      'child_object_type' of exhaust_fan.
+
+:ref:`fan_item <fan_item>`                                                                              'child_object_type' of fan.
+
+:ref:`geometry_item <geometry_7_item>`                                                             'child_object_type' of geometry.
+
+:ref:`inlet_vent_item <inlet_vent_item>`                                                         'child_object_type' of inlet_vent.
+
+:ref:`intake_fan_item <intake_fan_item>`                                                         'child_object_type' of intake_fan.
+
+:ref:`interface_item <interface_item>`                                                            'child_object_type' of interface.
+
+:ref:`interior_item <interior_item>`                                                               'child_object_type' of interior.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_item>`                                          'child_object_type' of mass_flow_inlet.
+
+:ref:`mass_flow_outlet_item <mass_flow_outlet_item>`                                       'child_object_type' of mass_flow_outlet.
+
+:ref:`network_item <network_item>`                                                                  'child_object_type' of network.
+
+:ref:`network_end_item <network_end_item>`                                                      'child_object_type' of network_end.
+
+:ref:`outflow_item <outflow_item>`                                                                  'child_object_type' of outflow.
+
+:ref:`outlet_vent_item <outlet_vent_item>`                                                      'child_object_type' of outlet_vent.
+
+:ref:`overset_item <overset_1_item>`                                                                'child_object_type' of overset.
+
+:ref:`periodic_item <periodic_item>`                                                               'child_object_type' of periodic.
+
+:ref:`porous_jump_item <porous_jump_item>`                                                      'child_object_type' of porous_jump.
+
+:ref:`pressure_far_field_item <pressure_far_field_item>`                                 'child_object_type' of pressure_far_field.
+
+:ref:`pressure_inlet_item <pressure_inlet_item>`                                             'child_object_type' of pressure_inlet.
+
+:ref:`pressure_outlet_item <pressure_outlet_item>`                                          'child_object_type' of pressure_outlet.
+
+:ref:`radiator_item <radiator_item>`                                                               'child_object_type' of radiator.
+
+:ref:`rans_les_interface_item <rans_les_interface_item>`                                 'child_object_type' of rans_les_interface.
+
+:ref:`recirculation_inlet_item <recirculation_inlet_item>`                              'child_object_type' of recirculation_inlet.
+
+:ref:`recirculation_outlet_item <recirculation_outlet_item>`                           'child_object_type' of recirculation_outlet.
+
+:ref:`shadow_item <shadow_item>`                                                                     'child_object_type' of shadow.
+
+:ref:`symmetry_item <symmetry_item>`                                                               'child_object_type' of symmetry.
+
+:ref:`velocity_inlet_item <velocity_inlet_item>`                                             'child_object_type' of velocity_inlet.
+
+:ref:`wall_item <wall_item>`                                                                           'child_object_type' of wall.
+
+:ref:`overlapping_boundaries_item <overlapping_boundaries_item>`                     'child_object_type' of overlapping_boundaries.
+
+:ref:`axis_item <axis_7_item>`                                                                         'child_object_type' of axis.
+
+:ref:`degassing_item <degassing_1_item>`                                                          'child_object_type' of degassing.
+
+:ref:`exhaust_fan_item <exhaust_fan_1_item>`                                                    'child_object_type' of exhaust_fan.
+
+:ref:`fan_item <fan_1_item>`                                                                            'child_object_type' of fan.
+
+:ref:`geometry_item <geometry_10_item>`                                                            'child_object_type' of geometry.
+
+:ref:`inlet_vent_item <inlet_vent_1_item>`                                                       'child_object_type' of inlet_vent.
+
+:ref:`intake_fan_item <intake_fan_1_item>`                                                       'child_object_type' of intake_fan.
+
+:ref:`interface_item <interface_2_item>`                                                          'child_object_type' of interface.
+
+:ref:`interior_item <interior_2_item>`                                                             'child_object_type' of interior.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_1_item>`                                        'child_object_type' of mass_flow_inlet.
+
+:ref:`mass_flow_outlet_item <mass_flow_outlet_1_item>`                                     'child_object_type' of mass_flow_outlet.
+
+:ref:`network_item <network_1_item>`                                                                'child_object_type' of network.
+
+:ref:`network_end_item <network_end_2_item>`                                                    'child_object_type' of network_end.
+
+:ref:`outflow_item <outflow_1_item>`                                                                'child_object_type' of outflow.
+
+:ref:`outlet_vent_item <outlet_vent_1_item>`                                                    'child_object_type' of outlet_vent.
+
+:ref:`overset_item <overset_2_item>`                                                                'child_object_type' of overset.
+
+:ref:`periodic_item <periodic_2_item>`                                                             'child_object_type' of periodic.
+
+:ref:`porous_jump_item <porous_jump_2_item>`                                                    'child_object_type' of porous_jump.
+
+:ref:`pressure_far_field_item <pressure_far_field_1_item>`                               'child_object_type' of pressure_far_field.
+
+:ref:`pressure_inlet_item <pressure_inlet_1_item>`                                           'child_object_type' of pressure_inlet.
+
+:ref:`pressure_outlet_item <pressure_outlet_1_item>`                                        'child_object_type' of pressure_outlet.
+
+:ref:`radiator_item <radiator_2_item>`                                                             'child_object_type' of radiator.
+
+:ref:`rans_les_interface_item <rans_les_interface_1_item>`                               'child_object_type' of rans_les_interface.
+
+:ref:`recirculation_inlet_item <recirculation_inlet_2_item>`                            'child_object_type' of recirculation_inlet.
+
+:ref:`recirculation_outlet_item <recirculation_outlet_2_item>`                         'child_object_type' of recirculation_outlet.
+
+:ref:`shadow_item <shadow_1_item>`                                                                   'child_object_type' of shadow.
+
+:ref:`symmetry_item <symmetry_1_item>`                                                             'child_object_type' of symmetry.
+
+:ref:`velocity_inlet_item <velocity_inlet_1_item>`                                           'child_object_type' of velocity_inlet.
+
+:ref:`wall_item <wall_1_item>`                                                                         'child_object_type' of wall.
+
+:ref:`sdof_properties_item <sdof_properties_item>`                                          'child_object_type' of sdof_properties.
+
+:ref:`perdisp_group_properties_item <perdisp_group_properties_item>`               'child_object_type' of perdisp_group_properties.
+
+:ref:`perdisp_properties_item <perdisp_properties_item>`                                 'child_object_type' of perdisp_properties.
+
+:ref:`dynamic_zones_item <dynamic_zones_item>`                                                'child_object_type' of dynamic_zones.
+
+:ref:`reference_frames_item <reference_frames_item>`                                       'child_object_type' of reference_frames.
+
+:ref:`periodic_instances_item <periodic_instances_item>`                                 'child_object_type' of periodic_instances.
+
+:ref:`mesh_item <mesh_1_item>`                                                                         'child_object_type' of mesh.
+
+:ref:`surface_item <surface_1_item>`                                                                'child_object_type' of surface.
+
+:ref:`volume_item <volume_3_item>`                                                                   'child_object_type' of volume.
+
+:ref:`force_item <force_item>`                                                                        'child_object_type' of force.
+
+:ref:`lift_item <lift_1_item>`                                                                         'child_object_type' of lift.
+
+:ref:`drag_item <drag_1_item>`                                                                         'child_object_type' of drag.
+
+:ref:`moment_item <moment_item>`                                                                     'child_object_type' of moment.
+
+:ref:`flux_item <flux_1_item>`                                                                         'child_object_type' of flux.
+
+:ref:`vbm_item <vbm_item>`                                                                              'child_object_type' of vbm.
+
+:ref:`injection_item <injection_2_item>`                                                          'child_object_type' of injection.
+
+:ref:`user_defined_item <user_defined_21_item>`                                                'child_object_type' of user_defined.
+
+:ref:`aeromechanics_item <aeromechanics_item>`                                                'child_object_type' of aeromechanics.
+
+:ref:`icing_item <icing_4_item>`                                                                      'child_object_type' of icing.
+
+:ref:`expression_item <expression_7_item>`                                                       'child_object_type' of expression.
+
+:ref:`single_valued_expression_item <single_valued_expression_item>`               'child_object_type' of single_valued_expression.
+
+:ref:`custom_item <custom_item>`                                                                     'child_object_type' of custom.
+
+:ref:`execute_commands_item <execute_commands_item>`                                       'child_object_type' of execute_commands.
+
+:ref:`ascii_item <ascii_1_item>`                                                                      'child_object_type' of ascii.
+
+:ref:`cgns_item <cgns_1_item>`                                                                         'child_object_type' of cgns.
+
+:ref:`visualize_item <visualize_item>`                                                            'child_object_type' of visualize.
+
+:ref:`mapdl_item <mapdl_item>`                                                                        'child_object_type' of mapdl.
+
+:ref:`nastran_item <nastran_1_item>`                                                                'child_object_type' of nastran.
+
+:ref:`tecplot_item <tecplot_1_item>`                                                                'child_object_type' of tecplot.
+
+:ref:`compute_resources_item <compute_resources_item>`                                    'child_object_type' of compute_resources.
+
+:ref:`custom_vectors_item <custom_vectors_item>`                                             'child_object_type' of custom_vectors.
+
+:ref:`point_surface_item <point_surface_item>`                                                'child_object_type' of point_surface.
+
+:ref:`line_surface_item <line_surface_item>`                                                   'child_object_type' of line_surface.
+
+:ref:`rake_surface_item <rake_surface_item>`                                                   'child_object_type' of rake_surface.
+
+:ref:`plane_surface_item <plane_surface_item>`                                                'child_object_type' of plane_surface.
+
+:ref:`iso_surface_item <iso_surface_item>`                                                      'child_object_type' of iso_surface.
+
+:ref:`iso_clip_item <iso_clip_item>`                                                               'child_object_type' of iso_clip.
+
+:ref:`zone_surface_item <zone_surface_item>`                                                   'child_object_type' of zone_surface.
+
+:ref:`partition_surface_item <partition_surface_item>`                                    'child_object_type' of partition_surface.
+
+:ref:`transform_surface_item <transform_surface_item>`                                    'child_object_type' of transform_surface.
+
+:ref:`imprint_surface_item <imprint_surface_item>`                                          'child_object_type' of imprint_surface.
+
+:ref:`plane_slice_item <plane_slice_item>`                                                      'child_object_type' of plane_slice.
+
+:ref:`sphere_slice_item <sphere_slice_item>`                                                   'child_object_type' of sphere_slice.
+
+:ref:`quadric_surface_item <quadric_surface_item>`                                          'child_object_type' of quadric_surface.
+
+:ref:`surface_cells_item <surface_cells_item>`                                                'child_object_type' of surface_cells.
+
+:ref:`expression_volume_item <expression_volume_item>`                                    'child_object_type' of expression_volume.
+
+:ref:`wrapped_body_surface_item <wrapped_body_surface_item>`                           'child_object_type' of wrapped_body_surface.
+
+:ref:`wrapped_part_surface_item <wrapped_part_surface_item>`                           'child_object_type' of wrapped_part_surface.
+
+:ref:`wrapped_solid_region_surface_item <wrapped_solid_region_surface_item>`   'child_object_type' of wrapped_solid_region_surface.
+
+:ref:`display_states_item <display_states_item>`                                             'child_object_type' of display_states.
+
+:ref:`force_item <force_1_item>`                                                                      'child_object_type' of force.
+
+:ref:`moment_of_force_item <moment_of_force_item>`                                          'child_object_type' of moment_of_force.
+
+:ref:`swirl_item <swirl_item>`                                                                        'child_object_type' of swirl.
+
+:ref:`pressure_drop_item <pressure_drop_1_item>`                                              'child_object_type' of pressure_drop.
+
+:ref:`ratio_item <ratio_2_item>`                                                                      'child_object_type' of ratio.
+
+:ref:`product_item <product_item>`                                                                  'child_object_type' of product.
+
+:ref:`quadratic_penalty_item <quadratic_penalty_item>`                                    'child_object_type' of quadratic_penalty.
+
+:ref:`linear_combination_item <linear_combination_item>`                                 'child_object_type' of linear_combination.
+
+:ref:`arithmetic_average_item <arithmetic_average_item>`                                 'child_object_type' of arithmetic_average.
+
+:ref:`mean_variance_item <mean_variance_item>`                                                'child_object_type' of mean_variance.
+
+:ref:`unary_operation_item <unary_operation_item>`                                          'child_object_type' of unary_operation.
+
+:ref:`fixed_value_item <fixed_value_item>`                                                      'child_object_type' of fixed_value.
+
+:ref:`surface_integral_item <surface_integral_item>`                                       'child_object_type' of surface_integral.
+
+:ref:`volume_integral_item <volume_integral_1_item>`                                        'child_object_type' of volume_integral.
+
+:ref:`execute_commands_item <execute_commands_1_item>`                                     'child_object_type' of execute_commands.
+
+:ref:`fixed_walls_constraint_item <fixed_walls_constraint_item>`                     'child_object_type' of fixed_walls_constraint.
+
+:ref:`bounded_by_plane_item <bounded_by_plane_item>`                                       'child_object_type' of bounded_by_plane.
+
+:ref:`bounded_by_surfaces_item <bounded_by_surfaces_item>`                              'child_object_type' of bounded_by_surfaces.
+
+:ref:`prescribed_profile_item <prescribed_profile_item>`                                 'child_object_type' of prescribed_profile.
+
+:ref:`rotation_item <rotation_item>`                                                               'child_object_type' of rotation.
+
+:ref:`translation_item <translation_1_item>`                                                    'child_object_type' of translation.
+
+:ref:`scaling_item <scaling_1_item>`                                                                'child_object_type' of scaling.
+
+:ref:`rigid_body_item <rigid_body_item>`                                                         'child_object_type' of rigid_body.
+
+:ref:`compound_item <compound_item>`                                                               'child_object_type' of compound.
+
+:ref:`execute_commands_item <execute_commands_2_item>`                                     'child_object_type' of execute_commands.
+
+:ref:`scheme_proc_item <scheme_proc_item>`                                                      'child_object_type' of scheme_proc.
+
+:ref:`udf_side_item <udf_side_item>`                                                               'child_object_type' of udf_side.
+
+:ref:`expression_item <expression_8_item>`                                                       'child_object_type' of expression.
+
+:ref:`report_definitions_item <report_definitions_1_item>`                               'child_object_type' of report_definitions.
+
+:ref:`named_expressions_item <named_expressions_1_item>`                                  'child_object_type' of named_expressions.
+
+:ref:`parametric_studies_item <parametric_studies_item>`                                 'child_object_type' of parametric_studies.
+
+:ref:`design_points_item <design_points_item>`                                                'child_object_type' of design_points.
+
+:ref:`criteria_item <criteria_1_item>`                                                             'child_object_type' of criteria.
+
+============================================================================   ====================================================
+

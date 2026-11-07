@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _contact_property:
+
+contact_property
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.contact_property
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`general <general_2>`    Allows to change general model variables or settings.
+
+:ref:`internal <internal>`   Allows to change internal model variables or settings.
+
+==========================   ======================================================
+

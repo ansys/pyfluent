@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _print_to_console_2:
+
+print_to_console
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.print_to_console_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   ===============
+
+Argument                        Summary
+
+=====================   ===============
+:ref:`name <name_54>`   Parameter name.
+
+=====================   ===============
+
+.. rubric:: Included in:
+
+================================================   =======================================================
+
+Parent                                                                                             Summary
+
+================================================   =======================================================
+:ref:`report_definitions <report_definitions_1>`   Accesses output parameters based on report definitions.
+
+:ref:`named_expressions <named_expressions_1>`                         Named Expression parameters object.
+
+================================================   =======================================================
+

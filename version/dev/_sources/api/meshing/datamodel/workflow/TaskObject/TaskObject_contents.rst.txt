@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_workflow_TaskObject:
+
+TaskObject
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.workflow.Root.TaskObject
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`TaskObject <ref_meshing_datamodel_workflow_TaskObject__TaskObject>`
+
+``TaskObject`` is organised like a dictionary. You can access each :ref:`TaskObject <ref_meshing_datamodel_workflow_TaskObject__TaskObject>` by name using ``TaskObject['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _TaskObject/_TaskObject_contents

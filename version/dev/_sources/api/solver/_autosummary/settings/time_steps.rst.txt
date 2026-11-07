@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _time_steps:
+
+time_steps
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.time_steps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================================================================================
+
+Parent                                                                                                                    Summary
+
+==============================   ================================================================================================
+:ref:`frequency <frequency_8>`   Define the frequency at which cells in the register are marked for poor mesh numerics treatment.
+
+==============================   ================================================================================================
+

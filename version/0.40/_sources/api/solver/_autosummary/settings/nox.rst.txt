@@ -1,0 +1,40 @@
+:orphan:
+
+.. _nox:
+
+nox
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.nox
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ====================================================
+
+Attribute                                                                                             Summary
+
+======================================================   ====================================================
+:ref:`enable <enable_9>`                                                            Enable/disable NOx model.
+
+:ref:`nox_chemistry <nox_chemistry>`                                                        NOx model object.
+
+:ref:`turbulence_interaction <turbulence_interaction>`                      NOx-turbulence interaction model.
+
+:ref:`inlet_diffusion <inlet_diffusion_1>`                   Enable/disable inclusion of diffusion at inlets.
+
+:ref:`expert <expert_2>`                                                                     NOx expert mode.
+
+======================================================   ====================================================
+
+.. rubric:: Included in:
+
+========================   =========================
+
+Parent                                       Summary
+
+========================   =========================
+:ref:`species <species>`       Species model object.
+
+========================   =========================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fmg_initialize:
+
+fmg_initialize
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fmg_initialize
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =================================================
+
+Parent                                                       Summary
+
+================   =================================================
+:ref:`fmg <fmg>`   The set full-multigrid for initialization object.
+
+================   =================================================
+

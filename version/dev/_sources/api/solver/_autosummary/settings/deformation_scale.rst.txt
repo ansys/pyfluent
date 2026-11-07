@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _deformation_scale:
+
+deformation_scale
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.deformation_scale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`contour_item <contour_item>`   'child_object_type' of contour.
+
+==================================   ===============================
+

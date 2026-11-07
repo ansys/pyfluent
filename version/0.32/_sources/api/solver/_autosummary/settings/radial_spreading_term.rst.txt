@@ -1,0 +1,21 @@
+:orphan:
+
+.. _radial_spreading_term:
+
+radial_spreading_term
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.radial_spreading_term
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ==============================================
+
+Parent                                                                                                                Summary
+
+============================================================================   ==============================================
+:ref:`enable_lwf_continuity_formulation <enable_lwf_continuity_formulation>`       Options for the film continuity algorithm.
+
+============================================================================   ==============================================
+

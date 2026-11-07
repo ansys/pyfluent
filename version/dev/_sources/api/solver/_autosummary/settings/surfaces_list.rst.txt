@@ -1,0 +1,32 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surfaces_list:
+
+surfaces_list
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.surfaces_list
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`mesh_item <mesh_2_item>`          'child_object_type' of mesh.
+
+:ref:`contour_item <contour_item>`   'child_object_type' of contour.
+
+:ref:`vector_item <vector_1_item>`    'child_object_type' of vector.
+
+:ref:`lic_item <lic_item>`               'child_object_type' of lic.
+
+:ref:`olic_item <olic_item>`            'child_object_type' of olic.
+
+:ref:`xy_plot_item <xy_plot_item>`   'child_object_type' of xy_plot.
+
+==================================   ===============================
+

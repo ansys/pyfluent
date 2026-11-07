@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _auto_scale:
+
+auto_scale
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.auto_scale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   ==================================================
+
+Parent                                                                   Summary
+
+===========================   ==================================================
+:ref:`options <options_18>`                            Options for Vector Style.
+
+:ref:`scale <scale_4>`        A number by which the vector size would be scaled.
+
+===========================   ==================================================
+

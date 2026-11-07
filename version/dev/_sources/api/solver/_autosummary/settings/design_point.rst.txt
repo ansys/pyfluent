@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _design_point:
+
+design_point
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.design_point
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =======================
+
+Parent                                           Summary
+
+==============================   =======================
+:ref:`duplicate <duplicate_1>`   Duplicate Design Point.
+
+==============================   =======================
+

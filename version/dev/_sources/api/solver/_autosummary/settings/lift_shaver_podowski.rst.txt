@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _lift_shaver_podowski:
+
+lift_shaver_podowski
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.lift_shaver_podowski
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`forces <forces>`   Interfacial forces.
+
+======================   ===================
+

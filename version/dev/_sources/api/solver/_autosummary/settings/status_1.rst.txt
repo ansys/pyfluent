@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _status_1:
+
+status
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.status_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`design_points_item <design_points_item>`   'child_object_type' of design_points.
+
+==============================================   =====================================
+

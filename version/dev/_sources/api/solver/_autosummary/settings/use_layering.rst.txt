@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _use_layering:
+
+use_layering
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.use_layering
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================
+
+Parent                                                Summary
+
+============================   ==============================
+:ref:`layering <layering_1>`   Use layering for partitioning.
+
+============================   ==============================
+

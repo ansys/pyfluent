@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _field_3:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.field_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`contour_item <contour_item>`   'child_object_type' of contour.
+
+==================================   ===============================
+

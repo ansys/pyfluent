@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _customize_addon:
+
+customize_addon
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.customize_addon
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =================================
+
+Parent                                                                                 Summary
+
+==========================================================   =================================
+:ref:`customized_addon_library <customized_addon_library>`   Compile customized addon module?.
+
+==========================================================   =================================
+

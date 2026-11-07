@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _prefix:
+
+prefix
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.prefix
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================================
+
+Parent                                                                                                       Summary
+
+======================================================   ===========================================================
+:ref:`visualize_output_write <visualize_output_write>`   Setup write options for Visualize connection in Fluids One.
+
+======================================================   ===========================================================
+

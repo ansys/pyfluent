@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reference_density:
+
+reference_density
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.reference_density
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================================
+
+Parent                                                                                      Summary
+
+================================================   ================================================
+:ref:`compressible_liquid <compressible_liquid>`       Compressible liquid density method settings.
+
+================================================   ================================================
+

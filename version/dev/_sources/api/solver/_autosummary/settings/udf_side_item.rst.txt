@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _udf_side_item:
+
+udf_side_item
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.udf_side_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=======================   =====================================================================
+
+Attribute                                                                               Summary
+
+=======================   =====================================================================
+:ref:`name <name_5>`                                                        Name of the object.
+
+:ref:`value <value_45>`   Specifies the value passed from the UDF for specific input parameter.
+
+=======================   =====================================================================
+
+.. rubric:: Included in:
+
+==========================   ==================================
+
+Parent                                                  Summary
+
+==========================   ==================================
+:ref:`udf_side <udf_side>`   Use input parameter in solver-udf.
+
+==========================   ==================================
+

@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _htc:
+
+htc
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.htc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =================================================
+
+Attribute                                                                                  Summary
+
+==============================================   =================================================
+:ref:`calculation_method <calculation_method>`   The heat transfer coefficient calculation method.
+
+==============================================   =================================================
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`system_coupling <system_coupling>`   The system coupling model object.
+
+========================================   =================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _expr_value:
+
+expr_value
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.expr_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`expression_item <expression_7_item>`   'child_object_type' of expression.
+
+==========================================   ==================================
+

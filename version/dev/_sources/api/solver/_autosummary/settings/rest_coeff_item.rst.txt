@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rest_coeff_item:
+
+rest_coeff_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rest_coeff_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================================
+
+Parent                                                                Summary
+
+==============================   ============================================
+:ref:`rest_coeff <rest_coeff>`   Restitution-coefficient for granular phases.
+
+==============================   ============================================
+

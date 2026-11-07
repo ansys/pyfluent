@@ -1,0 +1,45 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _range_option:
+
+range_option
+============
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.range_option
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ===============================================================================================
+
+Attribute                                                                                                                        Summary
+
+======================================   ===============================================================================================
+:ref:`option <option_75>`                Specifies whether you want the range to be Global, Local to the selected surface(s), or Custom.
+
+:ref:`auto_range_on <auto_range_on>`        Auto calculate the minimum and maximum values of the scalar field will be the limits of that
+
+:ref:`auto_range_off <auto_range_off>`      Custom provide the minimum and maximum values of the scalar field will be the limits of that
+
+======================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`contour_item <contour_item>`   'child_object_type' of contour.
+
+:ref:`vector_item <vector_1_item>`    'child_object_type' of vector.
+
+:ref:`lic_item <lic_item>`               'child_object_type' of lic.
+
+:ref:`olic_item <olic_item>`            'child_object_type' of olic.
+
+==================================   ===============================
+

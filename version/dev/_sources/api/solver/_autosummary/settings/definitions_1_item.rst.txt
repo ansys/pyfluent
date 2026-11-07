@@ -1,0 +1,43 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _definitions_1_item:
+
+definitions_item
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.definitions_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ===============================================================
+
+Attribute                                                                                                    Summary
+
+==================================================   ===============================================================
+:ref:`observable <observable_3>`                                                                    Observable name.
+
+:ref:`value <value_40>`                                                                             Objective value.
+
+:ref:`step_direction <step_direction>`                                                      Design change direction.
+
+:ref:`target_change <target_change>`                                                           Target change amount.
+
+:ref:`change_as_percentage <change_as_percentage>`                       Changes target change amount as percentage.
+
+:ref:`weight <weight_6>`                             Weight associated with the objective for multiobjective design.
+
+==================================================   ===============================================================
+
+.. rubric:: Included in:
+
+==================================   ======================================
+
+Parent                                                              Summary
+
+==================================   ======================================
+:ref:`definitions <definitions_1>`   Objectives used in design change tool.
+
+==================================   ======================================
+

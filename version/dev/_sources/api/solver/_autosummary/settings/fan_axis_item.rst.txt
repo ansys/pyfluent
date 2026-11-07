@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fan_axis_item:
+
+fan_axis_item
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fan_axis_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==========================
+
+Parent                                          Summary
+
+==========================   ==========================
+:ref:`fan_axis <fan_axis>`   Axis direction components.
+
+==========================   ==========================
+

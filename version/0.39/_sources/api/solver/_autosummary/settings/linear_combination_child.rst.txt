@@ -1,0 +1,38 @@
+:orphan:
+
+.. _linear_combination_child:
+
+linear_combination_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.linear_combination_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ====================================================================
+
+Attribute                                                                                                 Summary
+
+==========================================   ====================================================================
+:ref:`name <name_5>`                                                                          Name of the object.
+
+:ref:`constant <constant_3>`                                             The constant for the linear combination.
+
+:ref:`combination_type <combination_type>`                                        The type of linear combination.
+
+:ref:`entries <entries>`                         List of observables and coefficients for the linear combination.
+
+==========================================   ====================================================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================================
+
+Parent                                                                                  Summary
+
+==============================================   ==============================================
+:ref:`linear_combination <linear_combination>`       Linear combination observable definitions.
+
+==============================================   ==============================================
+

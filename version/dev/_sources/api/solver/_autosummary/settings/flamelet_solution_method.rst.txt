@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _flamelet_solution_method:
+
+flamelet_solution_method
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.flamelet_solution_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`chemistry <chemistry>`   PDF Chemistry Options.
+
+============================   ======================
+

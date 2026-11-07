@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enable_shell_conduction:
+
+enable_shell_conduction
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enable_shell_conduction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`thermal <thermal>`   Allows to change thermal model variables or settings.
+
+========================   =====================================================
+

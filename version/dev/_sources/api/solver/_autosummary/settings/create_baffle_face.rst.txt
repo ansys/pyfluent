@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _create_baffle_face:
+
+create_baffle_face
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.create_baffle_face
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   ======================
+
+Argument                               Summary
+
+=====================   ======================
+:ref:`name <name_20>`   Input new baffle name.
+
+=====================   ======================
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`bodies_item <bodies_1_item>`   'child_object_type' of bodies.
+
+==================================   ==============================
+

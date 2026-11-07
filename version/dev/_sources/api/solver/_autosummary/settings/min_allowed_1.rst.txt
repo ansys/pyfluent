@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _min_allowed_1:
+
+min_allowed
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.min_allowed_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ====================
+
+Parent                                            Summary
+
+==================================   ====================
+:ref:`yplus_star <yplus_star>`        'yplus_star' child.
+
+:ref:`yplus_ystar <yplus_ystar_1>`   'yplus_ystar' child.
+
+==================================   ====================
+

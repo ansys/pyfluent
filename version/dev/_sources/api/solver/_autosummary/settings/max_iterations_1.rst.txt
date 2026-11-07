@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _max_iterations_1:
+
+max_iterations
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_iterations_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================
+
+Parent                                                              Summary
+
+==============================================   ==========================
+:ref:`prescribed_motions <prescribed_motions>`   Prescribed motions object.
+
+==============================================   ==========================
+

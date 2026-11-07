@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turbulent_dispersion_limit_vof_item:
+
+turbulent_dispersion_limit_vof_item
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turbulent_dispersion_limit_vof_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ==========================================================
+
+Attribute                                                                                                         Summary
+
+============================================================   ==========================================================
+:ref:`turb_disp_limit_lower_vof <turb_disp_limit_lower_vof>`   The lower volume fraction limit for the limiting function.
+
+:ref:`turb_disp_limit_upper_vof <turb_disp_limit_upper_vof>`   The upper volume fraction limit for the limiting function.
+
+============================================================   ==========================================================
+
+.. rubric:: Included in:
+
+======================================================================   ==========================================================================
+
+Parent                                                                                                                                      Summary
+
+======================================================================   ==========================================================================
+:ref:`turbulent_dispersion_limit_vof <turbulent_dispersion_limit_vof>`   The volume fraction limits for the turbulent dispersion limiting function.
+
+======================================================================   ==========================================================================
+

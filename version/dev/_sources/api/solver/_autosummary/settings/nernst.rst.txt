@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _nernst:
+
+nernst
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.nernst
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ================================================
+
+Attribute                                                                 Summary
+
+==============================   ================================================
+:ref:`ueq <ueq>`                          Equilibrium potential for the reaction.
+
+:ref:`n_electron <n_electron>`   Number of electrons transferred in the reaction.
+
+==============================   ================================================
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`reactions_item <reactions_1_item>`   'child_object_type' of reactions.
+
+========================================   =================================
+

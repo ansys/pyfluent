@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _write_legacy_case:
+
+write_legacy_case
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.write_legacy_case
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===============================
+
+Parent                                                           Summary
+
+======================================   ===============================
+:ref:`function_hooks <function_hooks>`   Hook up user-defined functions.
+
+======================================   ===============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _total_flow_rate:
+
+total_flow_rate
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.total_flow_rate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================================
+
+Parent                                                                               Summary
+
+========================================   =================================================
+:ref:`mass_flow_rate <mass_flow_rate_2>`   Lagrangian particle injection flow rate settings.
+
+========================================   =================================================
+

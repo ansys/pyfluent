@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cyl_orthotropic:
+
+cyl_orthotropic
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cyl_orthotropic
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ================================
+
+Attribute                                                                         Summary
+
+======================================================   ================================
+:ref:`axis_origin <axis_origin>`                         Orthotropic property directions.
+
+:ref:`axis_direction <axis_direction>`                   Orthotropic property directions.
+
+:ref:`radial_diffusivity <radial_diffusivity>`                         Property settings.
+
+:ref:`tangential_diffusivity <tangential_diffusivity>`                 Property settings.
+
+:ref:`axial_diffusivity <axial_diffusivity>`                           Property settings.
+
+======================================================   ================================
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`uds_diffusivities_item <uds_diffusivities_item>`   'child_object_type' of uds_diffusivities.
+
+======================================================   =========================================
+

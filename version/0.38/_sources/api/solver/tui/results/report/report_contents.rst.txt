@@ -1,0 +1,28 @@
+.. _ref_solver_tui_results_report:
+
+report
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.results.report
+   :members: aero_optical_distortions, forces, multiphase_summary, particle_summary, pathline_summary, phasic_integrals_enabled, projected_surface_area, summary, vbm
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   discrete_phase/discrete_phase_contents
+   efficiency/efficiency_contents
+   flow/flow_contents
+   fluxes/fluxes_contents
+   heat_exchanger/heat_exchanger_contents
+   modified_setting_options/modified_setting_options_contents
+   population_balance/population_balance_contents
+   simulation_reports/simulation_reports_contents
+   surface_integrals/surface_integrals_contents
+   system/system_contents
+   volume_integrals/volume_integrals_contents

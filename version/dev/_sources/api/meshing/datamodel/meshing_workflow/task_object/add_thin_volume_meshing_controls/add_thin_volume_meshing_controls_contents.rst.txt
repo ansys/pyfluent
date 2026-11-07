@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_thin_volume_meshing_controls:
+
+add_thin_volume_meshing_controls
+================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.add_thin_volume_meshing_controls
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`add_thin_volume_meshing_controls <ref_meshing_datamodel_meshing_workflow_task_object_add_thin_volume_meshing_controls__add_thin_volume_meshing_controls>`
+
+``add_thin_volume_meshing_controls`` is organised like a dictionary. You can access each :ref:`add_thin_volume_meshing_controls <ref_meshing_datamodel_meshing_workflow_task_object_add_thin_volume_meshing_controls__add_thin_volume_meshing_controls>` by name using ``add_thin_volume_meshing_controls['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _add_thin_volume_meshing_controls/_add_thin_volume_meshing_controls_contents

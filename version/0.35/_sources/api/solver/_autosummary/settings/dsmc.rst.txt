@@ -1,0 +1,38 @@
+:orphan:
+
+.. _dsmc:
+
+dsmc
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.dsmc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================   ==========================================
+
+Attribute                                                                                                       Summary
+
+==========================================================================   ==========================================
+:ref:`enabled <enabled_24>`                                                                          Enable dsmc model.
+
+:ref:`time_step <time_step>`                                                                            Dsmc time step.
+
+:ref:`sampling_begin_iteration <sampling_begin_iteration>`                               Dsmc sampling begin iteration.
+
+:ref:`real_to_simulated_particle_ratio <real_to_simulated_particle_ratio>`       Dsmc real-to-simulated particle ratio.
+
+==========================================================================   ==========================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`models <models>`       'models' child.
+
+======================   ===================
+

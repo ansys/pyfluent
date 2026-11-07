@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _preload:
+
+preload
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.preload
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================
+
+Parent                                                                  Summary
+
+================================================   ============================
+:ref:`one_dof_translation <one_dof_translation>`   'one_dof_translation' child.
+
+:ref:`one_dof_rotation <one_dof_rotation>`            'one_dof_rotation' child.
+
+================================================   ============================
+

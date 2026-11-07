@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _hybrid_init_options:
+
+hybrid_init_options
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.hybrid_init_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==============================
+
+Attribute                                                             Summary
+
+============================================   ==============================
+:ref:`general_settings <general_settings_1>`     The general settings object.
+
+:ref:`turbulent_setting <turbulent_setting>`   The turbulent settings object.
+
+:ref:`species_setting <species_setting>`         The species settings object.
+
+============================================   ==============================
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`initialization <initialization_1>`   Solution initialization object.
+
+========================================   ===============================
+

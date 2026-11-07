@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parameters_13_item:
+
+parameters_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.parameters_13_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=================================   ==============================
+
+Parent                                                     Summary
+
+=================================   ==============================
+:ref:`parameters <parameters_13>`   Operating condition parameter.
+
+=================================   ==============================
+

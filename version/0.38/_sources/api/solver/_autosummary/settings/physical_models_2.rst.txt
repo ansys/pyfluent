@@ -1,0 +1,36 @@
+:orphan:
+
+.. _physical_models_2:
+
+physical_models
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.physical_models_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ===================================================================
+
+Attribute                                                                                                  Summary
+
+============================================   ===================================================================
+:ref:`use_multi_physics <use_multi_physics>`                   Enables or disables physical-models load balancing.
+
+:ref:`threshold <threshold_4>`                              Sets the load imbalance threshold for physical models.
+
+:ref:`interval <interval_1>`                       Sets the interval for checking load balance in physical models.
+
+============================================   ===================================================================
+
+.. rubric:: Included in:
+
+==================================   ================================================
+
+Parent                                                                        Summary
+
+==================================   ================================================
+:ref:`load_balance <load_balance>`       Access the parallel load balancing settings.
+
+==================================   ================================================
+

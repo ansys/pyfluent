@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thermal_effects_1:
+
+thermal_effects
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.thermal_effects_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==========================================================================
+
+Parent                                                                                          Summary
+
+==========================   ==========================================================================
+:ref:`options <options_4>`   Configures structural model options for fluid-structure interaction (FSI).
+
+==========================   ==========================================================================
+

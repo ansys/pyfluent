@@ -1,0 +1,38 @@
+:orphan:
+
+.. _quadratic_penalty_child:
+
+quadratic_penalty_child
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.quadratic_penalty_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =======================================================
+
+Attribute                                                                                            Summary
+
+==================================================   =======================================================
+:ref:`name <name_5>`                                                                     Name of the object.
+
+:ref:`penalized_observable <penalized_observable>`                               The observable to penalize.
+
+:ref:`target_value <target_value>`                               The target value for the quadratic penalty.
+
+:ref:`normalization <normalization_1>`                   The normalization factor for the quadratic penalty.
+
+==================================================   =======================================================
+
+.. rubric:: Included in:
+
+============================================   =============================================
+
+Parent                                                                               Summary
+
+============================================   =============================================
+:ref:`quadratic_penalty <quadratic_penalty>`       Quadratic penalty observable definitions.
+
+============================================   =============================================
+

@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_ResultsInfo_Fields:
+
+Fields
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.ResultsInfo.Fields
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`Fields <ref_solver_datamodel_flicing_Case_ResultsInfo_Fields__Fields>`
+
+``Fields`` is organised like a dictionary. You can access each :ref:`Fields <ref_solver_datamodel_flicing_Case_ResultsInfo_Fields__Fields>` by name using ``Fields['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _Fields/_Fields_contents

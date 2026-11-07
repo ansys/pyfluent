@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fixed_value_item:
+
+fixed_value_item
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fixed_value_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ===================
+
+Attribute                                        Summary
+
+==================================   ===================
+:ref:`name <name_5>`                 Name of the object.
+
+:ref:`fixed_value <fixed_value_1>`          Fixed value.
+
+==================================   ===================
+
+.. rubric:: Included in:
+
+================================   ===================================
+
+Parent                                                         Summary
+
+================================   ===================================
+:ref:`fixed_value <fixed_value>`   Fixed value observable definitions.
+
+================================   ===================================
+

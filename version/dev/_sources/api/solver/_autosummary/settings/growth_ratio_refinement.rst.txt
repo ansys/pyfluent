@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _growth_ratio_refinement:
+
+growth_ratio_refinement
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.growth_ratio_refinement
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =============
+
+Attribute                                  Summary
+
+==================================   =============
+:ref:`growth_ratio <growth_ratio>`   Growth Ratio.
+
+==================================   =============
+
+.. rubric:: Included in:
+
+====================   =============
+
+Parent                       Summary
+
+====================   =============
+:ref:`type <type_2>`   'type' child.
+
+====================   =============
+

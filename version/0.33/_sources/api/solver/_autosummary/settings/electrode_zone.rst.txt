@@ -1,0 +1,21 @@
+:orphan:
+
+.. _electrode_zone:
+
+electrode_zone
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.electrode_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`dual_potential_zone <dual_potential_zone>`       Dual-potential zone assignment.
+
+================================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_dp_report_pdf_export:
+
+auto_dp_report_pdf_export
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.auto_dp_report_pdf_export
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`parametric_studies_child <parametric_studies_child>`       'child_object_type' of parametric_studies.
+
+==========================================================   ==============================================
+

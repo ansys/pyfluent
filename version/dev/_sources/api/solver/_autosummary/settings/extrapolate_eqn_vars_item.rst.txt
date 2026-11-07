@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _extrapolate_eqn_vars_item:
+
+extrapolate_eqn_vars_item
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.extrapolate_eqn_vars_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =========================
+
+Parent                                                                 Summary
+
+==================================================   =========================
+:ref:`extrapolate_eqn_vars <extrapolate_eqn_vars>`   The extrapolation object.
+
+==================================================   =========================
+

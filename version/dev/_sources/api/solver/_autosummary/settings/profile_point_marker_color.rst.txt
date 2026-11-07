@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _profile_point_marker_color:
+
+profile_point_marker_color
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.profile_point_marker_color
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================================   =================================
+
+Parent                                                                                                               Summary
+
+========================================================================================   =================================
+:ref:`set_preference_profile_point_cloud_data <set_preference_profile_point_cloud_data>`   Profile Point attributes command.
+
+========================================================================================   =================================
+

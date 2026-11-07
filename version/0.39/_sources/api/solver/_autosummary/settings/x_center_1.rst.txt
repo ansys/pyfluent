@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_center_1:
+
+x_center
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.x_center_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`settings_8_child <settings_8_child>`       'child_object_type' of settings.
+
+==========================================   ====================================
+

@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _custom_field_functions_1_item:
+
+custom_field_functions_item
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.custom_field_functions_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =======================================
+
+Attribute                                                                                Summary
+
+======================================================   =======================================
+:ref:`name <name_47>`                                    The name for the custom field function.
+
+:ref:`custom_field_function <custom_field_function_1>`                   Custom Field Function:.
+
+======================================================   =======================================
+
+.. rubric:: Included in:
+
+========================================================   ==================================================
+
+Parent                                                                                                Summary
+
+========================================================   ==================================================
+:ref:`custom_field_functions <custom_field_functions_1>`   Provides access to creating custom field function.
+
+========================================================   ==================================================
+

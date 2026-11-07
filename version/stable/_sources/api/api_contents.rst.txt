@@ -1,0 +1,24 @@
+.. _ref_api:
+
+API reference
+=============
+
+This API reference corresponds to Ansys Fluent 2026 R1. PyFluent maintains strong backward compatibility guarantees, so scripts targeting older Ansys versions are expected to work without modification.
+
+This is PyFluent's class and function reference. Please refer to the :ref:`ref_user_guide` for full guidelines on their use.
+
+All public APIs for PyFluent are listed below.
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    connectivity/connectivity_contents
+    diagnostics/diagnostics_contents
+    execution/execution_contents
+    fields/fields_contents
+    meshing/meshing_contents
+    offline/offline_contents
+    solver/solver_contents
+    module_config
+    system_coupling

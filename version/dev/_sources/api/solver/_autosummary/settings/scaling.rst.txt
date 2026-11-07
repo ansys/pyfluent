@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _scaling:
+
+scaling
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.scaling
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`field_value <field_value>`   'field_value' child.
+
+================================   ====================
+

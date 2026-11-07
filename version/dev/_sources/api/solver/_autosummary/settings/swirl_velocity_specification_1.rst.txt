@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _swirl_velocity_specification_1:
+
+swirl_velocity_specification
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.swirl_velocity_specification_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================================================
+
+Parent                                                                        Summary
+
+============================   ======================================================
+:ref:`momentum <momentum_3>`   Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_4>`   Allows to change momentum model variables or settings.
+
+============================   ======================================================
+

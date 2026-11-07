@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _liquid_rho:
+
+liquid_rho
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.liquid_rho
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================
+
+Parent                                       Summary
+
+================================   =================
+:ref:`parameters <parameters_5>`   Model parameters.
+
+================================   =================
+

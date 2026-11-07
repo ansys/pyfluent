@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _value_as_percentage:
+
+value_as_percentage
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.value_as_percentage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`objectives_item <objectives_2_item>`      'child_object_type' of objectives.
+
+:ref:`definitions_item <definitions_3_item>`   'child_object_type' of definitions.
+
+============================================   ===================================
+

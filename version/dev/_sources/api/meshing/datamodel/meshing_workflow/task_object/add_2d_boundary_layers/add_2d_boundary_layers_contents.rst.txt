@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_2d_boundary_layers:
+
+add_2d_boundary_layers
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.add_2d_boundary_layers
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`add_2d_boundary_layers <ref_meshing_datamodel_meshing_workflow_task_object_add_2d_boundary_layers__add_2d_boundary_layers>`
+
+``add_2d_boundary_layers`` is organised like a dictionary. You can access each :ref:`add_2d_boundary_layers <ref_meshing_datamodel_meshing_workflow_task_object_add_2d_boundary_layers__add_2d_boundary_layers>` by name using ``add_2d_boundary_layers['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _add_2d_boundary_layers/_add_2d_boundary_layers_contents

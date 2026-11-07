@@ -1,0 +1,66 @@
+:orphan:
+
+.. _limits:
+
+limits
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.limits
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ========================================================
+
+Attribute                                                                                                           Summary
+
+================================================================   ========================================================
+:ref:`min_pressure <min_pressure>`                                       Minimum vapor pressure limit for cavitation model.
+
+:ref:`max_pressure <max_pressure>`                                                     Maximum allowable absolute pressure.
+
+:ref:`min_temperature <min_temperature_1>`                                                   Minimum allowable temperature.
+
+:ref:`max_temperature <max_temperature>`                                                     Maximum allowable temperature.
+
+:ref:`min_tke <min_tke>`                                                                               Minimum allowable k.
+
+:ref:`min_lam_tke <min_lam_tke>`                                                                      Minimum allowable kl.
+
+:ref:`min_des_tke <min_des_tke>`                                                                       Minimum allowable k.
+
+:ref:`min_epsilon <min_epsilon>`                                                                 Minimum allowable epsilon.
+
+:ref:`min_des_epsilon <min_des_epsilon>`                                                         Minimum allowable epsilon.
+
+:ref:`min_v2f_tke <min_v2f_tke>`                                                                       Minimum allowable k.
+
+:ref:`min_v2f_epsilon <min_v2f_epsilon>`                                                         Minimum allowable epsilon.
+
+:ref:`min_vel_var_scale <min_vel_var_scale>`                                                          Minimum allowable v2.
+
+:ref:`min_elliptic_relax_func <min_elliptic_relax_func>`                                               Minimum allowable f.
+
+:ref:`min_omega <min_omega>`                                                                       Minimum allowable omega.
+
+:ref:`min_des_omega <min_des_omega>`                                                               Minimum allowable omega.
+
+:ref:`max_turb_visc_ratio <max_turb_visc_ratio>`                       Maximum allowable turbulent/laminar viscosity ratio.
+
+:ref:`positivity_rate <positivity_rate>`                                                             Positivity Rate Limit.
+
+:ref:`min_vol_frac_for_matrix_sol <min_vol_frac_for_matrix_sol>`                    Minimum Vol. Frac. for Matrix Solution.
+
+================================================================   ========================================================
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`controls_1 <controls_1>`       Solution controls object.
+
+==============================   =============================
+

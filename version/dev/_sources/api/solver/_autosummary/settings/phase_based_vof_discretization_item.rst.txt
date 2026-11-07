@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_based_vof_discretization_item:
+
+phase_based_vof_discretization_item
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.phase_based_vof_discretization_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ===============================
+
+Parent                                                                                           Summary
+
+======================================================================   ===============================
+:ref:`phase_based_vof_discretization <phase_based_vof_discretization>`   Phase-based vof discretization.
+
+======================================================================   ===============================
+

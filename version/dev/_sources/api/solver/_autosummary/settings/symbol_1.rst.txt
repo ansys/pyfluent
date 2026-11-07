@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _symbol_1:
+
+symbol
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.symbol_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================================================
+
+Parent                                                                  Summary
+
+========================   ====================================================
+:ref:`marker <marker_2>`   Configure marker settings for a specific plot curve.
+
+========================   ====================================================
+

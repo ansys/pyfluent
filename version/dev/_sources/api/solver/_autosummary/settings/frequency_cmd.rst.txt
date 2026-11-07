@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _frequency_cmd:
+
+frequency_cmd
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.frequency_cmd
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ========================================
+
+Parent                                                                                    Summary
+
+======================================================   ========================================
+:ref:`execute_commands_item <execute_commands_item>`     'child_object_type' of execute_commands.
+
+:ref:`execute_commands_item <execute_commands_1_item>`   'child_object_type' of execute_commands.
+
+:ref:`execute_commands_item <execute_commands_2_item>`   'child_object_type' of execute_commands.
+
+======================================================   ========================================
+

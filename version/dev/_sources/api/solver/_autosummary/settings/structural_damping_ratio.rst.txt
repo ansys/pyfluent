@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _structural_damping_ratio:
+
+structural_damping_ratio
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.structural_damping_ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==============================================
+
+Parent                                                                                            Summary
+
+========================================================   ==============================================
+:ref:`perdisp_properties_item <perdisp_properties_item>`       'child_object_type' of perdisp_properties.
+
+:ref:`create_displacement <create_displacement>`               Create a new periodic displacement object.
+
+:ref:`edit_displacement <edit_displacement>`               Edit an existing periodic displacement object.
+
+========================================================   ==============================================
+

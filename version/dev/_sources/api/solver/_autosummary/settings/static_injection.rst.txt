@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _static_injection:
+
+static_injection
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.static_injection
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`static_injection_item <static_injection_item>`
+
+Access each :ref:`static_injection_item <static_injection_item>` by index using ``static_injection[<index>]``.
+
+
+.. rubric:: Included in:
+
+==================================   ======================================================
+
+Parent                                                                              Summary
+
+==================================   ======================================================
+:ref:`static_setup <static_setup>`   Configures the static injection method and properties.
+
+==================================   ======================================================
+

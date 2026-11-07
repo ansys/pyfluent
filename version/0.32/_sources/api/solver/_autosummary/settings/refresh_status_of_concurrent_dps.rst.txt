@@ -1,0 +1,21 @@
+:orphan:
+
+.. _refresh_status_of_concurrent_dps:
+
+refresh_status_of_concurrent_dps
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.refresh_status_of_concurrent_dps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

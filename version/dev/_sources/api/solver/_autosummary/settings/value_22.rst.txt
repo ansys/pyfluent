@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _value_22:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.value_22
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ====================================================
+
+Parent                                                                                                                      Summary
+
+============================================================================   ====================================================
+:ref:`create <create_3>`                                                                     Create Resistances for physics region.
+
+:ref:`contact_resistance_locations_item <contact_resistance_locations_item>`   'child_object_type' of contact_resistance_locations.
+
+============================================================================   ====================================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _n2o_parameters:
+
+n2o_parameters
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.n2o_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =========================================================
+
+Attribute                                                                                                  Summary
+
+======================================================   =========================================================
+:ref:`n2o_path <n2o_path_1>`                                                       N2O-Path model for thermal NOx.
+
+:ref:`o_model <o_model_1>`                                                                 [O] model for N2O Path.
+
+:ref:`replace_with_udf_rate <replace_with_udf_rate_1>`       Enable/disable replace N2Opath NO Rate with UDF rate.
+
+======================================================   =========================================================
+
+.. rubric:: Included in:
+
+====================================   =====================
+
+Parent                                               Summary
+
+====================================   =====================
+:ref:`nox_chemistry <nox_chemistry>`       NOx model object.
+
+====================================   =====================
+

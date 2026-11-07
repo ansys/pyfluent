@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _diffuse_fraction_band_item:
+
+diffuse_fraction_band_item
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.diffuse_fraction_band_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =================
+
+Parent                                                           Summary
+
+====================================================   =================
+:ref:`diffuse_fraction_band <diffuse_fraction_band>`   Diffuse fraction.
+
+====================================================   =================
+

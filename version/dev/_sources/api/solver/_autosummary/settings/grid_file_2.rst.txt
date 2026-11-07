@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _grid_file_2:
+
+grid_file
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.grid_file_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =========================================
+
+Parent                                                                                 Summary
+
+==================================================   =========================================
+:ref:`read_grid_from_file <read_grid_from_file_1>`   Read c-grid distribution from an XY file.
+
+==================================================   =========================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _passive:
+
+passive
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.passive
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================
+
+Parent                                Summary
+
+==========================   ================
+:ref:`six_dof <six_dof_1>`   'six_dof' child.
+
+==========================   ================
+

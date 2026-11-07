@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mem_act:
+
+mem_act
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mem_act
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============
+
+Parent                            Summary
+
+==========================   ============
+:ref:`membrane <membrane>`   Up membrane.
+
+==========================   ============
+

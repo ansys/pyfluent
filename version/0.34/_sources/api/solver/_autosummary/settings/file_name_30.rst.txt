@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_30:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_30
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`results_1_child <results_1_child>`       'child_object_type' of results.
+
+========================================   ===================================
+

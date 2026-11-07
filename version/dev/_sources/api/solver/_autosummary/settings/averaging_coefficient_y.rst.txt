@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _averaging_coefficient_y:
+
+averaging_coefficient_y
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.averaging_coefficient_y
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ======================================
+
+Attribute                                                  Summary
+
+=========================   ======================================
+:ref:`option <option_47>`                Material property method.
+
+:ref:`value <value_25>`     Constant or expression property value.
+
+=========================   ======================================
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`droplet_particle_item <droplet_particle_item>`   'child_object_type' of droplet_particle.
+
+:ref:`particle_mixture_item <particle_mixture_item>`   'child_object_type' of particle_mixture.
+
+:ref:`particle_species_item <particle_species_item>`   'child_object_type' of particle_species.
+
+:ref:`material_item <material_5_item>`                         'child_object_type' of material.
+
+====================================================   ========================================
+

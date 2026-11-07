@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fully_premix_flamelet:
+
+fully_premix_flamelet
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fully_premix_flamelet
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`parameters <parameters_2>`   PDF Flamelet Parameters.
+
+================================   ========================
+

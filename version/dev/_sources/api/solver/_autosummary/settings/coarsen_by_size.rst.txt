@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _coarsen_by_size:
+
+coarsen_by_size
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coarsen_by_size
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`amg_gpgpu_options_item <amg_gpgpu_options_item>`   'child_object_type' of amg_gpgpu_options.
+
+======================================================   =========================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _command_name:
+
+command_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.command_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================
+
+Parent                              Summary
+
+========================   ================
+:ref:`export <export_1>`   Export Commands.
+
+========================   ================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _design_points_1:
+
+design_points
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.design_points_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   =====================
+
+Parent                                    Summary
+
+=========================   =====================
+:ref:`delete <delete_14>`   Delete Design Points.
+
+=========================   =====================
+

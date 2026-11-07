@@ -1,0 +1,21 @@
+:orphan:
+
+.. _partition_method:
+
+partition_method
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.partition_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`method_25 <method_25>`       Partition the domain.
+
+============================   =========================
+

@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _named_expressions_1_item:
+
+named_expressions_item
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.named_expressions_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ======================
+
+Attribute                                                   Summary
+
+==========================================   ======================
+:ref:`name <name_5>`                            Name of the object.
+
+:ref:`named_expression <named_expression>`   Named expression name.
+
+==========================================   ======================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`named_expressions <named_expressions_1>`   Named Expression parameters object.
+
+==============================================   ===================================
+

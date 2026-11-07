@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _translation_distance:
+
+translation_distance
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.translation_distance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`transform_surface_item <transform_surface_item>`   'child_object_type' of transform_surface.
+
+======================================================   =========================================
+

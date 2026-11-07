@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _center_of_rotation_1:
+
+center_of_rotation
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.center_of_rotation_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`transform_surface_item <transform_surface_item>`   'child_object_type' of transform_surface.
+
+======================================================   =========================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _track_pdf_particles_1:
+
+track_pdf_particles
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.track_pdf_particles_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ==========================================
+
+Parent                                                         Summary
+
+=========================   ==========================================
+:ref:`option <option_80>`   Check the Particle-tracks control options.
+
+=========================   ==========================================
+

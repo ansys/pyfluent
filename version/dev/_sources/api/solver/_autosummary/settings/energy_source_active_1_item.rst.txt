@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _energy_source_active_1_item:
+
+energy_source_active_item
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.energy_source_active_1_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ==================================================
+
+Parent                                                                                            Summary
+
+====================================================   ==================================================
+:ref:`energy_source_active <energy_source_active_1>`   Energy source for active zone in the FMU-coupling.
+
+====================================================   ==================================================
+

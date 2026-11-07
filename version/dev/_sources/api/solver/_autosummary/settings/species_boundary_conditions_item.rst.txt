@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_boundary_conditions_item:
+
+species_boundary_conditions_item
+================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.species_boundary_conditions_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ============================
+
+Parent                                                                                  Summary
+
+================================================================   ============================
+:ref:`species_boundary_conditions <species_boundary_conditions>`   Species Boundary Conditions.
+
+================================================================   ============================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_merge_face_zones_of_type__merge_face_zones_of_typeCommandArguments:
+
+_merge_face_zones_of_typeCommandArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.merge_face_zones_of_type._merge_face_zones_of_typeCommandArguments
+   :members: _face_zone_name_pattern, _face_zone_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

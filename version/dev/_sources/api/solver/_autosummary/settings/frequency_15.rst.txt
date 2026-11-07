@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _frequency_15:
+
+frequency
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.frequency_15
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ===========================================================
+
+Parent                                                                                                         Summary
+
+========================================================   ===========================================================
+:ref:`single_session_coupling <single_session_coupling>`   Access the single session conjugate heat transfer settings.
+
+========================================================   ===========================================================
+

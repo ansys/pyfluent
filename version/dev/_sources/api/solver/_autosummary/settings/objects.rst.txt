@@ -1,0 +1,51 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _objects:
+
+objects
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.objects
+
+.. rubric:: Methods
+
+==========================================   ======================================================================
+
+Method                                                                                                      Summary
+
+==========================================   ======================================================================
+:ref:`create <create_14>`                                                    Create a new Generalized Force object.
+
+:ref:`delete <delete_2>`                                                                   Delete selected objects.
+
+:ref:`rename <rename>`                                                                           Rename the object.
+
+:ref:`list <list_1>`                                                                 List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`                                    List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                                       Create a copy of the object.
+
+:ref:`process_all <process_all>`             Process all generalized forces objects by recreating and mapping them.
+
+==========================================   ======================================================================
+
+.. rubric:: Named object type
+
+:ref:`objects_item <objects_item>`
+
+``objects`` is organised like a dictionary. You can access each :ref:`objects_item <objects_item>` by name using ``objects['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ========================================================
+
+Parent                                                                                            Summary
+
+==============================================   ========================================================
+:ref:`generalized_forces <generalized_forces>`   Settings for Generalized Forces calculation and objects.
+
+==============================================   ========================================================
+

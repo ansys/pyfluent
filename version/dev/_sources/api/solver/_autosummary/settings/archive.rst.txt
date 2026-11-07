@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _archive:
+
+archive
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.archive
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   =======================================================
+
+Argument                                                                             Summary
+
+==================================   =======================================================
+:ref:`archive_name <archive_name>`   The name of parametric project archive file for output.
+
+==================================   =======================================================
+
+.. rubric:: Included in:
+
+==============================================   =======================================
+
+Parent                                                                           Summary
+
+==============================================   =======================================
+:ref:`parametric_project <parametric_project>`   Parametric Project Management Commands.
+
+==============================================   =======================================
+

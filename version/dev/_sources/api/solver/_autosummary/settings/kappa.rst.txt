@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _kappa:
+
+kappa
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.kappa
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ====================================
+
+Parent                                                              Summary
+
+====================================   ====================================
+:ref:`coefficients <coefficients_2>`   Spalart-Allmaras model coefficients.
+
+====================================   ====================================
+

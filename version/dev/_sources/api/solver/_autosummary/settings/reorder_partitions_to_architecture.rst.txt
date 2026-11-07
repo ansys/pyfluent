@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reorder_partitions_to_architecture:
+
+reorder_partitions_to_architecture
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reorder_partitions_to_architecture
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`partition <partition_3>`   The partition domain object.
+
+==============================   ============================
+

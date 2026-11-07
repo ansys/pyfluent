@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _custom_vectors:
+
+custom_vectors
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.custom_vectors
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`custom_vectors_item <custom_vectors_item>`
+
+``custom_vectors`` is organised like a dictionary. You can access each :ref:`custom_vectors_item <custom_vectors_item>` by name using ``custom_vectors['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================   =========================================================================================
+
+Parent                                                                                                       Summary
+
+========================   =========================================================================================
+:ref:`results <results>`   Access all post-processing tools and reporting features for analyzing simulation results.
+
+========================   =========================================================================================
+

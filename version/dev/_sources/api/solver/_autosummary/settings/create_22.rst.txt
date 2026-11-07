@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _create_22:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.create_22
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =============================================
+
+Argument                                                                         Summary
+
+========================================   =============================================
+:ref:`report_def_name <report_def_name>`   Report definition to create output parameter.
+
+========================================   =============================================
+
+.. rubric:: Included in:
+
+================================================   =======================================================
+
+Parent                                                                                             Summary
+
+================================================   =======================================================
+:ref:`report_definitions <report_definitions_1>`   Accesses output parameters based on report definitions.
+
+================================================   =======================================================
+

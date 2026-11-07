@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mesh_quality_limits:
+
+mesh_quality_limits
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mesh_quality_limits
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ===============================
+
+Attribute                                            Summary
+
+==========================   ===============================
+:ref:`minimum <minimum_1>`       Minimum mesh quality limit.
+
+:ref:`maximum <maximum_1>`       Maximum mesh quality limit.
+
+==========================   ===============================
+
+.. rubric:: Included in:
+
+================================================================   =========================================
+
+Parent                                                                                               Summary
+
+================================================================   =========================================
+:ref:`secondary_gradient_limiting <secondary_gradient_limiting>`       The Secondary Gradient Limiting Menu.
+
+================================================================   =========================================
+

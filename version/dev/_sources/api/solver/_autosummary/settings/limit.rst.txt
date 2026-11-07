@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _limit:
+
+limit
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.limit
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ================================
+
+Parent                                                            Summary
+
+======================================   ================================
+:ref:`add_constraint <add_constraint>`                    Add Constraint.
+
+:ref:`criteria_item <criteria_1_item>`   'child_object_type' of criteria.
+
+======================================   ================================
+

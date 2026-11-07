@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _solar_fluxes:
+
+solar_fluxes
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.solar_fluxes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =========================================================
+
+Parent                                                                                 Summary
+
+==================================   =========================================================
+:ref:`radiation <radiation_1>`                 Radiation settings for this boundary-condition.
+
+:ref:`porous_jump <porous_jump_1>`   Allows to change porous-jump model variables or settings.
+
+==================================   =========================================================
+

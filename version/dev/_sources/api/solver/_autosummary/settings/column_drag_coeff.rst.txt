@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _column_drag_coeff:
+
+column_drag_coeff
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.column_drag_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =====================================
+
+Parent                                                                   Summary
+
+========================================   =====================================
+:ref:`droplet_breakup <droplet_breakup>`   Lagrangian droplet break-up settings.
+
+========================================   =====================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _repeats:
+
+repeats
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.repeats
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`periodic_instances_item <periodic_instances_item>`   'child_object_type' of periodic_instances.
+
+========================================================   ==========================================
+

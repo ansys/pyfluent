@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_18:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_18
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================================
+
+Parent                                                                   Summary
+
+======================================   =======================================
+:ref:`write_scp_file <write_scp_file>`       Write fluent input scp file for sc.
+
+======================================   =======================================
+

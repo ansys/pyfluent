@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _time_scale_modification_factor:
+
+time_scale_modification_factor
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.time_scale_modification_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`transient <transient>`   Flexible numerics object.
+
+============================   =========================
+

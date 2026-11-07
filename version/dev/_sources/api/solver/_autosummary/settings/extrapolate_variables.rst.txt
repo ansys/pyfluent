@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _extrapolate_variables:
+
+extrapolate_variables
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.extrapolate_variables
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   =========================================================
+
+Parent                                                                          Summary
+
+===========================   =========================================================
+:ref:`options <options_15>`   Options for time stepping and extrapolation of variables.
+
+===========================   =========================================================
+

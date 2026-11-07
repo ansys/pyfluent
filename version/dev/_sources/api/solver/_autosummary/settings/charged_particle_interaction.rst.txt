@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _charged_particle_interaction:
+
+charged_particle_interaction
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.charged_particle_interaction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================================   =========================================
+
+Parent                                                                                                                     Summary
+
+======================================================================================   =========================================
+:ref:`cross_section_multicomponent_item_item <cross_section_multicomponent_item_item>`   'child_object_type' of child_object_type.
+
+======================================================================================   =========================================
+

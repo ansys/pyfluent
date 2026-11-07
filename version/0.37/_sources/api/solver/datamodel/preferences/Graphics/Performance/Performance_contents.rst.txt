@@ -1,0 +1,20 @@
+.. _ref_solver_datamodel_preferences_Graphics_Performance:
+
+Performance
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.preferences.Root.Graphics.Performance
+   :members: OptimizeFor, RatioOfTargetFrameRateToClassifyHeavyGeometry, RatioOfTargetFrameRateToDeclassifyHeavyGeometry, SurfaceCaching
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   FastDisplayMode/FastDisplayMode_contents
+   MinimumFrameRate/MinimumFrameRate_contents
+   OptimizeInputData/OptimizeInputData_contents

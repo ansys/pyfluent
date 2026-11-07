@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _to_file_enabled:
+
+to_file_enabled
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.to_file_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   =======================
+
+Parent                                 Summary
+
+====================   =======================
+:ref:`plot <plot_6>`   Enable the plot option.
+
+====================   =======================
+

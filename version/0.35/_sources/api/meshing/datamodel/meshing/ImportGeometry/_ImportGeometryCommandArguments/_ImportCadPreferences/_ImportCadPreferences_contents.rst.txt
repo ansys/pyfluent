@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_ImportGeometry__ImportGeometryCommandArguments__ImportCadPreferences:
+
+_ImportCadPreferences
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.ImportGeometry._ImportGeometryCommandArguments._ImportCadPreferences
+   :members: _AutomaticObjectCreation, _CIRefaceting, _CISeparation, _CISeparationAngle, _CITolerence, _EdgeLabel, _ExtractAngle, _FacetedBodies, _MaxFacetLength, _MergeNodes, _ShowImportCadPreferences
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

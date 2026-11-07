@@ -1,0 +1,39 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _current_state:
+
+current_state
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.current_state
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ===============================
+
+Attribute                                           Summary
+
+=========================   ===============================
+:ref:`origin <origin_10>`   Reference frame current origin.
+
+:ref:`x_axis <x_axis_1>`            Reference frame x-axis.
+
+:ref:`y_axis <y_axis_1>`            Reference frame Y axis.
+
+:ref:`z_axis <z_axis_1>`            Reference frame Z axis.
+
+=========================   ===============================
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`reference_frames_item <reference_frames_item>`   'child_object_type' of reference_frames.
+
+====================================================   ========================================
+

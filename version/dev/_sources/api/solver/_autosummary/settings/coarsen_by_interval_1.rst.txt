@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _coarsen_by_interval_1:
+
+coarsen_by_interval
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coarsen_by_interval_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================================================================
+
+Parent                                                                                                                                       Summary
+
+======================================================   ===========================================================================================
+:ref:`coarsening_parameters <coarsening_parameters_2>`   Configures coarsening parameters for coupled equations in algebraic multigrid (AMG) solver.
+
+======================================================   ===========================================================================================
+

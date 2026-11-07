@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _periodic_displacement:
+
+periodic_displacement
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.periodic_displacement
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`periodic_displacement_item <periodic_displacement_item>`
+
+Access each :ref:`periodic_displacement_item <periodic_displacement_item>` by index using ``periodic_displacement[<index>]``.
+
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`momentum <momentum>`   Allows to change momentum model variables or settings.
+
+==========================   ======================================================
+

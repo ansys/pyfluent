@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _site:
+
+site
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.site
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================
+
+Parent                                Summary
+
+==========================   ================
+:ref:`species <species_6>`   Mixture species.
+
+==========================   ================
+

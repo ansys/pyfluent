@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _exit_on_error:
+
+exit_on_error
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.exit_on_error
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================
+
+Parent                                            Summary
+
+====================================   ==================
+:ref:`batch_options <batch_options>`   The batch options.
+
+====================================   ==================
+

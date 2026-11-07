@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _free_stream_particles_1:
+
+free_stream_particles
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.free_stream_particles_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ==========================================
+
+Parent                                                         Summary
+
+=========================   ==========================================
+:ref:`option <option_80>`   Check the Particle-tracks control options.
+
+=========================   ==========================================
+

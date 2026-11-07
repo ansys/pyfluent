@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _location_2:
+
+location
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.location_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ====================================================
+
+Parent                                                                                                                      Summary
+
+============================================================================   ====================================================
+:ref:`contact_resistance_locations_item <contact_resistance_locations_item>`   'child_object_type' of contact_resistance_locations.
+
+============================================================================   ====================================================
+

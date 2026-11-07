@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_12_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.phase_12_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ======================================================
+
+Attribute                                                                     Summary
+
+============================   ======================================================
+:ref:`interior <interior_1>`   Allows to change interior model variables or settings.
+
+============================   ======================================================
+
+.. rubric:: Included in:
+
+=======================   ==================================
+
+Parent                                               Summary
+
+=======================   ==================================
+:ref:`phase <phase_12>`   Domain name to define settings on.
+
+=======================   ==================================
+

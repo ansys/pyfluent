@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _observable_3:
+
+observable
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.observable_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`definitions_item <definitions_1_item>`   'child_object_type' of definitions.
+
+:ref:`results_item <results_1_item>`               'child_object_type' of results.
+
+============================================   ===================================
+

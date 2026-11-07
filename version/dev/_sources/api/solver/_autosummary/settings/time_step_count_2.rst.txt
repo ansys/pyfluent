@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _time_step_count_2:
+
+time_step_count
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.time_step_count_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ============================
+
+Parent                                                              Summary
+
+============================================   ============================
+:ref:`parameters <parameters_9>`               Iteration parameters object.
+
+:ref:`dual_time_iterate <dual_time_iterate>`   Perform unsteady iterations.
+
+============================================   ============================
+

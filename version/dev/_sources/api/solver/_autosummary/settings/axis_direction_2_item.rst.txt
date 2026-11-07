@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _axis_direction_2_item:
+
+axis_direction_item
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.axis_direction_2_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==========================
+
+Parent                                                        Summary
+
+========================================   ==========================
+:ref:`axis_direction <axis_direction_2>`   Axis direction components.
+
+========================================   ==========================
+

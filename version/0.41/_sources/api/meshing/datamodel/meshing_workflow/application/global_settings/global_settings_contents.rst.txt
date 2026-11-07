@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_global_settings:
+
+global_settings
+===============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.global_settings
+   :members: area_unit, current_task, enable_clean_cad, enable_complex_meshing, enable_overset_meshing, enable_prime_2d_meshing, enable_prime_meshing, initial_version, length_unit, normal_mode, old_size, use_allowed_values, utl_enabled, volume_unit
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   ftm_region_data/ftm_region_data_contents

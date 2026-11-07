@@ -1,0 +1,59 @@
+:orphan:
+
+.. _curves:
+
+curves
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.curves
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   =====================================================
+
+Method                                                                                       Summary
+
+============================================   =====================================================
+:ref:`create <create>`                             Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                      Delete selected objects.
+
+:ref:`rename <rename>`                                                            Rename the object.
+
+:ref:`list_1 <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                        Create a copy of the object.
+
+============================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`curves_child <curves_child>`
+
+
+.. rubric:: Included in:
+
+================================================   =========================================================================
+
+Parent                                                                                                               Summary
+
+================================================   =========================================================================
+:ref:`residual <residual>`                             Options for controlling residual information that the solver reports.
+
+:ref:`report_plots_child <report_plots_child>`                                          'child_object_type' of report_plots.
+
+:ref:`solution_plot <solution_plot>`                                                                 Plot the solution data.
+
+:ref:`plot_6 <plot_6>`                                                                            Plot solution on surfaces.
+
+:ref:`plot_from_file <plot_from_file>`                                                                  Plot data from file.
+
+:ref:`plot_from_file_list <plot_from_file_list>`                                              Plot data from multiple files.
+
+:ref:`monitors <monitors>`                                                                     The residual monitors object.
+
+================================================   =========================================================================
+

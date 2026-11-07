@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mt_method:
+
+mt_method
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mt_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`mass_transfer_list_item <mass_transfer_list_item>`   'child_object_type' of mass_transfer_list.
+
+========================================================   ==========================================
+

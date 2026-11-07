@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Setup_Material:
+
+Material
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.Setup.Material
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`Material <ref_solver_datamodel_flicing_Case_Setup_Material__Material>`
+
+``Material`` is organised like a dictionary. You can access each :ref:`Material <ref_solver_datamodel_flicing_Case_Setup_Material__Material>` by name using ``Material['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _Material/_Material_contents

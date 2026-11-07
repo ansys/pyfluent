@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _function_name_1:
+
+function_name
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.function_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===============================================   ====================================
+
+Parent                                                                         Summary
+
+===============================================   ====================================
+:ref:`user_defined_item <user_defined_21_item>`   'child_object_type' of user_defined.
+
+===============================================   ====================================
+

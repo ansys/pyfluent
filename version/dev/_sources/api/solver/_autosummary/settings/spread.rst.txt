@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _spread:
+
+spread
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.spread
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================================================
+
+Parent                                                                            Summary
+
+====================================   ==================================================
+:ref:`rosin_rammler <rosin_rammler>`   Rosin-Rammler particle size distribution settings.
+
+====================================   ==================================================
+

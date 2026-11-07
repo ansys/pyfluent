@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _unit_name:
+
+unit_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.unit_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`units_item <units_item>`   'child_object_type' of units.
+
+==============================   =============================
+

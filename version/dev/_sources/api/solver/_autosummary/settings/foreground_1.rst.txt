@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _foreground_1:
+
+foreground
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.foreground_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ================================
+
+Parent                                          Summary
+
+====================   ================================
+:ref:`video <video>`   The video window options object.
+
+====================   ================================
+

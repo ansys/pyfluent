@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _exhaust_fan_1:
+
+exhaust_fan
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.exhaust_fan_1
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`exhaust_fan_item <exhaust_fan_1_item>`
+
+``exhaust_fan`` is organised like a dictionary. You can access each :ref:`exhaust_fan_item <exhaust_fan_1_item>` by name using ``exhaust_fan['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`boundary_conditions <boundary_conditions>`   The boundary conditions object.
+
+================================================   ===============================
+

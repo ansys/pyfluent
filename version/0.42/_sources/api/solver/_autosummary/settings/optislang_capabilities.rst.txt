@@ -1,0 +1,61 @@
+:orphan:
+
+.. _optislang_capabilities:
+
+optislang_capabilities
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.optislang_capabilities
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ================================
+
+Attribute                                                                   Summary
+
+================================================   ================================
+:ref:`optimize <optimize_1>`                                              Optimize.
+
+:ref:`active_parameters <active_parameters>`             List of active Parameters.
+
+:ref:`inactive_parameters <inactive_parameters>`       List of inactive Parameters.
+
+================================================   ================================
+
+.. rubric:: Methods
+
+========================================================================================   =================================================
+
+Method                                                                                                                               Summary
+
+========================================================================================   =================================================
+:ref:`create_doe <create_doe>`                                                                 Create Design of Experiments using optiSLang.
+
+:ref:`set_active_parameters <set_active_parameters>`                                                                  Set Active Parameters.
+
+:ref:`set_inactive_parameter <set_inactive_parameter>`                                                              Set Inactive Parameters.
+
+:ref:`set_bounds <set_bounds>`                                                                                                   Set Bounds.
+
+:ref:`get_number_of_designs <get_number_of_designs>`                                                                  Get Number of Designs.
+
+:ref:`export_designs <export_designs>`                                                                                       Export Designs.
+
+:ref:`open_designs_in_optislang_postprocessor <open_designs_in_optislang_postprocessor>`            Open Designs in optiSLang Postprocessor.
+
+:ref:`go_to_optislang <go_to_optislang>`                                                                             Open optiSLang project.
+
+========================================================================================   =================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`parametric_studies_child <parametric_studies_child>`       'child_object_type' of parametric_studies.
+
+==========================================================   ==============================================
+

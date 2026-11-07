@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _courant_number_reduction:
+
+courant_number_reduction
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.courant_number_reduction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =======================================
+
+Parent                                                                           Summary
+
+==============================================   =======================================
+:ref:`relaxation_factor <relaxation_factor_5>`   FAS multigrid relaxation factor object.
+
+==============================================   =======================================
+

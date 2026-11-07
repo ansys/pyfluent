@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _profile_2:
+
+profile
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.profile_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ============================================
+
+Parent                                                                                              Summary
+
+============================================================   ============================================
+:ref:`energy_source_active_item <energy_source_active_item>`   'child_object_type' of energy_source_active.
+
+============================================================   ============================================
+

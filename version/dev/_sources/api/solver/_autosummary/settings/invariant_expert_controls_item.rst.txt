@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _invariant_expert_controls_item:
+
+invariant_expert_controls_item
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.invariant_expert_controls_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   =======================================
+
+Parent                                                                                         Summary
+
+============================================================   =======================================
+:ref:`invariant_expert_controls <invariant_expert_controls>`   Advanced settings for invariant motion.
+
+============================================================   =======================================
+

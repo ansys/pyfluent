@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _injections:
+
+injections
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.injections
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`injections_item <injections_item>`
+
+``injections`` is organised like a dictionary. You can access each :ref:`injections_item <injections_item>` by name using ``injections['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================   =============================================================================================================
+
+Parent                                                                                                                                         Summary
+
+======================================   =============================================================================================================
+:ref:`discrete_phase <discrete_phase>`   Configures the Discrete Phase Model (DPM) to track particles, droplets, or bubbles in a Lagrangian framework.
+
+======================================   =============================================================================================================
+

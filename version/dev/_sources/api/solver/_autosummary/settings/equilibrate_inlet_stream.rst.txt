@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _equilibrate_inlet_stream:
+
+equilibrate_inlet_stream
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.equilibrate_inlet_stream
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   =====================================================
+
+Parent                                                                      Summary
+
+===========================   =====================================================
+:ref:`species <species_10>`   Allows to change species model variables or settings.
+
+:ref:`species <species_11>`   Allows to change species model variables or settings.
+
+===========================   =====================================================
+

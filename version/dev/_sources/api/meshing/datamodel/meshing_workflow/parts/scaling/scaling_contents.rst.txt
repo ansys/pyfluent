@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_scaling:
+
+scaling
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.parts.scaling
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`scaling <ref_meshing_datamodel_meshing_workflow_parts_scaling__scaling>`
+
+``scaling`` is organised like a dictionary. You can access each :ref:`scaling <ref_meshing_datamodel_meshing_workflow_parts_scaling__scaling>` by name using ``scaling['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _scaling/_scaling_contents

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _include:
+
+include
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.include
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ===========================================================
+
+Parent                                                                                                   Summary
+
+==================================================   ===========================================================
+:ref:`render_contact_cells <render_contact_cells>`   Set the option to include contact-cells in post-processing.
+
+==================================================   ===========================================================
+

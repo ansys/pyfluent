@@ -1,0 +1,40 @@
+:orphan:
+
+.. _auto:
+
+auto
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.auto
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ==========================================================
+
+Attribute                                                                               Summary
+
+==================================   ==========================================================
+:ref:`case_file <case_file>`             Enable the use-case-file method for auto partitioning.
+
+:ref:`across_zones <across_zones>`               Enable auto partitioning by zone or by domain.
+
+:ref:`method <method_26>`                                                       'method' child.
+
+:ref:`load_vector <load_vector>`                                Auto the partition load vector.
+
+:ref:`pre_test <pre_test>`                             Auto partition pre-testing optimization.
+
+==================================   ==========================================================
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`partition_3 <partition_3>`       The partition domain object.
+
+================================   ================================
+

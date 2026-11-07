@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _walls:
+
+walls
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.walls
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`force_item <force_1_item>`                               'child_object_type' of force.
+
+:ref:`moment_of_force_item <moment_of_force_item>`   'child_object_type' of moment_of_force.
+
+==================================================   =======================================
+

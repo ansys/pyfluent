@@ -1,0 +1,53 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fixed_values:
+
+fixed_values
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fixed_values
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =============================================
+
+Attribute                                                                                    Summary
+
+====================================================   =============================================
+:ref:`enable <enable_19>`                                                Enable/disable fixed terms.
+
+:ref:`cylindrical_fixed_var <cylindrical_fixed_var>`   Local Coordinate System for Fixed Velocities.
+
+:ref:`variables <variables>`                                      List of variables for fixed terms.
+
+====================================================   =============================================
+
+.. rubric:: Included in:
+
+============================================   ======================================
+
+Parent                                                                        Summary
+
+============================================   ======================================
+:ref:`fluid_item <fluid_1_item>`                        'child_object_type' of fluid.
+
+:ref:`phase_item <phase_2_item>`                        'child_object_type' of phase.
+
+:ref:`solid_item <solid_2_item>`                        'child_object_type' of solid.
+
+:ref:`phase_item <phase_3_item>`                        'child_object_type' of phase.
+
+:ref:`fluid_item <fluid_2_item>`                        'child_object_type' of fluid.
+
+:ref:`phase_item <phase_4_item>`                        'child_object_type' of phase.
+
+:ref:`netm_solid_region <netm_solid_region>`   Define settings for NETM solid region.
+
+:ref:`solid_item <solid_3_item>`                        'child_object_type' of solid.
+
+:ref:`phase_item <phase_5_item>`                        'child_object_type' of phase.
+
+============================================   ======================================
+

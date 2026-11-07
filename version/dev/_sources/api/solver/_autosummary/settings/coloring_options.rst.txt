@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _coloring_options:
+
+coloring_options
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coloring_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   =============================
+
+Attribute                                         Summary
+
+=========================   =============================
+:ref:`option <option_74>`   The rendering options object.
+
+:ref:`faces <faces_2>`           The color for the faces.
+
+:ref:`edges <edges_3>`           The color for the edges.
+
+=========================   =============================
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`mesh_item <mesh_2_item>`   'child_object_type' of mesh.
+
+==============================   ============================
+

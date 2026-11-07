@@ -1,0 +1,25 @@
+:orphan:
+
+.. _beta_i:
+
+beta_i
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.beta_i
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`coefficients_2 <coefficients_2>`                      Coefficients group.
+
+:ref:`k_omega_regime <k_omega_regime>`             K-Omega regime coefficients.
+
+:ref:`k_epsilon_regime <k_epsilon_regime>`       K-Epsilon regime coefficients.
+
+==========================================   ==================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _option_62:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.option_62
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==============
+
+Parent                        Summary
+
+====================   ==============
+:ref:`imagz <imagz>`   'imagz' child.
+
+====================   ==============
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _chen_c2:
+
+chen_c2
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.chen_c2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===================
+
+Parent                                                       Summary
+
+==============================================   ===================
+:ref:`ecm_model_settings <ecm_model_settings>`   ECM model settings.
+
+==============================================   ===================
+

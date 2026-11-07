@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _vapor_pressure:
+
+vapor_pressure
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.vapor_pressure
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =======================================
+
+Parent                                                       Summary
+
+==========================   =======================================
+:ref:`atomizer <atomizer>`   Lagrangian atomizer injection settings.
+
+==========================   =======================================
+

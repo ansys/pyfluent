@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _starting_t_re_initialization:
+
+starting_t_re_initialization
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.starting_t_re_initialization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ============================
+
+Parent                                          Summary
+
+========================   ============================
+:ref:`expert <expert_4>`   The structure expert object.
+
+========================   ============================
+

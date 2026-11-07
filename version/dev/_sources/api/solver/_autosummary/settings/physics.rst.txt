@@ -1,0 +1,36 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _physics:
+
+physics
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.physics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===========
+
+Parent                                         Summary
+
+========================================   ===========
+:ref:`locations <locations>`               The object.
+
+:ref:`location <location_3>`               The object.
+
+:ref:`volumes <volumes_2>`                 The object.
+
+:ref:`location <location_4>`               The object.
+
+:ref:`locations <locations_6>`             The object.
+
+:ref:`inlet_location <inlet_location>`     The object.
+
+:ref:`outlet_location <outlet_location>`   The object.
+
+:ref:`location <location_6>`               The object.
+
+========================================   ===========
+

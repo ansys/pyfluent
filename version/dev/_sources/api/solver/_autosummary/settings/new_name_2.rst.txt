@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _new_name_2:
+
+new_name
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.new_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`create_zone <create_zone>`   Create a flow control zone.
+
+================================   ===========================
+

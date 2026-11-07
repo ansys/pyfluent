@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _set_type_1:
+
+set_type
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.set_type_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   ===============
+
+Argument                       Summary
+
+====================   ===============
+:ref:`type <type_7>`   Input new type.
+
+====================   ===============
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`fluid_item <fluid_2_item>`   'child_object_type' of fluid.
+
+:ref:`solid_item <solid_3_item>`   'child_object_type' of solid.
+
+================================   =============================
+

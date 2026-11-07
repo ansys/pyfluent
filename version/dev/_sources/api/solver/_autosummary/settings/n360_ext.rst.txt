@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _n360_ext:
+
+n360_ext
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.n360_ext
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   =================================================
+
+Parent                                                                                                             Summary
+
+======================================================================   =================================================
+:ref:`user_defined_disturbances_item <user_defined_disturbances_item>`   'child_object_type' of user_defined_disturbances.
+
+======================================================================   =================================================
+

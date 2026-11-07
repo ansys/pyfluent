@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _complex_case:
+
+complex_case
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.complex_case
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==========================================
+
+Parent                                                                      Summary
+
+======================================   ==========================================
+:ref:`stabilization <stabilization_2>`   The adjoint stabilization controls object.
+
+======================================   ==========================================
+

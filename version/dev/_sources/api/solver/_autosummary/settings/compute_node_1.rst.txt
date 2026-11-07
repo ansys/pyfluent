@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compute_node_1:
+
+compute_node
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.compute_node_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==========================
+
+Parent                                                            Summary
+
+============================================   ==========================
+:ref:`show_connectivity <show_connectivity>`   Show machine connectivity.
+
+============================================   ==========================
+

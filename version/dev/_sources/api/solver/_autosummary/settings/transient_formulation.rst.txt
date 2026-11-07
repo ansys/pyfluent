@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _transient_formulation:
+
+transient_formulation
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.transient_formulation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============================
+
+Parent                                            Summary
+
+==========================   ============================
+:ref:`methods <methods_2>`   The solution methods object.
+
+==========================   ============================
+

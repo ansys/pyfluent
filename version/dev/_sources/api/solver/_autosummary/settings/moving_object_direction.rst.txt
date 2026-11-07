@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _moving_object_direction:
+
+moving_object_direction
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.moving_object_direction
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`moving_object_direction_item <moving_object_direction_item>`
+
+Access each :ref:`moving_object_direction_item <moving_object_direction_item>` by index using ``moving_object_direction[<index>]``.
+
+
+.. rubric:: Included in:
+
+====================================================================   ================================
+
+Parent                                                                                          Summary
+
+====================================================================   ================================
+:ref:`moving_object_velocity_inputs <moving_object_velocity_inputs>`   Moving object velocity settings.
+
+====================================================================   ================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_39_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.phase_39_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=======================   =============================================================
+
+Parent                                                                          Summary
+
+=======================   =============================================================
+:ref:`phase <phase_39>`   Provides an object description for phase-specific conditions.
+
+=======================   =============================================================
+

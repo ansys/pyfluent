@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _zone2:
+
+zone2
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.zone2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`interface_item <interface_3_item>`                      'child_object_type' of interface.
+
+:ref:`turbo_interface_item <turbo_interface_item>`      'child_object_type' of turbo_interface.
+
+:ref:`turbo_interfaces_item <turbo_interfaces_item>`   'child_object_type' of turbo_interfaces.
+
+====================================================   ========================================
+

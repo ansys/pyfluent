@@ -1,0 +1,55 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _methods_4:
+
+methods
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.methods_4
+
+.. rubric:: Methods
+
+==========================================   ============================================================
+
+Method                                                                                            Summary
+
+==========================================   ============================================================
+:ref:`create <create>`                                  Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                                         Delete selected objects.
+
+:ref:`rename <rename>`                                                                 Rename the object.
+
+:ref:`list <list_1>`                                                       List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`                          List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                             Create a copy of the object.
+
+:ref:`default <default_1>`                                                      Reset methods to default.
+
+:ref:`balanced <balanced>`                         Set methods to balance accuracy, stability, and speed.
+
+:ref:`best_match <best_match>`               Set methods to best match flow solver settings for accuracy.
+
+==========================================   ============================================================
+
+.. rubric:: Named object type
+
+:ref:`methods_item <methods_4_item>`
+
+``methods`` is organised like a dictionary. You can access each :ref:`methods_item <methods_4_item>` by name using ``methods['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================   ============================
+
+Parent                                                                    Summary
+
+==================================================   ============================
+:ref:`sensitivity_analysis <sensitivity_analysis>`   Sensitivity analysis object.
+
+==================================================   ============================
+

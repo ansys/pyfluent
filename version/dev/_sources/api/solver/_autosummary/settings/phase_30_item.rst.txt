@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_30_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.phase_30_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ======================================================
+
+Attribute                                                                     Summary
+
+============================   ======================================================
+:ref:`geometry <geometry_8>`   Allows to change geometry model variables or settings.
+
+============================   ======================================================
+
+.. rubric:: Included in:
+
+=======================   =============================================================
+
+Parent                                                                          Summary
+
+=======================   =============================================================
+:ref:`phase <phase_30>`   Provides an object description for phase-specific conditions.
+
+=======================   =============================================================
+

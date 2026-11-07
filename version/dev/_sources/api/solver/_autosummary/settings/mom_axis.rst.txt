@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mom_axis:
+
+mom_axis
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mom_axis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`moment_item <moment_item>`   'child_object_type' of moment.
+
+================================   ==============================
+

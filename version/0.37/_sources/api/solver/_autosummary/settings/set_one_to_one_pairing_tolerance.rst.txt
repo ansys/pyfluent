@@ -1,0 +1,38 @@
+:orphan:
+
+.. _set_one_to_one_pairing_tolerance:
+
+set_one_to_one_pairing_tolerance
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.set_one_to_one_pairing_tolerance
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================================   ====================================================
+
+Argument                                                                                              Summary
+
+======================================================   ====================================================
+:ref:`adjustable_tolerance <adjustable_tolerance>`            Enable/disable one-to-one adjustable tolerance.
+
+:ref:`use_length_factor <use_length_factor>`                     Enable relative or absolute tolerance input.
+
+:ref:`relative_length_factor <relative_length_factor>`       The valid number for the relative length factor.
+
+:ref:`absolute_tolerance <absolute_tolerance_1>`                 The valid number for the absolute tolerance.
+
+======================================================   ====================================================
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`auto_options <auto_options>`       Auto-options object.
+
+==================================   ========================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _merge_iterations:
+
+merge_iterations
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.merge_iterations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =========================
+
+Parent                                                     Summary
+
+======================================   =========================
+:ref:`merge_clusters <merge_clusters>`   Merge partition clusters.
+
+======================================   =========================
+

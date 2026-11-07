@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _poor_mesh_robustness:
+
+poor_mesh_robustness
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.poor_mesh_robustness
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ==============================
+
+Attribute                                                                 Summary
+
+================================================   ==============================
+:ref:`poor_mesh_removal <poor_mesh_removal>`        The poor mesh removal object.
+
+:ref:`poor_mesh_numerics <poor_mesh_numerics_1>`   The poor mesh numerics object.
+
+================================================   ==============================
+
+.. rubric:: Included in:
+
+==========================   ============================
+
+Parent                                            Summary
+
+==========================   ============================
+:ref:`methods <methods_2>`   The solution methods object.
+
+==========================   ============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _configure_algorithm_settings:
+
+configure_algorithm_settings
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.configure_algorithm_settings
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========
+
+Parent                           Summary
+
+============================   =========
+:ref:`optimize <optimize_1>`   Optimize.
+
+============================   =========
+

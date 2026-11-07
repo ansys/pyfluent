@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _method_15:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.method_15
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===================
+
+Parent                                         Summary
+
+================================   ===================
+:ref:`parameters <parameters_7>`   'parameters' child.
+
+================================   ===================
+

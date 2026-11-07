@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _write_to_file_3:
+
+write_to_file
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.write_to_file_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =============================================================================
+
+Parent                                                                                                             Summary
+
+==========================================   =============================================================================
+:ref:`extended_summary <extended_summary>`   Print extended discrete phase summary report of particle fates, with options.
+
+==========================================   =============================================================================
+

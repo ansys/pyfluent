@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turbulence_chemistry_interaction:
+
+turbulence_chemistry_interaction
+================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turbulence_chemistry_interaction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   =========================================
+
+Attribute                                                     Summary
+
+=========================   =========================================
+:ref:`option <option_28>`   Turbulence-Chemistry Interaction Options.
+
+=========================   =========================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`premix <premix>`   PDF Premix Options.
+
+======================   ===================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_evap_cond_boil_adv_settings_on:
+
+mt_evap_cond_boil_adv_settings_on
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_evap_cond_boil_adv_settings_on
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

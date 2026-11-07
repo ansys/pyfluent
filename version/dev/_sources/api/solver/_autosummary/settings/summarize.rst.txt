@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _summarize:
+
+summarize
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.summarize
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`calculation <calculation_1>`   Optimizer calculation commands.
+
+==================================   ===============================
+

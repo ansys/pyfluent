@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mass_1:
+
+mass
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mass_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`sdof_properties_item <sdof_properties_item>`   'child_object_type' of sdof_properties.
+
+==================================================   =======================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _constraints:
+
+constraints
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.constraints
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =========================
+
+Parent                                             Summary
+
+==============================   =========================
+:ref:`tolerances <tolerances>`   Motion tolerances object.
+
+==============================   =========================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _viscous_work_1:
+
+viscous_work
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.viscous_work_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==========================
+
+Parent                                          Summary
+
+==========================   ==========================
+:ref:`options <options_1>`   The viscous model options.
+
+==========================   ==========================
+

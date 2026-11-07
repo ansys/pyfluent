@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_merge_cell_zones_with_same_suffix:
+
+merge_cell_zones_with_same_suffix
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.merge_cell_zones_with_same_suffix
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _merge_cell_zones_with_same_suffixCommandArguments/_merge_cell_zones_with_same_suffixCommandArguments_contents

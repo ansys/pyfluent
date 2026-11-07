@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _skip_until:
+
+skip_until
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.skip_until
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`manage_criteria_item <manage_criteria_item>`   'child_object_type' of manage_criteria.
+
+==================================================   =======================================
+

@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _beam_length:
+
+beam_length
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.beam_length
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`create <create_2>`               Copy optical beam grid.
+
+:ref:`copy <copy>`                     Copy optical beam grid.
+
+:ref:`beams_item <beams_item>`   'child_object_type' of beams.
+
+==============================   =============================
+

@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_preferences_Simulation_SimulationReports:
+
+SimulationReports
+=================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.preferences.Root.Simulation.SimulationReports
+   :members: ADRWorkflow
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

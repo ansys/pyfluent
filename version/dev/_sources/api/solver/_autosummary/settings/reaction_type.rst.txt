@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reaction_type:
+
+reaction_type
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reaction_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`water_corrosion_pre <water_corrosion_pre>`   Water corrosion preprocessing tool.
+
+================================================   ===================================
+

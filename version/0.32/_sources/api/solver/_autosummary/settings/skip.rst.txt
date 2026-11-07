@@ -1,0 +1,23 @@
+:orphan:
+
+.. _skip:
+
+skip
+====
+
+.. deprecated:: Ansys 2025R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.skip
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`vector_1_child <vector_1_child>`       'child_object_type' of vector.
+
+======================================   ==================================
+

@@ -1,0 +1,28 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_12:
+
+species
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.species_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ========================================
+
+Parent                                                                                    Summary
+
+======================================================   ========================================
+:ref:`mass_flow_outlet_item <mass_flow_outlet_item>`     'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_item <phase_14_item>`                                   'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_item <mass_flow_outlet_1_item>`   'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_item <phase_38_item>`                                   'child_object_type' of phase.
+
+======================================================   ========================================
+

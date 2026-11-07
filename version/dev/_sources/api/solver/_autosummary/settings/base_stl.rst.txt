@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _base_stl:
+
+base_stl
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.base_stl
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ========================================================
+
+Parent                                                              Summary
+
+================   ========================================================
+:ref:`cad <cad>`   Export specified surfaces from 3D cases as an .stl file.
+
+================   ========================================================
+

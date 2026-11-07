@@ -1,0 +1,40 @@
+:orphan:
+
+.. _meshing:
+
+meshing
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.meshing
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ===========================
+
+Attribute                                                    Summary
+
+======================================   ===========================
+:ref:`remeshing <remeshing_1>`                    'remeshing' child.
+
+:ref:`smoothing <smoothing_2>`                    'smoothing' child.
+
+:ref:`adjacent_zones <adjacent_zones>`       'adjacent_zones' child.
+
+:ref:`bl_deform <bl_deform>`                      'bl_deform' child.
+
+:ref:`udf_deform <udf_deform>`                   'udf_deform' child.
+
+======================================   ===========================
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`dynamic_zones_child <dynamic_zones_child>`       'child_object_type' of dynamic_zones.
+
+================================================   =========================================
+

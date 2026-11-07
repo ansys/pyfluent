@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _geometry_12:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.geometry_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ======================
+
+Parent                                                  Summary
+
+======================================   ======================
+:ref:`locations <locations_5>`               'locations' child.
+
+:ref:`from_location <from_location_1>`   'from_location' child.
+
+:ref:`on_location <on_location>`           'on_location' child.
+
+======================================   ======================
+

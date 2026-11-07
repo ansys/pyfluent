@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _last_species:
+
+last_species
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.last_species
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =========================
+
+Parent                                         Summary
+
+==========================   =========================
+:ref:`species <species_6>`            Mixture species.
+
+:ref:`species <species_7>`   Particle mixture species.
+
+==========================   =========================
+

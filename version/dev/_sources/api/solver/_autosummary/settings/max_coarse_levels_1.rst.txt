@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _max_coarse_levels_1:
+
+max_coarse_levels
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_coarse_levels_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================================================================
+
+Parent                                                                                                                                       Summary
+
+======================================================   ===========================================================================================
+:ref:`coarsening_parameters <coarsening_parameters_2>`   Configures coarsening parameters for coupled equations in algebraic multigrid (AMG) solver.
+
+======================================================   ===========================================================================================
+

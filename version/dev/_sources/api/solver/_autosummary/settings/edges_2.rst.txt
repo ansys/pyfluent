@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _edges_2:
+
+edges
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.edges_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===============
+
+Parent                             Summary
+
+========================   ===============
+:ref:`manual <manual_1>`   'manual' child.
+
+========================   ===============
+

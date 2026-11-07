@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _print_9:
+
+print
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.print_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   ================================================================
+
+Parent                                                                                 Summary
+
+===========================   ================================================================
+:ref:`options <options_24>`   Sets options for monitoring adjoint-based optimization progress.
+
+===========================   ================================================================
+

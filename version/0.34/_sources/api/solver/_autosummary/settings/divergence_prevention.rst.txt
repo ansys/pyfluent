@@ -1,0 +1,34 @@
+:orphan:
+
+.. _divergence_prevention:
+
+divergence_prevention
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.divergence_prevention
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ============================================
+
+Attribute                                                                             Summary
+
+==============================================   ============================================
+:ref:`enable <enable_19>`                                       Enable divergence prevention.
+
+:ref:`relaxation_factor <relaxation_factor_2>`       Divergence prevention relaxation factor.
+
+==============================================   ============================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

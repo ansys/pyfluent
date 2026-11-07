@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _liquid_in_channel:
+
+liquid_in_channel
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.liquid_in_channel
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============
+
+Parent                              Summary
+
+==========================   ==============
+:ref:`options <options_7>`   Model options.
+
+==========================   ==============
+

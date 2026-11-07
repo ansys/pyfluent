@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _overset_interfaces_action:
+
+overset_interfaces_action
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.overset_interfaces_action
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================================================
+
+Parent                                                                                         Summary
+
+====================================   ===============================================================
+:ref:`make_periodic <make_periodic>`   Attempt to establish conformal periodic face zone connectivity.
+
+====================================   ===============================================================
+

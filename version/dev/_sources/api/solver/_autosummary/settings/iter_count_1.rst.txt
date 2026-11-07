@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _iter_count_1:
+
+iter_count
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.iter_count_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ============================
+
+Parent                                                              Summary
+
+============================================   ============================
+:ref:`general_settings <general_settings_1>`   The general settings object.
+
+============================================   ============================
+

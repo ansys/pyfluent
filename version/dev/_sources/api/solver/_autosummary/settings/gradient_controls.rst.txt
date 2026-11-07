@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _gradient_controls:
+
+gradient_controls
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.gradient_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   =================================================================
+
+Attribute                                                                                                            Summary
+
+========================================================   =================================================================
+:ref:`gradient_controls <gradient_controls_1>`             Enable/disable gradient method for solver stability and accuracy.
+
+:ref:`specify_gradient_method <specify_gradient_method>`                  Gradient method for solver stability and accuracy.
+
+========================================================   =================================================================
+
+.. rubric:: Included in:
+
+==========================   =========================
+
+Parent                                         Summary
+
+==========================   =========================
+:ref:`methods <methods_3>`   Flexible numerics object.
+
+==========================   =========================
+

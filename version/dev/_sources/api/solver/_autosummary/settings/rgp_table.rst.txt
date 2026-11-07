@@ -1,0 +1,34 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rgp_table:
+
+rgp_table
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rgp_table
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`density <density_3>`                                          Material property: density.
+
+:ref:`viscosity <viscosity>`                                      Material property: viscosity.
+
+:ref:`specific_heat <specific_heat_1>`                        Material property: specific-heat.
+
+:ref:`thermal_conductivity <thermal_conductivity_1>`   Material property: thermal-conductivity.
+
+:ref:`molecular_weight <molecular_weight_4>`               Material property: molecular-weight.
+
+:ref:`vapor_pressure <vapor_pressure_1>`                     Material property: vapor-pressure.
+
+:ref:`dpm_surften <dpm_surften_1>`                              Material property: dpm-surften.
+
+====================================================   ========================================
+

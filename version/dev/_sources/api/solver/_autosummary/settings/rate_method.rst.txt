@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rate_method:
+
+rate_method
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rate_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`venting_model <venting_model>`   Venting model settings.
+
+====================================   =======================
+

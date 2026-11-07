@@ -1,0 +1,36 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _frank_coeff_3_udf:
+
+frank_coeff_3_udf
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.frank_coeff_3_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`lift_item <lift_item>`                                       'child_object_type' of lift.
+
+:ref:`wall_lubrication_item <wall_lubrication_item>`   'child_object_type' of wall_lubrication.
+
+:ref:`turb_dispersion_item <turb_dispersion_item>`      'child_object_type' of turb_dispersion.
+
+:ref:`turb_interaction_item <turb_interaction_item>`   'child_object_type' of turb_interaction.
+
+:ref:`virtual_mass_item <virtual_mass_item>`               'child_object_type' of virtual_mass.
+
+:ref:`slip_velocity_item <slip_velocity_item>`            'child_object_type' of slip_velocity.
+
+:ref:`surface_tension_item <surface_tension_item>`      'child_object_type' of surface_tension.
+
+:ref:`slope_limiter_item <slope_limiter_item>`            'child_object_type' of slope_limiter.
+
+====================================================   ========================================
+

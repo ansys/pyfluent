@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compute_13:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.compute_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`isentropic <isentropic>`   Calculate isentropic efficiency.
+
+:ref:`polytropic <polytropic>`   Calculate polytropic efficiency.
+
+==============================   ================================
+

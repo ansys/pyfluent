@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _imagz_field:
+
+imagz_field
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.imagz_field
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ======================================
+
+Parent                                                     Summary
+
+=========================   ======================================
+:ref:`create <create_14>`   Create a new Generalized Force object.
+
+=========================   ======================================
+

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _dispz_prof:
+
+dispz_prof
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.dispz_prof
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ======================================
+
+Parent                                                              Summary
+
+==================================   ======================================
+:ref:`create <create_14>`            Create a new Generalized Force object.
+
+:ref:`objects_item <objects_item>`          'child_object_type' of objects.
+
+==================================   ======================================
+

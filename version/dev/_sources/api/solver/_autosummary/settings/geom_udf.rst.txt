@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _geom_udf:
+
+geom_udf
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.geom_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=============================   =================
+
+Parent                                    Summary
+
+=============================   =================
+:ref:`geometry <geometry_11>`   'geometry' child.
+
+=============================   =================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _heat_mass_transfer:
+
+heat_mass_transfer
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.heat_mass_transfer
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =================================
+
+Parent                                                                                 Summary
+
+==========================================================   =================================
+:ref:`user_defined_functions_2 <user_defined_functions_2>`       DPM Injection User Functions.
+
+==========================================================   =================================
+

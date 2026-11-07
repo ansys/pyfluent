@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_manage_zones_ftm:
+
+manage_zones_ftm
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.manage_zones_ftm
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`manage_zones_ftm <ref_meshing_datamodel_meshing_workflow_task_object_manage_zones_ftm__manage_zones_ftm>`
+
+``manage_zones_ftm`` is organised like a dictionary. You can access each :ref:`manage_zones_ftm <ref_meshing_datamodel_meshing_workflow_task_object_manage_zones_ftm__manage_zones_ftm>` by name using ``manage_zones_ftm['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _manage_zones_ftm/_manage_zones_ftm_contents

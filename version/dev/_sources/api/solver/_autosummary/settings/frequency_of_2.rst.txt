@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _frequency_of_2:
+
+frequency_of
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.frequency_of_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`solution_animations_item <solution_animations_item>`   'child_object_type' of solution_animations.
+
+==========================================================   ===========================================
+

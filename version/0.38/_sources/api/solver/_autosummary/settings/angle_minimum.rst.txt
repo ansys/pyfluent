@@ -1,0 +1,21 @@
+:orphan:
+
+.. _angle_minimum:
+
+angle_minimum
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.angle_minimum
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`constraint_1 <constraint_1>`       'constraint' child.
+
+==================================   =======================
+

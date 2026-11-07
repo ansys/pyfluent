@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _imagz:
+
+imagz
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.imagz
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ==========================================================
+
+Attribute                                                                               Summary
+
+==================================   ==========================================================
+:ref:`option <option_62>`                     How the imaginary Z displacement will be defined.
+
+:ref:`value <value_33>`              Constant value or expression for imaginary Z displacement.
+
+:ref:`profile_name <profile_name>`                                     The name of the profile.
+
+:ref:`field_name <field_name>`                                           The name of the field.
+
+:ref:`udf <udf_8>`                      The user-defined function for imaginary Z displacement.
+
+==================================   ==========================================================
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`perdisp_properties_item <perdisp_properties_item>`   'child_object_type' of perdisp_properties.
+
+========================================================   ==========================================
+

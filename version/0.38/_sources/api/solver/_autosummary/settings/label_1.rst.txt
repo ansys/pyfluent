@@ -1,0 +1,23 @@
+:orphan:
+
+.. _label_1:
+
+label
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.label_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==============
+
+Parent                    Summary
+
+================   ==============
+:ref:`x_8 <x_8>`       'x' child.
+
+:ref:`y_8 <y_8>`       'y' child.
+
+================   ==============
+

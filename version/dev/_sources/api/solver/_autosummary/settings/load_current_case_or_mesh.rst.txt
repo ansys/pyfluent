@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _load_current_case_or_mesh:
+
+load_current_case_or_mesh
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.load_current_case_or_mesh
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ========================================================
+
+Parent                                                                  Summary
+
+====================   ========================================================
+:ref:`open <open_1>`   Open an existing Fluent project file (.flprj or .flprz).
+
+====================   ========================================================
+

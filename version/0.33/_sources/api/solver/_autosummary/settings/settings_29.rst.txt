@@ -1,0 +1,39 @@
+:orphan:
+
+.. _settings_29:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_29
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_1>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`settings_29_child <settings_29_child>`
+
+
+.. rubric:: Included in:
+
+==================================================   ==================================================================================================
+
+Parent                                                                                                                                          Summary
+
+==================================================   ==================================================================================================
+:ref:`transparency_options <transparency_options>`       Provide options for transparncy range(s) for focussing on specific portion of range values(s).
+
+==================================================   ==================================================================================================
+

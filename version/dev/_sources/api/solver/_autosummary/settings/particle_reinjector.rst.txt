@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _particle_reinjector:
+
+particle_reinjector
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.particle_reinjector
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ==================================================
+
+Attribute                                                                   Summary
+
+==============================   ==================================================
+:ref:`enable <enable_13>`        Use this injection ONLY for particle reinjection?.
+
+:ref:`time_delay <time_delay>`            The time delay for particle reinjection:.
+
+==============================   ==================================================
+
+.. rubric:: Included in:
+
+========================================   ==================================
+
+Parent                                                                Summary
+
+========================================   ==================================
+:ref:`injections_item <injections_item>`   'child_object_type' of injections.
+
+========================================   ==================================
+

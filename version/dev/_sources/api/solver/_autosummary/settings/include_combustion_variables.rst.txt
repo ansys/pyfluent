@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _include_combustion_variables:
+
+include_combustion_variables
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.include_combustion_variables
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`bounded_formulation <bounded_formulation>`   Bounded second-order formulation options.
+
+================================================   =========================================
+

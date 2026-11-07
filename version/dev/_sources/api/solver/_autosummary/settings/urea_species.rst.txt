@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _urea_species:
+
+urea_species
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.urea_species
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ====================
+
+Attribute                                                 Summary
+
+==========================================   ====================
+:ref:`add <add_4>`                           Enable/disable Urea.
+
+:ref:`molecular_weight <molecular_weight>`     Molecular weights.
+
+==========================================   ====================
+
+.. rubric:: Included in:
+
+========================   ================
+
+Parent                              Summary
+
+========================   ================
+:ref:`expert <expert_2>`   NOx expert mode.
+
+========================   ================
+

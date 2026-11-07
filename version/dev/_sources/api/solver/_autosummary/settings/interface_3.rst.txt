@@ -1,0 +1,57 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interface_3:
+
+interface
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.interface_3
+
+.. rubric:: Methods
+
+========================================================================   ======================================
+
+Method                                                                                                    Summary
+
+========================================================================   ======================================
+:ref:`create <create_9>`                                                                  Create mesh interfaces.
+
+:ref:`delete <delete_2>`                                                                 Delete selected objects.
+
+:ref:`rename <rename>`                                                                         Rename the object.
+
+:ref:`list <list_1>`                                                               List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`                                  List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                                     Create a copy of the object.
+
+:ref:`create_many_to_many_interfaces <create_many_to_many_interfaces>`                    Create mesh interfaces.
+
+:ref:`display <display_8>`                                                 Display specified mesh interface zone.
+
+:ref:`display_interfaces <display_interfaces>`                                            Display mesh interface.
+
+:ref:`display_interfaces_with_parents <display_interfaces_with_parents>`      Display mesh interface with parent.
+
+========================================================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`interface_item <interface_3_item>`
+
+``interface`` is organised like a dictionary. You can access each :ref:`interface_item <interface_3_item>` by name using ``interface['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`mesh_interfaces <mesh_interfaces>`   The mesh interfaces object.
+
+========================================   ===========================
+

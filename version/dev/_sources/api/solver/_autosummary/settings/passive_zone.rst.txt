@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _passive_zone:
+
+passive_zone
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.passive_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ========================
+
+Parent                                                        Summary
+
+==========================================   ========================
+:ref:`zone_assignment <zone_assignment_1>`   Battery zone assignment.
+
+==========================================   ========================
+

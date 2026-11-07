@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _limits_1_item:
+
+limits_item
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.limits_1_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =======================
+
+Parent                                     Summary
+
+========================   =======================
+:ref:`limits <limits_1>`   Design variable limits.
+
+========================   =======================
+

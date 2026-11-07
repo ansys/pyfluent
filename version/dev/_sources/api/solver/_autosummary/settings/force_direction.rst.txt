@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _force_direction:
+
+force_direction
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.force_direction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`cumulative_plot_item <cumulative_plot_item>`   'child_object_type' of cumulative_plot.
+
+==================================================   =======================================
+

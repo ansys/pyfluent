@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_improve_surface_mesh__improve_surface_meshArguments:
+
+_improve_surface_meshArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.improve_surface_mesh._improve_surface_meshArguments
+   :members: _face_quality_limit, _mesh_object, _min_size, _scope_improve_to
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _improve_surface_mesh_preferences/_improve_surface_mesh_preferences_contents

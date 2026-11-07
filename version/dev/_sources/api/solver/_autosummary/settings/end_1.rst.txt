@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _end_1:
+
+end
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.end_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================
+
+Parent                                      Summary
+
+==========================   ======================
+:ref:`annotate <annotate>`   Create new annotation.
+
+==========================   ======================
+

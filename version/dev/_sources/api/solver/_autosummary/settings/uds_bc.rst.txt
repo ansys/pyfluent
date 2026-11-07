@@ -1,0 +1,51 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _uds_bc:
+
+uds_bc
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.uds_bc
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`uds_bc_item <uds_bc_item>`
+
+``uds_bc`` is organised like a dictionary. You can access each :ref:`uds_bc_item <uds_bc_item>` by name using ``uds_bc['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================   =================================================
+
+Parent                                                         Summary
+
+==================   =================================================
+:ref:`uds <uds>`     Allows to change UDS model variables or settings.
+
+:ref:`uds <uds_2>`   Allows to change uds model variables or settings.
+
+==================   =================================================
+

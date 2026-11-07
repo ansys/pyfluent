@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _stabilization:
+
+stabilization
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.stabilization
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ======================================
+
+Attribute                                                         Summary
+
+================================   ======================================
+:ref:`enabled <enabled_66>`        Enable/Disable solution stabilization.
+
+:ref:`parameters <parameters_7>`                      'parameters' child.
+
+================================   ======================================
+
+.. rubric:: Included in:
+
+========================   ===============
+
+Parent                             Summary
+
+========================   ===============
+:ref:`solver <solver_1>`   'solver' child.
+
+========================   ===============
+

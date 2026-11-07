@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mp_boiling_zone:
+
+mp_boiling_zone
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mp_boiling_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`multiphase <multiphase_2>`   Allows to change multiphase model variables or settings.
+
+================================   ========================================================
+

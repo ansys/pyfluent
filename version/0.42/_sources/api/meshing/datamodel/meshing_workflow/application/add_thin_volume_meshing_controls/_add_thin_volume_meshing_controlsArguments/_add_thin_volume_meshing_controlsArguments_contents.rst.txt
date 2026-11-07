@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_thin_volume_meshing_controls__add_thin_volume_meshing_controlsArguments:
+
+_add_thin_volume_meshing_controlsArguments
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.add_thin_volume_meshing_controls._add_thin_volume_meshing_controlsArguments
+   :members: _assign_size_using, _auto_control_creation, _complete_label_source_list, _complete_label_target_list, _complete_region_scope, _complete_topo_source_list, _complete_zone_source_list, _complete_zone_target_list, _double_biasing, _growth_rate, _intervals, _label_source_list, _label_target_list, _max_number_of_intervals, _objects, _parallel_source, _parallel_target, _region_scope, _remesh_overlapping, _select_source_by, _select_target_by, _side_imprints, _size, _stacked_plates, _thin_meshing_name, _thin_vol_regs, _topo_source_list, _zone_location, _zone_location_2, _zone_source_list, _zone_target_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _thin_volume_preferences/_thin_volume_preferences_contents

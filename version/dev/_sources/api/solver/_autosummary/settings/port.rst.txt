@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _port:
+
+port
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.port
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   =====================
+
+Parent                               Summary
+
+====================   =====================
+:ref:`start <start>`   Start the web server.
+
+====================   =====================
+

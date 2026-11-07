@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _direction_specification:
+
+direction_specification
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.direction_specification
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =================================================================
+
+Parent                                                                                                         Summary
+
+==================================================   =================================================================
+:ref:`momentum <momentum_4>`                                    Allows to change momentum model variables or settings.
+
+:ref:`recirculation_inlet <recirculation_inlet_1>`   Allows to change recirculation-inlet model variables or settings.
+
+==================================================   =================================================================
+

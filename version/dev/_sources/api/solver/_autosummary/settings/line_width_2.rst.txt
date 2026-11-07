@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _line_width_2:
+
+line_width
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.line_width_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =====================
+
+Parent                                                     Summary
+
+==========================================   =====================
+:ref:`style_attribute <style_attribute_1>`   The style attributes.
+
+==========================================   =====================
+

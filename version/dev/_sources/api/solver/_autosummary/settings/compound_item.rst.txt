@@ -1,0 +1,48 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compound_item:
+
+compound_item
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.compound_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ====================================
+
+Attribute                                                       Summary
+
+================================   ====================================
+:ref:`name <name_5>`                                Name of the object.
+
+:ref:`method <method_27>`                           Compounding method.
+
+:ref:`conditions <conditions_1>`   List of conditions to be compounded.
+
+================================   ====================================
+
+.. rubric:: Methods
+
+===========================   =========================
+
+Method                                          Summary
+
+===========================   =========================
+:ref:`display <display_18>`   Display design condition.
+
+===========================   =========================
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`compound <compound>`   Compound condition definition.
+
+==========================   ==============================
+

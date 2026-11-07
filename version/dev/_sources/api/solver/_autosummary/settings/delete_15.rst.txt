@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _delete_15:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.delete_15
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ===============
+
+Argument                         Summary
+
+======================   ===============
+:ref:`names <names_3>`   Criterion Name.
+
+======================   ===============
+
+.. rubric:: Included in:
+
+============================   ==============
+
+Parent                                Summary
+
+============================   ==============
+:ref:`criteria <criteria_1>`   Criteria List.
+
+============================   ==============
+

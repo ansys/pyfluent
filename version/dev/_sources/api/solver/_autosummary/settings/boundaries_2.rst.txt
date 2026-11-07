@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _boundaries_2:
+
+boundaries
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.boundaries_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`flux_item <flux_1_item>`                  'child_object_type' of flux.
+
+:ref:`injection_item <injection_2_item>`   'child_object_type' of injection.
+
+========================================   =================================
+

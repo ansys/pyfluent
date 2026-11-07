@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _release_from_surfaces:
+
+release_from_surfaces
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.release_from_surfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ================================
+
+Parent                                                          Summary
+
+====================================   ================================
+:ref:`pathline_item <pathline_item>`   'child_object_type' of pathline.
+
+====================================   ================================
+

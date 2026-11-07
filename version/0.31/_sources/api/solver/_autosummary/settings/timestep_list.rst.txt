@@ -1,0 +1,32 @@
+:orphan:
+
+.. _timestep_list:
+
+timestep_list
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.timestep_list
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ========================
+
+Argument                                        Summary
+
+============================   ========================
+:ref:`timesteps <timesteps>`       A list of timesteps.
+
+============================   ========================
+
+.. rubric:: Included in:
+
+==========================   =================================================
+
+Parent                                                                 Summary
+
+==========================   =================================================
+:ref:`custom_1 <custom_1>`       Timesteps uniformly or through timestep list.
+
+==========================   =================================================
+

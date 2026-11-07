@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _field_5:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.field_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ================================
+
+Parent                                                          Summary
+
+====================================   ================================
+:ref:`pathline_item <pathline_item>`   'child_object_type' of pathline.
+
+====================================   ================================
+

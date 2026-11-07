@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _list_products:
+
+list_products
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.list_products
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`reactions_item <reactions_1_item>`   'child_object_type' of reactions.
+
+========================================   =================================
+

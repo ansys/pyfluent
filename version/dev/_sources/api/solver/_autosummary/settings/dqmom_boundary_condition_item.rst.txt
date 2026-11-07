@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _dqmom_boundary_condition_item:
+
+dqmom_boundary_condition_item
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.dqmom_boundary_condition_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===============================================================
+
+Parent                                                                                                               Summary
+
+==========================================================   ===============================================================
+:ref:`dqmom_boundary_condition <dqmom_boundary_condition>`   List of boundary conditions for DQMOM population balance model.
+
+==========================================================   ===============================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _controlled_limits:
+
+controlled_limits
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.controlled_limits
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`outlier <outlier>`   Configure outlier detection method and its constants.
+
+========================   =====================================================
+

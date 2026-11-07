@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _y_axis_function_2:
+
+y_axis_function
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.y_axis_function_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=====================   =============================================
+
+Parent                                                        Summary
+
+=====================   =============================================
+:ref:`plot <plot_12>`   Provides access to plot solution on surfaces.
+
+=====================   =============================================
+

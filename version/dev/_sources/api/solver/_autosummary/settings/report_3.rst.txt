@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report_3:
+
+report
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.report_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`reporting <reporting>`   Adjoint reporting object.
+
+============================   =========================
+

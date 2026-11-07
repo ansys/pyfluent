@@ -1,0 +1,28 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reference_frame_10:
+
+reference_frame
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reference_frame_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`force_item <force_item>`      'child_object_type' of force.
+
+:ref:`lift_item <lift_1_item>`       'child_object_type' of lift.
+
+:ref:`drag_item <drag_1_item>`       'child_object_type' of drag.
+
+:ref:`moment_item <moment_item>`   'child_object_type' of moment.
+
+================================   ==============================
+

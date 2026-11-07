@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _open_voltage:
+
+open_voltage
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.open_voltage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================
+
+Parent                                       Summary
+
+================================   =================
+:ref:`parameters <parameters_4>`   Model parameters.
+
+:ref:`parameters <parameters_5>`   Model parameters.
+
+================================   =================
+

@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _location_6:
+
+location
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.location_6
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =======================
+
+Attribute                                      Summary
+
+============================   =======================
+:ref:`physics <physics>`            The physics names.
+
+:ref:`surfaces <surfaces_8>`   The user-surface names.
+
+============================   =======================
+
+.. rubric:: Included in:
+
+================================================================   ==============================================
+
+Parent                                                                                                    Summary
+
+================================================================   ==============================================
+:ref:`fixed_walls_constraint_item <fixed_walls_constraint_item>`   'child_object_type' of fixed_walls_constraint.
+
+:ref:`bounded_by_plane_item <bounded_by_plane_item>`                     'child_object_type' of bounded_by_plane.
+
+:ref:`bounded_by_surfaces_item <bounded_by_surfaces_item>`            'child_object_type' of bounded_by_surfaces.
+
+:ref:`prescribed_profile_item <prescribed_profile_item>`               'child_object_type' of prescribed_profile.
+
+:ref:`rotation_item <rotation_item>`                                             'child_object_type' of rotation.
+
+:ref:`translation_item <translation_1_item>`                                  'child_object_type' of translation.
+
+:ref:`scaling_item <scaling_1_item>`                                              'child_object_type' of scaling.
+
+:ref:`rigid_body_item <rigid_body_item>`                                       'child_object_type' of rigid_body.
+
+================================================================   ==============================================
+

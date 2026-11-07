@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _display_5:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.display_5
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   =======================
+
+Argument                                         Summary
+
+==============================   =======================
+:ref:`locations <locations_1>`   Components for display.
+
+==============================   =======================
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`parts_item <parts_item>`   'child_object_type' of parts.
+
+==============================   =============================
+

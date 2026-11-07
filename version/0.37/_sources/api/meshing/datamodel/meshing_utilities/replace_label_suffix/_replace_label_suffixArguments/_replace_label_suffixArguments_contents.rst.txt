@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_replace_label_suffix__replace_label_suffixArguments:
+
+_replace_label_suffixArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.replace_label_suffix._replace_label_suffixArguments
+   :members: _new_suffix, _object_name_list, _separator
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

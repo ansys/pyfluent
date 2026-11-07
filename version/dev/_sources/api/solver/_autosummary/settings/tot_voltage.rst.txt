@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _tot_voltage:
+
+tot_voltage
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.tot_voltage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============
+
+Parent                              Summary
+
+==========================   ==============
+:ref:`options <options_5>`   Model options.
+
+:ref:`options <options_7>`   Model options.
+
+==========================   ==============
+

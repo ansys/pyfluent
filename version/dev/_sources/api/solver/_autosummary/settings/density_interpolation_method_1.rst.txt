@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _density_interpolation_method_1:
+
+density_interpolation_method
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.density_interpolation_method_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`multiphase <multiphase_6>`   Allows to change multiphase model variables or settings.
+
+================================   ========================================================
+

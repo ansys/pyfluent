@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _geometry_1_item:
+
+geometry_item
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.geometry_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================   ===========================
+
+Attribute                                  Summary
+
+====================   ===========================
+:ref:`name <name_3>`   The name for this geometry.
+
+:ref:`type <type_3>`   The type for this geometry.
+
+====================   ===========================
+
+.. rubric:: Included in:
+
+============================   ====================================
+
+Parent                                                      Summary
+
+============================   ====================================
+:ref:`geometry <geometry_1>`   The mesh geometry management object.
+
+============================   ====================================
+

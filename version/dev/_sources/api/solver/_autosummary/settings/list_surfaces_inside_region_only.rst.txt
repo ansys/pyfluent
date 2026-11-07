@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _list_surfaces_inside_region_only:
+
+list_surfaces_inside_region_only
+================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.list_surfaces_inside_region_only
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   =================================
+
+Parent                                                  Summary
+
+===========================   =================================
+:ref:`options <options_27>`   Design conditions options object.
+
+===========================   =================================
+

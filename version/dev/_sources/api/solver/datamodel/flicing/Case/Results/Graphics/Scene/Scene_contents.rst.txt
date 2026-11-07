@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_Scene:
+
+Scene
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.Results.Graphics.Scene
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`Scene <ref_solver_datamodel_flicing_Case_Results_Graphics_Scene__Scene>`
+
+``Scene`` is organised like a dictionary. You can access each :ref:`Scene <ref_solver_datamodel_flicing_Case_Results_Graphics_Scene__Scene>` by name using ``Scene['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _Scene/_Scene_contents

@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _initial_state:
+
+initial_state
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.initial_state
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ====================================================
+
+Attribute                                                                         Summary
+
+==================================   ====================================================
+:ref:`origin <origin_9>`                              The origin of your reference frame.
+
+:ref:`orientation <orientation_1>`   The orientation of the axis of your reference frame.
+
+==================================   ====================================================
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`reference_frames_item <reference_frames_item>`   'child_object_type' of reference_frames.
+
+====================================================   ========================================
+

@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _force_vector:
+
+force_vector
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.force_vector
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`force_item <force_item>`   'child_object_type' of force.
+
+:ref:`lift_item <lift_1_item>`    'child_object_type' of lift.
+
+:ref:`drag_item <drag_1_item>`    'child_object_type' of drag.
+
+==============================   =============================
+

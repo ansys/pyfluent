@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _method_27:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.method_27
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ================================
+
+Parent                                                          Summary
+
+====================================   ================================
+:ref:`compound_item <compound_item>`   'child_object_type' of compound.
+
+====================================   ================================
+

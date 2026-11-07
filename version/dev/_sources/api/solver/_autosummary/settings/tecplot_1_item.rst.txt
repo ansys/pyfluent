@@ -1,0 +1,45 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _tecplot_1_item:
+
+tecplot_item
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.tecplot_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =========================================
+
+Attribute                                                                    Summary
+
+========================================   =========================================
+:ref:`name <name_5>`                                             Name of the object.
+
+:ref:`surfaces <surfaces_1>`                                                Surface.
+
+:ref:`quantities <quantities>`                     The list of quantities to export.
+
+:ref:`frequency_of <frequency_of_3>`       Export data every (Time Step, Flow Time).
+
+:ref:`frequency <frequency_9>`                                     Export Frequency.
+
+:ref:`flow_frequency <flow_frequency_1>`                           Export Frequency.
+
+:ref:`file_name <file_name_29>`                             The file name to export.
+
+========================================   =========================================
+
+.. rubric:: Included in:
+
+==========================   ===============
+
+Parent                               Summary
+
+==========================   ===============
+:ref:`tecplot <tecplot_1>`   Tecplot Export.
+
+==========================   ===============
+

@@ -1,0 +1,62 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _impedance_parameters:
+
+impedance_parameters
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.impedance_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ============================
+
+Attribute                                                                           Summary
+
+============================================================   ============================
+:ref:`impedance_zero_order_term <impedance_zero_order_term>`     Impedance zero order term.
+
+:ref:`real_pole_series <real_pole_series>`                        List of Real Pole Series.
+
+:ref:`complex_pole_series <complex_pole_series>`               List of Complex Pole Series.
+
+============================================================   ============================
+
+.. rubric:: Methods
+
+======================================================   =====================================================================================
+
+Method                                                                                                                                 Summary
+
+======================================================   =====================================================================================
+:ref:`import_parameters <import_parameters_1>`                   Import impedance pole/residue parameters from a file into this boundary zone.
+
+:ref:`compute_from_data_file <compute_from_data_file>`   Open the impedance data fitting dialog to fit model parameters from measurement data.
+
+======================================================   =====================================================================================
+
+.. rubric:: Included in:
+
+=============================   ======================================================
+
+Parent                                                                         Summary
+
+=============================   ======================================================
+:ref:`momentum <momentum_1>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_2>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_3>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_7>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_9>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_10>`   Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_11>`   Allows to change momentum model variables or settings.
+
+=============================   ======================================================
+

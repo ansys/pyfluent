@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_ResultsInfo_ParticleTracksFields:
+
+ParticleTracksFields
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.ResultsInfo.ParticleTracksFields
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`ParticleTracksFields <ref_solver_datamodel_flicing_Case_ResultsInfo_ParticleTracksFields__ParticleTracksFields>`
+
+``ParticleTracksFields`` is organised like a dictionary. You can access each :ref:`ParticleTracksFields <ref_solver_datamodel_flicing_Case_ResultsInfo_ParticleTracksFields__ParticleTracksFields>` by name using ``ParticleTracksFields['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _ParticleTracksFields/_ParticleTracksFields_contents

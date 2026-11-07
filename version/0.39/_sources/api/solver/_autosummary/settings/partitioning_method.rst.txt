@@ -1,0 +1,21 @@
+:orphan:
+
+.. _partitioning_method:
+
+partitioning_method
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.partitioning_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==============================================================================
+
+Parent                                                                                                  Summary
+
+==============================   ==============================================================================
+:ref:`dpm_domain <dpm_domain>`       Settings related to DPM secondary domain for advanced parallel processing.
+
+==============================   ==============================================================================
+

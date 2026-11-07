@@ -1,0 +1,32 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _frequency_9:
+
+frequency
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.frequency_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`ascii_item <ascii_1_item>`             'child_object_type' of ascii.
+
+:ref:`cgns_item <cgns_1_item>`                'child_object_type' of cgns.
+
+:ref:`visualize_item <visualize_item>`   'child_object_type' of visualize.
+
+:ref:`mapdl_item <mapdl_item>`               'child_object_type' of mapdl.
+
+:ref:`nastran_item <nastran_1_item>`       'child_object_type' of nastran.
+
+:ref:`tecplot_item <tecplot_1_item>`       'child_object_type' of tecplot.
+
+======================================   =================================
+

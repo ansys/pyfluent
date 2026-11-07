@@ -1,0 +1,49 @@
+:orphan:
+
+.. _solution_steering:
+
+solution_steering
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.solution_steering
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ==========================================================================
+
+Attribute                                                                                                                                     Summary
+
+========================================================================   ==========================================================================
+:ref:`enable <enable_28>`                                                                         Enable solution steering for density-based solver?.
+
+:ref:`flow_type <flow_type>`                                                                                                  Solution steering type.
+
+:ref:`first_to_second_order_blending <first_to_second_order_blending_2>`       Solution steering first- to second-order blending [min=0.0 - max=1.0].
+
+:ref:`use_fmg <use_fmg>`                                                                                            Enable FMG for solution steering.
+
+========================================================================   ==========================================================================
+
+.. rubric:: Methods
+
+=============================   ===============================
+
+Method                                                  Summary
+
+=============================   ===============================
+:ref:`settings <settings_28>`       Solution Steering Settings.
+
+=============================   ===============================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`run_calculation <run_calculation>`       Run-calculation object.
+
+========================================   ===========================
+

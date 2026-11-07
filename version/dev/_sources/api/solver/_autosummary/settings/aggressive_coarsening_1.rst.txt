@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _aggressive_coarsening_1:
+
+aggressive_coarsening
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.aggressive_coarsening_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================================================================
+
+Parent                                                                                                                                       Summary
+
+======================================================   ===========================================================================================
+:ref:`coarsening_parameters <coarsening_parameters_2>`   Configures coarsening parameters for coupled equations in algebraic multigrid (AMG) solver.
+
+======================================================   ===========================================================================================
+

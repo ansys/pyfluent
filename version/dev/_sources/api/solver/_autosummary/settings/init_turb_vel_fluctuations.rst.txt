@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _init_turb_vel_fluctuations:
+
+init_turb_vel_fluctuations
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.init_turb_vel_fluctuations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`initialization <initialization_1>`   Solution initialization object.
+
+========================================   ===============================
+

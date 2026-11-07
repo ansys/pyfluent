@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _new_fan_definition:
+
+new_fan_definition
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.new_fan_definition
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ======================================================
+
+Parent                                                                                                            Summary
+
+================================================================   ======================================================
+:ref:`momentum <momentum_1>`                                       Allows to change momentum model variables or settings.
+
+:ref:`pressure_jump_specification <pressure_jump_specification>`                    Pressure jump specification settings.
+
+:ref:`momentum <momentum_3>`                                       Allows to change momentum model variables or settings.
+
+================================================================   ======================================================
+

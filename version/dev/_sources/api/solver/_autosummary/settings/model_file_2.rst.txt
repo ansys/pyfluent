@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _model_file_2:
+
+model_file
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.model_file_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =============================================================================
+
+Parent                                                                                                                 Summary
+
+==============================================   =============================================================================
+:ref:`import_parameters <import_parameters_1>`   Import impedance pole/residue parameters from a file into this boundary zone.
+
+==============================================   =============================================================================
+

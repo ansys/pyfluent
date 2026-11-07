@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _remeshing_2:
+
+remeshing
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.remeshing_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ======================
+
+Parent                                          Summary
+
+==============================   ======================
+:ref:`post_morph <post_morph>`   Mesh quality settings.
+
+==============================   ======================
+

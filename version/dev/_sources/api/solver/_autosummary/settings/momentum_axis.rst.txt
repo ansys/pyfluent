@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _momentum_axis:
+
+momentum_axis
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.momentum_axis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==============================================
+
+Parent                                                            Summary
+
+========================   ==============================================
+:ref:`forces <forces_1>`   Provides access to settings for force reports.
+
+========================   ==============================================
+

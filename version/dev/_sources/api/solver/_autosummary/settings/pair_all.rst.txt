@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _pair_all:
+
+pair_all
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.pair_all
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================================================================
+
+Parent                                                                                                      Summary
+
+==================================   ==============================================================================
+:ref:`auto_create <auto_create_1>`   Automatically pair and create mesh interfaces for some or all interface zones.
+
+==================================   ==============================================================================
+

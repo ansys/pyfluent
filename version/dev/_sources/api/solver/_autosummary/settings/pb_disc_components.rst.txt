@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _pb_disc_components:
+
+pb_disc_components
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.pb_disc_components
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`pb_disc_components_item <pb_disc_components_item>`
+
+Access each :ref:`pb_disc_components_item <pb_disc_components_item>` by index using ``pb_disc_components[<index>]``.
+
+
+.. rubric:: Included in:
+
+========================   ===============================================================================
+
+Parent                                                                                             Summary
+
+========================   ===============================================================================
+:ref:`pb_disc <pb_disc>`   Defines the discrete probability distribution for the Population Balance model.
+
+========================   ===============================================================================
+

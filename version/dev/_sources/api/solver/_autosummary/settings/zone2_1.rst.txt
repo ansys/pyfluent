@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _zone2_1:
+
+zone2
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.zone2_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ============================
+
+Parent                                           Summary
+
+=========================   ============================
+:ref:`create <create_10>`   Create turbo mesh interface.
+
+=========================   ============================
+

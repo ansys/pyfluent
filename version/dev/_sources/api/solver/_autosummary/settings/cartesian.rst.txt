@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cartesian:
+
+cartesian
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cartesian
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ================================
+
+Attribute                                                 Summary
+
+==============================   ================================
+:ref:`extent <extent>`           Cartesian design region extents.
+
+:ref:`conditions <conditions>`                 Region conditions.
+
+==============================   ================================
+
+.. rubric:: Included in:
+
+======================   ==========================
+
+Parent                                      Summary
+
+======================   ==========================
+:ref:`region <region>`   Design tool region object.
+
+======================   ==========================
+

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _get_center:
+
+get_center
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.get_center
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ================================
+
+Parent                                                          Summary
+
+====================================   ================================
+:ref:`rotation_item <rotation_item>`   'child_object_type' of rotation.
+
+:ref:`scaling_item <scaling_1_item>`    'child_object_type' of scaling.
+
+====================================   ================================
+

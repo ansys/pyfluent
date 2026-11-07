@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gap_resolution:
+
+gap_resolution
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.gap_resolution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================================================
+
+Parent                                                                              Summary
+
+========================   ================================================================
+:ref:`overset <overset>`       Define adaption settings suitable for an overset simulation.
+
+========================   ================================================================
+

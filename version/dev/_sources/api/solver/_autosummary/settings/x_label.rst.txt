@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _x_label:
+
+x_label
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.x_label
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`report_plots_item <report_plots_item>`                        'child_object_type' of report_plots.
+
+:ref:`convergence_reports_item <convergence_reports_item>`   'child_object_type' of convergence_reports.
+
+==========================================================   ===========================================
+

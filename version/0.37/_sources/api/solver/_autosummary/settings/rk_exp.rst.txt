@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rk_exp:
+
+rk_exp
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.rk_exp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_4 <parameters_4>`       Model parameters.
+
+==================================   =====================
+

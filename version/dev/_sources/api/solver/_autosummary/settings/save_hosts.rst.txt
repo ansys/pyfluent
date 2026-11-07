@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _save_hosts:
+
+save_hosts
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.save_hosts
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   =====================================
+
+Argument                                                       Summary
+
+==============================   =====================================
+:ref:`host_file <host_file_1>`   Selects the hosts file name to write.
+
+==============================   =====================================
+
+.. rubric:: Included in:
+
+==========================   =================================
+
+Parent                                                 Summary
+
+==========================   =================================
+:ref:`network <network_2>`   The network configuration object.
+
+==========================   =================================
+

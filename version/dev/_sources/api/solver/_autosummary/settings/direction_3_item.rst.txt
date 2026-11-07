@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _direction_3_item:
+
+direction_item
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.direction_3_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`direction <direction_3>`   Wall translation components.
+
+==============================   ============================
+

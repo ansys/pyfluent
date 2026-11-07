@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _display_frequency:
+
+display_frequency
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.display_frequency
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ====================
+
+Parent                                            Summary
+
+==================================   ====================
+:ref:`mesh_motion <mesh_motion_2>`   Perform mesh motion.
+
+==================================   ====================
+

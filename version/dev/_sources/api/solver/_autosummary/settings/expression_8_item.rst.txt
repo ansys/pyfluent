@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _expression_8_item:
+
+expression_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.expression_8_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=======================   ================================================================
+
+Attribute                                                                          Summary
+
+=======================   ================================================================
+:ref:`name <name_5>`                                                   Name of the object.
+
+:ref:`value <value_46>`   Sets the current value for the Expression-based Input Parameter.
+
+=======================   ================================================================
+
+.. rubric:: Included in:
+
+================================   ==========================================================
+
+Parent                                                                                Summary
+
+================================   ==========================================================
+:ref:`expression <expression_8>`   Accesses input parameters defined using named expressions.
+
+================================   ==========================================================
+

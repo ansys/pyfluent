@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _maximum_3:
+
+maximum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.maximum_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ==============
+
+Parent                          Summary
+
+======================   ==============
+:ref:`range <range_2>`   'range' child.
+
+======================   ==============
+

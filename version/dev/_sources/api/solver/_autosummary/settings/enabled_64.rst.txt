@@ -1,0 +1,54 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enabled_64:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enabled_64
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ================================
+
+Parent                                                                              Summary
+
+========================================================   ================================
+:ref:`in_cylinder <in_cylinder>`                                       'in_cylinder' child.
+
+:ref:`write_in_cylinder_ouput <write_in_cylinder_ouput>`   'write_in_cylinder_ouput' child.
+
+:ref:`six_dof <six_dof>`                                                   'six_dof' child.
+
+:ref:`one_dof_translation <one_dof_translation>`               'one_dof_translation' child.
+
+:ref:`constraint <constraint>`                                          'constraint' child.
+
+:ref:`one_dof_rotation <one_dof_rotation>`                        'one_dof_rotation' child.
+
+:ref:`constraint <constraint_1>`                                        'constraint' child.
+
+:ref:`implicit_update <implicit_update>`                           'implicit_update' child.
+
+:ref:`contact_detection <contact_detection>`                     'contact_detection' child.
+
+:ref:`periodic_displacements <periodic_displacements>`      'periodic_displacements' child.
+
+:ref:`six_dof <six_dof_1>`                                                 'six_dof' child.
+
+:ref:`relative_motion <relative_motion>`                           'relative_motion' child.
+
+:ref:`remeshing <remeshing_1>`                                           'remeshing' child.
+
+:ref:`smoothing <smoothing_2>`                                           'smoothing' child.
+
+:ref:`udf_deform <udf_deform>`                                          'udf_deform' child.
+
+:ref:`feature_detection <feature_detection>`                     'feature_detection' child.
+
+:ref:`constant_color <constant_color>`                            The constant color value.
+
+========================================================   ================================
+

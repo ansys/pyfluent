@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zonal_physical_dt_ratio:
+
+zonal_physical_dt_ratio
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.zonal_physical_dt_ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`zonal_models <zonal_models>`       Zonal flow model settings.
+
+==================================   ==============================
+

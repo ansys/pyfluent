@@ -1,0 +1,36 @@
+:orphan:
+
+.. _indicator:
+
+indicator
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.indicator
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ===============================================================================
+
+Attribute                                                                                                            Summary
+
+==========================================   ===============================================================================
+:ref:`indicator_type <indicator_type>`                   Specifies the type of indicator used to guide anisotropic adaption.
+
+:ref:`single_scalar_fn <single_scalar_fn>`                    The scalar function as the for anisotropic adaption indicator.
+
+:ref:`multi_scalar_fn <multi_scalar_fn>`         Sets multiple scalar functions for combined anisotropic adaption indicator.
+
+==========================================   ===============================================================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================
+
+Parent                                                                            Summary
+
+==================================================   ====================================
+:ref:`anisotropic_adaption <anisotropic_adaption>`       The anisotropic adaption object.
+
+==================================================   ====================================
+

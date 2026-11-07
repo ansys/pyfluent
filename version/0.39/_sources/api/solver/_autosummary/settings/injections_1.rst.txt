@@ -1,0 +1,25 @@
+:orphan:
+
+.. _injections_1:
+
+injections
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.injections_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   ==========================================================================================================================================
+
+Parent                                                                                                                                                                                                        Summary
+
+========================================================================   ==========================================================================================================================================
+:ref:`compute_samples <compute_samples>`                                                                                          Compute particle trajectories to record sampling data at planes and boundary zones.
+
+:ref:`start_file_write <start_file_write>`                                                               Enable recording particle sampling data at planes and boundary zones when the simulation progresses in time.
+
+:ref:`compute_erosion_accretion_rates <compute_erosion_accretion_rates>`       Compute erosion and accretion rates for selected injections; updates the rates or ADDs to them depending on the corresponding setting.
+
+========================================================================   ==========================================================================================================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _four_ne:
+
+four_ne
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.four_ne
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`venting_model <venting_model>`   Venting model settings.
+
+====================================   =======================
+

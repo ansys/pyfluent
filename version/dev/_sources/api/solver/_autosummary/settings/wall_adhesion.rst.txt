@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _wall_adhesion:
+
+wall_adhesion
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.wall_adhesion
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`forces <forces>`   Interfacial forces.
+
+======================   ===================
+

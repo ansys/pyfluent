@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _second_order_1:
+
+second_order
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.second_order_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ====================
+
+Parent                                                          Summary
+
+================================================   ====================
+:ref:`constraint_settings <constraint_settings>`   Constraint settings.
+
+================================================   ====================
+

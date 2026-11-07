@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _outlet_group_id:
+
+outlet_group_id
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.outlet_group_id
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`multiphase <multiphase_4>`   Multiphase settings.
+
+================================   ====================
+

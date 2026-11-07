@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _zone_average_direction:
+
+zone_average_direction
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.zone_average_direction
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`zone_average_direction_item <zone_average_direction_item>`
+
+Access each :ref:`zone_average_direction_item <zone_average_direction_item>` by index using ``zone_average_direction[<index>]``.
+
+
+.. rubric:: Included in:
+
+================================================================   =====================================
+
+Parent                                                                                           Summary
+
+================================================================   =====================================
+:ref:`pressure_jump_specification <pressure_jump_specification>`   Pressure jump specification settings.
+
+================================================================   =====================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rct_rate_exp:
+
+rct_rate_exp
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rct_rate_exp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`rxn_reactant_list_item <rxn_reactant_list_item>`   'child_object_type' of rxn_reactant_list.
+
+======================================================   =========================================
+

@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_axisymmetric_sweep__axisymmetric_sweepArguments:
+
+_axisymmetric_sweepArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.axisymmetric_sweep._axisymmetric_sweepArguments
+   :members: _axis_sweep_control_name, _number_of_layers, _revolution_angle_deg, _selection_type, _sweep_boundary_zone_list, _topology_list, _zone_location
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _axis_direction/_axis_direction_contents
+   _axis_origin/_axis_origin_contents

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _track_pdf_particles:
+
+track_pdf_particles
+===================
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.track_pdf_particles
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ======================================
+
+Parent                                                                            Summary
+
+================================================   ======================================
+:ref:`particle_track_item <particle_track_item>`   'child_object_type' of particle_track.
+
+================================================   ======================================
+

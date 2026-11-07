@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mod_name_1:
+
+mod_name
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mod_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`disable <disable_1>`   Disable a single defined case modification.
+
+==========================   ===========================================
+

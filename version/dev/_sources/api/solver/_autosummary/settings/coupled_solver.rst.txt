@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _coupled_solver:
+
+coupled_solver
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coupled_solver
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================================================================
+
+Parent                                                                                         Summary
+
+==================================   =================================================================
+:ref:`formulation <formulation_1>`   The pseudo time step size formulation for the pseudo time method.
+
+==================================   =================================================================
+

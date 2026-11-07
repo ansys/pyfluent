@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mesh_connectivity:
+
+mesh_connectivity
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mesh_connectivity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==================================
+
+Parent                                                                Summary
+
+========================================   ==================================
+:ref:`create <create_7>`                              Create mesh interfaces.
+
+:ref:`interfaces_item <interfaces_item>`   'child_object_type' of interfaces.
+
+========================================   ==================================
+

@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _terms_item:
+
+terms_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.terms_item
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`terms_item_item <terms_item_item>`
+
+Access each :ref:`terms_item_item <terms_item_item>` by index using ``terms_item[<index>]``.
+
+
+.. rubric:: Included in:
+
+====================   ================
+
+Parent                          Summary
+
+====================   ================
+:ref:`terms <terms>`   List of sources.
+
+====================   ================
+

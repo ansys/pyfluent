@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _y_axis_direction_vector:
+
+y_axis_direction_vector
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.y_axis_direction_vector
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=====================   =============================================
+
+Parent                                                        Summary
+
+=====================   =============================================
+:ref:`plot <plot_12>`   Provides access to plot solution on surfaces.
+
+=====================   =============================================
+

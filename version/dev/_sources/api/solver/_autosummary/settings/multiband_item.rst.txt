@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _multiband_item:
+
+multiband_item
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.multiband_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ====================================
+
+Attribute                                             Summary
+
+======================   ====================================
+:ref:`name <name_5>`                      Name of the object.
+
+:ref:`start <start_2>`   Start of wavelength interval (mu m).
+
+:ref:`end <end>`           End of wavelength interval (mu m).
+
+======================   ====================================
+
+.. rubric:: Included in:
+
+============================   =======================
+
+Parent                                         Summary
+
+============================   =======================
+:ref:`multiband <multiband>`   Multi-band information.
+
+============================   =======================
+

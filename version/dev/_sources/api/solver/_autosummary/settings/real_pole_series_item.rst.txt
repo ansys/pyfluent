@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _real_pole_series_item:
+
+real_pole_series_item
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.real_pole_series_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ========
+
+Attribute                         Summary
+
+==============================   ========
+:ref:`pole <pole>`               Element.
+
+:ref:`amplitude <amplitude_1>`   Element.
+
+==============================   ========
+
+.. rubric:: Included in:
+
+==========================================   =========================
+
+Parent                                                         Summary
+
+==========================================   =========================
+:ref:`real_pole_series <real_pole_series>`   List of Real Pole Series.
+
+==========================================   =========================
+

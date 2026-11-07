@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _step_1:
+
+step
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.step_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ==========================
+
+Parent                                         Summary
+
+=========================   ==========================
+:ref:`option <option_77>`   Check the control options.
+
+=========================   ==========================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _number_of_points:
+
+number_of_points
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.number_of_points
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================
+
+Parent                                                                      Summary
+
+============================================   ====================================
+:ref:`rake_surface_item <rake_surface_item>`   'child_object_type' of rake_surface.
+
+============================================   ====================================
+

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _label_1:
+
+label
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.label_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============   ==========
+
+Parent              Summary
+
+==============   ==========
+:ref:`x <x_9>`   'x' child.
+
+:ref:`y <y_9>`   'y' child.
+
+==============   ==========
+

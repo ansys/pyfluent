@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _global_dt_coarsen_by_interval:
+
+global_dt_coarsen_by_interval
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.global_dt_coarsen_by_interval
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ================================================
+
+Parent                                                                                          Summary
+
+====================================================   ================================================
+:ref:`coarsening_parameters <coarsening_parameters>`   Coarsening parameters for the scalar AMG solver.
+
+====================================================   ================================================
+

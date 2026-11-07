@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _schnerr_evap_coeff:
+
+schnerr_evap_coeff
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.schnerr_evap_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ========================================================================================
+
+Parent                                                                                                            Summary
+
+==============================   ========================================================================================
+:ref:`cavitation <cavitation>`   Enable/disable turbulent diffusion treatment between phases participating in cavitation.
+
+==============================   ========================================================================================
+

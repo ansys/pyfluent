@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _discrete_boundary_condition_item:
+
+discrete_boundary_condition_item
+================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.discrete_boundary_condition_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ==================================================================
+
+Parent                                                                                                                        Summary
+
+================================================================   ==================================================================
+:ref:`discrete_boundary_condition <discrete_boundary_condition>`   List of boundary conditions for Discrete population balance model.
+
+================================================================   ==================================================================
+

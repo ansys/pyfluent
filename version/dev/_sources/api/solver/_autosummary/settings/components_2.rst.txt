@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _components_2:
+
+components
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.components_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`groups_item <groups_1_item>`   'child_object_type' of groups.
+
+:ref:`groups_item <groups_item>`     'child_object_type' of groups.
+
+==================================   ==============================
+

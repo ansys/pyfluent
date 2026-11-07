@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _target_type:
+
+target_type
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.target_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================================================
+
+Parent                                                               Summary
+
+======================   ===================================================
+:ref:`target <target>`   The target type and value for anisotropic adaption.
+
+======================   ===================================================
+

@@ -1,0 +1,49 @@
+:orphan:
+
+.. _water_corrosion_pre:
+
+water_corrosion_pre
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.water_corrosion_pre
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ====================================================
+
+Attribute                                                                                       Summary
+
+================================================   ====================================================
+:ref:`reaction_type <reaction_type>`                                        Corrosion environment type.
+
+:ref:`input_parameters <input_parameters>`             Input parameters in water chemistry calculation.
+
+:ref:`equilibrium_results <equilibrium_results>`                         Water equilibrium calculation.
+
+================================================   ====================================================
+
+.. rubric:: Methods
+
+====================================================================   ===========================================
+
+Method                                                                                                     Summary
+
+====================================================================   ===========================================
+:ref:`water_equilibrium_calculation <water_equilibrium_calculation>`                          Compute equilibrium.
+
+:ref:`create_mixture_and_reaction <create_mixture_and_reaction>`           Create corrosion mixture and reactions.
+
+====================================================================   ===========================================
+
+.. rubric:: Included in:
+
+========================   =========================
+
+Parent                                       Summary
+
+========================   =========================
+:ref:`species <species>`       Species model object.
+
+========================   =========================
+

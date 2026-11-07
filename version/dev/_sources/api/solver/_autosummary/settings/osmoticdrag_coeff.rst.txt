@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _osmoticdrag_coeff:
+
+osmoticdrag_coeff
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.osmoticdrag_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================
+
+Parent                                       Summary
+
+================================   =================
+:ref:`parameters <parameters_4>`   Model parameters.
+
+================================   =================
+

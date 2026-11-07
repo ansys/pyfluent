@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _axis_direction_4:
+
+axis_direction
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.axis_direction_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`periodic_instances_item <periodic_instances_item>`   'child_object_type' of periodic_instances.
+
+========================================================   ==========================================
+

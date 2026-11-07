@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _discretization_scheme_item:
+
+discretization_scheme_item
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.discretization_scheme_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ======================
+
+Parent                                                                Summary
+
+====================================================   ======================
+:ref:`discretization_scheme <discretization_scheme>`   Discretization scheme.
+
+====================================================   ======================
+

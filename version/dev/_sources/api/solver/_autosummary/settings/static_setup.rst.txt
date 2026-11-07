@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _static_setup:
+
+static_setup
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.static_setup
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ====================================================================
+
+Attribute                                                                                                 Summary
+
+==========================================   ====================================================================
+:ref:`method <method_10>`                                                            The static injection method.
+
+:ref:`static_injection <static_injection>`   Defines the static injection type configuration for perforated wall.
+
+==========================================   ====================================================================
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`injection_item <injection_1_item>`   'child_object_type' of injection.
+
+========================================   =================================
+

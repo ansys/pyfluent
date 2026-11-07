@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _display_state:
+
+display_state
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.display_state
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`reference_frames_item <reference_frames_item>`   'child_object_type' of reference_frames.
+
+====================================================   ========================================
+

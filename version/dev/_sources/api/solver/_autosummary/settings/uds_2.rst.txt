@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _uds_2:
+
+uds
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.uds_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===========================================
+
+Attribute                                                    Summary
+
+======================   ===========================================
+:ref:`uds_bc <uds_bc>`       User-defined scalar boundary condition.
+
+:ref:`uds <uds_1>`       User-defined scalar boundary value or flux.
+
+======================   ===========================================
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`outflow_item <outflow_item>`     'child_object_type' of outflow.
+
+:ref:`phase_item <phase_17_item>`        'child_object_type' of phase.
+
+:ref:`outflow_item <outflow_1_item>`   'child_object_type' of outflow.
+
+:ref:`phase_item <phase_41_item>`        'child_object_type' of phase.
+
+====================================   ===============================
+

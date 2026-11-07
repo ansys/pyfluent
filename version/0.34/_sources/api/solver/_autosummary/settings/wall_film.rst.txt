@@ -1,0 +1,42 @@
+:orphan:
+
+.. _wall_film:
+
+wall_film
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.wall_film
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================   =================================================================================
+
+Attribute                                                                                                                                                Summary
+
+============================================================================   =================================================================================
+:ref:`convective_heat_transfer <convective_heat_transfer>`                                                Settings for the film-to-wall heat transfer modelling.
+
+:ref:`include_convective_heat_transfer <include_convective_heat_transfer>`         Enable/disable convection/conduction in the film-to-wall heat transfer model.
+
+:ref:`film_movement <film_movement>`                                                                        Options for controlling the film particles movement.
+
+:ref:`film_adds_to_dpm_concentration <film_adds_to_dpm_concentration>`                Include/exclude LWF particle mass in the calculation of DPM Concentration.
+
+:ref:`temperature_limiter <temperature_limiter>`                                            Group containing settings related to wall film temperature limiters.
+
+:ref:`enable_lwf_continuity_formulation <enable_lwf_continuity_formulation>`                                          Options for the film continuity algorithm.
+
+============================================================================   =================================================================================
+
+.. rubric:: Included in:
+
+========================================   ================
+
+Parent                                              Summary
+
+========================================   ================
+:ref:`physical_models <physical_models>`       Main object.
+
+========================================   ================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _expression_1:
+
+expression
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.expression_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ================================
+
+Parent                                        Summary
+
+==================   ================================
+:ref:`csep <csep>`   The GEKO model coefficient CSEP.
+
+==================   ================================
+

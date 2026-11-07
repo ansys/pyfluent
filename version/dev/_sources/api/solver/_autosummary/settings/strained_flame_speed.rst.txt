@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _strained_flame_speed:
+
+strained_flame_speed
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.strained_flame_speed
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =======================
+
+Parent                                       Summary
+
+==========================   =======================
+:ref:`property <property>`   PDF Properties Options.
+
+==========================   =======================
+

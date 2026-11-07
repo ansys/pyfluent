@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _angle_4:
+
+angle
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.angle_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`dynamic_injection_item <dynamic_injection_item>`   'child_object_type' of dynamic_injection.
+
+======================================================   =========================================
+

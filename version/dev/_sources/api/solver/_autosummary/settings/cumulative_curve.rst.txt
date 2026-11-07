@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cumulative_curve:
+
+cumulative_curve
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cumulative_curve
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================
+
+Parent                                                      Summary
+
+============================================   ====================
+:ref:`histogram_options <histogram_options>`   The settings object.
+
+============================================   ====================
+

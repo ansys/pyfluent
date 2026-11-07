@@ -1,0 +1,43 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thermal_6:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.thermal_6
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================================   =======================================
+
+Attribute                                                                                                                Summary
+
+======================================================================================   =======================================
+:ref:`temperature <temperature_3>`                                                                                  Temperature.
+
+:ref:`thermodynamic_non_equilibrium_boundary <thermodynamic_non_equilibrium_boundary>`   Thermodynamic Non-Equilibrium Boundary.
+
+:ref:`vibrational_electronic_temperature <vibrational_electronic_temperature_1>`                                    Temperature.
+
+======================================================================================   =======================================
+
+.. rubric:: Included in:
+
+==================================================   ======================================
+
+Parent                                                                              Summary
+
+==================================================   ======================================
+:ref:`velocity_inlet_item <velocity_inlet_item>`     'child_object_type' of velocity_inlet.
+
+:ref:`phase_item <phase_28_item>`                             'child_object_type' of phase.
+
+:ref:`velocity_inlet_item <velocity_inlet_1_item>`   'child_object_type' of velocity_inlet.
+
+:ref:`phase_item <phase_52_item>`                             'child_object_type' of phase.
+
+==================================================   ======================================
+

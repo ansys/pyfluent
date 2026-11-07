@@ -1,0 +1,39 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thermal_3:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.thermal_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ============
+
+Attribute                                             Summary
+
+==============================================   ============
+:ref:`total_temperature <total_temperature_1>`   Temperature.
+
+==============================================   ============
+
+.. rubric:: Included in:
+
+====================================================   =======================================
+
+Parent                                                                                 Summary
+
+====================================================   =======================================
+:ref:`mass_flow_inlet_item <mass_flow_inlet_item>`     'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_item <phase_13_item>`                                'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_1_item>`   'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_item <phase_37_item>`                                'child_object_type' of phase.
+
+====================================================   =======================================
+

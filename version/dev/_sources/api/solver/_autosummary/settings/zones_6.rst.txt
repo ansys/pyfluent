@@ -1,0 +1,32 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _zones_6:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.zones_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`force_item <force_item>`                                 'child_object_type' of force.
+
+:ref:`lift_item <lift_1_item>`                                  'child_object_type' of lift.
+
+:ref:`drag_item <drag_1_item>`                                  'child_object_type' of drag.
+
+:ref:`moment_item <moment_item>`                              'child_object_type' of moment.
+
+:ref:`aeromechanics_item <aeromechanics_item>`         'child_object_type' of aeromechanics.
+
+:ref:`cumulative_plot_item <cumulative_plot_item>`   'child_object_type' of cumulative_plot.
+
+==================================================   =======================================
+

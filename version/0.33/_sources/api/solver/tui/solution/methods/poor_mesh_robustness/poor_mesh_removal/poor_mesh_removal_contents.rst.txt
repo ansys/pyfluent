@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_methods_poor_mesh_robustness_poor_mesh_removal:
+
+poor_mesh_removal
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.solution.methods.poor_mesh_robustness.poor_mesh_removal
+   :members: enable, orthogonal_quality_threshold, orthogonal_quality_threshold_enabled, tangent_skewness_threshold, tangent_skewness_threshold_enabled, warpage_threshold, warpage_threshold_enabled
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

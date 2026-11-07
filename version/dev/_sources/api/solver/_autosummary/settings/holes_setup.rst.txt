@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _holes_setup:
+
+holes_setup
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.holes_setup
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =====================================================================
+
+Attribute                                                                                              Summary
+
+======================================   =====================================================================
+:ref:`method <method_8>`                 The Cylinder specification method for specifying the injection holes.
+
+:ref:`injection_hole <injection_hole>`                                                    The injection holes.
+
+======================================   =====================================================================
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`injection_item <injection_1_item>`   'child_object_type' of injection.
+
+========================================   =================================
+

@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _pressure_profile_multiplier:
+
+pressure_profile_multiplier
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.pressure_profile_multiplier
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=============================   ======================================================
+
+Parent                                                                         Summary
+
+=============================   ======================================================
+:ref:`momentum <momentum_1>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_7>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_10>`   Allows to change momentum model variables or settings.
+
+=============================   ======================================================
+

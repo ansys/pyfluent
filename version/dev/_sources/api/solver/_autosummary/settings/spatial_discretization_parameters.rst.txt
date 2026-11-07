@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _spatial_discretization_parameters:
+
+spatial_discretization_parameters
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.spatial_discretization_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ====================================
+
+Attribute                                                                           Summary
+
+====================================================   ====================================
+:ref:`low_diffusion_central <low_diffusion_central>`   Low Diffusion Central options group.
+
+:ref:`bcd_boundedness <bcd_boundedness>`               The BCD scheme boundedness strength.
+
+====================================================   ====================================
+
+.. rubric:: Included in:
+
+==========================   ============================
+
+Parent                                            Summary
+
+==========================   ============================
+:ref:`methods <methods_2>`   The solution methods object.
+
+==========================   ============================
+

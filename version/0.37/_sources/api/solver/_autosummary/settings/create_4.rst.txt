@@ -1,0 +1,36 @@
+:orphan:
+
+.. _create_4:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_4
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   =================================================
+
+Argument                                                           Summary
+
+======================   =================================================
+:ref:`name <name_16>`                                Input boundary name .
+
+:ref:`volume <volume>`       Input volume name for which the new boundary.
+
+:ref:`type <type_5>`                                  Input boundary type.
+
+======================   =================================================
+
+.. rubric:: Included in:
+
+==============================   =======================
+
+Parent                                           Summary
+
+==============================   =======================
+:ref:`boundaries <boundaries>`       'boundaries' child.
+
+==============================   =======================
+

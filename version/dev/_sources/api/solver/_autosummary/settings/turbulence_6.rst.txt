@@ -1,0 +1,45 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turbulence_6:
+
+turbulence
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turbulence_6
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ================================================
+
+Attribute                                                                                               Summary
+
+============================================================   ================================================
+:ref:`les_spec_name <les_spec_name>`                                         Fluctuating Velocity Algorithm   .
+
+:ref:`rfg_number_of_modes <rfg_number_of_modes>`                                       Number of Fourier Modes.
+
+:ref:`vm_nvortices <vm_nvortices>`                                                          Number of Vortices.
+
+:ref:`les_embedded_fluctuations <les_embedded_fluctuations>`   Pre-R18.1 Fluctuating Velocity Algorithm Choice.
+
+============================================================   ================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`rans_les_interface_item <rans_les_interface_item>`     'child_object_type' of rans_les_interface.
+
+:ref:`phase_item <phase_25_item>`                                         'child_object_type' of phase.
+
+:ref:`rans_les_interface_item <rans_les_interface_1_item>`   'child_object_type' of rans_les_interface.
+
+:ref:`phase_item <phase_49_item>`                                         'child_object_type' of phase.
+
+==========================================================   ==========================================
+

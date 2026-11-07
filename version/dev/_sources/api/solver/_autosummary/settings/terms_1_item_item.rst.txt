@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _terms_1_item_item:
+
+terms_item_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.terms_1_item_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ======================================
+
+Attribute                                                             Summary
+
+====================================   ======================================
+:ref:`option <option_55>`                           Source term input option.
+
+:ref:`value <value_27>`                                    Source term value.
+
+:ref:`profile_name <profile_name_1>`            Profile name for source term.
+
+:ref:`field_name <field_name_1>`          Field name for source term profile.
+
+:ref:`udf <udf_2>`                     User-defined function for source term.
+
+====================================   ======================================
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`terms_item <terms_1_item>`   'child_object_type' of terms.
+
+================================   =============================
+

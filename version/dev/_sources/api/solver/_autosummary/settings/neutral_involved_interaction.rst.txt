@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _neutral_involved_interaction:
+
+neutral_involved_interaction
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.neutral_involved_interaction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   =====================================================
+
+Attribute                                                                                                          Summary
+
+==================================================================   =====================================================
+:ref:`diffusion_collision_integral <diffusion_collision_integral>`   Sets the collision integral for neutral interactions.
+
+:ref:`viscosity_collision_integral <viscosity_collision_integral>`   Sets the collision integral for neutral interactions.
+
+==================================================================   =====================================================
+
+.. rubric:: Included in:
+
+======================================================================================   =========================================
+
+Parent                                                                                                                     Summary
+
+======================================================================================   =========================================
+:ref:`cross_section_multicomponent_item_item <cross_section_multicomponent_item_item>`   'child_object_type' of child_object_type.
+
+======================================================================================   =========================================
+

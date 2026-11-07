@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _boundary_2_1:
+
+boundary_2
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.boundary_2_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==================================
+
+Parent                                                                Summary
+
+========================================   ==================================
+:ref:`interfaces_item <interfaces_item>`   'child_object_type' of interfaces.
+
+========================================   ==================================
+

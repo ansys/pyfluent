@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _partition_origin_vector_item:
+
+partition_origin_vector_item
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.partition_origin_vector_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ============================
+
+Parent                                                                          Summary
+
+========================================================   ============================
+:ref:`partition_origin_vector <partition_origin_vector>`   The partition origin vector.
+
+========================================================   ============================
+

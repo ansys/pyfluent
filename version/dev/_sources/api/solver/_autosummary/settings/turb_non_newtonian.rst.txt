@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turb_non_newtonian:
+
+turb_non_newtonian
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turb_non_newtonian
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ================================
+
+Parent                                                                  Summary
+
+============================================   ================================
+:ref:`turbulence_expert <turbulence_expert>`   Turbulence expert model options.
+
+============================================   ================================
+

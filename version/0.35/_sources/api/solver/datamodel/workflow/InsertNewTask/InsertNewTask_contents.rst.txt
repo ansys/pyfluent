@@ -1,0 +1,18 @@
+.. _ref_solver_datamodel_workflow_InsertNewTask:
+
+InsertNewTask
+=============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.workflow.Root.InsertNewTask
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _InsertNewTaskCommandArguments/_InsertNewTaskCommandArguments_contents

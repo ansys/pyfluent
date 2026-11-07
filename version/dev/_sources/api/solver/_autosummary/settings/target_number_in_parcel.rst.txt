@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _target_number_in_parcel:
+
+target_number_in_parcel
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.target_number_in_parcel
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =====================================
+
+Parent                                                                   Summary
+
+========================================   =====================================
+:ref:`droplet_breakup <droplet_breakup>`   Lagrangian droplet break-up settings.
+
+========================================   =====================================
+

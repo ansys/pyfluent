@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _multi_scalar_fn:
+
+multi_scalar_fn
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.multi_scalar_fn
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================================================
+
+Parent                                                                              Summary
+
+============================   ============================================================
+:ref:`indicator <indicator>`   The indicator type and variable(s) for anisotropic adaption.
+
+============================   ============================================================
+

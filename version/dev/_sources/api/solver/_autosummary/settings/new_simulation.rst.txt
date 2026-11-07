@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _new_simulation:
+
+new_simulation
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.new_simulation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`simulation <simulation>`   Manage simulations within the current Fluent project.
+
+==============================   =====================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _iyz:
+
+iyz
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.iyz
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================
+
+Parent                                                   Summary
+
+======================================   =======================
+:ref:`inertia_tensor <inertia_tensor>`   'inertia_tensor' child.
+
+======================================   =======================
+

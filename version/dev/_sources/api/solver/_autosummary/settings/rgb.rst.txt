@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rgb:
+
+rgb
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rgb
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`lights_item <lights_item>`   'child_object_type' of lights.
+
+================================   ==============================
+

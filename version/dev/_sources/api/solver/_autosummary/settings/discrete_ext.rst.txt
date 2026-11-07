@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _discrete_ext:
+
+discrete_ext
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.discrete_ext
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`injection_item <injection_1_item>`   'child_object_type' of injection.
+
+========================================   =================================
+

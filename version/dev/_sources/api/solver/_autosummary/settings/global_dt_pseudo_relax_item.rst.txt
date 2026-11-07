@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _global_dt_pseudo_relax_item:
+
+global_dt_pseudo_relax_item
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.global_dt_pseudo_relax_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===================================
+
+Parent                                                                               Summary
+
+======================================================   ===================================
+:ref:`global_dt_pseudo_relax <global_dt_pseudo_relax>`   Global time step relaxation factor.
+
+======================================================   ===================================
+

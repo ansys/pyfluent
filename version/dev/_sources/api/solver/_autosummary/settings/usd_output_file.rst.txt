@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _usd_output_file:
+
+usd_output_file
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.usd_output_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==============================================
+
+Parent                                                                                      Summary
+
+==================================================   ==============================================
+:ref:`display_in_omniverse <display_in_omniverse>`   Display the raytracing rendering in Omniverse.
+
+==================================================   ==============================================
+

@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _direction_3:
+
+direction
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.direction_3
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`direction_item <direction_3_item>`
+
+Access each :ref:`direction_item <direction_3_item>` by index using ``direction[<index>]``.
+
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`momentum <momentum>`   Allows to change momentum model variables or settings.
+
+==========================   ======================================================
+

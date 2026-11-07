@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _files_1:
+
+files
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.files_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===================================================
+
+Parent                                                                 Summary
+
+========================   ===================================================
+:ref:`remove <remove_2>`   Remove a selection of imported training data files.
+
+========================   ===================================================
+

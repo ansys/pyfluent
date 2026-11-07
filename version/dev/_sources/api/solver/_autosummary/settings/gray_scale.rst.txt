@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _gray_scale:
+
+gray_scale
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.gray_scale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`lic_item <lic_item>`      'child_object_type' of lic.
+
+:ref:`olic_item <olic_item>`   'child_object_type' of olic.
+
+============================   ============================
+

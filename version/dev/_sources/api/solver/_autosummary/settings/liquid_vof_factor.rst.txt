@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _liquid_vof_factor:
+
+liquid_vof_factor
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.liquid_vof_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`boiling_parameters <boiling_parameters>`   Multiphase boiling parameters object.
+
+==============================================   =====================================
+

@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_switch_to_solution:
+
+switch_to_solution
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.switch_to_solution
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`switch_to_solution <ref_meshing_datamodel_meshing_workflow_task_object_switch_to_solution__switch_to_solution>`
+
+``switch_to_solution`` is organised like a dictionary. You can access each :ref:`switch_to_solution <ref_meshing_datamodel_meshing_workflow_task_object_switch_to_solution__switch_to_solution>` by name using ``switch_to_solution['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _switch_to_solution/_switch_to_solution_contents

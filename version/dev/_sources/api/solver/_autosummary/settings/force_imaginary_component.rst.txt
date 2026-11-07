@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _force_imaginary_component:
+
+force_imaginary_component
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.force_imaginary_component
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`force_imaginary_component_item <force_imaginary_component_item>`
+
+Access each :ref:`force_imaginary_component_item <force_imaginary_component_item>` by index using ``force_imaginary_component[<index>]``.
+
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`momentum <momentum>`   Allows to change momentum model variables or settings.
+
+==========================   ======================================================
+

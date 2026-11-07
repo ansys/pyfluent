@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _beach_dir_list_item:
+
+beach_dir_list_item
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.beach_dir_list_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================   ========
+
+Attribute           Summary
+
+================   ========
+:ref:`ni <ni>`     Element.
+
+:ref:`nj <nj>`     Element.
+
+:ref:`nk <nk>`     Element.
+
+:ref:`xe <xe>`     Element.
+
+:ref:`len <len>`   Element.
+
+================   ========
+
+.. rubric:: Included in:
+
+======================================   ===============================
+
+Parent                                                           Summary
+
+======================================   ===============================
+:ref:`beach_dir_list <beach_dir_list>`   Multi-Directional Beach Inputs.
+
+======================================   ===============================
+

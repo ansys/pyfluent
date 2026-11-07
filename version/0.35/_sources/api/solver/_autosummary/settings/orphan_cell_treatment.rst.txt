@@ -1,0 +1,21 @@
+:orphan:
+
+.. _orphan_cell_treatment:
+
+orphan_cell_treatment
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.orphan_cell_treatment
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================================
+
+Parent                                                    Summary
+
+============================   ==================================
+:ref:`overset_3 <overset_3>`       Overset solver options object.
+
+============================   ==================================
+

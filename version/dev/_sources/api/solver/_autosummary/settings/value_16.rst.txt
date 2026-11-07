@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _value_16:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.value_16
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`add_zone <add_zone>`     Add thread-real-pair object.
+
+:ref:`add_zone <add_zone_1>`   Add thread-real-pair object.
+
+============================   ============================
+

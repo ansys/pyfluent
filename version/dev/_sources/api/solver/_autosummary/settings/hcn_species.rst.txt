@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _hcn_species:
+
+hcn_species
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.hcn_species
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ===================
+
+Attribute                                                Summary
+
+==========================================   ===================
+:ref:`add <add_1>`                           Enable/disable HCN.
+
+:ref:`molecular_weight <molecular_weight>`    Molecular weights.
+
+==========================================   ===================
+
+.. rubric:: Included in:
+
+========================   ================
+
+Parent                              Summary
+
+========================   ================
+:ref:`expert <expert_2>`   NOx expert mode.
+
+========================   ================
+

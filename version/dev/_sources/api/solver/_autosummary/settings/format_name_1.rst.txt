@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _format_name_1:
+
+format_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.format_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==============================
+
+Parent                                                              Summary
+
+==========================================   ==============================
+:ref:`write_animation <write_animation_1>`   Write keyframe Animation file.
+
+==========================================   ==============================
+

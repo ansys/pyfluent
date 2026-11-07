@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _delete_all_shells:
+
+delete_all_shells
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.delete_all_shells
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`boundary_conditions <boundary_conditions>`   The boundary conditions object.
+
+================================================   ===============================
+

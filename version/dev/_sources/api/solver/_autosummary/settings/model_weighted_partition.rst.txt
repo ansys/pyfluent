@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _model_weighted_partition:
+
+model_weighted_partition
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.model_weighted_partition
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ===========
+
+Parent                   Summary
+
+==================   ===========
+:ref:`set <set_3>`   The object.
+
+==================   ===========
+

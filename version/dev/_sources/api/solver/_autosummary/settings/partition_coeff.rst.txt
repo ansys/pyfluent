@@ -1,0 +1,47 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _partition_coeff:
+
+partition_coeff
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.partition_coeff
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ===========================================
+
+Attribute                                                                                    Summary
+
+======================================================   ===========================================
+:ref:`option <option_47>`                                                  Material property method.
+
+:ref:`value <value_25>`                                       Constant or expression property value.
+
+:ref:`piecewise_linear <piecewise_linear_2>`                       Property piecewise-linear values.
+
+:ref:`piecewise_polynomial <piecewise_polynomial>`       Property piecewise-polynomial coefficients.
+
+:ref:`polynomial <polynomial_2>`                                   Property polynomial coefficients.
+
+:ref:`user_defined_function <user_defined_function_1>`               User-defined property function.
+
+======================================================   ===========================================
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`fluid_item <fluid_item>`                                          'child_object_type' of fluid.
+
+:ref:`volumetric_species_item <volumetric_species_item>`   'child_object_type' of volumetric_species.
+
+:ref:`material_item <material_4_item>`                               'child_object_type' of material.
+
+========================================================   ==========================================
+

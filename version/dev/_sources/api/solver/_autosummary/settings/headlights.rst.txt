@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _headlights:
+
+headlights
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.headlights
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ======================================
+
+Parent                                                                            Summary
+
+================================================   ======================================
+:ref:`display_states_item <display_states_item>`   'child_object_type' of display_states.
+
+================================================   ======================================
+

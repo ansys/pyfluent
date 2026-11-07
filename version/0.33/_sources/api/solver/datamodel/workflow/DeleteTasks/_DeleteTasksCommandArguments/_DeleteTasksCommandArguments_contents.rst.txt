@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_workflow_DeleteTasks__DeleteTasksCommandArguments:
+
+_DeleteTasksCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.workflow.Root.DeleteTasks._DeleteTasksCommandArguments
+   :members: _ListOfTasks
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

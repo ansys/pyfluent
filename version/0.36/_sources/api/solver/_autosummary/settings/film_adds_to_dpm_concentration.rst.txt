@@ -1,0 +1,21 @@
+:orphan:
+
+.. _film_adds_to_dpm_concentration:
+
+film_adds_to_dpm_concentration
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.film_adds_to_dpm_concentration
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ================
+
+Parent                                  Summary
+
+============================   ================
+:ref:`wall_film <wall_film>`       Main object.
+
+============================   ================
+

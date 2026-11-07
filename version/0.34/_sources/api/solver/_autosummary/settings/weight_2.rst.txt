@@ -1,0 +1,23 @@
+:orphan:
+
+.. _weight_2:
+
+weight
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.weight_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================================
+
+Parent                                                             Summary
+
+==================================   =====================================
+:ref:`line <line>`                              Parameters for plot lines.
+
+:ref:`line_in_file <line_in_file>`       Parameters for plot lines (file).
+
+==================================   =====================================
+

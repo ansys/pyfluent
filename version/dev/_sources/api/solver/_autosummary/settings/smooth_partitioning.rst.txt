@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _smooth_partitioning:
+
+smooth_partitioning
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.smooth_partitioning
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =================================
+
+Parent                                               Summary
+
+========================   =================================
+:ref:`smooth <smooth_1>`   Partition smoothing optimization.
+
+========================   =================================
+

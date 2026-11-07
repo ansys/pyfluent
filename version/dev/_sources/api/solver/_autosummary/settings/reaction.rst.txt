@@ -1,0 +1,45 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reaction:
+
+reaction
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reaction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==============================
+
+Attribute                                                                   Summary
+
+==================================================   ==============================
+:ref:`react <react>`                                 Activate reaction mechanisms?.
+
+:ref:`reaction_mechs <reaction_mechs_1>`                        Reaction Mechanism.
+
+:ref:`surface_volume_ratio <surface_volume_ratio>`            Surface-Volume-Ratio.
+
+:ref:`faradaic_heat <faradaic_heat>`                         Enable Faradaic Heat?.
+
+==================================================   ==============================
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`fluid_item <fluid_1_item>`   'child_object_type' of fluid.
+
+:ref:`phase_item <phase_2_item>`   'child_object_type' of phase.
+
+:ref:`fluid_item <fluid_2_item>`   'child_object_type' of fluid.
+
+:ref:`phase_item <phase_4_item>`   'child_object_type' of phase.
+
+================================   =============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _pconductivity:
+
+pconductivity
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.pconductivity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============
+
+Parent                              Summary
+
+==========================   ==============
+:ref:`options <options_7>`   Model options.
+
+==========================   ==============
+

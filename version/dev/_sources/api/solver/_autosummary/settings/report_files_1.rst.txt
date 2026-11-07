@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report_files_1:
+
+report_files
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.report_files_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================================
+
+Parent                                                       Summary
+
+==============================   ===================================
+:ref:`clear_data <clear_data>`   Delete the report file from system.
+
+==============================   ===================================
+

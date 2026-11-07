@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report_name_6:
+
+report_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.report_name_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =================================================
+
+Parent                                                                                                 Summary
+
+==========================================================   =================================================
+:ref:`rename_simulation_report <rename_simulation_report>`   Rename a report which has already been generated.
+
+==========================================================   =================================================
+

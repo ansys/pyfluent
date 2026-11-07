@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _visible_1:
+
+visible
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.visible_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`mirror_planes_item <mirror_planes_item>`   'child_object_type' of mirror_planes.
+
+==============================================   =====================================
+

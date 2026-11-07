@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _optimal_displacements:
+
+optimal_displacements
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.optimal_displacements
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ========================
+
+Argument                                           Summary
+
+===============================   ========================
+:ref:`file_name <file_name_58>`   Displacements file name.
+
+===============================   ========================
+
+.. rubric:: Included in:
+
+========================   ==========================
+
+Parent                                        Summary
+
+========================   ==========================
+:ref:`export <export_2>`   Design tool export object.
+
+========================   ==========================
+

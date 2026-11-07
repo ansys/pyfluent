@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _impingement_model:
+
+impingement_model
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.impingement_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==============================================================================
+
+Parent                                                                                                                            Summary
+
+========================================================   ==============================================================================
+:ref:`user_defined_functions <user_defined_functions_1>`   Registers user-defined functions (UDFs) for customizing the particle behavior.
+
+========================================================   ==============================================================================
+

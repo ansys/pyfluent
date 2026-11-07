@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_boundary_item:
+
+species_boundary_item
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.species_boundary_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   =======
+
+Attribute                    Summary
+
+==========================   =======
+:ref:`fuel <fuel>`             Fuel.
+
+:ref:`oxidizer <oxidizer>`      Oxi.
+
+==========================   =======
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`species_boundary <species_boundary>`   Species Fuel and Oxidizer Fractions.
+
+==========================================   ====================================
+

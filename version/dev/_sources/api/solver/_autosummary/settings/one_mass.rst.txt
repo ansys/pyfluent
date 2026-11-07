@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _one_mass:
+
+one_mass
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.one_mass
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`venting_model <venting_model>`   Venting model settings.
+
+====================================   =======================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _shield_bl_distance:
+
+shield_bl_distance
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.shield_bl_distance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ====================================
+
+Parent                                                                              Summary
+
+====================================================   ====================================
+:ref:`low_diffusion_central <low_diffusion_central>`   Low Diffusion Central options group.
+
+====================================================   ====================================
+

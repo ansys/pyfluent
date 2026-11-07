@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _ray_points_count:
+
+ray_points_count
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.ray_points_count
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`create <create_2>`               Copy optical beam grid.
+
+:ref:`beams_item <beams_item>`   'child_object_type' of beams.
+
+==============================   =============================
+

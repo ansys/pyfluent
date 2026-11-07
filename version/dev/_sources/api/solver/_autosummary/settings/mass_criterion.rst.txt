@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mass_criterion:
+
+mass_criterion
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mass_criterion
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`injection_item <injection_2_item>`   'child_object_type' of injection.
+
+========================================   =================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _field_14:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.field_14
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`export_data <export_data_2>`   Export data for interpolation.
+
+==================================   ==============================
+

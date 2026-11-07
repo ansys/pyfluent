@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _capg_hightu:
+
+capg_hightu
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.capg_hightu
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`transition <transition>`   The transition model options.
+
+==============================   =============================
+

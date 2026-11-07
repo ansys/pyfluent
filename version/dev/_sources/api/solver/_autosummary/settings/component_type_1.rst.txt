@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _component_type_1:
+
+component_type
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.component_type_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`aeromechanics_item <aeromechanics_item>`   'child_object_type' of aeromechanics.
+
+==============================================   =====================================
+

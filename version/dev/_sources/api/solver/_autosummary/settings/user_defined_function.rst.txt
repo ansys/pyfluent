@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _user_defined_function:
+
+user_defined_function
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.user_defined_function
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`method <method_3>`   The auxiliary fluid property method.
+
+========================   ====================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _option:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.option
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ==================================================
+
+Parent                                                                                                        Summary
+
+================================================================   ==================================================
+:ref:`fieldview_unstruct_surfaces <fieldview_unstruct_surfaces>`   Write a Fieldview unstructured surface mesh, data.
+
+================================================================   ==================================================
+

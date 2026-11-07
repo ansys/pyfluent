@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _upper_liq_pre:
+
+upper_liq_pre
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.upper_liq_pre
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================
+
+Parent                                       Summary
+
+================================   =================
+:ref:`parameters <parameters_5>`   Model parameters.
+
+================================   =================
+

@@ -1,0 +1,18 @@
+.. _ref_solver_tui_parametric_study_update:
+
+update
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.parametric_study.update
+   :members: auto_dp_report_generation, auto_dp_report_html_export, auto_dp_report_pdf_export, auto_dp_report_pptx_export, auto_parametric_report_generation, auto_parametric_report_html_export, auto_parametric_report_update_dp_data, auto_update_mesh_morphs, print_update_method, set_update_method, update_all, update_current, update_selected_design_points
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   concurrent/concurrent_contents

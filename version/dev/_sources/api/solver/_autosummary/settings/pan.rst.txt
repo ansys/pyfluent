@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _pan:
+
+pan
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.pan
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ============================
+
+Argument                                      Summary
+
+======================   ============================
+:ref:`right <right_2>`   Pan the camera to the right.
+
+:ref:`up <up_2>`              Pan the camera upwards.
+
+======================   ============================
+
+.. rubric:: Included in:
+
+======================   ================================================================================
+
+Parent                                                                                            Summary
+
+======================   ================================================================================
+:ref:`camera <camera>`   Camera settings for adjusting the camera position, target, and other parameters.
+
+======================   ================================================================================
+

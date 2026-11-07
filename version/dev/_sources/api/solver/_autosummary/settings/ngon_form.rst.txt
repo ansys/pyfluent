@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _ngon_form:
+
+ngon_form
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.ngon_form
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ==================
+
+Parent                          Summary
+
+==================   ==================
+:ref:`cgns <cgns>`   Write a CGNS file.
+
+==================   ==================
+

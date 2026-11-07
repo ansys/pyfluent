@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _laminar:
+
+laminar
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.laminar
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =====================================================
+
+Parent                                                                     Summary
+
+==========================   =====================================================
+:ref:`general <general_2>`   Allows to change general model variables or settings.
+
+==========================   =====================================================
+

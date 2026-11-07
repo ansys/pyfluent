@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _normalized:
+
+normalized
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.normalized
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`perdisp_properties_item <perdisp_properties_item>`   'child_object_type' of perdisp_properties.
+
+========================================================   ==========================================
+

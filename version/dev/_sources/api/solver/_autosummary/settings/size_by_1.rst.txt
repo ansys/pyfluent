@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _size_by_1:
+
+size_by
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.size_by_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`variable <variable_1>`   'variable' child.
+
+============================   =================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _keyframe:
+
+keyframe
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.keyframe
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================
+
+Parent                                                      Summary
+
+========================================   ========================
+:ref:`advance_quality <advance_quality>`   Advance Quality setting.
+
+========================================   ========================
+

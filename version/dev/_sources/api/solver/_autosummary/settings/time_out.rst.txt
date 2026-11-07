@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _time_out:
+
+time_out
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.time_out
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ========================
+
+Parent                                Summary
+
+==================   ========================
+:ref:`set <set_2>`   The parallel set object.
+
+==================   ========================
+

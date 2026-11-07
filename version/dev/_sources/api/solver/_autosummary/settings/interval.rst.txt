@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interval:
+
+interval
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.interval
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================================================================================
+
+Parent                                                                                                                            Summary
+
+======================================================   ================================================================================
+:ref:`divergence_prevention <divergence_prevention_1>`   Adjust numerical settings automatically when a divergence pattern is identified.
+
+======================================================   ================================================================================
+

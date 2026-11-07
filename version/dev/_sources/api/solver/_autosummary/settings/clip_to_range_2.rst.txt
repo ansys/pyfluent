@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _clip_to_range_2:
+
+clip_to_range
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.clip_to_range_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==================
+
+Attribute                                 Summary
+
+============================   ==================
+:ref:`min_value <min_value>`   'min_value' child.
+
+:ref:`max_value <max_value>`   'max_value' child.
+
+============================   ==================
+
+.. rubric:: Included in:
+
+======================   ================================
+
+Parent                                            Summary
+
+======================   ================================
+:ref:`range <range_5>`   Range using the min max options.
+
+======================   ================================
+

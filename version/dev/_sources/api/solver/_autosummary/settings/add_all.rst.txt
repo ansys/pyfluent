@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _add_all:
+
+add_all
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.add_all
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================================
+
+Parent                                                           Summary
+
+============================   =========================================
+:ref:`view_sync <view_sync>`   Settings related to view synchronization.
+
+============================   =========================================
+

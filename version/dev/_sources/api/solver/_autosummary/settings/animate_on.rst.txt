@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _animate_on:
+
+animate_on
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.animate_on
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`create <create_18>`                                          Create New solution animation Object.
+
+:ref:`solution_animations_item <solution_animations_item>`   'child_object_type' of solution_animations.
+
+==========================================================   ===========================================
+

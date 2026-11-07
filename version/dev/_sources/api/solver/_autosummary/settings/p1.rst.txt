@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _p1:
+
+p1
+==
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.p1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================
+
+Parent                                                                      Summary
+
+============================================   ====================================
+:ref:`line_surface_item <line_surface_item>`   'child_object_type' of line_surface.
+
+:ref:`rake_surface_item <rake_surface_item>`   'child_object_type' of rake_surface.
+
+============================================   ====================================
+

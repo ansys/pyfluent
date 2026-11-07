@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rfg_number_of_modes:
+
+rfg_number_of_modes
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rfg_number_of_modes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`turbulence <turbulence_6>`   Allows to change turbulence model variables or settings.
+
+================================   ========================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _termination_criteria:
+
+termination_criteria
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.termination_criteria
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`mg_controls_item <mg_controls_1_item>`   'child_object_type' of mg_controls.
+
+============================================   ===================================
+

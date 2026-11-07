@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _p_jump:
+
+p_jump
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.p_jump
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================================================
+
+Parent                                                                   Summary
+
+============================   =================================================
+:ref:`periodic <periodic_1>`   Periodic boundary condition settings for threads.
+
+============================   =================================================
+

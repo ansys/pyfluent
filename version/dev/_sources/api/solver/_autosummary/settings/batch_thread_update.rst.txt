@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _batch_thread_update:
+
+batch_thread_update
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.batch_thread_update
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================================
+
+Parent                                                        Summary
+
+============================   ======================================
+:ref:`advanced <advanced_3>`   Control settings while doing BC setup.
+
+============================   ======================================
+

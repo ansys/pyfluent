@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _left_top:
+
+left_top
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.left_top
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===========================
+
+Parent                                       Summary
+
+======================   ===========================
+:ref:`titles <titles>`   Settings related to titles.
+
+======================   ===========================
+

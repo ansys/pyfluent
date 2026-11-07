@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _layering_1:
+
+layering
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.layering_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ================================
+
+Attribute                                                                                           Summary
+
+========================================================================   ================================
+:ref:`use_layering <use_layering>`                                           Use layering for partitioning.
+
+:ref:`base_face_zone_for_partitioning <base_face_zone_for_partitioning>`   Base face zone for partitioning.
+
+========================================================================   ================================
+
+.. rubric:: Included in:
+
+==================   ===========
+
+Parent                   Summary
+
+==================   ===========
+:ref:`set <set_3>`   The object.
+
+==================   ===========
+

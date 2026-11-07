@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _backflow_turbulent_length_scale:
+
+backflow_turbulent_length_scale
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.backflow_turbulent_length_scale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`turbulence <turbulence_2>`   Allows to change turbulence model variables or settings.
+
+================================   ========================================================
+

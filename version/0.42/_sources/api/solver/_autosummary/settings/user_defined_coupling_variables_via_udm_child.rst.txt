@@ -1,0 +1,44 @@
+:orphan:
+
+.. _user_defined_coupling_variables_via_udm_child:
+
+user_defined_coupling_variables_via_udm_child
+=============================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.user_defined_coupling_variables_via_udm_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =================================================================================================================
+
+Attribute                                                                                                                                                      Summary
+
+==================================================   =================================================================================================================
+:ref:`udm_index <udm_index>`                             Index for the user defined coupling variable. This index is used to identify the UDM in the fluent case file.
+
+:ref:`zone_names <zone_names_5>`                                                                                 List of zones for the user defined coupling variable.
+
+:ref:`extensive <extensive>`                                        Indicates whether the variable is extensive (e.g., total energy) or intensive (e.g., temperature).
+
+:ref:`input <input>`                                                                                 Marks the variable as an input to Fluent from the coupled system.
+
+:ref:`output <output_1>`                                                                            Marks the variable as an output from Fluent to the coupled system.
+
+:ref:`output_variable_name <output_variable_name>`                                              Specifies the name for the output variable sent to the coupled system.
+
+:ref:`input_variable_name <input_variable_name>`                                            Specifies the name of the input variable received from the coupled system.
+
+==================================================   =================================================================================================================
+
+.. rubric:: Included in:
+
+========================================================================================   =============================================================================================
+
+Parent                                                                                                                                                                           Summary
+
+========================================================================================   =============================================================================================
+:ref:`user_defined_coupling_variables_via_udm <user_defined_coupling_variables_via_udm>`       Enables configuration of user-defined coupling variables using User-Defined Memory (UDM).
+
+========================================================================================   =============================================================================================
+

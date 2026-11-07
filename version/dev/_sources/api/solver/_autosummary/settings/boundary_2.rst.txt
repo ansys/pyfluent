@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _boundary_2:
+
+boundary_2
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.boundary_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =======================
+
+Parent                                     Summary
+
+========================   =======================
+:ref:`create <create_7>`   Create mesh interfaces.
+
+========================   =======================
+

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cmu:
+
+cmu
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cmu
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ========================
+
+Parent                                                  Summary
+
+====================================   ========================
+:ref:`coefficients <coefficients_5>`        Coefficients group.
+
+:ref:`earsm <earsm>`                   The EARSM model options.
+
+====================================   ========================
+

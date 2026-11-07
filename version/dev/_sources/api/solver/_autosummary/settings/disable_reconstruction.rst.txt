@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _disable_reconstruction:
+
+disable_reconstruction
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.disable_reconstruction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`controls <controls_1>`   Solution controls object.
+
+============================   =========================
+

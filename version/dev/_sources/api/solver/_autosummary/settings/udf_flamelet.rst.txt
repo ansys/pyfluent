@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _udf_flamelet:
+
+udf_flamelet
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.udf_flamelet
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`parameters <parameters_2>`   PDF Flamelet Parameters.
+
+================================   ========================
+

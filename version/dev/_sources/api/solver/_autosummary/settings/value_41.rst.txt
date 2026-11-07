@@ -1,0 +1,38 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _value_41:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.value_41
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================================   =====================================
+
+Parent                                                                      Summary
+
+===========================================   =====================================
+:ref:`factor <factor_3>`                                 Prescribed scaling factor.
+
+:ref:`parameters_item <parameters_11_item>`      'child_object_type' of parameters.
+
+:ref:`angle <angle_8>`                                   Prescribed rotation angle.
+
+:ref:`x <x_12>`                                          Prescribed X displacement.
+
+:ref:`y <y_12>`                                          Prescribed Y displacement.
+
+:ref:`z <z_11>`                                          Prescribed Z displacement.
+
+:ref:`axis_1 <axis_1_2>`                      Prescribed scaling factor for axis 1.
+
+:ref:`axis_2 <axis_2_2>`                      Prescribed scaling factor for axis 2.
+
+:ref:`axis_3 <axis_3_1>`                      Prescribed scaling factor for axis 3.
+
+===========================================   =====================================
+

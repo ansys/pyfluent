@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _window_dump_cmd:
+
+window_dump_cmd
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.window_dump_cmd
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===========================================================
+
+Parent                                                                                       Summary
+
+======================================   ===========================================================
+:ref:`driver_options <driver_options>`   Configure export drivers and related image capture options.
+
+======================================   ===========================================================
+

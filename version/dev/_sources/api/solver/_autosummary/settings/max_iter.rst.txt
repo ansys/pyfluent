@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _max_iter:
+
+max_iter
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_iter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`controls <controls>`   The structure controls object.
+
+==========================   ==============================
+

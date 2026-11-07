@@ -1,0 +1,23 @@
+:orphan:
+
+.. _z_axis:
+
+z_axis
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.z_axis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================================================
+
+Parent                                                                               Summary
+
+====================================   =====================================================
+:ref:`cone_settings <cone_settings>`                     Lagrangian cone injection settings.
+
+:ref:`direction_2 <direction_2>`           Lagrangian atomizer injection direction settings.
+
+====================================   =====================================================
+

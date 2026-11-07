@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mechanisms_item:
+
+mechanisms_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mechanisms_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ==============================================
+
+Attribute                                                               Summary
+
+==============================   ==============================================
+:ref:`name <name_5>`                                        Name of the object.
+
+:ref:`reactions <reactions_2>`   The reactions that are part of this mechanism.
+
+==============================   ==============================================
+
+.. rubric:: Included in:
+
+==============================   ===========
+
+Parent                               Summary
+
+==============================   ===========
+:ref:`mechanisms <mechanisms>`   The object.
+
+==============================   ===========
+

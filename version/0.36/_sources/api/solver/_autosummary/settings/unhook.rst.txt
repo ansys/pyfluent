@@ -1,0 +1,21 @@
+:orphan:
+
+.. _unhook:
+
+unhook
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.unhook
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ============================
+
+Parent                                          Summary
+
+========================   ============================
+:ref:`model_9 <model_9>`       Model management object.
+
+========================   ============================
+

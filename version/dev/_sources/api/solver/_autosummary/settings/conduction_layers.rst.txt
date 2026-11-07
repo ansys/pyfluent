@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _conduction_layers:
+
+conduction_layers
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.conduction_layers
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`conduction_layers_item <conduction_layers_item>`
+
+Access each :ref:`conduction_layers_item <conduction_layers_item>` by index using ``conduction_layers[<index>]``.
+
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`thermal <thermal>`   Allows to change thermal model variables or settings.
+
+========================   =====================================================
+
