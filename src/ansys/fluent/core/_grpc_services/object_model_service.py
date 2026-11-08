@@ -23,7 +23,7 @@
 
 """Wrapper over the object model gRPC service of Fluent (v1 proto API)."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 import logging
 from threading import RLock
 from typing import Any
@@ -43,6 +43,7 @@ from ansys.fluent.core.services.object_model_utilities import (
     convert_se_path_to_path,
 )
 
+ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.object_model_v1")
 
 
@@ -225,7 +226,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
                 "supported from Ansys 2023R2 onward."
             ) from None
 
-    def get_attribute_value(self, rules: str, path: str, attribute: str) -> Any:
+    def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
         request = object_model_pb2.GetAttributeValueRequest(
             rules=rules, path=path, attribute=attribute
@@ -233,7 +234,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         response = self._stub.GetAttributeValue(request, metadata=self._metadata)
         return _convert_variant_to_value(response.result)
 
-    def get_state(self, rules: str, path: str) -> Any:
+    def get_state(self, rules: str, path: str) -> ValueT:
         """Get state."""
         request = object_model_pb2.GetStateRequest(rules=rules, path=path)
         response = self._stub.GetState(request, metadata=self._metadata)
@@ -272,7 +273,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         response = self._stub.DeleteChildObjects(request, metadata=self._metadata)
         return response.state, response.deleted_paths
 
-    def set_state(self, rules: str, path: str, state: Any) -> None:
+    def set_state(self, rules: str, path: str, state: ValueT) -> None:
         """Set state."""
         request = object_model_pb2.SetStateRequest(rules=rules, path=path, wait=True)
         _convert_value_to_variant(state, request.state)
@@ -292,7 +293,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         self,
         rules: str,
         path: str,
-        dict_state: dict[str, Any],
+        dict_state: dict[str, ValueT],
         recursive=False,
     ) -> None:
         """Update the dict."""
@@ -320,8 +321,8 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         return response.state, response.deleted_paths
 
     def execute_command(
-        self, rules: str, path: str, command: str, args: dict[str, Any]
-    ) -> Any:
+        self, rules: str, path: str, command: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the command."""
         request = object_model_pb2.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
@@ -335,8 +336,8 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         )
 
     def execute_query(
-        self, rules: str, path: str, query: str, args: dict[str, Any]
-    ) -> Any:
+        self, rules: str, path: str, query: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the query."""
         request = object_model_pb2.ExecuteQueryRequest(
             rules=rules, path=path, query=query
@@ -438,7 +439,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         return subscription
 
     def add_on_changed(
-        self, rules: str, path: str, cb: Callable[[Any], None]
+        self, rules: str, path: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Add on changed."""
         request_dict = {
@@ -494,7 +495,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         path: str,
         command: str,
         obj,
-        cb: Callable[[str, Any], None],
+        cb: Callable[[str, ValueT], None],
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
@@ -513,7 +514,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         return subscription
 
     def add_on_command_executed(
-        self, rules: str, path: str, cb: Callable[[str, Any], None]
+        self, rules: str, path: str, cb: Callable[[str, ValueT], None]
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
@@ -531,7 +532,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         return subscription
 
     def add_on_attribute_changed(
-        self, rules: str, path: str, attribute: str, cb: Callable[[Any], None]
+        self, rules: str, path: str, attribute: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Add on attribute changed."""
         request_dict = {
@@ -555,7 +556,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         path: str,
         command: str,
         attribute: str,
-        cb: Callable[[Any], None],
+        cb: Callable[[ValueT], None],
     ) -> EventSubscription:
         """Add on command attribute changed."""
         request_dict = {
@@ -659,7 +660,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         return None, ()
 
 
-def _convert_value_to_variant(val: Any, var: Variant) -> None:
+def _convert_value_to_variant(val: ValueT, var: Variant) -> None:
     """Convert a Python data type to Fluent's variant type (v1 proto)."""
     if isinstance(val, bool):
         var.bool_state = val
@@ -680,7 +681,7 @@ def _convert_value_to_variant(val: Any, var: Variant) -> None:
             _convert_value_to_variant(v, var.variant_map_state.item[k])
 
 
-def _convert_variant_to_value(var: Variant) -> Any:
+def _convert_variant_to_value(var: Variant) -> ValueT:
     """Convert Fluent's variant type to a Python data type (v1 proto)."""
     if var.HasField("bool_state"):
         return var.bool_state
