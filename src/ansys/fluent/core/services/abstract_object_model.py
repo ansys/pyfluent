@@ -24,19 +24,22 @@
 """Abstract object model wrapper."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Sequence
 from typing import Any
+
+ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 
 
 class AbstractObjectModel(ABC):
     """Abstract base class for the object model."""
 
     @abstractmethod
-    def get_attribute_value(self, rules: str, path: str, attribute: str) -> Any:
+    def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
         pass
 
     @abstractmethod
-    def get_state(self, rules: str, path: str) -> Any:
+    def get_state(self, rules: str, path: str) -> ValueT:
         """Get state."""
         pass
 
@@ -68,7 +71,7 @@ class AbstractObjectModel(ABC):
         pass
 
     @abstractmethod
-    def set_state(self, rules: str, path: str, state: Any) -> None:
+    def set_state(self, rules: str, path: str, state: ValueT) -> None:
         """Set state."""
         pass
 
@@ -82,7 +85,7 @@ class AbstractObjectModel(ABC):
         self,
         rules: str,
         path: str,
-        dict_state: dict[str, Any],
+        dict_state: dict[str, ValueT],
         recursive=False,
     ) -> None:
         """Update the dict."""
@@ -95,15 +98,15 @@ class AbstractObjectModel(ABC):
 
     @abstractmethod
     def execute_command(
-        self, rules: str, path: str, command: str, args: dict[str, Any]
-    ) -> Any:
+        self, rules: str, path: str, command: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the command."""
         pass
 
     @abstractmethod
     def execute_query(
-        self, rules: str, path: str, query: str, args: dict[str, Any]
-    ) -> Any:
+        self, rules: str, path: str, query: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the query."""
         pass
 
