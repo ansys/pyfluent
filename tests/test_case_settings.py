@@ -136,7 +136,7 @@ class FakeFluent:
         self.case = case
         self.version = version
         self.dimension = dimension
-        self.commands = ["write_case", "read_case", "replace_mesh"]
+        self.commands = ["write_case", "read_case", "replace"]
         self.fail = set()
         self.calls = []
 
@@ -152,7 +152,8 @@ class FakeFluent:
         loaded = json.loads(
             self.env.fluent_path(self.env.before_read(name)).read_text()
         )
-        if command == "replace_mesh":
+        if command == "replace":
+            # Fluent's mesh.replace keeps the settings and takes the file's mesh.
             self.case = {**self.case, "mesh": loaded["mesh"], "zones": loaded["zones"]}
         else:
             self.case = loaded
@@ -181,18 +182,23 @@ class FakeFileMenu:
     def __init__(self, fluent):
         self._fluent = fluent
 
-    @property
-    def command_names(self):
-        return list(self._fluent.commands)
-
     def write_case(self, file_name):
         self._fluent.write(file_name)
 
     def read_case(self, file_name):
         self._fluent.load("read_case", file_name)
 
-    def replace_mesh(self, file_name):
-        self._fluent.load("replace_mesh", file_name)
+
+class FakeMeshMenu:
+    def __init__(self, fluent):
+        self._fluent = fluent
+
+    @property
+    def command_names(self):
+        return [name for name in self._fluent.commands if name == "replace"]
+
+    def replace(self, file_name):
+        self._fluent.load("replace", file_name)
 
 
 class FakeSolver(Solver):
@@ -210,7 +216,9 @@ class FakeSolver(Solver):
         self._file_transfer_service = env.fts
         self._container = env.container
         self.scheme = FakeScheme(fluent)
-        self._settings = SimpleNamespace(file=FakeFileMenu(fluent))
+        self._settings = SimpleNamespace(
+            file=FakeFileMenu(fluent), mesh=FakeMeshMenu(fluent)
+        )
 
 
 @pytest.fixture
@@ -370,7 +378,7 @@ def test_keep_mesh_keeps_the_mesh_of_the_session(solver):
         target, keep_mesh=True
     )
     assert target.fake.case == case("laminar", mesh="refined")
-    assert target.fake.calls == ["write_case", "read_case", "replace_mesh"]
+    assert target.fake.calls == ["write_case", "read_case", "replace"]
 
 
 def test_keep_mesh_checks_zone_names_before_changing_anything(solver):
@@ -396,21 +404,21 @@ def test_keep_mesh_restores_the_session_when_a_case_file_has_other_zones(
 def test_keep_mesh_restores_the_session_when_replacing_the_mesh_fails(solver):
     original = case(mesh="refined")
     target = solver(case=original)
-    target.fake.fail.add("replace_mesh")
-    with pytest.raises(RuntimeError, match="rejected replace_mesh"):
+    target.fake.fail.add("replace")
+    with pytest.raises(RuntimeError, match="rejected replace"):
         CaseSettings.from_session(solver(case=case("laminar"))).apply_to(
             target, keep_mesh=True
         )
     assert target.fake.case == original
 
 
-def test_keep_mesh_needs_a_mesh_and_replace_mesh(solver):
+def test_keep_mesh_needs_a_mesh_and_mesh_replace(solver):
     settings = CaseSettings.from_session(solver(case=case()))
     with pytest.raises(RuntimeError, match="no case loaded"):
         settings.apply_to(solver(), keep_mesh=True)
     older = solver(case=case())
-    older.fake.commands.remove("replace_mesh")
-    with pytest.raises(RuntimeError, match="replace_mesh command"):
+    older.fake.commands.remove("replace")
+    with pytest.raises(RuntimeError, match="mesh.replace command"):
         settings.apply_to(older, keep_mesh=True)
 
 

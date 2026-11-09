@@ -84,15 +84,16 @@ def test_keep_mesh_keeps_the_mesh_of_the_session(
     try:
         for solver in (source, target):
             solver.settings.file.read_case(file_name=_elbow_case())
-        if "replace_mesh" not in target.settings.file.command_names:
+        if "replace" not in target.settings.mesh.command_names:
             pytest.skip("This Fluent version cannot replace a mesh.")
-        source.settings.setup.models.viscous.model = "laminar"
+        # A turbulence model: file.replace_mesh crashes Fluent 2027 R1 with one.
+        source.settings.setup.models.viscous.model = "k-epsilon"
         target.settings.mesh.scale(x_scale=2, y_scale=2, z_scale=2)
         scaled_area = _outlet_area(target)
 
         pyfluent.CaseSettings.from_session(source).apply_to(target, keep_mesh=True)
 
-        assert _viscous_model(target) == "laminar"
+        assert _viscous_model(target) == "k-epsilon"
         assert _outlet_area(target) == pytest.approx(scaled_area)
         assert _outlet_area(source) == pytest.approx(scaled_area / 4)
     finally:

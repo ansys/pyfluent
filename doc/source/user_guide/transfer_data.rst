@@ -65,7 +65,7 @@ With ``keep_mesh=True``, each session keeps its current mesh and takes only the
 settings. Fluent settings apply to zones, so the mesh of the session must have
 the same zone names as the settings. Otherwise a ``ValueError`` lists the zones
 that differ, and the session keeps its previous case. This option uses Fluent's
-``file.replace_mesh`` command.
+``mesh.replace`` command.
 
 .. code:: python
 

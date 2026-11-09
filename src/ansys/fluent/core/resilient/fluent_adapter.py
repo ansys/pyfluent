@@ -82,6 +82,7 @@ class FluentAdapter(ResilientAdapter):
             "read_mesh",
             "read",
             "replace_mesh",
+            "replace",
         }
     )
     interruptible_commands = frozenset({"iterate", "calculate", "dual_time_iterate"})

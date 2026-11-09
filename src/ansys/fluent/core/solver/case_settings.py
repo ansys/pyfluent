@@ -157,7 +157,7 @@ class CaseSettings:
         try:
             file = staging.write_file(
                 serving,
-                _file_command(session, "write_case"),
+                _command(session, "file", "write_case"),
                 directory=directory,
                 suffix=_WRITE_SUFFIX,
             )
@@ -390,9 +390,10 @@ class CaseSettings:
                 "keep_mesh=True needs a mesh in the session, but it has no case "
                 "loaded."
             )
-        if "replace_mesh" not in session.settings.file.command_names:
+        mesh = getattr(session.settings, "mesh", None)
+        if mesh is None or "replace" not in mesh.command_names:
             raise RuntimeError(
-                f"keep_mesh=True needs Fluent's replace_mesh command, which {version} "
+                f"keep_mesh=True needs Fluent's mesh.replace command, which {version} "
                 "does not provide."
             )
         if self._zones is not None:
@@ -400,7 +401,7 @@ class CaseSettings:
 
     def _apply(self, session: Any, keep_mesh: bool) -> None:
         serving = _serving(session)
-        read_case = _file_command(session, "read_case")
+        read_case = _command(session, "file", "read_case")
         if keep_mesh:
             self._apply_keeping_mesh(session, serving, read_case)
         else:
@@ -424,15 +425,17 @@ class CaseSettings:
             own_zones = _zone_names(serving)
             own_case = staging.write_file(
                 serving,
-                _file_command(session, "write_case"),
+                _command(session, "file", "write_case"),
                 directory=directory,
                 suffix=_WRITE_SUFFIX,
             )
             staging.read_file(serving, read_case, self._file)
             try:
                 _check_zones(_zone_names(serving), own_zones)
+                # mesh.replace keeps the settings. file.replace_mesh does too,
+                # but it crashes Fluent 2027 R1 with turbulence models.
                 staging.read_file(
-                    serving, _file_command(session, "replace_mesh"), own_case
+                    serving, _command(session, "mesh", "replace"), own_case
                 )
             except Exception as error:
                 try:
@@ -466,11 +469,11 @@ def _serving(session: Any) -> Any:
     return active if active is not None else session
 
 
-def _file_command(session: Any, name: str) -> Callable[[str], None]:
-    """Return a function that runs ``session.settings.file.<name>(file_name=...)``."""
+def _command(session: Any, group: str, name: str) -> Callable[[str], None]:
+    """Return a function that runs ``session.settings.<group>.<name>(file_name=...)``."""
 
     def run(file_name: str) -> None:
-        getattr(session.settings.file, name)(file_name=file_name)
+        getattr(getattr(session.settings, group), name)(file_name=file_name)
 
     return run
 
