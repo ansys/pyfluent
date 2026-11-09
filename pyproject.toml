@@ -7,7 +7,7 @@ build-backend = "hatchling.build"
 name = "ansys-fluent-core"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.12,<3.15"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
@@ -22,7 +22,7 @@ dependencies = [
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
-    "ansys-units>=0.10,<1.0",
+    "ansys-units>=0.16,<1.0",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",
@@ -64,7 +64,7 @@ ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 search = ["nltk>=3.10.3"]
 # gRPC transport. Componentization (#4618) is making gRPC optional so that the
-# generic ``ansys.solver.core`` platform layer imports without it. These
+# generic ``ansys.framework`` platform layer imports without it. These
 # packages are still part of the core requirements for backward compatibility;
 # the ``grpc`` extra pins the target install form (``ansys-fluent-core[grpc]``)
 # ahead of their removal from the core dependencies in a later phase.
@@ -76,9 +76,9 @@ grpc = [
     "grpcio-reflection>=1.30.0",
 ]
 tests = [
-    "pytest==9.1.1",
+    "pytest==9.2.0",
     "pytest-cov==7.1.0",
-    "pytest-mock==3.15.1",
+    "pytest-mock==3.17.0",
     "pytest-xdist==3.8.0",
     "pyfakefs==6.2.0",
     "docker==7.1.0",
@@ -106,14 +106,14 @@ docs = [
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.10.18",
+    "quarto-cli==1.10.19",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
     "docker==7.1.0",
     "numpy==2.5.0",
 ]
 ci_types = [
-    "basedpyright==1.40.1",
+    "basedpyright==1.40.2",
     "ansys-fluent-visualization",
     "h5py",
     "pytest",
@@ -290,14 +290,18 @@ baselineFile = ".ci/basedpyright.json"
 # report-only mode in CI during Phase 0 and become blocking in the hardening
 # phase. See doc/source/contributing/componentization.rst.
 [tool.importlinter]
-root_packages = ["ansys.fluent.core", "ansys.solver.core"]
+# ``ansys.api.fluent`` is an external, namespaced (``ansys.*``) package. It is
+# listed as a root package so the forbidden contract below can name it directly;
+# import-linter does not allow referencing subpackages of squashed external
+# packages (the shared ``ansys`` namespace).
+root_packages = ["ansys.fluent.core", "ansys.framework", "ansys.api.fluent"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
-name = "Platform layer is backend-agnostic (ansys.solver.core must not import grpc / ansys.api / ansys.fluent)"
+name = "Platform layer is backend-agnostic (ansys.framework must not import grpc / ansys.api / ansys.fluent)"
 type = "forbidden"
-source_modules = ["ansys.solver.core"]
-forbidden_modules = ["grpc", "ansys.api", "ansys.fluent"]
+source_modules = ["ansys.framework"]
+forbidden_modules = ["grpc", "ansys.api.fluent", "ansys.fluent.core"]
 
 [[tool.importlinter.contracts]]
 name = "Service contracts must not depend on the object framework (flobject)"

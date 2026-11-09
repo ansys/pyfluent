@@ -23,7 +23,7 @@
 
 """Generic, solver-agnostic platform layer shared across Ansys solvers.
 
-``ansys.solver.core`` is the public *platform* layer introduced by the
+``ansys.framework`` is the public *platform* layer introduced by the
 componentization effort (EPIC: https://github.com/ansys/pyfluent/issues/4618).
 It is a sibling namespace to ``ansys.fluent.core`` that holds the parts of the
 architecture that are not specific to Fluent: the process-controller, the
@@ -33,7 +33,7 @@ session.
 Dependency rule (enforced by import-linter; see the architecture page in the
 docs):
 
-    ``ansys.solver.core`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
+    ``ansys.framework`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
     ``ansys.api.*``.
 
 Solver-specific layers (such as ``ansys.fluent.core``) may depend on this
@@ -42,3 +42,15 @@ package, never the reverse.
 This package is currently a stub. Modules are moved here incrementally, each
 behind a backward-compatible shim at the original ``ansys.fluent.core`` path.
 """
+
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _distribution_version
+
+# Read the version from the distribution metadata rather than importing
+# ``ansys.fluent.core`` (forbidden by the dependency rule above). This keeps a
+# single source of truth and lets packaging smoke tests resolve ``__version__``
+# from this top-level package, which is the shallowest in the distribution.
+try:
+    __version__ = _distribution_version("ansys-fluent-core")
+except PackageNotFoundError:  # pragma: no cover - source tree without metadata
+    __version__ = "0.0.0.dev0"
