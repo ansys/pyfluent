@@ -1,0 +1,143 @@
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""CaseSettings between live Fluent solver sessions."""
+
+from pathlib import Path
+
+import pytest
+
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core.examples import download_file
+
+# A Scheme variable saved in case files, which the settings API does not expose.
+_MARKER = "pyfluent/case-settings-marker"
+
+
+def _elbow_case() -> str:
+    return download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+
+
+def _set_marker(solver, value: int) -> None:
+    solver.scheme.eval(f"(rp-var-define '{_MARKER} 0 'integer #f)")
+    solver.scheme.eval(f"(rpsetvar '{_MARKER} {value})")
+
+
+def _marker(solver) -> int:
+    return solver.scheme.eval(f"(rpgetvar '{_MARKER})")
+
+
+def _viscous_model(solver) -> str:
+    return solver.settings.setup.models.viscous.model()
+
+
+def _outlet_area(solver) -> float:
+    return solver.fields.reduction.area(locations=["outlet"])
+
+
+def test_settings_outside_the_settings_api_are_applied_to_several_sessions(
+    new_solver_session, new_solver_session_wo_exit
+):
+    source, target = new_solver_session, new_solver_session_wo_exit
+    try:
+        source.settings.file.read_case(file_name=_elbow_case())
+        source.settings.setup.models.viscous.model = "laminar"
+        _set_marker(source, 42)
+        settings = pyfluent.CaseSettings.from_session(source)
+        source.settings.setup.models.viscous.model = "k-epsilon"
+        _set_marker(source, 7)
+
+        # Applying to the source session too brings it back to the captured state.
+        settings.apply_to(target, source)
+
+        for solver in (target, source):
+            assert _viscous_model(solver) == "laminar"
+            assert _marker(solver) == 42
+    finally:
+        target.exit()
+
+
+def test_keep_mesh_keeps_the_mesh_of_the_session(
+    new_solver_session, new_solver_session_wo_exit
+):
+    source, target = new_solver_session, new_solver_session_wo_exit
+    try:
+        for solver in (source, target):
+            solver.settings.file.read_case(file_name=_elbow_case())
+        if "replace_mesh" not in target.settings.file.command_names:
+            pytest.skip("This Fluent version cannot replace a mesh.")
+        source.settings.setup.models.viscous.model = "laminar"
+        target.settings.mesh.scale(x_scale=2, y_scale=2, z_scale=2)
+        scaled_area = _outlet_area(target)
+
+        pyfluent.CaseSettings.from_session(source).apply_to(target, keep_mesh=True)
+
+        assert _viscous_model(target) == "laminar"
+        assert _outlet_area(target) == pytest.approx(scaled_area)
+        assert _outlet_area(source) == pytest.approx(scaled_area / 4)
+    finally:
+        target.exit()
+
+
+def test_settings_from_a_case_file_can_be_saved(new_solver_session, tmp_path):
+    solver = new_solver_session
+    file = Path(_elbow_case())
+    if not file.is_absolute():
+        # Container sessions get the name of a file in the mounted folder.
+        file = Path(pyfluent.config.examples_path) / file
+    settings = pyfluent.CaseSettings.from_file(file)
+
+    settings.apply_to(solver)
+    saved = settings.save(tmp_path / "elbow_copy.cas.h5")
+
+    assert "cold-inlet" in solver.settings.setup.boundary_conditions.velocity_inlet
+    assert saved.read_bytes() == file.read_bytes()
+
+
+@pytest.mark.standalone
+def test_applying_to_a_resilient_session_can_be_rolled_back(
+    new_solver_session, new_solver_session_wo_exit, tmp_path
+):
+    from ansys.fluent.core.resilient import (
+        CheckpointConfig,
+        ResilientConfig,
+        enable_resilient_mode,
+    )
+
+    source, target = new_solver_session, new_solver_session_wo_exit
+    try:
+        for solver in (source, target):
+            solver.settings.file.read_case(file_name=_elbow_case())
+        source.settings.setup.models.viscous.model = "laminar"
+        enable_resilient_mode(
+            target, ResilientConfig(checkpoint=CheckpointConfig(directory=tmp_path))
+        )
+
+        pyfluent.CaseSettings.from_session(source).apply_to(target)
+
+        assert _viscous_model(target) == "laminar"
+        assert target.resilient.checkpoints[-1].name == "case-settings"
+        target.resilient.rollback("auto-read_case")
+        assert _viscous_model(target) == "k-omega"
+    finally:
+        target.exit()

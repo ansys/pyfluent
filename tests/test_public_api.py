@@ -52,6 +52,7 @@ def test_ansys_fluent_core_public_api():
         "CalculationsResumedEventInfo",
         "CalculationsStartedEventInfo",
         "CaseLoadedEventInfo",
+        "CaseSettings",
         "DataLoadedEventInfo",
         "Dimension",
         "Event",
