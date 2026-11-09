@@ -27,7 +27,7 @@
 over gRPC: the channel, the request metadata/authentication, the shared error
 state, and the version-detected service factory (and hence the services). It
 implements the backend-neutral
-:class:`~ansys.solver.core.transport.Transport` protocol so that higher layers
+:class:`~ansys.framework.transport.Transport` protocol so that higher layers
 can depend on the protocol rather than on gRPC directly.
 """
 
@@ -36,7 +36,7 @@ from __future__ import annotations
 from typing import Any
 
 from ansys.fluent.core.utils.networking import get_uds_path
-from ansys.solver.core.connection import ErrorState
+from ansys.framework.connection import ErrorState
 
 
 class GrpcTransport:

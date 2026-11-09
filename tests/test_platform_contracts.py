@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Unit tests for the ansys.solver.core platform contracts (no Fluent needed)."""
+"""Unit tests for the ansys.framework platform contracts (no Fluent needed)."""
 
 import pytest
 

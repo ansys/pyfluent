@@ -60,14 +60,14 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.networking import is_localhost
-from ansys.platform.instancemanagement import Instance
 
 # ``MonitorThread`` is re-exported here for backward compatibility.
-from ansys.solver.core.connection import (  # noqa: F401
+from ansys.framework.connection import (  # noqa: F401
     Connection,
     ErrorState,
     MonitorThread,
 )
+from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
 
 logger = logging.getLogger("pyfluent.general")

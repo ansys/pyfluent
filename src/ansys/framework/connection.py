@@ -68,7 +68,7 @@ class MonitorThread(threading.Thread):
 class ErrorState:
     """Indicates the error state of a connected client.
 
-    Satisfies the :class:`~ansys.solver.core.transport.ErrorState` protocol.
+    Satisfies the :class:`~ansys.framework.transport.ErrorState` protocol.
 
     Examples
     --------
