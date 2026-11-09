@@ -38,6 +38,7 @@ environments and cleanup scripts. Backend-specific runtimes live in the
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 import os
 from pathlib import Path
@@ -139,6 +140,106 @@ class ProcessLauncher(Protocol):
     def launch(self) -> ProcessHandle:
         """Start the server and return a handle to it without waiting for readiness."""
         ...
+
+
+class LocalProcess:
+    """:class:`ProcessHandle` for a server running as a local subprocess.
+
+    Parameters
+    ----------
+    process : subprocess.Popen
+        The server process.
+    endpoint : Endpoint, optional
+        Connection endpoint, if known at launch.
+    cleanup_paths : iterable of str or os.PathLike, optional
+        Files removed by :meth:`cleanup`.
+    """
+
+    container_id: str | None = None
+
+    def __init__(
+        self,
+        process: subprocess.Popen,
+        endpoint: Endpoint | None = None,
+        cleanup_paths: Iterable[str | os.PathLike] = (),
+    ) -> None:
+        """Initialize the handle."""
+        self.process = process
+        self._endpoint = endpoint
+        self._cleanup_paths = [Path(path) for path in cleanup_paths]
+
+    @property
+    def pid(self) -> int:
+        """Process ID."""
+        return self.process.pid
+
+    @property
+    def endpoint(self) -> Endpoint | None:
+        """Connection endpoint, or ``None`` if not known."""
+        return self._endpoint
+
+    def is_alive(self) -> bool:
+        """Whether the process is still running."""
+        return self.process.poll() is None
+
+    def wait(self, timeout: float | None = None) -> bool:
+        """Wait for the process to finish; return whether it finished in time."""
+        try:
+            self.process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            return False
+        return True
+
+    def terminate(self, grace_period: float = 5) -> None:
+        """Stop the process, killing it if it is still running after ``grace_period`` seconds."""
+        if not self.is_alive():
+            return
+        self.process.terminate()
+        if not self.wait(grace_period):
+            self.process.kill()
+            self.process.wait()
+
+    def cleanup(self) -> None:
+        """Remove the cleanup files."""
+        for path in self._cleanup_paths:
+            path.unlink(missing_ok=True)
+
+
+class SubprocessLauncher:
+    """:class:`ProcessLauncher` that runs a command as a local subprocess.
+
+    Parameters
+    ----------
+    args : str or sequence of str
+        Command to run.
+    endpoint : Endpoint, optional
+        Connection endpoint of the server, if known in advance.
+    cleanup_paths : iterable of str or os.PathLike, optional
+        Files removed by the handle's ``cleanup()``.
+    **popen_kwargs
+        Keyword arguments for ``subprocess.Popen``.
+    """
+
+    def __init__(
+        self,
+        args: str | Sequence[str],
+        endpoint: Endpoint | None = None,
+        cleanup_paths: Iterable[str | os.PathLike] = (),
+        **popen_kwargs: Any,
+    ) -> None:
+        """Initialize the launcher."""
+        self.args = args
+        self.endpoint = endpoint
+        self.cleanup_paths = list(cleanup_paths)
+        self.popen_kwargs = popen_kwargs
+
+    def launch(self) -> LocalProcess:
+        """Start the command and return a handle to it."""
+        return LocalProcess(
+            subprocess.Popen(self.args, **self.popen_kwargs),
+            endpoint=self.endpoint,
+            cleanup_paths=self.cleanup_paths,
+        )
 
 
 class BaseLauncher(ABC):

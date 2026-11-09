@@ -33,7 +33,7 @@ backend can be swapped without touching them.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 
 @runtime_checkable
@@ -94,3 +94,24 @@ class Transport(Protocol):
     def close(self) -> None:
         """Close the connection and release its resources."""
         ...
+
+
+class ServingProbe:
+    """Readiness probe that passes while a transport reports it is serving.
+
+    It satisfies :class:`ansys.framework.process.ReadinessProbe`, so the process
+    layer can wait for a server without knowing the backend's health check.
+
+    Parameters
+    ----------
+    transport : Transport
+        Transport whose ``is_serving`` state is checked.
+    """
+
+    def __init__(self, transport: Transport) -> None:
+        """Initialize the probe."""
+        self.transport = transport
+
+    def __call__(self, handle: Any = None) -> bool:
+        """Return whether the transport is serving."""
+        return self.transport.is_serving

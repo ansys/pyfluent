@@ -33,6 +33,7 @@ from ansys.framework.process import (
     BaseLauncher,
     Endpoint,
     FileUpdatedProbe,
+    LocalProcess,
     ProcessExitedError,
     ProcessHandle,
     ProcessLauncher,
@@ -48,7 +49,7 @@ from ansys.framework.process import (
 from ansys.framework.process.container import run_docker_container
 from ansys.framework.process.slurm import SlurmScheduler, read_job_id
 from ansys.framework.services import NotSupported, ServiceRegistry
-from ansys.framework.transport import ErrorState, Transport
+from ansys.framework.transport import ErrorState, ServingProbe, Transport
 
 
 def test_service_registry_lazy_resolution_and_caching():
@@ -111,6 +112,18 @@ def test_transport_protocol_is_runtime_checkable():
     assert isinstance(transport.error_state, ErrorState)
     assert isinstance(transport, Transport)
     assert not isinstance(object(), Transport)
+
+
+def test_serving_probe_reflects_transport_state():
+    class _Transport:
+        is_serving = False
+
+    transport = _Transport()
+    probe = ServingProbe(transport)
+    assert isinstance(probe, ReadinessProbe)
+    assert not probe()
+    transport.is_serving = True
+    wait_until_ready(_FakeHandle(), probe, timeout=1, interval=0)
 
 
 class _FakeHandle:
@@ -201,6 +214,108 @@ def test_process_layer_imports_without_grpc():
         "assert 'ansys.fluent.core' not in sys.modules"
     )
     subprocess.run([sys.executable, "-c", code], check=True)
+
+
+_GRPC_FREE_LIFECYCLE = """
+import sys
+
+sys.modules["grpc"] = None
+sys.modules["ansys.api"] = None
+
+import os
+import subprocess
+from pathlib import Path
+
+from ansys.framework.process import (
+    Endpoint,
+    FileUpdatedProbe,
+    ProcessExitedError,
+    ProcessHandle,
+    ProcessLauncher,
+    SubprocessLauncher,
+    wait_until_ready,
+)
+
+ready_file = Path(sys.argv[1])
+ready_file.write_text("")
+last_mtime = ready_file.stat().st_mtime - 10
+os.utime(ready_file, (last_mtime, last_mtime))
+server = (
+    "import pathlib, sys, time; time.sleep(0.5); "
+    "pathlib.Path(sys.argv[1]).write_text('127.0.0.1:50051'); time.sleep(600)"
+)
+
+launcher = SubprocessLauncher(
+    [sys.executable, "-c", server, str(ready_file)],
+    endpoint=Endpoint(host="127.0.0.1", port=50051),
+    cleanup_paths=[ready_file],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+)
+assert isinstance(launcher, ProcessLauncher)
+handle = launcher.launch()
+try:
+    assert isinstance(handle, ProcessHandle)
+
+    # Monitor: alive, becomes ready, endpoint published.
+    assert handle.is_alive()
+    wait_until_ready(
+        handle, FileUpdatedProbe(ready_file, last_mtime), timeout=60, interval=0.1
+    )
+    assert ready_file.read_text() == "127.0.0.1:50051"
+    assert handle.endpoint.port == 50051
+    assert not handle.wait(timeout=0.1)
+finally:
+    # Terminate and clean up.
+    handle.terminate(grace_period=10)
+assert not handle.is_alive()
+handle.cleanup()
+assert not ready_file.exists()
+
+# A process that exits early is reported instead of timing out.
+early = SubprocessLauncher([sys.executable, "-c", "pass"]).launch()
+early.wait(timeout=30)
+try:
+    wait_until_ready(early, lambda h: False, timeout=60, interval=0.1)
+except ProcessExitedError:
+    pass
+else:
+    raise AssertionError("expected ProcessExitedError")
+
+blocked = [name for name in ("grpc", "ansys.api") if sys.modules.get(name) is not None]
+assert not blocked, blocked
+assert "ansys.fluent.core" not in sys.modules
+print("ok")
+"""
+
+
+def test_process_lifecycle_without_grpc(tmp_path):
+    result = subprocess.run(
+        [sys.executable, "-c", _GRPC_FREE_LIFECYCLE, str(tmp_path / "ready.txt")],
+        capture_output=True,
+        text=True,
+        timeout=180,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "ok"
+
+
+def test_local_process_terminate_kills_after_grace_period():
+    process = subprocess.Popen(
+        [
+            sys.executable,
+            "-c",
+            "import signal, time; signal.signal(signal.SIGTERM, signal.SIG_IGN); "
+            "print('ready', flush=True); time.sleep(600)",
+        ],
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    process.stdout.readline()
+    handle = LocalProcess(process)
+    handle.terminate(grace_period=0.5)
+    assert not handle.is_alive()
+    process.stdout.close()
 
 
 def test_file_updated_probe(tmp_path):

@@ -765,7 +765,7 @@ class FluentConnection(Connection):
             if wait is not False:
                 self.wait_process_finished(wait=wait)
         else:
-            if not timeout_exec(lambda: self._health_check.is_serving, 5):
+            if not timeout_exec(self._transport.readiness_probe(), 5):
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
                 logger.info("Attempting to send exit request to Fluent...")

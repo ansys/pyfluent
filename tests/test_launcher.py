@@ -1029,9 +1029,7 @@ def test_standalone_warns_on_explicit_unc_cwd(monkeypatch):
 @pytest.mark.standalone
 def test_standalone_warns_on_unc_getcwd(monkeypatch):
     """With no ``cwd``, a UNC process working directory warns."""
-    from ansys.fluent.core.execution.launcher import standalone_launcher
-
-    monkeypatch.setattr(standalone_launcher.os, "getcwd", lambda: r"\\server\share")
+    monkeypatch.setattr(os, "getcwd", lambda: r"\\server\share")
     with pytest.warns(UserWarning, match="UNC"):
         _invoke_standalone_call_with_stubbed_launch(monkeypatch)
 
@@ -1346,6 +1344,217 @@ def test_fluent_launcher_validate_case_and_lightweight():
     # Lightweight mode is disabled after the first conflict, so only one warning.
     assert len([w for w in record if w.category is UserWarning]) == 1
     assert launcher.argvals["lightweight_mode"] is False
+
+
+def test_grpc_transport_provides_readiness_probe():
+    from types import SimpleNamespace
+
+    from ansys.fluent.core.connectivity.grpc_transport import GrpcTransport
+    from ansys.framework.process import ReadinessProbe
+
+    transport = GrpcTransport.__new__(GrpcTransport)
+    transport._health_check = SimpleNamespace(is_serving=False)
+    probe = transport.readiness_probe()
+    assert isinstance(probe, ReadinessProbe)
+    assert not probe()
+    transport._health_check.is_serving = True
+    assert probe()
+
+
+@pytest.mark.parametrize(
+    "module_path",
+    [
+        "execution/launcher/launcher_utils.py",
+        "execution/launcher/fluent_container.py",
+        "execution/launcher/server_info.py",
+        "execution/launcher/watchdog.py",
+        "execution/launcher/process_launch_string.py",
+        "utils/networking.py",
+    ],
+)
+def test_process_modules_do_not_import_grpc_at_module_level(module_path):
+    import ast
+
+    source = Path(pyfluent.__file__).parent / module_path
+    tree = ast.parse(source.read_text(encoding="utf-8"))
+    imported = []
+    for node in tree.body:
+        if isinstance(node, ast.Import):
+            imported += [alias.name for alias in node.names]
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            imported.append(node.module)
+    assert not [
+        name
+        for name in imported
+        if name.split(".")[0] in ("grpc", "grpc_health")
+        or name.startswith(("ansys.api", "ansys.fluent.core.connectivity"))
+    ]
+
+
+def _fluent_process(tmp_path, process=None, address="127.0.0.1:50051", **launch):
+    from ansys.fluent.core.execution.launcher.fluent_process import FluentProcess
+
+    server_info = tmp_path / "serverinfo-test.txt"
+    server_info.write_text(f"{address}\nsecret\n")
+    launcher_args = {
+        "cleanup_on_exit": True,
+        "start_transcript": True,
+        "start_watchdog": False,
+    }
+    launcher_args.update(launch)
+    return FluentProcess(
+        process=process or Mock(pid=1234),
+        server_info_file_name=str(server_info),
+        launcher_args=launcher_args,
+        session_cls=Mock(name="session_cls"),
+        file_transfer_service="transfer",
+    )
+
+
+def test_fluent_process_is_a_process_handle(tmp_path):
+    import subprocess
+    import sys
+
+    from ansys.framework.process import Endpoint, ProcessHandle
+
+    process = subprocess.Popen([sys.executable, "-c", "pass"])
+    handle = _fluent_process(tmp_path, process=process)
+    assert isinstance(handle, ProcessHandle)
+    assert handle.pid == process.pid
+    assert handle.container_id is None
+    assert handle.endpoint == Endpoint(host="127.0.0.1", port=50051, password="secret")
+    assert handle.wait(timeout=30)
+    assert not handle.is_alive()
+    handle.terminate()
+    handle.cleanup()
+    assert not Path(handle.server_info_file_name).exists()
+
+
+def test_fluent_process_unix_socket_endpoint(tmp_path):
+    from ansys.framework.process import Endpoint
+
+    handle = _fluent_process(tmp_path, address="unix:/tmp/fluent.sock")
+    assert handle.endpoint == Endpoint(
+        address="unix:/tmp/fluent.sock", password="secret"
+    )
+
+
+def test_connect_to_fluent_rejects_process_with_connection_details(tmp_path):
+    with pytest.raises(ValueError, match="fluent_process"):
+        pyfluent.connect_to_fluent(fluent_process=_fluent_process(tmp_path), port=1)
+
+
+@pytest.fixture
+def stub_fluent_connection(monkeypatch):
+    from ansys.fluent.core.execution.launcher import launcher as launcher_module
+
+    created = []
+
+    def fake_connection(**kwargs):
+        connection = Mock(scheme_eval="scheme")
+        connection.connection_properties.inside_container = kwargs.get(
+            "inside_container"
+        )
+        connection.kwargs = kwargs
+        created.append(connection)
+        return connection
+
+    monkeypatch.setattr(launcher_module, "FluentConnection", fake_connection)
+    return created
+
+
+def test_connect_to_fluent_with_fluent_process_uses_launch_settings(
+    tmp_path, monkeypatch, stub_fluent_connection
+):
+    from ansys.fluent.core.execution.launcher.fluent_process import FluentProcess
+
+    on_connected = Mock()
+    monkeypatch.setattr(FluentProcess, "_on_connected", on_connected)
+    handle = _fluent_process(tmp_path, start_transcript=False)
+
+    session = pyfluent.connect_to_fluent(fluent_process=handle)
+
+    (connection,) = stub_fluent_connection
+    assert connection.kwargs == {
+        "ip": "127.0.0.1",
+        "port": 50051,
+        "password": "secret",
+        "address": None,
+        "allow_remote_host": False,
+        "certificates_folder": None,
+        "insecure_mode": False,
+        "cleanup_on_exit": True,
+        "inside_container": False,
+        "file_transfer_service": "transfer",
+    }
+    handle.session_cls.assert_called_once_with(
+        fluent_connection=connection,
+        scheme_eval="scheme",
+        start_transcript=False,
+        file_transfer_service="transfer",
+        launcher_args=handle.launcher_args,
+    )
+    assert session is handle.session_cls.return_value
+    on_connected.assert_called_once_with(session)
+    # cleanup_on_exit removes the server-info file once connected.
+    assert not Path(handle.server_info_file_name).exists()
+
+
+def test_connect_to_fluent_explicit_options_override_launch_settings(
+    tmp_path, monkeypatch, stub_fluent_connection
+):
+    from ansys.fluent.core.execution.launcher.fluent_process import FluentProcess
+
+    monkeypatch.setattr(FluentProcess, "_on_connected", Mock())
+    handle = _fluent_process(tmp_path)
+
+    pyfluent.connect_to_fluent(fluent_process=handle, cleanup_on_exit=False)
+
+    assert stub_fluent_connection[0].kwargs["cleanup_on_exit"] is False
+    assert Path(handle.server_info_file_name).exists()
+
+
+def test_standalone_launcher_call_is_launch_then_connect(monkeypatch):
+    from ansys.fluent.core.execution.launcher import launcher as launcher_module
+
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    handle = Mock(name="fluent_process")
+    monkeypatch.setattr(StandaloneLauncher, "launch", lambda self: handle)
+    connect = Mock(return_value="session")
+    monkeypatch.setattr(launcher_module, "connect_to_fluent", connect)
+
+    launcher = StandaloneLauncher(
+        mode=FluentMode.SOLVER, fluent_path=r"\x\y\z\fluent.exe", ui_mode="no_gui"
+    )
+    assert launcher() == "session"
+    connect.assert_called_once_with(fluent_process=handle)
+
+
+def test_start_fluent_process_returns_launch_handle(monkeypatch):
+    handle = Mock(name="fluent_process")
+    launched = []
+
+    def fake_launch(self):
+        launched.append(self)
+        return handle
+
+    monkeypatch.setattr(StandaloneLauncher, "launch", fake_launch)
+    result = pyfluent.start_fluent_process(
+        mode="meshing", fluent_path=r"\x\y\z\fluent.exe", ui_mode="no_gui"
+    )
+    assert result is handle
+    assert launched[0].argvals["mode"] == FluentMode.MESHING
+
+
+def test_start_fluent_process_wraps_launch_failure(monkeypatch):
+    def failing_launch(self):
+        raise TimeoutError("not ready")
+
+    monkeypatch.setattr(StandaloneLauncher, "launch", failing_launch)
+    with pytest.raises(LaunchFluentError):
+        pyfluent.start_fluent_process(
+            fluent_path=r"\x\y\z\fluent.exe", ui_mode="no_gui"
+        )
 
 
 def test_standalone_launcher_cleanup_on_exit_false_preserves_file():

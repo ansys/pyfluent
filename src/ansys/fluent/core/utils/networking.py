@@ -32,9 +32,6 @@ from typing import Any
 import urllib.parse
 import urllib.request
 
-import grpc
-from grpc_health.v1 import health_pb2, health_pb2_grpc
-
 network_logger = logging.getLogger("pyfluent.networking")
 
 
@@ -52,16 +49,18 @@ def get_free_port() -> int:
     return free_port
 
 
-class _HealthServicer(health_pb2_grpc.HealthServicer):
-    def Check(self, request, context: grpc.ServicerContext):
-        """Check the status of service."""
-        return health_pb2.HealthCheckResponse(
-            status=health_pb2.HealthCheckResponse.ServingStatus.SERVING
-        )
-
-
 class _GrpcServer:
     def __init__(self, address: str):
+        import grpc
+        from grpc_health.v1 import health_pb2, health_pb2_grpc
+
+        class _HealthServicer(health_pb2_grpc.HealthServicer):
+            def Check(self, request, context: grpc.ServicerContext):
+                """Check the status of service."""
+                return health_pb2.HealthCheckResponse(
+                    status=health_pb2.HealthCheckResponse.ServingStatus.SERVING
+                )
+
         self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         self._server.add_insecure_port(address)
         health_pb2_grpc.add_HealthServicer_to_server(_HealthServicer(), self._server)
@@ -83,6 +82,9 @@ def find_remoting_ip() -> str:
     str
         remoting ip address
     """
+    import grpc
+    from grpc_health.v1 import health_pb2, health_pb2_grpc
+
     from ansys.fluent.core.module_config import config
 
     all_ips = [

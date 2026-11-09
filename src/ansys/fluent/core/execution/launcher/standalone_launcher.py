@@ -38,7 +38,6 @@ Examples
 
 import logging
 import math
-import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
@@ -50,6 +49,7 @@ from ansys.fluent.core.execution.launcher.base_launcher import FluentLauncher
 from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
 )
+from ansys.fluent.core.execution.launcher.fluent_process import FluentProcess
 from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
@@ -59,7 +59,6 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
-    _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
     _warn_if_cwd_may_trigger_cmd_unc_fallback,
     is_windows,
@@ -68,10 +67,8 @@ from ansys.fluent.core.execution.launcher.process_launch_string import (
     _generate_launch_string,
 )
 from ansys.fluent.core.execution.launcher.server_info import (
-    _get_server_info,
     _get_server_info_file_names,
 )
-import ansys.fluent.core.execution.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -307,6 +304,54 @@ class StandaloneLauncher(FluentLauncher):
         except Exception as ex:
             raise RuntimeError("Could not reset Idle Timeout") from ex
 
+    def launch(self) -> FluentProcess:
+        """Start Fluent and wait until it is ready, without connecting to it.
+
+        Returns
+        -------
+        FluentProcess
+            Handle to pass to :func:`connect_to_fluent`.
+
+        Raises
+        ------
+        TimeoutError
+            If Fluent does not start within ``start_timeout`` seconds.
+        """
+        logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
+        process = subprocess.Popen(self._launch_cmd, **self._kwargs)
+
+        try:
+            _await_fluent_launch(
+                self._server_info_file_name,
+                self.argvals.get("start_timeout", 100),
+                self._sifile_last_mtime,
+                process.pid,
+            )
+        except TimeoutError as ex:
+            if not is_windows():
+                raise
+            logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
+            launch_cmd = self._launch_string.replace('"', "", 2)
+            self._kwargs.update(shell=False)
+            logger.warning(
+                f"Retrying Fluent launch with less robust command: {launch_cmd}"
+            )
+            process = subprocess.Popen(launch_cmd, **self._kwargs)
+            _await_fluent_launch(
+                self._server_info_file_name,
+                self.argvals.get("start_timeout", 100),
+                self._sifile_last_mtime,
+                process.pid,
+            )
+
+        return FluentProcess(
+            process=process,
+            server_info_file_name=self._server_info_file_name,
+            launcher_args=self.argvals,
+            session_cls=self.new_session,
+            file_transfer_service=self.file_transfer_service,
+        )
+
     def __call__(
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
@@ -315,72 +360,10 @@ class StandaloneLauncher(FluentLauncher):
             return self._launch_string, self._server_info_file_name
         # Point at the caller's launch_fluent() line (warn -> helper -> __call__ -> launch_fluent -> caller).
         _warn_if_cwd_may_trigger_cmd_unc_fallback(self.argvals.get("cwd"), stacklevel=4)
+        from ansys.fluent.core.execution.launcher.launcher import connect_to_fluent
+
         try:
-            logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-            process = subprocess.Popen(self._launch_cmd, **self._kwargs)
-
-            try:
-                _await_fluent_launch(
-                    self._server_info_file_name,
-                    self.argvals.get("start_timeout", 100),
-                    self._sifile_last_mtime,
-                    process.pid,
-                )
-            except TimeoutError as ex:
-                if is_windows():
-                    logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = self._launch_string.replace('"', "", 2)
-                    self._kwargs.update(shell=False)
-                    logger.warning(
-                        f"Retrying Fluent launch with less robust command: {launch_cmd}"
-                    )
-                    process = subprocess.Popen(launch_cmd, **self._kwargs)
-                    _await_fluent_launch(
-                        self._server_info_file_name,
-                        self.argvals.get("start_timeout", 100),
-                        self._sifile_last_mtime,
-                        process.pid,
-                    )
-                else:
-                    raise ex
-
-            session = self.new_session._create_from_server_info_file(
-                server_info_file_name=self._server_info_file_name,
-                file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
-                start_transcript=self.argvals.get("start_transcript"),
-                launcher_args=self.argvals,
-                inside_container=False,
-            )
-            session._process = process
-            start_watchdog = _confirm_watchdog_start(
-                self.argvals.get("start_watchdog"),
-                self.argvals.get("cleanup_on_exit"),
-                session._fluent_connection,
-            )
-            if start_watchdog:
-                logger.info("Launching Watchdog for local Fluent client...")
-                values = _get_server_info(self._server_info_file_name)
-                if len(values) == 3:
-                    ip, port, password = values
-                    watchdog.launch(
-                        os.getpid(),
-                        port,
-                        password,
-                        ip,
-                        inside_container=False,
-                    )
-            # PyFluent is now connected: disable the idle-timeout guard.
-            self._disable_idle_timeout_guard(session)
-
-            # For lightweight_mode with case file, read case post-connection
-            # to support background session orchestration
-            if self.argvals.get("lightweight_mode") and self.argvals.get(
-                "case_file_name"
-            ):
-                session.read_case_lightweight(self.argvals.get("case_file_name"))
-
-            return session
+            return connect_to_fluent(fluent_process=self.launch())
         except Exception as ex:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(self._launch_cmd) from ex
