@@ -35,6 +35,7 @@ The public API is centered around:
 __all__ = [
     "Data",
     "DomainError",
+    "IncompleteSolutionVariableDataError",
     "InvalidSolutionVariableNameError",
     "SolutionVariableInfo",
     "SolutionVariableData",
@@ -46,6 +47,9 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
+from ansys.fluent.core._grpc_services.solution_variable_service import (
+    IncompleteSolutionVariableDataError,
+)
 from ansys.fluent.core._variable_strategies import (
     FluentSVarNamingStrategy as naming_strategy,
 )
