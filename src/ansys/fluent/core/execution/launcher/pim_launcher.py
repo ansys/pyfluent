@@ -50,10 +50,10 @@ from ansys.fluent.core.connectivity.fluent_connection import (
     FluentConnection,
     _get_max_c_int_limit,
 )
+from ansys.fluent.core.execution.launcher.base_launcher import FluentLauncher
 from ansys.fluent.core.execution.launcher.launch_options import (
     Dimension,
     FluentMode,
-    _get_argvals_and_session,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
@@ -84,7 +84,7 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-class PIMLauncher:
+class PIMLauncher(FluentLauncher):
     """Instantiates Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode."""
 
     def __init__(
@@ -162,10 +162,8 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
-        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
-        self.file_transfer_service = file_transfer_service
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 60
+        self._set_argvals(kwargs, file_transfer_service)
+        self._set_default_argvals(start_timeout=60)
 
     def __call__(self) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero":
         logger.info("Starting Fluent remotely. The startup configuration is ignored.")

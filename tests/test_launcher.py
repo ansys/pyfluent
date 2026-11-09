@@ -39,6 +39,7 @@ from ansys.fluent.core.diagnostics.exceptions import (
 )
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.base_launcher import FluentLauncher
 from ansys.fluent.core.execution.launcher.container_launcher import (
     DockerLauncher,
 )
@@ -84,6 +85,7 @@ from ansys.fluent.core.execution.launcher.standalone_launcher import (
     StandaloneLauncher,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.framework.process import BaseLauncher
 import ansys.platform.instancemanagement as pypim
 
 
@@ -1293,6 +1295,57 @@ def test_launcher_timeout_defaults_via_launch_fluent(monkeypatch):
 
     # Verify that SlurmLauncher received None and set its own default to -1
     assert captured_launcher["instance"]._argvals["start_timeout"] == -1
+
+
+class _MinimalFluentLauncher(FluentLauncher):
+    def __call__(self):
+        return None
+
+
+def test_launchers_share_fluent_launcher_base():
+    for cls in (StandaloneLauncher, DockerLauncher, PIMLauncher, SlurmLauncher):
+        assert issubclass(cls, FluentLauncher)
+        assert issubclass(cls, BaseLauncher)
+
+
+def test_fluent_launcher_resolves_argvals_and_session():
+    launcher = _MinimalFluentLauncher()
+    launcher._set_argvals({"mode": "solver"}, file_transfer_service="service")
+    assert launcher.argvals["mode"] == FluentMode.SOLVER
+    assert launcher.new_session is FluentMode.SOLVER.get_fluent_value()
+    assert launcher._argvals is launcher.argvals
+    assert launcher._new_session is launcher.new_session
+    assert launcher.file_transfer_service == "service"
+
+
+def test_fluent_launcher_resolve_grpc_security(monkeypatch):
+    monkeypatch.delenv("ANSYS_GRPC_CERTIFICATES", raising=False)
+    assert FluentLauncher._resolve_grpc_security(None, True) == (None, True)
+    assert FluentLauncher._resolve_grpc_security("certs", False) == ("certs", False)
+    with pytest.raises(ValueError):
+        FluentLauncher._resolve_grpc_security(None, False)
+    with pytest.raises(ValueError):
+        FluentLauncher._resolve_grpc_security("certs", True)
+
+
+def test_fluent_launcher_validate_case_and_lightweight():
+    launcher = _MinimalFluentLauncher()
+    launcher.argvals = {"mode": FluentMode.MESHING, "case_data_file_name": "a.dat.h5"}
+    with pytest.raises(InvalidArgument):
+        launcher._validate_case_and_lightweight()
+
+    launcher.argvals = {
+        "mode": FluentMode.SOLVER,
+        "lightweight_mode": True,
+        "journal_file_names": "a.jou",
+        "case_data_file_name": "a.dat.h5",
+    }
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter("always")
+        launcher._validate_case_and_lightweight()
+    # Lightweight mode is disabled after the first conflict, so only one warning.
+    assert len([w for w in record if w.category is UserWarning]) == 1
+    assert launcher.argvals["lightweight_mode"] is False
 
 
 def test_standalone_launcher_cleanup_on_exit_false_preserves_file():

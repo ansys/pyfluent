@@ -32,7 +32,7 @@ framework and the generic session.
 Architecture decision record
 ============================
 
-Status: accepted (Phase 0, task 0.1).
+Status: accepted.
 
 Context
 -------
@@ -67,7 +67,7 @@ Platform layers (``ansys.framework``), lowest first:
 Solver-specific layers (``ansys.fluent.core``) sit on top: Fluent process
 launchers, concrete transports (``transports.grpc``, ``transports.rest``),
 ``flobject`` as a Fluent extension of ``objects``, Fluent sessions and codegen.
-Layers not yet present are added as their phase lands.
+Layers not yet present are added as their code moves here.
 
 Decision 3 - Dependency rules
 -----------------------------
@@ -80,7 +80,7 @@ Enforced by import-linter (``[tool.importlinter]`` in ``pyproject.toml``):
 * ``ansys.framework.process`` imports only the standard library and minimal
   dependencies.
 
-Contracts run report-only in CI until the hardening phase, then become blocking.
+Contracts currently run report-only in CI and will become blocking.
 
 Decision 4 - gRPC dependency
 ----------------------------

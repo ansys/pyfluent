@@ -27,6 +27,18 @@ This package provides launch configuration for local Fluent processes, Fluent
 containers, and remote Fluent instances. It also includes launch-mode options,
 container setup helpers, remote launch support, executable discovery, and the
 Fluent version information used by launchers.
+
+Each launcher runs the same stages, which belong to different layers:
+
+* **Process**: spawn Fluent (subprocess, container, PIM instance or Slurm job),
+  wait for the server-info file, start the watchdog and clean up on exit.
+  Generic parts live in ``launcher_utils``, ``fluent_container``, ``watchdog``
+  and the Slurm wrappers; Fluent-specific parts are the command line
+  (``process_launch_string``), environment and image selection.
+* **Transport**: resolve the endpoint and credentials (``server_info``,
+  ``get_remote_grpc_options``) and open a ``FluentConnection``.
+* **Session**: pick the session class for the launch mode (``FluentMode``) and
+  build it (``launch_fluent``, ``connect_to_fluent``).
 """
 
 from ...utils.fluent_version import FluentVersion  # noqa: F401

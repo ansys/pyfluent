@@ -42,19 +42,17 @@ import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
-import warnings
 
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
+from ansys.fluent.core.execution.launcher.base_launcher import FluentLauncher
 from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
 )
 from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
-    _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
@@ -63,8 +61,6 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
-    _validate_lightweight_with_case_data,
-    _validate_lightweight_with_journal,
     _warn_if_cwd_may_trigger_cmd_unc_fallback,
     is_windows,
 )
@@ -138,7 +134,7 @@ class StandaloneArgs(
 logger = logging.getLogger("pyfluent.launcher")
 
 
-class StandaloneLauncher:
+class StandaloneLauncher(FluentLauncher):
     """Instantiates Fluent session in standalone mode."""
 
     def __init__(
@@ -226,36 +222,17 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
-        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
-        self.file_transfer_service = kwargs.get("file_transfer_service")
-        self.argvals = self._update_default_argvals(self.argvals)
+        self._set_argvals(kwargs, kwargs.get("file_transfer_service"))
+        self._set_default_argvals(
+            cleanup_on_exit=True,
+            start_transcript=True,
+            lightweight_mode=False,
+            start_timeout=100,
+        )
         if pyfluent.config.show_fluent_gui:
             kwargs["ui_mode"] = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-
-        # case_data_file_name is not supported in meshing mode.
-        if FluentMode.is_meshing(self.argvals.get("mode")) and self.argvals.get(
-            "case_data_file_name"
-        ):
-            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
-
-        # Validate lightweight_mode + journal_file_names combination
-        should_disable, warning_msg = _validate_lightweight_with_journal(
-            self.argvals.get("lightweight_mode"),
-            self.argvals.get("journal_file_names"),
-        )
-        if should_disable:
-            warnings.warn(warning_msg, UserWarning)
-            self.argvals["lightweight_mode"] = False
-
-        # Validate lightweight_mode + case_data_file_name combination
-        should_disable, warning_msg = _validate_lightweight_with_case_data(
-            self.argvals.get("lightweight_mode"),
-            self.argvals.get("case_data_file_name"),
-        )
-        if should_disable:
-            warnings.warn(warning_msg, UserWarning)
-            self.argvals["lightweight_mode"] = False
+        self._validate_case_and_lightweight()
 
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
@@ -311,18 +288,6 @@ class StandaloneLauncher:
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
-
-    @staticmethod
-    def _update_default_argvals(argvals: dict) -> dict:
-        if argvals.get("cleanup_on_exit") is None:
-            argvals["cleanup_on_exit"] = True
-        if argvals.get("start_transcript") is None:
-            argvals["start_transcript"] = True
-        if argvals.get("lightweight_mode") is None:
-            argvals["lightweight_mode"] = False
-        if argvals.get("start_timeout") is None:
-            argvals["start_timeout"] = 100
-        return argvals
 
     @staticmethod
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
