@@ -68,34 +68,26 @@ from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor
 import logging
 from pathlib import Path
-import shutil
 import subprocess
 import time
 from types import TracebackType
 from typing import TYPE_CHECKING, Any, Generic, TypedDict
-from warnings import warn
 
 from typing_extensions import TypeVar, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
-from ansys.fluent.core.execution.launcher.error_warning_messages import (
-    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
-)
+from ansys.fluent.core.execution.launcher.base_launcher import FluentLauncher
 from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
-    _get_argvals_and_session,
-    get_remote_grpc_options,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
     _get_subprocess_kwargs_for_fluent,
-    _validate_lightweight_with_case_data,
-    _validate_lightweight_with_journal,
     _warn_if_cwd_may_trigger_cmd_unc_fallback,
 )
 from ansys.fluent.core.execution.launcher.process_launch_string import (
@@ -103,6 +95,7 @@ from ansys.fluent.core.execution.launcher.process_launch_string import (
 )
 from ansys.fluent.core.execution.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.module_config import config
+from ansys.framework.process.slurm import SlurmScheduler, read_job_id
 
 if TYPE_CHECKING:
     from ansys.fluent.core.execution.launcher.launcher import SlurmSchedulerOptions
@@ -116,15 +109,15 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 def _get_slurm_job_id(proc: subprocess.Popen):
-    prefix = "Submitted batch job"
-    for line in proc.stdout:
-        if line.startswith(prefix.encode()):
-            line = line.decode().removeprefix(prefix).strip()
-            # if the configuration setting 'launch_fluent_stdout' is None,
-            # close proc.stdout after reading the slurm job id to avoid hang in some systems
-            if config.launch_fluent_stdout is None and proc.stdout is not None:
-                proc.stdout.close()
-            return int(line)
+    job_id = read_job_id(proc.stdout)
+    # Closing stdout after the job ID is read avoids a hang on some systems.
+    if (
+        job_id is not None
+        and config.launch_fluent_stdout is None
+        and proc.stdout is not None
+    ):
+        proc.stdout.close()
+    return job_id
 
 
 _slurm_unavailable_in_current_machine_clause = (
@@ -133,21 +126,8 @@ _slurm_unavailable_in_current_machine_clause = (
 )
 
 
-class _SlurmWrapper:
-    """A class wrapping Slurm commands."""
-
-    @staticmethod
-    def is_available() -> bool:
-        """Check whether Slurm is available.
-
-        Returns
-        -------
-        bool
-            ``True`` if Slurm is available, otherwise ``False``.
-        """
-        return (
-            shutil.which("sinfo") is not None and len(_SlurmWrapper.list_queues()) > 0
-        )
+class _SlurmWrapper(SlurmScheduler):
+    """Slurm commands, gated by the ``use_slurm_from_current_machine`` setting."""
 
     @staticmethod
     def use_slurm() -> bool:
@@ -177,48 +157,6 @@ class _SlurmWrapper:
         """
         if not _SlurmWrapper.use_slurm():
             raise RuntimeError(msg + _slurm_unavailable_in_current_machine_clause)
-
-    @staticmethod
-    def list_queues() -> list[str]:
-        """Return list of queues.
-
-        Returns
-        -------
-        list[str]
-        List of queues.
-        """
-        out = subprocess.check_output(["sinfo", "--format=%P", "--noheader"])
-        queues = out.decode().strip().split()
-        queues = [q.removesuffix("*") for q in queues]
-        return queues
-
-    @staticmethod
-    def get_state(job_id: int) -> str:
-        """Return state of a job.
-
-        Parameters
-        ----------
-        job_id : int
-            Job id.
-
-        Returns
-        -------
-        str
-            Any of ``""``, ``"RUNNING"``, ``"CANCELLED"`` or ``"COMPLETED"``.
-        """
-        out = subprocess.check_output(["squeue", "-j", f"{job_id}", "-o", '"%T"', "-h"])
-        return out.decode().strip().strip('"')
-
-    @staticmethod
-    def cancel(job_id: int) -> None:
-        """Cancel a job.
-
-        Parameters
-        ----------
-        job_id : int
-            Job id.
-        """
-        subprocess.run(["scancel", f"{job_id}"])
 
 
 SessionT = TypeVar(
@@ -457,7 +395,7 @@ class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
     """
 
 
-class SlurmLauncher:
+class SlurmLauncher(FluentLauncher):
     """Instantiates Fluent session within a Slurm environment."""
 
     def __init__(
@@ -593,11 +531,7 @@ class SlurmLauncher:
             "file_transfer_service"
         )
         ui_mode = kwargs.get("ui_mode")
-        certificates_folder, insecure_mode = get_remote_grpc_options(
-            certificates_folder, insecure_mode
-        )
-        if certificates_folder is None and not insecure_mode:
-            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
+        self._resolve_grpc_security(certificates_folder, insecure_mode)
 
         if not _SlurmWrapper.is_available():
             logger.debug(
@@ -605,40 +539,13 @@ class SlurmLauncher:
                 "Job query/control from client will not be possible."
             )
         argvals = {name: kwargs.get(name) for name in SlurmLauncherArgs.__annotations__}
-        self._argvals, self._new_session = _get_argvals_and_session(argvals)
-        self.file_transfer_service = file_transfer_service
-
-        # case_data_file_name is not supported in meshing mode.
-        if FluentMode.is_meshing(self._argvals.get("mode")) and self._argvals.get(
-            "case_data_file_name"
-        ):
-            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
-
-        # Validate lightweight_mode + journal_file_names combination
-        # If incompatible, disable lightweight_mode and warn user
-        should_disable, warning_msg = _validate_lightweight_with_journal(
-            self._argvals.get("lightweight_mode"),
-            self._argvals.get("journal_file_names"),
-        )
-        if should_disable:
-            warn(warning_msg, UserWarning)
-            self._argvals["lightweight_mode"] = False
-
-        # Validate lightweight_mode + case_data_file_name combination
-        # If incompatible, disable lightweight_mode and warn user
-        should_disable, warning_msg = _validate_lightweight_with_case_data(
-            self._argvals.get("lightweight_mode"),
-            self._argvals.get("case_data_file_name"),
-        )
-        if should_disable:
-            warn(warning_msg, UserWarning)
-            self._argvals["lightweight_mode"] = False
+        self._set_argvals(argvals, file_transfer_service)
+        self._validate_case_and_lightweight()
 
         if config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self._argvals["ui_mode"] = UIMode(ui_mode)
-        if self._argvals["start_timeout"] is None:
-            self._argvals["start_timeout"] = -1
+        self._set_default_argvals(start_timeout=-1)
         if self._argvals["scheduler_options"]:
             if "scheduler" not in self._argvals["scheduler_options"]:
                 raise InvalidArgument(

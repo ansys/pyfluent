@@ -48,6 +48,16 @@ class IpPortNotProvided(ValueError):
         super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
 
 
+class PortNotProvided(ValueError):
+    """Raised when port is not provided."""
+
+    def __init__(self):
+        """Initialize PortNotProvided."""
+        super().__init__(
+            "Provide the 'port' to connect to an existing Fluent instance."
+        )
+
+
 class InvalidIpPort(ValueError):
     """Raised when IP address and port are invalid."""
 

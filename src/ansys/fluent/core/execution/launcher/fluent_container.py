@@ -89,8 +89,9 @@ from ansys.fluent.core.execution.launcher.error_handler import (
 from ansys.fluent.core.execution.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
-from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
+from ansys.framework.process import FileUpdatedProbe
+from ansys.framework.process.container import run_docker_container
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -606,47 +607,25 @@ def start_fluent_container(
             host_server_info_file.touch(exist_ok=True)
             last_mtime = host_server_info_file.stat().st_mtime
 
-            import docker
-
-            docker_client = docker.from_env()
-
-            logger.debug("Starting Fluent docker container...")
-
-            container = docker_client.containers.run(
-                config_dict.pop("fluent_image"), **config_dict
-            )
-
             logger.debug(
-                f"Waiting for Fluent container for up to {start_timeout} seconds..."
+                "Starting Fluent docker container and waiting for it for up to "
+                f"{start_timeout} seconds..."
             )
-
-            success = timeout_loop(
-                lambda: host_server_info_file.stat().st_mtime > last_mtime,
+            container = run_docker_container(
+                config_dict.pop("fluent_image"),
+                config_dict,
+                FileUpdatedProbe(host_server_info_file, last_mtime),
                 start_timeout,
+                description="Fluent container",
             )
 
-            if not success:
-                try:
-                    container.stop()
-                except Exception as stop_ex:
-                    logger.error(f"Failed to stop container: {stop_ex}")
-                    raise TimeoutError(
-                        f"Fluent container launch has timed out after {start_timeout} seconds. "
-                        f"Additionally, stopping the container failed: {stop_ex}"
-                    ) from stop_ex
-                else:
-                    raise TimeoutError(
-                        f"Fluent container launch has timed out after {start_timeout} seconds."
-                        " The container was stopped."
-                    )
-            else:
-                from ansys.fluent.core.execution.session.session import (
-                    _parse_server_info_file,
-                )
+            from ansys.fluent.core.execution.session.session import (
+                _parse_server_info_file,
+            )
 
-                _, _, password = _parse_server_info_file(str(host_server_info_file))
+            _, _, password = _parse_server_info_file(str(host_server_info_file))
 
-                return port, password, container
+            return port, password, container
     except Exception as ex:
         logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
         raise LaunchFluentError(launch_string) from ex

@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import logging
 import os
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, TypedDict, cast, overload
 from warnings import warn
 
@@ -40,6 +41,7 @@ from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.execution.launcher.container_launcher import DockerLauncher
+from ansys.fluent.core.execution.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
@@ -47,6 +49,7 @@ from ansys.fluent.core.execution.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
     INSECURE_MODE_PROVIDED_IN_STANDALONE,
 )
+from ansys.fluent.core.execution.launcher.fluent_process import FluentProcess
 from ansys.fluent.core.execution.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -60,6 +63,7 @@ from ansys.fluent.core.execution.launcher.launch_options import (
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
     _confirm_watchdog_start,
+    _warn_if_cwd_may_trigger_cmd_unc_fallback,
     is_windows,
 )
 from ansys.fluent.core.execution.launcher.pim_launcher import PIMLauncher
@@ -68,7 +72,10 @@ from ansys.fluent.core.execution.launcher.slurm_launcher import (
     SlurmFuture,
     SlurmLauncher,
 )
-from ansys.fluent.core.execution.launcher.standalone_launcher import StandaloneLauncher
+from ansys.fluent.core.execution.launcher.standalone_launcher import (
+    StandaloneArgsWithoutDryRunMode,
+    StandaloneLauncher,
+)
 import ansys.fluent.core.execution.launcher.watchdog as watchdog
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
@@ -85,6 +92,8 @@ __all__ = (
     "create_launcher",
     "launch_fluent",
     "connect_to_fluent",
+    "start_fluent_process",
+    "FluentProcess",
 )
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -678,13 +687,119 @@ def launch_fluent(
     return launcher()
 
 
+def start_fluent_process(
+    *,
+    mode: FluentMode | str = FluentMode.SOLVER,
+    **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+) -> FluentProcess:
+    """Start Fluent locally in server mode without connecting to it.
+
+    Connect a session with ``connect_to_fluent(fluent_process=...)``.
+    ``launch_fluent()`` for a local launch is equivalent to these two calls.
+
+    Parameters
+    ----------
+    mode : FluentMode or str, optional
+        Launch mode of Fluent, which selects the session class used when
+        connecting. The default is ``FluentMode.SOLVER``.
+    **kwargs
+        Launch arguments, as for a local ``launch_fluent()`` call (for example
+        ``product_version``, ``processor_count``, ``ui_mode``, ``case_file_name``,
+        ``start_timeout``, ``cleanup_on_exit`` or ``start_watchdog``). Arguments
+        that apply when connecting, such as ``cleanup_on_exit`` and
+        ``start_transcript``, become the defaults for ``connect_to_fluent``.
+
+    Returns
+    -------
+    FluentProcess
+        Handle to the started Fluent server.
+
+    Raises
+    ------
+    LaunchFluentError
+        If Fluent cannot be started or is not ready within ``start_timeout``.
+    """
+    if config.start_watchdog is False:
+        kwargs["start_watchdog"] = False
+    launcher = StandaloneLauncher(mode=FluentMode(mode), **kwargs)
+    # Point at the caller's line (warn -> helper -> start_fluent_process -> caller).
+    _warn_if_cwd_may_trigger_cmd_unc_fallback(launcher.argvals.get("cwd"), stacklevel=3)
+    try:
+        return launcher.launch()
+    except Exception as ex:
+        logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
+        if launcher.argvals.get("cleanup_on_exit"):
+            Path(launcher._server_info_file_name).unlink(missing_ok=True)
+        raise LaunchFluentError(launcher._launch_cmd) from ex
+
+
+def _defaults_from_fluent_process(
+    fluent_process: FluentProcess, connection_details: tuple, **options: Any
+) -> dict[str, Any]:
+    """Fill unset connect options from the launch settings of ``fluent_process``."""
+    if any(value is not None for value in connection_details):
+        raise ValueError(
+            "Pass either 'fluent_process' or the connection details "
+            "('ip', 'port', 'address', 'server_info_file_name', 'password'), not both."
+        )
+    launch_args = fluent_process.launcher_args
+    for name in ("cleanup_on_exit", "start_transcript", "start_watchdog"):
+        if options[name] is None:
+            options[name] = launch_args.get(name)
+    if options["file_transfer_service"] is None:
+        options["file_transfer_service"] = fluent_process.file_transfer_service
+    return options
+
+
+def _validate_remote_grpc_options(
+    allow_remote_host: bool, certificates_folder: str | None, insecure_mode: bool
+) -> tuple[str | None, bool]:
+    """Resolve and validate the TLS options for a connection."""
+    if allow_remote_host:
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
+    else:
+        if certificates_folder is not None:
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER)
+        if insecure_mode:
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE)
+    return certificates_folder, insecure_mode
+
+
+def _start_connection_watchdog(
+    fluent_connection: FluentConnection,
+    start_watchdog: bool | None,
+    cleanup_on_exit: bool,
+    ip: str | None,
+    port: int | None,
+    password: str | None,
+    **tls_options: Any,
+) -> None:
+    """Start the watchdog for a connected TCP session if requested."""
+    if not _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
+        return
+    logger.info("Launching Watchdog for existing Fluent session...")
+    if ip is not None and port is not None and password is not None:
+        watchdog.launch(
+            os.getpid(),
+            port,
+            password,
+            ip,
+            inside_container=fluent_connection.connection_properties.inside_container,
+            **tls_options,
+        )
+
+
 def connect_to_fluent(
     *,
     ip: str | None = None,
     port: int | None = None,
     address: str | None = None,
-    cleanup_on_exit: bool = False,
-    start_transcript: bool = True,
+    cleanup_on_exit: bool | None = None,
+    start_transcript: bool | None = None,
     server_info_file_name: str | None = None,
     password: str | None = None,
     allow_remote_host: bool = False,
@@ -692,6 +807,7 @@ def connect_to_fluent(
     insecure_mode: bool = False,
     start_watchdog: bool | None = None,
     file_transfer_service: Any | None = None,
+    fluent_process: FluentProcess | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SolverAero:
     """Connect to an existing Fluent server instance.
 
@@ -714,10 +830,12 @@ def connect_to_fluent(
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
-        or if the session instance becomes unreferenced. The default is ``False``.
+        or if the session instance becomes unreferenced. The default is ``False``,
+        or the launch setting when ``fluent_process`` is given.
     start_transcript : bool, optional
         Whether to start streaming the Fluent transcript in the client. The
-        default is ``True``. You can stop and start the streaming of the
+        default is ``True``, or the launch setting when ``fluent_process`` is given.
+        You can stop and start the streaming of the
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
     server_info_file_name: str
@@ -738,8 +856,16 @@ def connect_to_fluent(
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
+        When ``fluent_process`` is given, the launch setting is used by default.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
+        When ``fluent_process`` is given, the launch setting is used by default.
+    fluent_process : FluentProcess, optional
+        Fluent server started by :func:`start_fluent_process`. When given, the
+        connection details are read from it, so ``ip``, ``port``, ``address``,
+        ``server_info_file_name`` and ``password`` must not be set. The session
+        is created for the launch mode, and the launch is finished after
+        connecting (idle-timeout reset and lightweight case read).
 
     Returns
     -------
@@ -757,20 +883,43 @@ def connect_to_fluent(
         Raised when both `certificates_folder` and `insecure_mode` are set simultaneously.
         Raised when `certificates_folder` is set but `allow_remote_host` is False.
         Raised when `insecure_mode` is set but `allow_remote_host` is False.
+        Raised when `fluent_process` is combined with explicit connection details.
     """
-    if allow_remote_host:
-        certificates_folder, insecure_mode = get_remote_grpc_options(
-            certificates_folder, insecure_mode
+    connection_kwargs: dict[str, Any] = {}
+    session_kwargs: dict[str, Any] = {}
+    session_cls = None
+    if fluent_process is not None:
+        options = _defaults_from_fluent_process(
+            fluent_process,
+            (ip, port, address, server_info_file_name, password),
+            cleanup_on_exit=cleanup_on_exit,
+            start_transcript=start_transcript,
+            start_watchdog=start_watchdog,
+            file_transfer_service=file_transfer_service,
         )
-        if certificates_folder is None and not insecure_mode:
-            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
-    else:
-        if certificates_folder is not None:
-            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER)
-        if insecure_mode:
-            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE)
+        cleanup_on_exit = options["cleanup_on_exit"]
+        start_transcript = options["start_transcript"]
+        start_watchdog = options["start_watchdog"]
+        file_transfer_service = options["file_transfer_service"]
+        session_cls = fluent_process.session_cls
+        session_kwargs["launcher_args"] = fluent_process.launcher_args
+        connection_kwargs.update(
+            inside_container=fluent_process.inside_container,
+            file_transfer_service=file_transfer_service,
+        )
+    cleanup_on_exit = bool(cleanup_on_exit)
+    if start_transcript is None:
+        start_transcript = True
 
-    if address is None:
+    certificates_folder, insecure_mode = _validate_remote_grpc_options(
+        allow_remote_host, certificates_folder, insecure_mode
+    )
+
+    if fluent_process is not None:
+        endpoint = fluent_process.endpoint
+        ip, port, address = endpoint.host, endpoint.port, endpoint.address
+        password = endpoint.password
+    elif address is None:
         values = _get_server_info(server_info_file_name, ip, port, password)
         if len(values) == 2:
             address, password = values
@@ -778,41 +927,44 @@ def connect_to_fluent(
         else:
             ip, port, password = values
 
-    fluent_connection = FluentConnection(
-        ip=ip,
-        port=port,
-        password=password,
-        address=address,
-        allow_remote_host=allow_remote_host,
-        certificates_folder=certificates_folder,
-        insecure_mode=insecure_mode,
-        cleanup_on_exit=cleanup_on_exit,
-    )
-    # Map the mode detected from the running server to its session class
-    # (e.g. Meshing, PureMeshing, Solver); it is instantiated below.
-    new_session = fluent_connection._mode.get_fluent_value()
+    try:
+        fluent_connection = FluentConnection(
+            ip=ip,
+            port=port,
+            password=password,
+            address=address,
+            allow_remote_host=allow_remote_host,
+            certificates_folder=certificates_folder,
+            insecure_mode=insecure_mode,
+            cleanup_on_exit=cleanup_on_exit,
+            **connection_kwargs,
+        )
+        # Without a launch handle, the session class follows the mode detected
+        # from the running server (e.g. Meshing, PureMeshing, Solver).
+        new_session = session_cls or fluent_connection._mode.get_fluent_value()
 
-    start_watchdog = _confirm_watchdog_start(
-        start_watchdog, cleanup_on_exit, fluent_connection
-    )
+        _start_connection_watchdog(
+            fluent_connection,
+            start_watchdog,
+            cleanup_on_exit,
+            ip,
+            port,
+            password,
+            allow_remote_host=allow_remote_host,
+            certificates_folder=certificates_folder,
+            insecure_mode=insecure_mode,
+        )
 
-    if start_watchdog:
-        logger.info("Launching Watchdog for existing Fluent session...")
-        if ip is not None and port is not None and password is not None:
-            watchdog.launch(
-                os.getpid(),
-                port,
-                password,
-                ip,
-                allow_remote_host=allow_remote_host,
-                certificates_folder=certificates_folder,
-                insecure_mode=insecure_mode,
-                inside_container=fluent_connection.connection_properties.inside_container,
-            )
-
-    return new_session(
-        fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection.scheme_eval,
-        start_transcript=start_transcript,
-        file_transfer_service=file_transfer_service,
-    )
+        session = new_session(
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection.scheme_eval,
+            start_transcript=start_transcript,
+            file_transfer_service=file_transfer_service,
+            **session_kwargs,
+        )
+        if fluent_process is not None:
+            fluent_process._on_connected(session)
+        return session
+    finally:
+        if fluent_process is not None and cleanup_on_exit:
+            fluent_process.cleanup()

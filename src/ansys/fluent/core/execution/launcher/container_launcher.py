@@ -45,9 +45,7 @@ from typing_extensions import Required, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
-from ansys.fluent.core.execution.launcher.error_warning_messages import (
-    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
-)
+from ansys.fluent.core.execution.launcher.base_launcher import FluentLauncher
 from ansys.fluent.core.execution.launcher.fluent_container import (
     configure_container_dict,
     dict_to_str,
@@ -56,8 +54,6 @@ from ansys.fluent.core.execution.launcher.fluent_container import (
 from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
-    _get_argvals_and_session,
-    get_remote_grpc_options,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
@@ -139,7 +135,7 @@ def _get_server_info_from_container(config_dict):
     return _parse_server_info_file(str(host_server_info_file))
 
 
-class DockerLauncher:
+class DockerLauncher(FluentLauncher):
     """Instantiates Fluent session in container mode."""
 
     def __init__(
@@ -230,14 +226,12 @@ class DockerLauncher:
         # Note: PYFLUENT_CONTAINER_INSECURE_MODE is not exposed to users. It is used internally in
         # GitHub Actions runs to indicate that insecure mode should be used.
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        certificates_folder, insecure_mode = get_remote_grpc_options(
+        certificates_folder, insecure_mode = self._resolve_grpc_security(
             kwargs.get("certificates_folder"),
             kwargs.get("insecure_mode", False) or insecure_mode_env,
         )
         kwargs["certificates_folder"] = certificates_folder
         kwargs["insecure_mode"] = insecure_mode
-        if certificates_folder is None and not insecure_mode:
-            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         # HIDDEN_GUI is not supported inside Windows containers; downgrade to NO_GUI.
         if is_windows() and UIMode(kwargs.get("ui_mode")) == UIMode.HIDDEN_GUI:
@@ -247,16 +241,13 @@ class DockerLauncher:
             )
             kwargs["ui_mode"] = UIMode.NO_GUI
 
-        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
-        if self.argvals.get("cleanup_on_exit") is None:
-            self.argvals["cleanup_on_exit"] = True
-        if self.argvals.get("start_transcript") is None:
-            self.argvals["start_transcript"] = True
-        if "start_watchdog" not in self.argvals:
-            self.argvals["start_watchdog"] = None
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 100
-        self.file_transfer_service = kwargs.get("file_transfer_service")
+        self._set_argvals(kwargs, kwargs.get("file_transfer_service"))
+        self._set_default_argvals(
+            cleanup_on_exit=True,
+            start_transcript=True,
+            start_watchdog=None,
+            start_timeout=100,
+        )
         if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
         if self.argvals.get("container_dict") is None:

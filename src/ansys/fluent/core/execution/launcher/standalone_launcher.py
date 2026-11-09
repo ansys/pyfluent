@@ -38,33 +38,28 @@ Examples
 
 import logging
 import math
-import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
-import warnings
 
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
+from ansys.fluent.core.execution.launcher.base_launcher import FluentLauncher
 from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
 )
+from ansys.fluent.core.execution.launcher.fluent_process import FluentProcess
 from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
-    _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
-    _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
-    _validate_lightweight_with_case_data,
-    _validate_lightweight_with_journal,
     _warn_if_cwd_may_trigger_cmd_unc_fallback,
     is_windows,
 )
@@ -72,10 +67,8 @@ from ansys.fluent.core.execution.launcher.process_launch_string import (
     _generate_launch_string,
 )
 from ansys.fluent.core.execution.launcher.server_info import (
-    _get_server_info,
     _get_server_info_file_names,
 )
-import ansys.fluent.core.execution.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -138,7 +131,7 @@ class StandaloneArgs(
 logger = logging.getLogger("pyfluent.launcher")
 
 
-class StandaloneLauncher:
+class StandaloneLauncher(FluentLauncher):
     """Instantiates Fluent session in standalone mode."""
 
     def __init__(
@@ -226,36 +219,17 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
-        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
-        self.file_transfer_service = kwargs.get("file_transfer_service")
-        self.argvals = self._update_default_argvals(self.argvals)
+        self._set_argvals(kwargs, kwargs.get("file_transfer_service"))
+        self._set_default_argvals(
+            cleanup_on_exit=True,
+            start_transcript=True,
+            lightweight_mode=False,
+            start_timeout=100,
+        )
         if pyfluent.config.show_fluent_gui:
             kwargs["ui_mode"] = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-
-        # case_data_file_name is not supported in meshing mode.
-        if FluentMode.is_meshing(self.argvals.get("mode")) and self.argvals.get(
-            "case_data_file_name"
-        ):
-            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
-
-        # Validate lightweight_mode + journal_file_names combination
-        should_disable, warning_msg = _validate_lightweight_with_journal(
-            self.argvals.get("lightweight_mode"),
-            self.argvals.get("journal_file_names"),
-        )
-        if should_disable:
-            warnings.warn(warning_msg, UserWarning)
-            self.argvals["lightweight_mode"] = False
-
-        # Validate lightweight_mode + case_data_file_name combination
-        should_disable, warning_msg = _validate_lightweight_with_case_data(
-            self.argvals.get("lightweight_mode"),
-            self.argvals.get("case_data_file_name"),
-        )
-        if should_disable:
-            warnings.warn(warning_msg, UserWarning)
-            self.argvals["lightweight_mode"] = False
+        self._validate_case_and_lightweight()
 
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
@@ -313,18 +287,6 @@ class StandaloneLauncher:
                 self._launch_cmd = self._launch_string
 
     @staticmethod
-    def _update_default_argvals(argvals: dict) -> dict:
-        if argvals.get("cleanup_on_exit") is None:
-            argvals["cleanup_on_exit"] = True
-        if argvals.get("start_transcript") is None:
-            argvals["start_transcript"] = True
-        if argvals.get("lightweight_mode") is None:
-            argvals["lightweight_mode"] = False
-        if argvals.get("start_timeout") is None:
-            argvals["start_timeout"] = 100
-        return argvals
-
-    @staticmethod
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
         # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
         _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
@@ -342,6 +304,54 @@ class StandaloneLauncher:
         except Exception as ex:
             raise RuntimeError("Could not reset Idle Timeout") from ex
 
+    def launch(self) -> FluentProcess:
+        """Start Fluent and wait until it is ready, without connecting to it.
+
+        Returns
+        -------
+        FluentProcess
+            Handle to pass to :func:`connect_to_fluent`.
+
+        Raises
+        ------
+        TimeoutError
+            If Fluent does not start within ``start_timeout`` seconds.
+        """
+        logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
+        process = subprocess.Popen(self._launch_cmd, **self._kwargs)
+
+        try:
+            _await_fluent_launch(
+                self._server_info_file_name,
+                self.argvals.get("start_timeout", 100),
+                self._sifile_last_mtime,
+                process.pid,
+            )
+        except TimeoutError as ex:
+            if not is_windows():
+                raise
+            logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
+            launch_cmd = self._launch_string.replace('"', "", 2)
+            self._kwargs.update(shell=False)
+            logger.warning(
+                f"Retrying Fluent launch with less robust command: {launch_cmd}"
+            )
+            process = subprocess.Popen(launch_cmd, **self._kwargs)
+            _await_fluent_launch(
+                self._server_info_file_name,
+                self.argvals.get("start_timeout", 100),
+                self._sifile_last_mtime,
+                process.pid,
+            )
+
+        return FluentProcess(
+            process=process,
+            server_info_file_name=self._server_info_file_name,
+            launcher_args=self.argvals,
+            session_cls=self.new_session,
+            file_transfer_service=self.file_transfer_service,
+        )
+
     def __call__(
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
@@ -350,72 +360,10 @@ class StandaloneLauncher:
             return self._launch_string, self._server_info_file_name
         # Point at the caller's launch_fluent() line (warn -> helper -> __call__ -> launch_fluent -> caller).
         _warn_if_cwd_may_trigger_cmd_unc_fallback(self.argvals.get("cwd"), stacklevel=4)
+        from ansys.fluent.core.execution.launcher.launcher import connect_to_fluent
+
         try:
-            logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-            process = subprocess.Popen(self._launch_cmd, **self._kwargs)
-
-            try:
-                _await_fluent_launch(
-                    self._server_info_file_name,
-                    self.argvals.get("start_timeout", 100),
-                    self._sifile_last_mtime,
-                    process.pid,
-                )
-            except TimeoutError as ex:
-                if is_windows():
-                    logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = self._launch_string.replace('"', "", 2)
-                    self._kwargs.update(shell=False)
-                    logger.warning(
-                        f"Retrying Fluent launch with less robust command: {launch_cmd}"
-                    )
-                    process = subprocess.Popen(launch_cmd, **self._kwargs)
-                    _await_fluent_launch(
-                        self._server_info_file_name,
-                        self.argvals.get("start_timeout", 100),
-                        self._sifile_last_mtime,
-                        process.pid,
-                    )
-                else:
-                    raise ex
-
-            session = self.new_session._create_from_server_info_file(
-                server_info_file_name=self._server_info_file_name,
-                file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
-                start_transcript=self.argvals.get("start_transcript"),
-                launcher_args=self.argvals,
-                inside_container=False,
-            )
-            session._process = process
-            start_watchdog = _confirm_watchdog_start(
-                self.argvals.get("start_watchdog"),
-                self.argvals.get("cleanup_on_exit"),
-                session._fluent_connection,
-            )
-            if start_watchdog:
-                logger.info("Launching Watchdog for local Fluent client...")
-                values = _get_server_info(self._server_info_file_name)
-                if len(values) == 3:
-                    ip, port, password = values
-                    watchdog.launch(
-                        os.getpid(),
-                        port,
-                        password,
-                        ip,
-                        inside_container=False,
-                    )
-            # PyFluent is now connected: disable the idle-timeout guard.
-            self._disable_idle_timeout_guard(session)
-
-            # For lightweight_mode with case file, read case post-connection
-            # to support background session orchestration
-            if self.argvals.get("lightweight_mode") and self.argvals.get(
-                "case_file_name"
-            ):
-                session.read_case_lightweight(self.argvals.get("case_file_name"))
-
-            return session
+            return connect_to_fluent(fluent_process=self.launch())
         except Exception as ex:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(self._launch_cmd) from ex

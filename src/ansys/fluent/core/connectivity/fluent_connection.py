@@ -26,14 +26,12 @@
 from __future__ import annotations
 
 from contextlib import suppress
-import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
 import logging
 import os
 from pathlib import Path
-import platform
 import socket
 import subprocess
 from typing import Callable, TypeVar
@@ -49,6 +47,7 @@ from ansys.fluent.core.connectivity.file_transfer_service import (
 )
 from ansys.fluent.core.connectivity.grpc_transport import GrpcTransport
 from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
+from ansys.fluent.core.execution.launcher.error_handler import PortNotProvided
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -67,6 +66,8 @@ from ansys.framework.connection import (  # noqa: F401
     ErrorState,
     MonitorThread,
 )
+from ansys.framework.process import pid_exists as _pid_exists
+from ansys.framework.process import run_cleanup_script
 from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
 
@@ -77,16 +78,6 @@ def _docker():
     import docker
 
     return docker
-
-
-class PortNotProvided(ValueError):
-    """Raised when port is not provided."""
-
-    def __init__(self):
-        """Initialize PortNotProvided."""
-        super().__init__(
-            "Provide the 'port' to connect to an existing Fluent instance."
-        )
 
 
 class UnsupportedRemoteFluentInstance(ValueError):
@@ -350,26 +341,6 @@ class _ConnectionInterface:
         self._application_runtime.exit()
 
 
-def _pid_exists(pid):
-    if platform.system() == "Linux":
-        try:
-            os.kill(pid, 0)
-        except OSError:
-            return False
-        else:
-            return True
-    elif platform.system() == "Windows":
-        process_query_limited_information = 0x1000
-        process_handle = ctypes.windll.kernel32.OpenProcess(
-            process_query_limited_information, 0, pid
-        )
-        if process_handle == 0:
-            return False
-        else:
-            ctypes.windll.kernel32.CloseHandle(process_handle)
-            return True
-
-
 S = TypeVar("S", bound=ServiceProtocol)
 
 
@@ -607,10 +578,8 @@ class FluentConnection(Connection):
                 return
             if os.name == "nt":
                 cleanup_file_ext = "bat"
-                cmd_list = []
             elif os.name == "posix":
                 cleanup_file_ext = "sh"
-                cmd_list = ["bash"]
             else:
                 logger.error(
                     "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
@@ -623,17 +592,7 @@ class FluentConnection(Connection):
                 logger.info(
                     f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
                 )
-                cmd_list.append(cleanup_file_name)
-                logger.debug(f"Cleanup command list = {cmd_list}")
-                result = subprocess.run(
-                    cmd_list,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    timeout=120,
-                    check=True,
-                )
-                if result.returncode != 0:
-                    raise subprocess.CalledProcessError(result.returncode, cmd_list)
+                run_cleanup_script(cleanup_file_name)
             elif self._slurm_job_id:
                 logger.debug("Fluent running inside Slurm, closing Slurm session...")
                 self._close_slurm()
@@ -806,7 +765,7 @@ class FluentConnection(Connection):
             if wait is not False:
                 self.wait_process_finished(wait=wait)
         else:
-            if not timeout_exec(lambda: self._health_check.is_serving, 5):
+            if not timeout_exec(self._transport.readiness_probe(), 5):
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
                 logger.info("Attempting to send exit request to Fluent...")

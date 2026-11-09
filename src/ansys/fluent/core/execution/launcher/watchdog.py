@@ -37,6 +37,7 @@ import time
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.framework.process import detached_process_kwargs
 
 logger = pyfluent.diagnostics.logger.get_logger("pyfluent.launcher")
 
@@ -154,21 +155,7 @@ def launch(  # noqa: C901
         logger.debug(f"Starting Watchdog logging to directory {os.getcwd()}")
 
     kwargs = {"env": watchdog_env, "stdin": subprocess.DEVNULL, "close_fds": True}
-
-    if os.name == "nt":
-        kwargs.update(shell=True)
-        # https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags
-        # https://docs.python.org/3/library/subprocess.html#windows-constants
-        flags = 0
-        flags |= subprocess.CREATE_NO_WINDOW
-        flags |= subprocess.CREATE_NEW_PROCESS_GROUP
-        flags |= subprocess.DETACHED_PROCESS
-        flags |= subprocess.CREATE_BREAKAWAY_FROM_JOB
-        flags |= subprocess.SW_HIDE
-        kwargs.update(creationflags=flags)
-
-    if os.name == "posix":
-        kwargs.update(start_new_session=True)
+    kwargs.update(detached_process_kwargs())
 
     if debug_watchdog and os.name != "nt":
         kwargs.update(

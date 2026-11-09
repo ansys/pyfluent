@@ -285,10 +285,9 @@ reportUnannotatedClassAttribute = false
 ignore = ["doc", "src/ansys/fluent/core/generated"]
 baselineFile = ".ci/basedpyright.json"
 
-# Componentization architecture rules (EPIC #4618). Run locally with
-# ``pip install import-linter`` then ``lint-imports``. These contracts run in
-# report-only mode in CI during Phase 0 and become blocking in the hardening
-# phase. See doc/source/contributing/componentization.rst.
+# Componentization architecture rules (see the ``ansys.framework`` package
+# docstring). Run locally with ``pip install import-linter`` then
+# ``lint-imports``. CI runs these contracts in report-only mode.
 [tool.importlinter]
 # ``ansys.api.fluent`` is an external, namespaced (``ansys.*``) package. It is
 # listed as a root package so the forbidden contract below can name it directly;
@@ -308,3 +307,13 @@ name = "Service contracts must not depend on the object framework (flobject)"
 type = "forbidden"
 source_modules = ["ansys.fluent.core.services"]
 forbidden_modules = ["ansys.fluent.core.solver.flobject"]
+
+[[tool.importlinter.contracts]]
+name = "Process layer is standalone (no connection, transport or service imports)"
+type = "forbidden"
+source_modules = ["ansys.framework.process"]
+forbidden_modules = [
+    "ansys.framework.connection",
+    "ansys.framework.transport",
+    "ansys.framework.services",
+]

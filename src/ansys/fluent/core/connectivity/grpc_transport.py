@@ -37,6 +37,7 @@ from typing import Any
 
 from ansys.fluent.core.utils.networking import get_uds_path
 from ansys.framework.connection import ErrorState
+from ansys.framework.transport import ServingProbe
 
 
 class GrpcTransport:
@@ -130,6 +131,10 @@ class GrpcTransport:
     def is_serving(self) -> bool:
         """Whether the server is reachable and ready to serve requests."""
         return self._health_check.is_serving
+
+    def readiness_probe(self) -> ServingProbe:
+        """Return a readiness probe backed by the gRPC health check."""
+        return ServingProbe(self)
 
     def connect(self) -> None:
         """No-op; the gRPC channel is established eagerly on construction."""
