@@ -42,7 +42,7 @@ Class hierarchy
     Implementation for Fluent versions 27R1 and later.
 """
 
-from collections.abc import Callable, Iterator, Sequence
+from collections.abc import Callable, Iterator
 import functools
 import logging
 from typing import Any, Iterable, TypeVar
@@ -67,7 +67,6 @@ from ansys.fluent.core.services.object_model_utilities import (
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
-ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 Path = list[tuple[str, str]]
 logger: logging.Logger = logging.getLogger("pyfluent.object_model")
 
@@ -111,7 +110,7 @@ class ObjectModelBase:
             )
         )
 
-    def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
+    def get_attribute_value(self, rules: str, path: str, attribute: str) -> Any:
         """Get attribute value."""
         return self._service.get_attribute_value(rules, path, attribute)
 
@@ -120,7 +119,7 @@ class ObjectModelBase:
         """Access the subscription list of the underlying gRPC service."""
         return self._service.subscriptions
 
-    def get_state(self, rules: str, path: str) -> ValueT:
+    def get_state(self, rules: str, path: str) -> Any:
         """Get state."""
         return self._service.get_state(rules, path)
 
@@ -167,7 +166,7 @@ class ObjectModelBase:
                 version=self._version,
             )
 
-    def set_state(self, rules: str, path: str, state: ValueT) -> None:
+    def set_state(self, rules: str, path: str, state: Any) -> None:
         """Set state."""
         state, deleted_paths = self._service.set_state(rules, path, state)
         if self._cache is not None:
@@ -193,7 +192,7 @@ class ObjectModelBase:
         self,
         rules: str,
         path: str,
-        dict_state: dict[str, ValueT],
+        dict_state: dict[str, Any],
         recursive=False,
     ) -> None:
         """Update the dict."""
@@ -220,8 +219,8 @@ class ObjectModelBase:
             )
 
     def execute_command(
-        self, rules: str, path: str, command: str, args: dict[str, ValueT]
-    ) -> ValueT:
+        self, rules: str, path: str, command: str, args: dict[str, Any]
+    ) -> Any:
         """Execute the command."""
         result, state, deleted_paths = self._service.execute_command(
             rules, path, command, args
@@ -236,8 +235,8 @@ class ObjectModelBase:
         return result
 
     def execute_query(
-        self, rules: str, path: str, query: str, args: dict[str, ValueT]
-    ) -> ValueT:
+        self, rules: str, path: str, query: str, args: dict[str, Any]
+    ) -> Any:
         """Execute the query."""
         return self._service.execute_query(rules, path, query, args)
 
@@ -293,7 +292,7 @@ class ObjectModelBase:
         """Add on deleted."""
         return self._service.add_on_deleted(rules, path, cb)
 
-    def add_on_changed(self, rules: str, path: str, cb: Callable[[ValueT], None]):
+    def add_on_changed(self, rules: str, path: str, cb: Callable[[Any], None]):
         """Add on changed."""
         return self._service.add_on_changed(rules, path, cb)
 
@@ -313,19 +312,19 @@ class ObjectModelBase:
         path: str,
         command: str,
         obj,
-        cb: Callable[[str, ValueT], None],
+        cb: Callable[[str, Any], None],
     ):
         """Add on command executed."""
         return self._service.add_on_command_executed_old(rules, path, command, obj, cb)
 
     def add_on_command_executed(
-        self, rules: str, path: str, cb: Callable[[str, ValueT], None]
+        self, rules: str, path: str, cb: Callable[[str, Any], None]
     ):
         """Add on command executed."""
         return self._service.add_on_command_executed(rules, path, cb)
 
     def add_on_attribute_changed(
-        self, rules: str, path: str, attribute: str, cb: Callable[[ValueT], None]
+        self, rules: str, path: str, attribute: str, cb: Callable[[Any], None]
     ):
         """Add on attribute changed."""
         return self._service.add_on_attribute_changed(rules, path, attribute, cb)
@@ -336,7 +335,7 @@ class ObjectModelBase:
         path: str,
         command: str,
         attribute: str,
-        cb: Callable[[ValueT], None],
+        cb: Callable[[Any], None],
     ):
         """Add on command attribute changed."""
         return self._service.add_on_command_attribute_changed(
@@ -393,7 +392,7 @@ class PyCallableStateObject:
         Get the state of the current object.
     """
 
-    def __call__(self, *args, **kwds) -> ValueT:
+    def __call__(self, *args, **kwds) -> Any:
         return self.get_state()
 
 
@@ -433,11 +432,11 @@ class PyStateContainer(PyCallableStateObject):
             )
         )
 
-    def get_remote_state(self) -> ValueT:
+    def get_remote_state(self) -> Any:
         """Get state of the current object."""
         return self.service.get_state(self.rules, convert_path_to_se_path(self.path))
 
-    def get_state(self) -> ValueT:
+    def get_state(self) -> Any:
         """Get state."""
         if self.service._cache is not None:
             state = self.service._cache.get_state(self.rules, self, NameKey.DISPLAY)
@@ -455,14 +454,14 @@ class PyStateContainer(PyCallableStateObject):
 
     fixState = fix_state
 
-    def set_state(self, state: ValueT | None = None, **kwargs: ValueT) -> None:
+    def set_state(self, state: Any | None = None, **kwargs: Any) -> None:
         """Set state of the current object.
 
         Parameters
         ----------
-        state : ValueT, optional
+        state : Any, optional
             state
-        kwargs : ValueT
+        kwargs : Any
             Keyword arguments.
 
         Raises
@@ -492,12 +491,12 @@ class PyStateContainer(PyCallableStateObject):
             obj=self, base_class=PyStateContainer, prefix=prefix, excluded=excluded
         )
 
-    def _get_remote_attr(self, attrib: str) -> ValueT:
+    def _get_remote_attr(self, attrib: str) -> Any:
         return self.service.get_attribute_value(
             self.rules, convert_path_to_se_path(self.path), attrib
         )
 
-    def _get_cached_attr(self, attrib: str) -> ValueT:
+    def _get_cached_attr(self, attrib: str) -> Any:
         cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
@@ -514,7 +513,7 @@ class PyStateContainer(PyCallableStateObject):
                 logger.debug(ex)
         return cached_val
 
-    def get_attr(self, attrib: str) -> ValueT:
+    def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
 
         Parameters
@@ -524,7 +523,7 @@ class PyStateContainer(PyCallableStateObject):
 
         Returns
         -------
-        ValueT
+        Any
             Value of the attribute.
         """
         if config.datamodel_use_attr_cache and self.rules != "meshing_workflow":
@@ -541,7 +540,7 @@ class PyStateContainer(PyCallableStateObject):
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
-    def __call__(self, *args, **kwargs) -> ValueT | None:
+    def __call__(self, *args, **kwargs) -> Any | None:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -549,14 +548,14 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    def add_on_attribute_changed(self, attribute: str, cb: Callable[[ValueT], None]):
+    def add_on_attribute_changed(self, attribute: str, cb: Callable[[Any], None]):
         """Register a callback for when an attribute is changed.
 
         Parameters
         ----------
         attribute : str
             attribute name
-        cb : Callable[[ValueT], None]
+        cb : Callable[[Any], None]
             Callback function
 
         Returns
@@ -569,7 +568,7 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def add_on_command_attribute_changed(
-        self, command: str, attribute: str, cb: Callable[[ValueT], None]
+        self, command: str, attribute: str, cb: Callable[[Any], None]
     ):
         """Register a callback for when an attribute is changed.
 
@@ -579,7 +578,7 @@ class PyStateContainer(PyCallableStateObject):
             command name
         attribute : str
             attribute name
-        cb : Callable[[ValueT], None]
+        cb : Callable[[Any], None]
             Callback function
 
         Returns
@@ -618,14 +617,14 @@ class PyMenu(PyStateContainer):
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
-    def __setattr__(self, name: str, value: ValueT) -> None:
+    def __setattr__(self, name: str, value: Any) -> None:
         """Set state of the child object.
 
         Parameters
         ----------
         name : str
             child object name
-        value : ValueT
+        value : Any
             state
         """
         if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
@@ -752,7 +751,7 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(value: ValueT):
+        def cb_service(value: Any):
             cb(self)
 
         return self.service.add_on_changed(
@@ -806,7 +805,7 @@ class PyMenu(PyStateContainer):
         )
 
     def add_on_command_executed_old(
-        self, command: str, cb: Callable[[PyMenuT, str, ValueT], None]
+        self, command: str, cb: Callable[[PyMenuT, str, Any], None]
     ):
         """Register a callback for when a command is executed.
 
@@ -814,7 +813,7 @@ class PyMenu(PyStateContainer):
         ----------
         command : str
             Command name
-        cb : Callable[[PyMenuT, str, ValueT], None]
+        cb : Callable[[PyMenuT, str, Any], None]
             Callback function
 
         Returns
@@ -823,19 +822,19 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(command: str, args: ValueT):
+        def cb_service(command: str, args: Any):
             cb(self, command, args)
 
         return self.service.add_on_command_executed_old(
             self.rules, convert_path_to_se_path(self.path), command, self, cb_service
         )
 
-    def add_on_command_executed(self, cb: Callable[[PyMenuT, str, ValueT], None]):
+    def add_on_command_executed(self, cb: Callable[[PyMenuT, str, Any], None]):
         """Register a callback for when a command is executed.
 
         Parameters
         ----------
-        cb : Callable[[PyMenuT, str, ValueT], None]
+        cb : Callable[[PyMenuT, str, Any], None]
             Callback function
 
         Returns
@@ -844,7 +843,7 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(command: str, args: ValueT):
+        def cb_service(command: str, args: Any):
             cb(self, command, args)
 
         return self.service.add_on_command_executed(
@@ -905,7 +904,7 @@ class PyParameter(PyStateContainer):
     Use this class instead of directly calling DatamodelService's method.
     """
 
-    def default_value(self) -> ValueT:
+    def default_value(self) -> Any:
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
@@ -923,7 +922,7 @@ class PyParameter(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(value: ValueT):
+        def cb_service(value: Any):
             cb(self)
 
         return self.service.add_on_changed(
@@ -1147,14 +1146,14 @@ class PyNamedObjectContainer:
         except LookupError:
             return
 
-    def __setitem__(self, key: str, value: ValueT) -> None:
+    def __setitem__(self, key: str, value: Any) -> None:
         """Set state of the child object by name.
 
         Parameters
         ----------
         key : str
             Name of the child object.
-        value : ValueT
+        value : Any
             State of the child object.
         """
         if isinstance(value, dict) and not value:
@@ -1213,7 +1212,7 @@ class PyAction:
         setattr(self, self._operation, name)
         self.path = path or []
 
-    def __call__(self, *args, **kwds) -> ValueT:
+    def __call__(self, *args, **kwds) -> Any:
         """Execute the operation (command or query)."""
         execute_method = getattr(self.service, f"execute_{self._operation}")
         return execute_method(
@@ -1337,12 +1336,12 @@ class PyCommand(PyAction):
         if hasattr(self.file_behavior, "_do_after_execute"):
             self.file_behavior._do_after_execute(value)
 
-    def __call__(self, *args, **kwds) -> ValueT:
+    def __call__(self, *args, **kwds) -> Any:
         """Execute the command.
 
         Returns
         -------
-        ValueT
+        Any
             Return value.
         """
         processed = []
@@ -1379,20 +1378,20 @@ class PyArgumentsSubItem(PyCallableStateObject):
             )
         )
 
-    def get_state(self) -> ValueT:
+    def get_state(self) -> Any:
         """Get state of the command argument."""
         parent_state = self.parent.get_state()
         return parent_state[self.name]
 
     getState = get_state
 
-    def set_state(self, state: ValueT) -> ValueT:
+    def set_state(self, state: Any) -> Any:
         """Set state of the command argument."""
         self.parent.set_state({self.name: state})
 
     setState = set_state
 
-    def get_attr(self, attrib: str) -> ValueT:
+    def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the command argument.
 
         Parameters
@@ -1402,7 +1401,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
         Returns
         -------
-        ValueT
+        Any
             attribute value
         """
         attrib_path = f"{self.name}/{attrib}"
@@ -1410,7 +1409,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     getAttribValue = get_attr
 
-    def __setattr__(self, key: str, value: ValueT) -> None:
+    def __setattr__(self, key: str, value: Any) -> None:
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
@@ -1455,7 +1454,7 @@ class PyArguments(PyStateContainer):
         except Exception as exc:
             logger.info(f"__del__ {type(exc).__name__}: {exc}")
 
-    def get_attr(self, attrib: str) -> ValueT:
+    def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
 
         Parameters
@@ -1465,12 +1464,12 @@ class PyArguments(PyStateContainer):
 
         Returns
         -------
-        ValueT
+        Any
             Value of the attribute.
         """
         return self._get_remote_attr(attrib)
 
-    def __setattr__(self, key: str, value: ValueT) -> None:
+    def __setattr__(self, key: str, value: Any) -> None:
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:

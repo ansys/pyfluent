@@ -30,16 +30,44 @@ by external checkers like beartype and typeguard.
 __all__ = ("no_runtime_type_check",)
 
 
-def no_runtime_type_check(obj):
-    """Apply no_runtime_type_check safely, ignoring attribute errors on generic aliases.
+def _mark(obj) -> None:
+    try:
+        obj.__no_type_check__ = True
+    except (AttributeError, TypeError):
+        # Some objects (e.g. generic aliases) reject attribute assignment.
+        pass
 
-    Sets ``__no_type_check__ = True`` on the object to signal type-checkers to skip it.
-    In Python 3.10+, some objects like ``GenericAlias`` don't support setting this
-    attribute directly. This wrapper catches those errors gracefully.
+
+def _mark_class(cls: type) -> None:
+    # beartype.claw decorates each member separately and only reads the flag on
+    # the function itself, so the members must be flagged as well as the class.
+    for member in list(vars(cls).values()):
+        if isinstance(member, (classmethod, staticmethod)):
+            _mark(member.__func__)
+        elif isinstance(member, property):
+            for accessor in (member.fget, member.fset, member.fdel):
+                if accessor is not None:
+                    _mark(accessor)
+        elif isinstance(member, type):
+            if member.__qualname__.startswith(f"{cls.__qualname__}."):
+                _mark_class(member)
+        elif callable(member) and hasattr(member, "__code__"):
+            _mark(member)
+    _mark(cls)
+
+
+def no_runtime_type_check(obj):
+    """Exclude an object from runtime type-checking by external checkers.
+
+    Sets ``__no_type_check__ = True``, the flag set by :func:`typing.no_type_check`
+    and honored by checkers such as beartype and typeguard. For a class, the flag is
+    also set on its own methods, class and static methods, property accessors and
+    nested classes. For a ``classmethod`` or ``staticmethod`` object, the flag is set
+    on the underlying function, so the decorator works in either stacking order.
 
     This is used for PyFluent proxy classes (Base, SettingsBase, Group, etc.) that
     rely on dynamic ``__getattr__``/``__setattr__`` proxying or are parameterized
-    generics, which most runtime type-checkers cannot check safely.
+    generics, and for callables whose hints cannot be resolved at runtime.
 
     Parameters
     ----------
@@ -60,10 +88,11 @@ def no_runtime_type_check(obj):
     ... class MyClass(Generic[T]):
     ...     pass
     """
-    try:
-        obj.__no_type_check__ = True
-    except (AttributeError, TypeError):
-        # Object doesn't support attribute assignment (e.g., generic alias)
-        # This is safe behavior—return the object unchanged
-        pass
+    if isinstance(obj, type):
+        _mark_class(obj)
+    elif isinstance(obj, (classmethod, staticmethod)):
+        _mark(obj.__func__)
+        _mark(obj)
+    else:
+        _mark(obj)
     return obj

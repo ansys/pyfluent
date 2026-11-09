@@ -44,7 +44,7 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-PathType: TypeAlias = "os.PathLike[str] | str"
+PathType: TypeAlias = os.PathLike[str] | str
 """Type alias for file system paths."""
 
 
