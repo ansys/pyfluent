@@ -6,7 +6,8 @@ Install the project's pinned checker and run from the repository root:
 
 The generated model is excluded from the reported score by filtering its
 exported symbols from BasedPyright's JSON report. A temporary ``py.typed``
-marker is created only when the package does not already have one.
+marker and a standalone BasedPyright config are created for the run, so the
+repository's ``pyproject.toml`` does not affect the measurement.
 """
 
 from __future__ import annotations
@@ -38,6 +39,7 @@ def main() -> int:
     marker = PACKAGE_DIRECTORY / "py.typed"
     created_marker = False
     try:
+        # verifytypes requires a PEP 561 marker, even when checking source files.
         try:
             with marker.open("x", encoding="utf-8") as marker_file:
                 marker_file.write("\n")
@@ -54,20 +56,39 @@ def main() -> int:
                 for path in (source_directory, existing_pythonpath)
                 if path
             )
-            result = subprocess.run(
-                [
-                    executable,
-                    "--verifytypes",
-                    PACKAGE,
-                    "--outputjson",
-                ],
-                cwd=REPOSITORY_ROOT,
-                stdout=subprocess.PIPE,
-                stderr=stderr,
-                env=environment,
-                text=True,
-                check=False,
-            )
+            with tempfile.NamedTemporaryFile(
+                mode="w",
+                encoding="utf-8",
+                prefix=".basedpyrightconfig-",
+                suffix=".json",
+                dir=REPOSITORY_ROOT,
+                delete=False,
+            ) as config_file:
+                config_path = Path(config_file.name)
+                # Use a standalone config to bypass pyproject settings and exclude generated sources.
+                json.dump(
+                    {"exclude": ["src/ansys/fluent/core/generated"]},
+                    config_file,
+                )
+            try:
+                result = subprocess.run(
+                    [
+                        executable,
+                        "--project",
+                        str(config_path),
+                        "--verifytypes",
+                        PACKAGE,
+                        "--outputjson",
+                    ],
+                    cwd=REPOSITORY_ROOT,
+                    stdout=subprocess.PIPE,
+                    stderr=stderr,
+                    env=environment,
+                    text=True,
+                    check=False,
+                )
+            finally:
+                config_path.unlink()
             stderr.seek(0)
             stderr_text = stderr.read()
 
@@ -94,6 +115,7 @@ def main() -> int:
             return 1
 
         exported = [symbol for symbol in symbols if symbol["isExported"]]
+        # verifytypes can still report excluded exports, so omit them from the metric too.
         measured = [
             symbol
             for symbol in exported
