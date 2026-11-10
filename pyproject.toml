@@ -262,14 +262,7 @@ skips = [
     ]
 
 [tool.basedpyright]
-reportAny = false
-reportUnknownMemberType = false
-reportExplicitAny = false
-reportPrivateUsage = false
-reportUnusedCallResult = false
-reportUnannotatedClassAttribute = false
-ignore = ["doc", "src/ansys/fluent/core/generated"]
-baselineFile = ".ci/basedpyright.json"
+exclude = ["src/ansys/fluent/core/generated"]
 
 # Componentization architecture rules (EPIC #4618). Run locally with
 # ``pip install import-linter`` then ``lint-imports``. These contracts run in
