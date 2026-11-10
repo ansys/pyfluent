@@ -102,8 +102,7 @@ Resilient mode
 ~~~~~~~~~~~~~~
 
 Make an automated setup-and-solve run survivable with
-:ref:`resilient mode <ref_resilient_guide>`. Repair rejected setting values,
-checkpoint automatically before irreversible commands and roll back when they
-fail, undo and redo settings changes, and fail over to a warm standby session
-when the active solver dies.
+:ref:`resilient mode <ref_resilient_guide>`. Checkpoint automatically before
+irreversible commands and roll back when they fail, undo and redo settings
+changes, and keep running on a warm standby session when the active solver dies.
 

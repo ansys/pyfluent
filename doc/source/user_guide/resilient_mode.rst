@@ -14,15 +14,15 @@ standard PyFluent code. Resilient mode works for solver sessions now:
   checkpoint. If such a command fails, the session is restored to that
   checkpoint and the original error is raised.
 * **Undo and redo** of settings writes from a journal.
-* **Failover**: with a warm pool of standby sessions, a solver that dies is
-  replaced by a standby. The standby is brought to the same state from the
-  newest checkpoint and the journal, and the failed call is retried.
+* **Failover**: with a warm pool of standby sessions, your script keeps running
+  on a standby session when the active solver process dies, resuming from the
+  latest checkpoint.
 
-Resilient mode never changes a value or a model to make a rejected write
-succeed: a value that Fluent rejects raises the original error unchanged, so
-existing ``except`` clauses keep working. Resilient mode only works with solver
-sessions. It does not apply to meshing sessions or to REST (``HttpSolver``)
-sessions.
+Resilient mode does not alter your settings. A value that Fluent rejects raises
+the original error unchanged, so your existing ``except`` clauses keep working.
+
+Resilient mode is available for solver sessions launched or connected over gRPC.
+It does not apply to meshing sessions or to REST (``HttpSolver``) sessions.
 
 
 Enable resilient mode
@@ -122,26 +122,19 @@ Failover needs at least one warm standby session:
 
 ``PoolConfig.size`` counts the active session, so ``size=2`` launches one
 standby with the same launch arguments as the active session. If the active
-session dies during a settings write or command, resilient mode:
+session dies during a settings write or command, your script continues on a
+standby session, resuming from the latest checkpoint, and a
+:class:`~ansys.fluent.core.resilient.ResilientFailoverWarning` is emitted.
 
-#. promotes a healthy standby,
-#. restores the newest checkpoint on it and replays the journaled operations
-   recorded since then,
-#. retries the failed call, and
-#. emits a :class:`~ansys.fluent.core.resilient.ResilientFailoverWarning`.
+Keep these points in mind:
 
-A replacement standby is launched in the background.
-
-Keep these limits in mind:
-
-* Failover reroutes ``solver.settings``. Other services of the dead session, such
-  as field data, are not rerouted. Use ``solver.resilient.active_session`` to
-  reach the session that is currently serving.
-* Replay starts from the newest checkpoint. Without a checkpoint, the standby
-  starts from launch state, so take a checkpoint once the case is loaded.
-* The failed call is retried once, on the standby. If the call itself crashed
-  the server, the retry fails too and its error is raised.
-* Standbys are launched automatically only for local standalone sessions. For
+* Take a checkpoint once your case is loaded. Failover resumes from the latest
+  checkpoint; without one, the standby starts from an empty session.
+* Failover reroutes ``solver.settings``. Use ``solver.resilient.active_session``
+  to reach other services, such as field data, of the session now serving.
+* If a call itself caused the crash, it does not succeed after failover and its
+  error is raised.
+* Standbys are launched automatically for local standalone sessions. For
   container, PIM or remote sessions, pass ``PoolConfig.launch_kwargs`` or
   ``PoolConfig.launcher``.
 * Exiting ``solver`` exits all the sessions of the pool.
@@ -194,22 +187,3 @@ Configuration reference
    * - ``pool``
      - ``PoolConfig()``
      - ``size`` (``1``, no standby), ``launch_kwargs`` and ``launcher``.
-
-
-Design
-------
-
-Resilient mode is split into a product-neutral engine and a small product
-adapter:
-
-* ``ansys.fluent.core.resilient.engine`` holds the classifier, journal,
-  checkpoint store, warm pool and controller. It depends only on the Python
-  standard library, so other Ansys clients can reuse it. PyCFX uses it through
-  ``ansys-cfx-core[resilient]``.
-* :class:`~ansys.fluent.core.resilient.FluentAdapter` implements the Fluent
-  details: error types, health checks, checkpoint I/O, launching standbys and
-  the list of irreversible commands.
-
-The controller wraps the session's settings service. Every write, command and
-named-object change made through ``solver.settings`` therefore goes through
-resilient mode without any change to the settings classes.
