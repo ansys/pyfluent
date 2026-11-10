@@ -21,28 +21,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""".. _ref_case_settings_demo:
+""".. _ref_case_snapshot_demo:
 
-CaseSettings walkthrough
+CaseSnapshot walkthrough
 ------------------------
-This script shows how :class:`~ansys.fluent.core.solver.case_settings.CaseSettings`
+This script shows how :class:`~ansys.fluent.core.solver.case_snapshot.CaseSnapshot`
 moves the complete setup of a case between Fluent solver sessions, one chapter at
 a time:
 
-1. Capture a setup, including a value that the settings API does not expose.
+1. Take a snapshot, including a value that the settings API does not expose.
 2. Apply it to several sessions in parallel.
 3. Run variants of the setup side by side.
-4. Save the setup to a case file and reuse it.
-5. Apply the settings to the mesh of a session, and refuse mismatched zones.
+4. Save the snapshot to a case file and reuse it.
+5. Apply a snapshot without its mesh, and refuse mismatched zones.
 6. Undo an apply with resilient mode.
 
 Run it from a terminal::
 
-    python demo_case_settings.py [--auto] [--no-gui]
+    python demo_case_snapshot.py [--auto] [--no-gui]
 
 ``--auto`` runs without pausing between chapters. ``--no-gui`` runs Fluent
 without its GUI. The script launches three Fluent sessions with two processes
-each.
+each; the last one runs in resilient mode.
 
 See :ref:`ref_data_transfer_guide` for details.
 """
@@ -60,13 +60,9 @@ import time
 import warnings
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import CaseSettings, examples
+from ansys.fluent.core import CaseSnapshot, examples
 from ansys.fluent.core.diagnostics.exceptions import DeprecatedSettingWarning
-from ansys.fluent.core.resilient import (
-    CheckpointConfig,
-    ResilientConfig,
-    enable_resilient_mode,
-)
+from ansys.fluent.core.resilient import CheckpointConfig, ResilientConfig
 
 # Development builds of Fluent suggest newer names for some settings. The demo
 # keeps the names of the released versions so that it runs on all of them.
@@ -75,9 +71,9 @@ warnings.simplefilter("ignore", DeprecatedSettingWarning)
 WIDTH = 78
 
 INTRO = """\
-PyFluent CaseSettings walkthrough
+PyFluent CaseSnapshot walkthrough
 
-CaseSettings captures the complete setup of a case, all its settings and its
+A CaseSnapshot holds the complete setup of a case, all its settings and its
 mesh, and applies it to other solver sessions. While you read the output:
   > lines           what the script does next
   indented lines    values read back from Fluent"""
@@ -130,22 +126,33 @@ def show_event(event) -> None:
     show_text(f"[resilient: {event.kind.value}]", message, separator=" ")
 
 
-def launch(ui_mode: str, count: int) -> list:
-    """Launch ``count`` solver sessions in parallel."""
+def launch(ui_mode: str, checkpoints: Path) -> list:
+    """Launch the source and two workers in parallel.
 
-    def launch_one(_):
+    Worker 2 runs in resilient mode, which is enabled at launch.
+    """
+
+    def launch_one(resilient: bool):
         return pyfluent.launch_fluent(
             mode=pyfluent.FluentMode.SOLVER,
             precision=pyfluent.Precision.DOUBLE,
             processor_count=2,
             ui_mode=ui_mode,
             start_transcript=False,
+            resilient_mode=resilient,
+            resilient_config=(
+                ResilientConfig(checkpoint=CheckpointConfig(directory=checkpoints))
+                if resilient
+                else None
+            ),
         )
 
-    with ThreadPoolExecutor(max_workers=count) as pool:
-        futures = [pool.submit(launch_one, index) for index in range(count)]
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        futures = [
+            pool.submit(launch_one, resilient) for resilient in (False, False, True)
+        ]
     sessions = [future.result() for future in futures if not future.exception()]
-    if len(sessions) < count:
+    if len(sessions) < len(futures):
         for session in sessions:
             session.exit()
         raise next(f.exception() for f in futures if f.exception())
@@ -212,17 +219,20 @@ def solve(solver, velocity: float) -> None:
 
 def run(ui_mode: str, auto: bool) -> None:
     """Run the chapters on the mixing elbow."""
-    folder = Path.cwd() / "case_settings_demo"
+    folder = Path.cwd() / "case_snapshot_demo"
     folder.mkdir(exist_ok=True)
     case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
-    step("Launch three Fluent solver sessions in parallel: a source and two workers.")
+    step(
+        "Launch three Fluent solver sessions in parallel: a source and two "
+        "workers. Worker 2 runs in resilient mode, which chapter 6 uses."
+    )
     started = time.time()
-    source, worker_1, worker_2 = launch(ui_mode, 3)
+    source, worker_1, worker_2 = launch(ui_mode, folder / "checkpoints")
     show("ready after", f"{time.time() - started:.0f} s")
     workers = {"worker 1": worker_1, "worker 2": worker_2}
     try:
-        chapter(1, "Capture a setup", auto)
+        chapter(1, "Take a snapshot", auto)
         step(
             "Read the mixing elbow case into the source, then change its setup: the "
             "k-epsilon viscous model, a cold-inlet velocity of 0.4 m/s, and a Scheme "
@@ -234,10 +244,10 @@ def run(ui_mode: str, auto: bool) -> None:
         source.scheme.eval(f"(rp-var-define '{MARKER} 0 'integer #f)")
         set_marker(source, 42)
         show("source", describe(source))
-        step("Capture the setup: CaseSettings.from_session(source).")
-        setup = CaseSettings.from_session(source)
-        show("captured", setup)
-        step("Change the source afterwards. The captured setup does not change.")
+        step("Take a snapshot of the source: CaseSnapshot.from_session(source).")
+        snapshot = CaseSnapshot.from_session(source)
+        show("snapshot", snapshot)
+        step("Change the source afterwards. The snapshot does not change.")
         viscous(source).model = "laminar"
         cold_inlet(source).momentum.velocity_magnitude.value = 0.9
         set_marker(source, 7)
@@ -249,16 +259,16 @@ def run(ui_mode: str, auto: bool) -> None:
             loaded = worker.scheme.eval("(case-valid?)")
             show(name, "a case is loaded" if loaded else "no case loaded")
         step(
-            "Apply the setup to both workers: setup.apply_to(worker_1, worker_2). "
-            "Both are checked first, then they load the setup in parallel."
+            "Apply the snapshot to both workers: snapshot.apply_to(worker_1, "
+            "worker_2). Both are checked first, then they load it in parallel."
         )
         started = time.time()
-        setup.apply_to(*workers.values())
+        snapshot.apply_to(*workers.values())
         show("applied after", f"{time.time() - started:.1f} s")
         for name, worker in workers.items():
             show(name, describe(worker))
-        step("Apply it to the source too, which brings it back to the captured setup.")
-        setup.apply_to(source)
+        step("Apply it to the source too, which brings the source back to it.")
+        snapshot.apply_to(source)
         show("source", describe(source))
 
         chapter(3, "Run variants side by side", auto)
@@ -280,20 +290,20 @@ def run(ui_mode: str, auto: bool) -> None:
                 f"{outlet_temperature(worker)}",
             )
 
-        chapter(4, "Save the setup and reuse it", auto)
+        chapter(4, "Save the snapshot and reuse it", auto)
         step(
-            "Save the setup to a case file. Any script can create CaseSettings from "
-            "it later, without the source session."
+            "Save the snapshot to a case file. Any script can create a CaseSnapshot "
+            "from it later, without the source session."
         )
-        saved = setup.save(folder / "elbow_k_epsilon.cas.h5")
+        saved = snapshot.save(folder / "elbow_k_epsilon.cas.h5")
         show("saved", saved.name)
-        template = CaseSettings.from_file(saved)
+        template = CaseSnapshot.from_file(saved)
         show("loaded", template)
         step("Apply it to worker 2, which goes back to the saved setup.")
         template.apply_to(worker_2)
         show("worker 2", describe(worker_2))
 
-        chapter(5, "Keep the mesh of a session", auto)
+        chapter(5, "Apply a snapshot without its mesh", auto)
         step(
             "Scale the mesh of worker 1 by 2. It stands in for a different mesh "
             "with the same zone names."
@@ -302,39 +312,33 @@ def run(ui_mode: str, auto: bool) -> None:
         worker_1.settings.mesh.scale(x_scale=2, y_scale=2, z_scale=2)
         show("worker 1 outlet area", outlet_area(worker_1))
         step(
-            "Apply the setup with keep_mesh=True. Worker 1 takes the settings and "
-            "keeps its own mesh."
+            "Apply the snapshot with include_mesh=False. Worker 1 takes the "
+            "settings and keeps its own mesh."
         )
-        setup.apply_to(worker_1, keep_mesh=True)
+        snapshot.apply_to(worker_1, include_mesh=False)
         show("worker 1", describe(worker_1))
         show("worker 1 outlet area", outlet_area(worker_1))
         step(
-            "Rename the outlet zone of worker 2, then apply with keep_mesh=True. The "
-            "zone names no longer match, so nothing is guessed: the error names the "
-            "zones, and worker 2 is not changed."
+            "Rename the outlet zone of worker 2, then apply with "
+            "include_mesh=False. The zone names no longer match, so nothing is "
+            "guessed: the error names the zones, and worker 2 is not changed."
         )
         outlets = worker_2.settings.setup.boundary_conditions.pressure_outlet
         outlets.rename(new="outlet-2", old="outlet")
         try:
-            setup.apply_to(worker_2, keep_mesh=True)
+            snapshot.apply_to(worker_2, include_mesh=False)
         except ValueError as error:
             show_text("error", str(error))
         show("worker 2 pressure outlets", pressure_outlets(worker_2))
 
         chapter(6, "Undo an apply with resilient mode", auto)
         step(
-            "Enable resilient mode on worker 2 and apply the setup. Resilient mode "
-            "writes a checkpoint before reading the setup, and CaseSettings writes "
-            "one after."
-        )
-        enable_resilient_mode(
-            worker_2,
-            ResilientConfig(
-                checkpoint=CheckpointConfig(directory=folder / "checkpoints")
-            ),
+            "Apply the snapshot to worker 2, which runs in resilient mode. "
+            "Resilient mode writes a checkpoint before reading the snapshot, and "
+            "CaseSnapshot writes one after."
         )
         worker_2.resilient.on_event(show_event)
-        setup.apply_to(worker_2)
+        snapshot.apply_to(worker_2)
         show("worker 2 pressure outlets", pressure_outlets(worker_2))
         step(
             "Roll back to the checkpoint written before the read. Worker 2 gets its "
@@ -354,7 +358,7 @@ def run(ui_mode: str, auto: bool) -> None:
 
 def main() -> None:
     """Parse the command line and run the chapters."""
-    parser = argparse.ArgumentParser(description="PyFluent CaseSettings demo.")
+    parser = argparse.ArgumentParser(description="PyFluent CaseSnapshot demo.")
     parser.add_argument("--auto", action="store_true", help="do not pause")
     parser.add_argument("--no-gui", action="store_true", help="hide the Fluent GUI")
     args = parser.parse_args()

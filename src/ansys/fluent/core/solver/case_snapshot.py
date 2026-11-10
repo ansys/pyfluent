@@ -43,22 +43,23 @@ if TYPE_CHECKING:
     from ansys.fluent.core.solver.session.solver import Solver
     from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-__all__ = ["CaseSettings"]
+__all__ = ["CaseSnapshot"]
 
 logger = logging.getLogger("pyfluent.networking")
 
 _CASE_SUFFIXES = (".cas.h5", ".cas.gz", ".cas")
 _WRITE_SUFFIX = ".cas.h5"
 _ZONE_NAMES = "(map (lambda (t) (symbol->string (thread-name t))) (get-all-threads))"
-_RESILIENT_CHECKPOINT = "case-settings"
+_RESILIENT_CHECKPOINT = "case-snapshot"
+_TEMP_PREFIX = "pyfluent-case-snapshot-"
 
 
-class CaseSettings:
-    """The complete setup of a Fluent case: all its settings and its mesh.
+class CaseSnapshot:
+    """A snapshot of the complete setup of a Fluent case: all its settings and its mesh.
 
-    Capture a setup once, with :meth:`from_session` or :meth:`from_file`, and
-    apply it to any number of solver sessions with :meth:`apply_to`. The setup is
-    carried by a Fluent case file, Fluent's own complete record of a case, so it
+    Capture a snapshot once, with :meth:`from_session` or :meth:`from_file`, and
+    apply it to any number of solver sessions with :meth:`apply_to`. The snapshot
+    is carried by a Fluent case file, Fluent's own complete record of a case, so it
     includes settings that the settings API does not expose. The case file is
     handled for you, whether Fluent runs locally, in a container, or remotely
     through a file transfer service. Solution data is not included.
@@ -66,10 +67,10 @@ class CaseSettings:
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> setup = pyfluent.CaseSettings.from_session(solver)
-    >>> setup.apply_to(worker_1, worker_2)
-    >>> template = pyfluent.CaseSettings.from_file("elbow_setup.cas.h5")
-    >>> template.apply_to(refined_solver, keep_mesh=True)
+    >>> snapshot = pyfluent.CaseSnapshot.from_session(solver)
+    >>> snapshot.apply_to(worker_1, worker_2)
+    >>> template = pyfluent.CaseSnapshot.from_file("elbow_setup.cas.h5")
+    >>> template.apply_to(refined_solver, include_mesh=False)
     """
 
     _file: Path
@@ -89,8 +90,8 @@ class CaseSettings:
             Always: use :meth:`from_session` or :meth:`from_file`.
         """
         raise TypeError(
-            "Create CaseSettings with CaseSettings.from_session(session) or "
-            "CaseSettings.from_file(file_name)."
+            "Create a CaseSnapshot with CaseSnapshot.from_session(session) or "
+            "CaseSnapshot.from_file(file_name)."
         )
 
     @classmethod
@@ -103,7 +104,7 @@ class CaseSettings:
         fluent_version: FluentVersion | None = None,
         dimension: int | None = None,
         zones: frozenset[str] | None = None,
-    ) -> CaseSettings:
+    ) -> CaseSnapshot:
         self = cls.__new__(cls)
         self._file = file
         self._source = source
@@ -120,11 +121,11 @@ class CaseSettings:
         return self
 
     @classmethod
-    def from_session(cls, session: Solver) -> CaseSettings:
+    def from_session(cls, session: Solver) -> CaseSnapshot:
         """Capture the current setup of a solver session.
 
-        The setup is captured immediately: later changes to ``session`` are not
-        included, and the captured settings remain usable after it exits.
+        The snapshot is taken immediately: later changes to ``session`` are not
+        included, and the snapshot remains usable after the session exits.
 
         Parameters
         ----------
@@ -133,8 +134,8 @@ class CaseSettings:
 
         Returns
         -------
-        CaseSettings
-            The captured setup.
+        CaseSnapshot
+            The snapshot.
 
         Raises
         ------
@@ -150,9 +151,9 @@ class CaseSettings:
         if not _case_loaded(serving):
             raise RuntimeError(
                 "The session has no case loaded. Read a case or mesh before "
-                "capturing its settings."
+                "taking a snapshot of it."
             )
-        directory = Path(tempfile.mkdtemp(prefix="pyfluent-case-settings-"))
+        directory = Path(tempfile.mkdtemp(prefix=_TEMP_PREFIX))
         captured = False
         try:
             file = staging.write_file(
@@ -168,7 +169,7 @@ class CaseSettings:
         finally:
             if not captured:
                 shutil.rmtree(directory, ignore_errors=True)
-        logger.info(f"Captured case settings from a {version} session.")
+        logger.info(f"Captured a case snapshot from a {version} session.")
         return cls._create(
             file,
             owned=True,
@@ -179,10 +180,10 @@ class CaseSettings:
         )
 
     @classmethod
-    def from_file(cls, file_name: PathType) -> CaseSettings:
-        """Use the setup stored in a case file.
+    def from_file(cls, file_name: PathType) -> CaseSnapshot:
+        """Create a snapshot from the setup stored in a case file.
 
-        The file is read each time the settings are applied, so it must stay in
+        The file is read each time the snapshot is applied, so it must stay in
         place. It is never modified or deleted.
 
         Parameters
@@ -192,8 +193,8 @@ class CaseSettings:
 
         Returns
         -------
-        CaseSettings
-            The setup of the case file.
+        CaseSnapshot
+            The snapshot of the case file.
 
         Raises
         ------
@@ -214,18 +215,18 @@ class CaseSettings:
 
     @property
     def fluent_version(self) -> FluentVersion | None:
-        """Fluent version that wrote these settings, when known.
+        """Fluent version that wrote this snapshot, when known.
 
-        It is known for settings captured from a session.
+        It is known for snapshots captured from a session.
         """
         return self._fluent_version
 
-    def apply_to(self, *sessions: Solver, keep_mesh: bool = False) -> None:
-        """Apply these settings to one or more solver sessions.
+    def apply_to(self, *sessions: Solver, include_mesh: bool = True) -> None:
+        """Apply this snapshot to one or more solver sessions.
 
         The case of each session is replaced. By default, each session also gets
-        the mesh these settings were captured with. With ``keep_mesh=True``, each
-        session keeps its current mesh, whose zone names must match.
+        the mesh of the snapshot. With ``include_mesh=False``, each session keeps
+        its current mesh, whose zone names must match those of the snapshot.
 
         Every session is checked before any is changed, and several sessions are
         loaded in parallel.
@@ -233,10 +234,10 @@ class CaseSettings:
         Parameters
         ----------
         *sessions : Solver
-            Solver sessions to apply the settings to.
-        keep_mesh : bool, optional
-            Whether each session keeps its current mesh. The default is
-            ``False``.
+            Solver sessions to apply the snapshot to.
+        include_mesh : bool, optional
+            Whether each session gets the mesh of the snapshot. The default is
+            ``True``. With ``False``, each session keeps its current mesh.
 
         Raises
         ------
@@ -244,11 +245,11 @@ class CaseSettings:
             If no session is given, or a session is not a solver session.
         ValueError
             If a session runs an older Fluent version than the one that wrote
-            these settings, has a different dimension, or, with
-            ``keep_mesh=True``, has a mesh with different zone names.
+            this snapshot, has a different dimension, or, with
+            ``include_mesh=False``, has a mesh with different zone names.
         RuntimeError
-            If these settings are closed, a session cannot exchange files with
-            the client, or, with ``keep_mesh=True``, a session has no mesh or
+            If this snapshot is closed, a session cannot exchange files with
+            the client, or, with ``include_mesh=False``, a session has no mesh or
             cannot replace its mesh.
         ExceptionGroup
             If applying fails for some of several sessions. It holds the original
@@ -259,15 +260,15 @@ class CaseSettings:
             raise TypeError("apply_to() needs at least one session.")
         targets = _distinct(sessions)
         for target in targets:
-            self._check_target(target, keep_mesh)
+            self._check_target(target, include_mesh)
         if len(targets) == 1:
-            self._apply(targets[0], keep_mesh)
+            self._apply(targets[0], include_mesh)
             return
         with ThreadPoolExecutor(
-            max_workers=len(targets), thread_name_prefix="pyfluent-case-settings"
+            max_workers=len(targets), thread_name_prefix="pyfluent-case-snapshot"
         ) as pool:
             futures = [
-                pool.submit(self._apply, target, keep_mesh) for target in targets
+                pool.submit(self._apply, target, include_mesh) for target in targets
             ]
         errors = []
         for number, future in enumerate(futures, start=1):
@@ -277,25 +278,25 @@ class CaseSettings:
             if not isinstance(error, Exception):
                 raise error
             error.add_note(
-                f"Raised while applying case settings to session {number} of "
+                f"Raised while applying the case snapshot to session {number} of "
                 f"{len(targets)}."
             )
             errors.append(error)
         if errors:
             raise ExceptionGroup(
-                f"Case settings could not be applied to {len(errors)} of "
+                f"The case snapshot could not be applied to {len(errors)} of "
                 f"{len(targets)} sessions.",
                 errors,
             )
 
     def save(self, file_name: PathType) -> Path:
-        """Write these settings to a case file.
+        """Write this snapshot to a case file.
 
         Parameters
         ----------
         file_name : os.PathLike | str
             Path of the case file to write. Its name must end with the same
-            suffix as these settings, such as ``.cas.h5``.
+            suffix as the snapshot, such as ``.cas.h5``.
 
         Returns
         -------
@@ -305,7 +306,7 @@ class CaseSettings:
         Raises
         ------
         RuntimeError
-            If these settings are closed.
+            If this snapshot is closed.
         ValueError
             If the name of ``file_name`` ends with a different suffix.
         """
@@ -314,8 +315,8 @@ class CaseSettings:
         suffix = _case_suffix(self._file.name)
         if _case_suffix(destination.name) != suffix:
             raise ValueError(
-                f"The file name must end with {suffix!r}, the format of these "
-                "settings."
+                f"The file name must end with {suffix!r}, the format of this "
+                "snapshot."
             )
         if destination != self._file:
             destination.parent.mkdir(parents=True, exist_ok=True)
@@ -323,16 +324,16 @@ class CaseSettings:
         return destination
 
     def close(self) -> None:
-        """Delete the temporary copy of settings captured from a session.
+        """Delete the temporary copy of a snapshot captured from a session.
 
-        Settings created with :meth:`from_file` never delete that file. Closing
+        Snapshots created with :meth:`from_file` never delete that file. Closing
         twice is harmless.
         """
         self._closed = True
         if self._cleanup is not None:
             self._cleanup()
 
-    def __enter__(self) -> CaseSettings:
+    def __enter__(self) -> CaseSnapshot:
         return self
 
     def __exit__(self, *exc_info: object) -> None:
@@ -346,24 +347,25 @@ class CaseSettings:
             details.append(f"{self._dimension}D")
         if self._closed:
             details.append("closed")
-        return f"<CaseSettings {', '.join(details)}>"
+        return f"<CaseSnapshot {', '.join(details)}>"
 
     def _check_open(self) -> None:
         if self._closed:
             raise RuntimeError(
-                "These case settings are closed. Capture them again with "
-                "CaseSettings.from_session() or CaseSettings.from_file()."
+                "This case snapshot is closed. Take a new one with "
+                "CaseSnapshot.from_session() or CaseSnapshot.from_file()."
             )
 
-    def _check_target(self, session: Any, keep_mesh: bool) -> None:
-        """Check that these settings can be applied to ``session``.
+    def _check_target(self, session: Any, include_mesh: bool) -> None:
+        """Check that this snapshot can be applied to ``session``.
 
         Raises
         ------
         ValueError
             If the session's version, dimension or zone names do not fit.
         RuntimeError
-            If, with ``keep_mesh``, the session has no mesh or cannot replace it.
+            If, without the snapshot's mesh, the session has no mesh or cannot
+            replace it.
         """
         _require_solver(session, "apply_to")
         serving = _serving(session)
@@ -371,56 +373,56 @@ class CaseSettings:
         version = serving.get_fluent_version()
         if self._fluent_version is not None and version < self._fluent_version:
             raise ValueError(
-                f"These settings were written by {self._fluent_version}, but the "
+                f"This snapshot was written by {self._fluent_version}, but the "
                 f"session runs {version}, which cannot read cases written by newer "
-                f"versions. Apply them to a session of {self._fluent_version} or "
+                f"versions. Apply it to a session of {self._fluent_version} or "
                 "newer."
             )
         if self._dimension is not None:
             dimension = _dimension(serving)
             if dimension != self._dimension:
                 raise ValueError(
-                    f"These settings are for a {self._dimension}D case, but the "
+                    f"This snapshot is of a {self._dimension}D case, but the "
                     f"session is {dimension}D."
                 )
-        if not keep_mesh:
+        if include_mesh:
             return
         if not _case_loaded(serving):
             raise RuntimeError(
-                "keep_mesh=True needs a mesh in the session, but it has no case "
-                "loaded."
+                "include_mesh=False needs a mesh in the session, but it has no "
+                "case loaded."
             )
         mesh = getattr(session.settings, "mesh", None)
         if mesh is None or "replace" not in mesh.command_names:
             raise RuntimeError(
-                f"keep_mesh=True needs Fluent's mesh.replace command, which {version} "
-                "does not provide."
+                f"include_mesh=False needs Fluent's mesh.replace command, which "
+                f"{version} does not provide."
             )
         if self._zones is not None:
             _check_zones(self._zones, _zone_names(serving))
 
-    def _apply(self, session: Any, keep_mesh: bool) -> None:
+    def _apply(self, session: Any, include_mesh: bool) -> None:
         serving = _serving(session)
         read_case = _command(session, "file", "read_case")
-        if keep_mesh:
-            self._apply_keeping_mesh(session, serving, read_case)
-        else:
+        if include_mesh:
             staging.read_file(serving, read_case, self._file)
+        else:
+            self._apply_without_mesh(session, serving, read_case)
         _checkpoint_if_resilient(session)
-        logger.info(f"Applied case settings from {self._source}.")
+        logger.info(f"Applied the case snapshot from {self._source}.")
 
-    def _apply_keeping_mesh(
+    def _apply_without_mesh(
         self, session: Any, serving: Any, read_case: Callable[[str], None]
     ) -> None:
-        """Read these settings, then put the session's own mesh back.
+        """Read this snapshot, then put the session's own mesh back.
 
         Raises
         ------
         Exception
-            Any error after reading these settings, raised once the session's
+            Any error after reading this snapshot, raised once the session's
             previous case is restored.
         """
-        directory = Path(tempfile.mkdtemp(prefix="pyfluent-case-settings-"))
+        directory = Path(tempfile.mkdtemp(prefix=_TEMP_PREFIX))
         try:
             own_zones = _zone_names(serving)
             own_case = staging.write_file(
@@ -457,7 +459,7 @@ def _require_solver(session: Any, method: str) -> None:
 
     if not isinstance(session, Solver):
         raise TypeError(
-            f"CaseSettings.{method}() needs a Fluent solver session, not "
+            f"CaseSnapshot.{method}() needs a Fluent solver session, not "
             f"{type(session).__name__}."
         )
 
@@ -508,24 +510,24 @@ def _zone_names(session: Any) -> frozenset[str]:
     return frozenset(session.scheme.eval(_ZONE_NAMES) or ())
 
 
-def _check_zones(settings_zones: frozenset[str], mesh_zones: frozenset[str]) -> None:
-    """Check that the settings and the session's mesh have the same zones.
+def _check_zones(snapshot_zones: frozenset[str], mesh_zones: frozenset[str]) -> None:
+    """Check that the snapshot and the session's mesh have the same zones.
 
     Raises
     ------
     ValueError
         If the zone names differ.
     """
-    if settings_zones == mesh_zones:
+    if snapshot_zones == mesh_zones:
         return
     details = []
-    if settings_only := sorted(settings_zones - mesh_zones):
-        details.append(f"In the settings only: {', '.join(settings_only)}.")
-    if mesh_only := sorted(mesh_zones - settings_zones):
+    if snapshot_only := sorted(snapshot_zones - mesh_zones):
+        details.append(f"In the snapshot only: {', '.join(snapshot_only)}.")
+    if mesh_only := sorted(mesh_zones - snapshot_zones):
         details.append(f"In the session's mesh only: {', '.join(mesh_only)}.")
     raise ValueError(
-        "keep_mesh=True needs a mesh with the same zone names as these settings. "
-        + " ".join(details)
+        "include_mesh=False needs a mesh with the same zone names as the "
+        "snapshot. " + " ".join(details)
     )
 
 
@@ -545,7 +547,7 @@ def _checkpoint_if_resilient(session: Any) -> None:
         session.resilient.checkpoint(_RESILIENT_CHECKPOINT)
     except Exception as error:  # noqa: BLE001
         warnings.warn(
-            "Case settings were applied, but resilient mode could not write a "
+            "The case snapshot was applied, but resilient mode could not write a "
             "checkpoint afterwards, so a failover would restore an older state: "
             f"{error}",
             ResilientWarning,
