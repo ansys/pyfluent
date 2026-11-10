@@ -6,15 +6,13 @@ Install the project's pinned checker and run from the repository root:
 
 The generated model is excluded from the reported score by filtering its
 exported symbols from BasedPyright's JSON report. The package's ``py.typed``
-marker lets BasedPyright verify the source package.
+marker lets BasedPyright verify the installed package.
 """
 
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 
@@ -22,43 +20,18 @@ import sys
 PACKAGE = "ansys.fluent.core"
 GENERATED_PREFIX = f"{PACKAGE}.generated"
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_DIRECTORY = REPOSITORY_ROOT / "src" / Path(*PACKAGE.split("."))
 
 
 def main() -> int:
-    executable = shutil.which("basedpyright")
-    if executable is None:
-        print(
-            "basedpyright is not installed or is not available on PATH.",
-            file=sys.stderr,
-        )
-        return 2
-
-    if not (PACKAGE_DIRECTORY / "py.typed").is_file():
-        print(
-            f"Missing PEP 561 marker: {PACKAGE_DIRECTORY / 'py.typed'}",
-            file=sys.stderr,
-        )
-        return 2
-
-    environment = os.environ.copy()
-    source_directory = str(REPOSITORY_ROOT / "src")
-    existing_pythonpath = environment.get("PYTHONPATH")
-    environment["PYTHONPATH"] = os.pathsep.join(
-        path
-        for path in (source_directory, existing_pythonpath)
-        if path
-    )
     result = subprocess.run(
         [
-            executable,
+            "basedpyright",
             "--verifytypes",
             PACKAGE,
             "--outputjson",
         ],
         cwd=REPOSITORY_ROOT,
         capture_output=True,
-        env=environment,
         text=True,
         check=False,
     )
@@ -77,8 +50,8 @@ def main() -> int:
     if not completeness.get("pyTypedPath") or not symbols:
         diagnostics = report.get("generalDiagnostics", [])
         print(
-            "BasedPyright did not verify the package. Ensure the source "
-            "package can be imported and has no conflicting configuration.",
+            "BasedPyright did not verify the package. Ensure it is installed "
+            "in the active environment and includes py.typed.",
             file=sys.stderr,
         )
         for diagnostic in diagnostics:
