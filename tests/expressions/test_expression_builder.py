@@ -39,7 +39,7 @@ def test_variable_maps_via_naming_strategy(b):
 
 
 def test_variable_unmapped_raises():
-    from ansys.fluent.core.offline.expressions._ast import Variable
+    from ansys.fluent.core.offline.expressions._generic import Variable
 
     # Fabricate a descriptor unknown to FluentExprNamingStrategy.
     class _Fake:

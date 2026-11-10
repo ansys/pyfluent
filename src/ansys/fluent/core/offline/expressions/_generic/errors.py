@@ -7,7 +7,12 @@
 class ExpressionBuildError(Exception):
     """Raised when an expression tree cannot be built or rendered."""
 
-    def __init__(self, message: str, node=None, slot: str | None = None):
+    node: object | None
+    slot: str | None
+
+    def __init__(
+        self, message: str, node: object | None = None, slot: str | None = None
+    ) -> None:
         # Forward all arguments so pickle and copy.copy can reconstruct the
         # exception via ``cls(*exc.args)``; keyword-only parameters would make
         # that reconstruction impossible.
@@ -17,4 +22,4 @@ class ExpressionBuildError(Exception):
 
     def __str__(self) -> str:
         """Return the error message."""
-        return self.args[0]
+        return str(self.args[0])

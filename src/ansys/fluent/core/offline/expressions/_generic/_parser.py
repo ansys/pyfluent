@@ -1,15 +1,17 @@
 # Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 
-"""Parser: Fluent expression string -> :class:`~._ast.Expr` tree.
+"""Parser: expression string -> :class:`~._ast.Expr` tree.
 
-A small hand-written recursive-descent parser.  Its purpose is
-round-tripping and editing: given an existing Fluent expression string
-(typed by a user, produced by the GUI, or read back from the server),
-produce an :class:`Expr` tree that:
+A small hand-written recursive-descent parser. Its purpose is round-tripping
+and editing: given an existing expression string, produce an :class:`Expr`
+tree that:
 
-* renders back to an equivalent Fluent expression (canonical form), and
+* renders back to an equivalent expression (canonical form), and
 * can be further composed / edited using the builder API.
+
+Variable names and function return kinds are resolved through a
+:class:`~._dialect.Dialect`.
 
 Supported grammar
 -----------------
@@ -45,7 +47,6 @@ from dataclasses import dataclass
 import re
 
 from ._ast import (
-    _NAMING,
     BinOp,
     Call,
     Compare,
@@ -59,32 +60,8 @@ from ._ast import (
     UnaryOp,
     Variable,
 )
-from ._registry import REGISTRY, Signature
+from ._dialect import DEFAULT_DIALECT, Dialect
 from .errors import ExpressionBuildError
-
-# ---------------------------------------------------------------------------
-# Reverse lookup tables (built once at import time)                           #
-# --------------------------------------------------------------------------- #
-
-
-def _build_variable_reverse_map() -> dict[str, object]:
-    """Map Fluent expression name (``"AbsolutePressure"``) -> descriptor."""
-    mapping = getattr(_NAMING, "_mapping", {})
-    return {v: k for k, v in mapping.items()}
-
-
-def _build_signature_reverse_map() -> dict[str, Signature]:
-    """Map Fluent-side function name (``"AreaAve"``) -> :class:`Signature`."""
-    out: dict[str, Signature] = {}
-    for group in REGISTRY.groups():
-        for sig in REGISTRY.group(group).values():
-            out[sig.name] = sig
-    return out
-
-
-_VARIABLE_BY_NAME = _build_variable_reverse_map()
-_SIGNATURE_BY_NAME = _build_signature_reverse_map()
-
 
 # --------------------------------------------------------------------------- #
 # Tokenizer                                                                   #
@@ -141,10 +118,14 @@ def _tokenize(text: str) -> list[_Token]:
 
 
 class _Parser:
-    def __init__(self, text: str):
+    def __init__(self, text: str, dialect: Dialect | None) -> None:
         self._text = text
         self._tokens = _tokenize(text)
         self._i = 0
+        # Nodes remember the dialect they were parsed with (``None`` if none
+        # was given); name lookups fall back to the default dialect.
+        self._dialect = dialect
+        self._lookup = dialect or DEFAULT_DIALECT
 
     # ---- token helpers -------------------------------------------------- #
 
@@ -183,8 +164,8 @@ class _Parser:
             If there are unexpected tokens after the end of the expression.
         """
         expr = self._parse_compare()
-        if self._i != len(self._tokens):
-            tok = self._peek()
+        tok = self._peek()
+        if tok is not None:
             raise ExpressionBuildError(
                 f"Unexpected token {tok.value!r} at position {tok.start}."
             )
@@ -200,7 +181,7 @@ class _Parser:
         if tok and tok.kind == "OP" and tok.value in self._COMPARE_OPS:
             self._i += 1
             right = self._parse_add()
-            return Compare(tok.value, left, right)
+            return Compare(tok.value, left, right, dialect=self._dialect)
         return left
 
     def _parse_add(self) -> Expr:
@@ -210,7 +191,7 @@ class _Parser:
             if tok and tok.kind == "OP" and tok.value in ("+", "-"):
                 self._i += 1
                 right = self._parse_mul()
-                left = BinOp(tok.value, left, right)
+                left = BinOp(tok.value, left, right, dialect=self._dialect)
             else:
                 return left
 
@@ -221,7 +202,7 @@ class _Parser:
             if tok and tok.kind == "OP" and tok.value in ("*", "/"):
                 self._i += 1
                 right = self._parse_unary()
-                left = BinOp(tok.value, left, right)
+                left = BinOp(tok.value, left, right, dialect=self._dialect)
             else:
                 return left
 
@@ -231,7 +212,7 @@ class _Parser:
             self._i += 1
             operand = self._parse_unary()
             if tok.value == "-":
-                return UnaryOp("-", operand)
+                return UnaryOp("-", operand, dialect=self._dialect)
             return operand  # unary + is a no-op
         return self._parse_power()
 
@@ -241,7 +222,7 @@ class _Parser:
         if tok and tok.kind == "OP" and tok.value == "**":
             self._i += 1
             exp = self._parse_unary()  # right-associative
-            return BinOp("**", base, exp)
+            return BinOp("**", base, exp, dialect=self._dialect)
         return base
 
     def _parse_atom(self) -> Expr:
@@ -271,13 +252,13 @@ class _Parser:
             nxt = self._peek()
             if nxt and nxt.kind == "LBRACK":
                 units = self._parse_units_suffix()
-                return Quantity(float(value), units)
-            return Literal(value)
+                return Quantity(float(value), units, dialect=self._dialect)
+            return Literal(value, dialect=self._dialect)
 
         # Bare string literal (rare outside location lists).
         if tok.kind == "STRING":
             self._i += 1
-            return RawName(tok.value)
+            return RawName(tok.value, dialect=self._dialect)
 
         # Identifier chain, optionally followed by call syntax.
         if tok.kind == "IDENT":
@@ -300,7 +281,7 @@ class _Parser:
                 if not self._match("COMMA"):
                     break
             self._eat("RBRACK")
-        return LocationList(tuple(names))
+        return LocationList(tuple(names), dialect=self._dialect)
 
     def _parse_units_suffix(self) -> str:
         """Consume ``[..anything..]`` and return the raw units string.
@@ -330,14 +311,15 @@ class _Parser:
         name = ".".join(parts)
 
         # Function call?
-        if self._peek() and self._peek().kind == "LPAREN":
+        nxt = self._peek()
+        if nxt is not None and nxt.kind == "LPAREN":
             return self._parse_call(name)
 
         # Bare identifier: try Variable, else RawName (enum tokens etc.).
-        descriptor = _VARIABLE_BY_NAME.get(name)
+        descriptor = self._lookup.variable_descriptor(name)
         if descriptor is not None:
-            return Variable(descriptor)
-        return RawName(name)
+            return Variable(descriptor, dialect=self._dialect)
+        return RawName(name, dialect=self._dialect)
 
     def _parse_call(self, name: str) -> Call:
         self._eat("LPAREN")
@@ -349,9 +331,9 @@ class _Parser:
                     break
             self._eat("RPAREN")
 
-        sig = _SIGNATURE_BY_NAME.get(name)
+        sig = self._lookup.find_function(name)
         return_kind = sig.returns if sig else Kind.SCALAR
-        return Call(name, tuple(args), return_kind=return_kind)
+        return Call(name, tuple(args), return_kind, dialect=self._dialect)
 
     def _parse_arg(self) -> Expr:
         # Detect ``IDENT '=' expr`` -> KeywordArg without consuming state on failure.
@@ -366,7 +348,7 @@ class _Parser:
         ):
             self._i += 2  # consume IDENT and '='
             value = self._parse_compare()
-            return KeywordArg(tok.value, value)
+            return KeywordArg(tok.value, value, dialect=self._dialect)
         return self._parse_compare()
 
 
@@ -375,8 +357,17 @@ class _Parser:
 # --------------------------------------------------------------------------- #
 
 
-def parse(text: str) -> Expr:
-    """Parse a Fluent expression string into an :class:`Expr` tree.
+def parse(text: str, dialect: Dialect | None = None) -> Expr:
+    """Parse an expression string into an :class:`Expr` tree.
+
+    Parameters
+    ----------
+    text :
+        Expression string.
+    dialect :
+        Dialect used to resolve variable and function names. The parsed tree
+        remembers it, so ``str()`` renders back in the same dialect. Defaults
+        to :data:`~._dialect.DEFAULT_DIALECT` for lookups.
 
     Raises
     ------
@@ -389,4 +380,4 @@ def parse(text: str) -> Expr:
         )
     if not text.strip():
         raise ExpressionBuildError("parse() got an empty string.")
-    return _Parser(text).parse()
+    return _Parser(text, dialect).parse()

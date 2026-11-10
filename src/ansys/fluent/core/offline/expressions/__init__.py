@@ -7,11 +7,14 @@ A high-level, object-based API for constructing Fluent expression strings
 (e.g. ``AreaAve(AbsolutePressure,['velocity-inlet-5'])``) without hand-writing
 them.
 
-The package is organised in three layers:
+The package is split into:
 
-* :mod:`._ast`      -- Layer 2: typed, immutable expression AST.
-* :mod:`._registry` -- Layer 1: declarative catalog of Fluent functions.
-* :mod:`.builder`   -- Layer 3: user-facing fluent/discoverable facade.
+* :mod:`._generic`   -- product-agnostic expression trees, parser, and builder.
+  It must not import anything Fluent-specific.
+* :mod:`._fluent`    -- the Fluent dialect: variable naming and the catalog of
+  Fluent expression functions.
+* :mod:`._discovery` -- discovery backed by a live PyFluent session.
+* :mod:`.builder`    -- :class:`ExpressionBuilder` bound to the Fluent dialect.
 
 Typical use::
 
@@ -36,16 +39,15 @@ Typical use::
     solver.setup.named_expressions["dp"].definition = dp
 """
 
-from ._ast import (  # noqa: F401
+from ._fluent import FLUENT_DIALECT, Weight  # noqa: F401
+from ._generic import (  # noqa: F401
     BooleanExpr,
     Expr,
+    ExpressionBuildError,
     Kind,
     LocationList,
     Quantity,
     ScalarExpr,
     VectorExpr,
 )
-from ._parser import parse  # noqa: F401
-from ._registry import Weight  # noqa: F401
-from .builder import ExpressionBuilder  # noqa: F401
-from .errors import ExpressionBuildError  # noqa: F401
+from .builder import ExpressionBuilder, make_call, parse  # noqa: F401

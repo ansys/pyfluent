@@ -9,16 +9,14 @@ introspect what values are legal for each slot *before* filling it::
     inv = builder.reductions.area_ave
     inv.expression.variables.allowed_values()   # catalog entries
     inv.expression.named.allowed_values()       # in-scope named exprs
-    inv.locations.allowed_values()              # surface names
+    inv.locations.allowed_values()              # location names
     inv.locations.is_allowed("inlet1")
 
-Each :class:`SlotAccessor` is created lazily by :class:`_SigInvoker`
-based on the :class:`~._registry.Param`'s kind.
+Each :class:`SlotAccessor` is created by the builder based on the
+:class:`~._registry.Param`'s kind.
 """
 
 from __future__ import annotations
-
-from typing import Any
 
 from ansys.units.variable_descriptor import VariableDescriptor
 
@@ -30,7 +28,7 @@ from ._registry import Param
 class SlotAccessor:
     """Base class for per-slot discovery helpers."""
 
-    def __init__(self, param: Param, discovery: Discovery):
+    def __init__(self, param: Param, discovery: Discovery) -> None:
         self._param = param
         self._discovery = discovery
 
@@ -44,11 +42,11 @@ class SlotAccessor:
         """Expected :class:`~._ast.Kind` for this slot."""
         return self._param.kind
 
-    def allowed_values(self) -> list[Any]:  # pragma: no cover - abstract
+    def allowed_values(self) -> list[object]:  # pragma: no cover - abstract
         """Return the list of values permitted for this slot."""
         raise NotImplementedError
 
-    def is_allowed(self, value: Any) -> bool:
+    def is_allowed(self, value: object) -> bool:
         """Return ``True`` if ``value`` is a permitted value for this slot."""
         return value in self.allowed_values()
 
@@ -64,13 +62,17 @@ class SlotAccessor:
 class LocationSlot(SlotAccessor):
     """Accessor for a :attr:`Kind.LOCATION_LIST` parameter."""
 
-    def allowed_values(self) -> list[str]:
-        return self._discovery.surface_names()
+    def allowed_values(self) -> list[object]:
+        """Return the available location names."""
+        return list(self._discovery.location_names())
 
-    def is_allowed(self, value: Any) -> bool:
-        names = self.allowed_values()
-        # If we have no settings/field_info-derived list, be permissive but still
-        # validate that inputs are strings.
+    def is_allowed(self, value: object) -> bool:
+        """Return ``True`` if ``value`` names available locations.
+
+        When no location names are known, any string (or list of strings) is
+        accepted.
+        """
+        names = self._discovery.location_names()
         if not names:
             if isinstance(value, str):
                 return True
@@ -93,14 +95,14 @@ class LocationSlot(SlotAccessor):
 class _VariablesSubSlot:
     """Sub-namespace: catalog variables accepted by the scalar slot."""
 
-    def __init__(self, discovery: Discovery):
+    def __init__(self, discovery: Discovery) -> None:
         self._discovery = discovery
 
     def allowed_values(self) -> list[VariableDescriptor]:
-        """Return ``VariableDescriptor`` entries available in the current session."""
+        """Return the variable descriptors available in the current context."""
         return self._discovery.variable_descriptors()
 
-    def is_allowed(self, value: Any) -> bool:
+    def is_allowed(self, value: object) -> bool:
         """Return ``True`` if ``value`` is a supported :class:`VariableDescriptor`."""
         if isinstance(value, VariableDescriptor):
             return self._discovery.is_variable_supported(value)
@@ -110,19 +112,19 @@ class _VariablesSubSlot:
 class _NamedExprSubSlot:
     """Sub-namespace: in-scope named expressions accepted by the scalar slot."""
 
-    def __init__(self, discovery: Discovery):
+    def __init__(self, discovery: Discovery) -> None:
         self._discovery = discovery
 
     def allowed_values(self) -> list[str]:
-        """Return names of user-defined named expressions currently in scope."""
+        """Return names of named expressions currently in scope."""
         return self._discovery.named_expression_names()
 
-    def is_allowed(self, value: Any) -> bool:
+    def is_allowed(self, value: object) -> bool:
         """Return ``True`` if ``value`` is an in-scope named expression name."""
         if not isinstance(value, str):
             return False
         names = self.allowed_values()
-        # Permissive when offline (no settings): we can't verify.
+        # Permissive when the names are unknown: we can't verify.
         return not names or value in names
 
 
@@ -133,16 +135,17 @@ class ScalarSlot(SlotAccessor):
     agglomerated :meth:`allowed_values` view.
     """
 
-    def __init__(self, param: Param, discovery: Discovery):
+    def __init__(self, param: Param, discovery: Discovery) -> None:
         super().__init__(param, discovery)
         self.variables = _VariablesSubSlot(discovery)
         self.named = _NamedExprSubSlot(discovery)
 
-    def allowed_values(self) -> list[Any]:
-        # Union of both sub-slots. Descriptors first, then named-expr strings.
+    def allowed_values(self) -> list[object]:
+        """Return variable descriptors followed by named-expression names."""
         return [*self.variables.allowed_values(), *self.named.allowed_values()]
 
-    def is_allowed(self, value: Any) -> bool:
+    def is_allowed(self, value: object) -> bool:
+        """Return ``True`` if either sub-slot accepts ``value``."""
         return self.variables.is_allowed(value) or self.named.is_allowed(value)
 
 

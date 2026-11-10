@@ -12,7 +12,7 @@ from ansys.fluent.core.offline.expressions import (
     Weight,
     parse,
 )
-from ansys.fluent.core.offline.expressions._ast import (
+from ansys.fluent.core.offline.expressions._generic import (
     BinOp,
     Call,
     Compare,

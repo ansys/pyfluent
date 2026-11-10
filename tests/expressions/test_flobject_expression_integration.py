@@ -20,8 +20,7 @@ rather than any Fluent-specific hook or hard-coded path. Specifically:
 
 import pytest
 
-from ansys.fluent.core.offline.expressions import ExpressionBuilder
-from ansys.fluent.core.offline.expressions._ast import Quantity
+from ansys.fluent.core.offline.expressions import ExpressionBuilder, Quantity
 from ansys.fluent.core.solver.flobject import (
     EXPRESSION_DEFINITION_PATHS,
     Group,
