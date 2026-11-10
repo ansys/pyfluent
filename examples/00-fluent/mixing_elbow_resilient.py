@@ -82,12 +82,18 @@ hot_inlet.thermal.temperature.value = 313.15
 # %%
 # Undo and redo a settings change
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Try a higher turbulent intensity at the cold inlet. Undo restores the 0.05 set
+# above, and redo applies 0.1 again. A second undo keeps the setup at 0.05 for
+# the solve.
 
-cold_inlet.turbulence.turbulent_intensity = 0.05
+cold_inlet.turbulence.turbulent_intensity = 0.1
+print("changed:", cold_inlet.turbulence.turbulent_intensity())
 solver.resilient.undo()
 print("after undo:", cold_inlet.turbulence.turbulent_intensity())
 solver.resilient.redo()
 print("after redo:", cold_inlet.turbulence.turbulent_intensity())
+solver.resilient.undo()
+print("after a second undo:", cold_inlet.turbulence.turbulent_intensity())
 
 # %%
 # Initialize and checkpoint
