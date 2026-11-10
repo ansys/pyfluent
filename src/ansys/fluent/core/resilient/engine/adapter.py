@@ -34,8 +34,6 @@ import abc
 from dataclasses import dataclass
 from typing import Any, Callable
 
-from .types import ActivationCandidate
-
 
 def instance_attr(obj: Any, name: str) -> Any:
     """Return ``obj.name`` without triggering ``__getattr__`` fallbacks.
@@ -55,14 +53,10 @@ def instance_attr(obj: Any, name: str) -> Any:
 class ErrorClasses:
     """Exception classes a product raises for settings errors.
 
-    Any member may be ``None``; the classifier then relies on message heuristics
-    and live introspection.
+    Any member may be ``None``; the classifier then relies on message heuristics.
     """
 
-    inactive: type | None = None
     read_only: type | None = None
-    disallowed: type | None = None
-    invalid_arg: type | None = None
 
 
 class ResilientAdapter(abc.ABC):
@@ -202,12 +196,6 @@ class ResilientAdapter(abc.ABC):
         self, session: Any, file_path: str, *, include_data: bool
     ) -> None:
         """Restore the session from the checkpoint at ``file_path``."""
-
-    # -- recovery knowledge --------------------------------------------------
-
-    def activation_candidates(self, session: Any) -> tuple[ActivationCandidate, ...]:
-        """Return settings that may activate inactive targets, in priority order."""
-        return ()
 
     # -- command helpers -----------------------------------------------------
 

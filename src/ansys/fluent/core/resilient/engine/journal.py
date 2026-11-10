@@ -51,7 +51,6 @@ class SetOp:
     old_value: Any = None
     #: Whether ``old_value`` was read before the write (required for undo).
     old_value_known: bool = False
-    fixes: tuple[str, ...] = ()
     seq: int = -1
     created_at: float = field(default_factory=time.time)
 
@@ -65,8 +64,6 @@ class SetOp:
         data["new_value"] = self.new_value
         if self.old_value_known:
             data["old_value"] = self.old_value
-        if self.fixes:
-            data["fixes"] = list(self.fixes)
         return data
 
 

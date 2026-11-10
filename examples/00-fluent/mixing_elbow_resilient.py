@@ -27,7 +27,6 @@ Mixing elbow in resilient mode
 This example sets up and solves the mixing elbow with ordinary settings API
 code, launched with ``resilient_mode=True``. It shows how resilient mode:
 
-* repairs rejected values and enables a governing model when needed,
 * undoes and redoes settings writes,
 * checkpoints before ``iterate`` and rolls back on request.
 
@@ -40,7 +39,6 @@ See :ref:`ref_resilient_guide` for details.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.resilient import ResilientConfig
 
 import_file_name = examples.download_file(
     "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
@@ -49,15 +47,11 @@ import_file_name = examples.download_file(
 # %%
 # Launch Fluent in resilient mode
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ``allow_model_activation=True`` lets resilient mode enable a governing model,
-# such as energy, when you write a setting that depends on it.
 
-solver = pyfluent.launch_fluent(
+solver = pyfluent.Solver.from_install(
     precision=pyfluent.Precision.DOUBLE,
     processor_count=2,
-    mode=pyfluent.FluentMode.SOLVER,
     resilient_mode=True,
-    resilient_config=ResilientConfig(allow_model_activation=True),
 )
 solver.resilient.on_event(lambda event: print(f"[{event.kind.value}] {event.message}"))
 
@@ -70,21 +64,14 @@ solver.settings.file.read_mesh(file_name=import_file_name)
 # %%
 # Set up boundary conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# The energy model is off, so the inlet temperature is inactive. Writing it
-# enables the energy model first. The turbulent intensity of 1.05 is just above
-# the allowed range of 0 to 1, so it is clamped to 1 with a warning. A value far
-# outside the range, such as 5 for 5 %, is not repaired: Fluent's error is
-# raised unchanged.
 
+solver.settings.setup.models.energy.enabled = True
 cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 cold_inlet.momentum.velocity_magnitude.value = 0.4
 cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-cold_inlet.turbulence.turbulent_intensity = 1.05
+cold_inlet.turbulence.turbulent_intensity = 0.05
 cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
 cold_inlet.thermal.temperature.value = 293.15
-
-print("energy enabled:", solver.settings.setup.models.energy.enabled())
-print("turbulent intensity:", cold_inlet.turbulence.turbulent_intensity())
 
 hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 hot_inlet.momentum.velocity_magnitude.value = 1.2

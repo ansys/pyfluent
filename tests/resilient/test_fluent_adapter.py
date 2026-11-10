@@ -28,19 +28,13 @@ from types import SimpleNamespace
 import pytest
 
 from ansys.fluent.core import connect_to_fluent, launch_fluent
-from ansys.fluent.core.diagnostics.exceptions import (
-    DisallowedValuesError,
-    PyFluentUserWarning,
-)
+from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
 from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.resilient import (
     FluentAdapter,
-    ResilientError,
     _enable_on_new_session,
-    enable_resilient_mode,
 )
-from ansys.fluent.core.services.abstract_settings import AbstractSettings
-from ansys.fluent.core.solver.flobject import InactiveObjectError
+from ansys.fluent.core.solver.flobject import ReadOnlyActionError
 
 pytestmark = pytest.mark.resilient
 
@@ -62,8 +56,7 @@ def _session(**attributes):
 
 def test_error_classes_are_fluent_settings_errors():
     classes = FluentAdapter().error_classes()
-    assert classes.inactive is InactiveObjectError
-    assert classes.disallowed is DisallowedValuesError
+    assert classes.read_only is ReadOnlyActionError
 
 
 @pytest.mark.parametrize(
@@ -203,11 +196,11 @@ def test_resilient_mode_is_ignored_with_a_warning_for_non_solver_sessions():
         assert _enable_on_new_session(meshing, None, launched=True) is meshing
 
 
-def test_enable_resilient_mode_rejects_non_solver_sessions():
+def test_resilient_mode_is_not_applied_to_non_solver_with_a_settings_service():
     # Meshing sessions also have a settings service; they must not be wrapped.
     meshing = SimpleNamespace(_settings_service=object())
-    with pytest.raises(ResilientError, match="solver sessions only"):
-        enable_resilient_mode(meshing)
+    with pytest.warns(PyFluentUserWarning, match="solver sessions only"):
+        assert _enable_on_new_session(meshing, None, launched=True) is meshing
     assert not hasattr(meshing, "resilient")
 
 
@@ -239,7 +232,3 @@ def test_session_factories_document_resilient_options(method):
     doc = inspect.getdoc(getattr(BaseSession, method))
     assert "resilient_mode : bool" in doc
     assert "resilient_config : ResilientConfig" in doc
-
-
-def test_settings_services_do_not_handle_inactive_access_by_default():
-    assert AbstractSettings.on_inactive_access(None, object(), "child") is None

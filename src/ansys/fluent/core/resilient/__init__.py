@@ -22,13 +22,9 @@
 
 """Resilient mode for Fluent solver sessions.
 
-Enable it with ``resilient_mode=True`` on any launch or connect function, or with
-:func:`enable_resilient_mode` on an existing solver session. Ordinary PyFluent
-code then gains:
+Enable it with ``resilient_mode=True`` on any launch or connect function. Ordinary
+PyFluent code then gains:
 
-* repair of rejected values (clamp, closest allowed value, numeric conversion),
-  governed by :class:`RecoveryPolicy`;
-* optional activation of the governing model of an inactive setting;
 * a journal of settings writes with undo and redo;
 * checkpoints (case and data files), written automatically before irreversible
   commands, with automatic rollback when such a command fails; and
@@ -41,7 +37,7 @@ Fluent-specific parts.
 Examples
 --------
 >>> import ansys.fluent.core as pyfluent
->>> solver = pyfluent.launch_fluent(mode="solver", resilient_mode=True)
+>>> solver = pyfluent.Solver.from_install(resilient_mode=True)
 >>> solver.settings.file.read_case(file_name="mixing_elbow.cas.h5")
 >>> solver.resilient.checkpoint("configured")
 >>> solver.settings.solution.run_calculation.iterate(iter_count=100)
@@ -54,7 +50,6 @@ from typing import Any
 import warnings
 
 from ansys.fluent.core.resilient.engine import (
-    ActivationCandidate,
     Checkpoint,
     CheckpointConfig,
     CheckpointError,
@@ -64,19 +59,16 @@ from ansys.fluent.core.resilient.engine import (
     ErrorClasses,
     EventKind,
     FailoverError,
-    Fix,
     Journal,
     ObjectOp,
     PathResolutionError,
     PoolConfig,
-    RecoveryPolicy,
     ResilientAdapter,
     ResilientConfig,
     ResilientController,
     ResilientError,
     ResilientEvent,
     ResilientFailoverWarning,
-    ResilientRecoveryWarning,
     ResilientSession,
     ResilientWarning,
     SetOp,
@@ -104,45 +96,6 @@ def _unsupported_session_message(session: Any) -> str | None:
     )
 
 
-def enable_resilient_mode(
-    session: Any,
-    config: ResilientConfig | None = None,
-    *,
-    pool_size: int | None = None,
-) -> Any:
-    """Enable resilient mode on a live Fluent solver session.
-
-    Parameters
-    ----------
-    session : Solver
-        A live solver session.
-    config : ResilientConfig, optional
-        Resilient-mode configuration. The default configuration is used when
-        omitted.
-    pool_size : int, optional
-        Shortcut for ``config.pool.size``. A value greater than ``1`` launches warm
-        standby sessions for failover.
-
-    Returns
-    -------
-    Solver
-        The same session, with resilient controls available as
-        ``session.resilient``.
-
-    Raises
-    ------
-    ResilientError
-        If the session is not a solver session, resilient mode is already
-        enabled, or standby sessions cannot be launched.
-    """
-    reason = _unsupported_session_message(session)
-    if reason is not None:
-        raise ResilientError(f"Cannot enable resilient mode: {reason}")
-    return _enable_resilient_mode(
-        session, config, adapter=FluentAdapter(), pool_size=pool_size
-    )
-
-
 def _enable_on_new_session(
     session: Any, config: ResilientConfig | None, *, launched: bool
 ) -> Any:
@@ -167,7 +120,6 @@ def _enable_on_new_session(
 
 
 __all__ = [
-    "ActivationCandidate",
     "Checkpoint",
     "CheckpointConfig",
     "CheckpointError",
@@ -177,20 +129,17 @@ __all__ = [
     "ErrorClasses",
     "EventKind",
     "FailoverError",
-    "Fix",
     "FluentAdapter",
     "Journal",
     "ObjectOp",
     "PathResolutionError",
     "PoolConfig",
-    "RecoveryPolicy",
     "ResilientAdapter",
     "ResilientConfig",
     "ResilientController",
     "ResilientError",
     "ResilientEvent",
     "ResilientFailoverWarning",
-    "ResilientRecoveryWarning",
     "ResilientSession",
     "ResilientWarning",
     "SetOp",
@@ -198,6 +147,5 @@ __all__ = [
     "StepOutcome",
     "WarmSessionPool",
     "disable_resilient_mode",
-    "enable_resilient_mode",
     "is_resilient",
 ]

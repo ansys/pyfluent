@@ -61,9 +61,8 @@ from ansys.fluent.core.solver import (
 # Launch Fluent in resilient mode
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver = pyfluent.launch_fluent(
+solver = pyfluent.Solver.from_install(
     precision=pyfluent.Precision.DOUBLE,
-    mode=pyfluent.FluentMode.SOLVER,
     dimension=pyfluent.Dimension.TWO,
     resilient_mode=True,
 )

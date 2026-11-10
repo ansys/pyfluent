@@ -277,11 +277,8 @@ def enable_resilient_mode(
     controller.api = ResilientSession(controller)
     controller.bind(session)
     logger.info(
-        "Resilient mode enabled on a %s session (recovery=%s, model activation=%s, "
-        "pool size=%d, checkpoints in run %s).",
+        "Resilient mode enabled on a %s session (pool size=%d, checkpoints in run %s).",
         adapter.product_name,
-        config.recovery.value,
-        config.allow_model_activation,
         config.pool.size,
         controller.run_id,
     )

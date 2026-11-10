@@ -33,7 +33,6 @@ import json
 from pathlib import Path
 
 from ansys.fluent.core.resilient.engine import (
-    ActivationCandidate,
     ResilientAdapter,
     paths,
 )
@@ -212,41 +211,15 @@ class FakeErrorState:
 
 def default_tree():
     """Return a settings tree used by most tests."""
-    energy = FakeLeaf(False)
     return FakeSettings(
         setup=FakeGroup(
-            energy=energy,
-            intensity=FakeLeaf(
-                0.05,
-                minimum=0.0,
-                maximum=1.0,
-                reject=_reject_out_of_range(0.0, 1.0),
-            ),
+            intensity=FakeLeaf(0.05, minimum=0.0, maximum=1.0),
             model=FakeLeaf(
                 "k-epsilon",
                 allowed=["laminar", "k-epsilon", "k-omega"],
-                reject=_reject_disallowed(["laminar", "k-epsilon", "k-omega"]),
             ),
-            temperature=FakeLeaf(300.0, active=lambda: energy.value is True),
-            radiation=FakeLeaf(False),
         ),
     )
-
-
-def _reject_out_of_range(low, high):
-    def reject(value):
-        if isinstance(value, (int, float)) and not low <= value <= high:
-            raise RuntimeError("Value is not in range.")
-
-    return reject
-
-
-def _reject_disallowed(allowed):
-    def reject(value):
-        if value not in allowed:
-            raise RuntimeError(f"{value!r} is not an allowed value.")
-
-    return reject
 
 
 class FakeSession:
@@ -289,9 +262,8 @@ class FakeAdapter(ResilientAdapter):
     non_replayable_prefixes = ("write",)
     checkpoint_suffix = ".json"
 
-    def __init__(self, factory=None, candidates=()):
+    def __init__(self, factory=None):
         self.factory = factory
-        self.candidates = tuple(candidates)
         self.launched = []
 
     def invalidate_settings_cache(self, session):
@@ -332,11 +304,6 @@ class FakeAdapter(ResilientAdapter):
 
     def read_checkpoint(self, session, file_path, *, include_data):
         session.settings.file.read(file_path)
-
-    def activation_candidates(self, session):
-        return tuple(
-            ActivationCandidate(path, value) for path, value in self.candidates
-        )
 
 
 def service_of(session):

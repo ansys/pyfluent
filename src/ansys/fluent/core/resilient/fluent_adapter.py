@@ -23,10 +23,9 @@
 """Resilient-mode adapter for Fluent solver sessions.
 
 This module holds every Fluent-specific detail used by resilient mode: the
-session's error state and health check, Fluent's settings exceptions, the clean
-stop of an interrupted solve, case and data files as checkpoints,
-``launch_fluent`` for standby sessions, and the energy model as the built-in
-governing model of inactive thermal settings.
+session's error state and health check, Fluent's read-only settings exception,
+the clean stop of an interrupted solve, case and data files as checkpoints, and
+``launch_fluent`` for standby sessions.
 """
 
 from __future__ import annotations
@@ -35,18 +34,10 @@ import functools
 import inspect
 from typing import Any, Callable
 
-from ansys.fluent.core.diagnostics.exceptions import (
-    DisallowedValuesError,
-    InvalidArgument,
-)
 from ansys.fluent.core.execution.launcher.launch_options import UIMode
-from ansys.fluent.core.resilient.engine import (
-    ActivationCandidate,
-    ErrorClasses,
-    ResilientAdapter,
-)
+from ansys.fluent.core.resilient.engine import ErrorClasses, ResilientAdapter
 from ansys.fluent.core.resilient.engine.adapter import instance_attr
-from ansys.fluent.core.solver.flobject import InactiveObjectError, ReadOnlyActionError
+from ansys.fluent.core.solver.flobject import ReadOnlyActionError
 
 #: ``launch_fluent`` arguments that are never forwarded to standby sessions.
 _NOT_FORWARDED = frozenset({"dry_run", "resilient_mode", "resilient_config"})
@@ -121,13 +112,8 @@ class FluentAdapter(ResilientAdapter):
     # -- errors --------------------------------------------------------------------
 
     def error_classes(self) -> ErrorClasses:
-        """Return Fluent's settings exception classes."""
-        return ErrorClasses(
-            inactive=InactiveObjectError,
-            read_only=ReadOnlyActionError,
-            disallowed=DisallowedValuesError,
-            invalid_arg=InvalidArgument,
-        )
+        """Return Fluent's read-only settings exception class."""
+        return ErrorClasses(read_only=ReadOnlyActionError)
 
     def is_interrupt(self, err: BaseException) -> bool:
         """Return whether ``err`` is the clean stop of an interrupted solve.
@@ -247,13 +233,3 @@ class FluentAdapter(ResilientAdapter):
         file_group.read_data(file_name=_data_file(file_path))
         if self._scheme_flag(session, "(data-valid?)") is False:
             raise RuntimeError(f"Fluent did not load the data of {file_path!r}.")
-
-    # -- recovery knowledge ------------------------------------------------------------
-
-    def activation_candidates(self, session: Any) -> tuple[ActivationCandidate, ...]:
-        """Return the built-in governing models: the energy model.
-
-        Enabling the energy model activates thermal settings. Users add their own
-        candidates with ``ResilientConfig.activation_candidates``.
-        """
-        return (ActivationCandidate("setup.models.energy.enabled", True),)

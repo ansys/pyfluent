@@ -38,7 +38,7 @@ from .attach import (
     enable_resilient_mode,
     is_resilient,
 )
-from .config import CheckpointConfig, PoolConfig, RecoveryPolicy, ResilientConfig
+from .config import CheckpointConfig, PoolConfig, ResilientConfig
 from .controller import ResilientController
 from .exceptions import (
     CheckpointError,
@@ -46,18 +46,15 @@ from .exceptions import (
     PathResolutionError,
     ResilientError,
     ResilientFailoverWarning,
-    ResilientRecoveryWarning,
     ResilientWarning,
 )
 from .journal import CommandOp, Journal, ObjectOp, SetOp
 from .pool import WarmSessionPool
 from .types import (
-    ActivationCandidate,
     Checkpoint,
     Classification,
     ErrorCategory,
     EventKind,
-    Fix,
     ResilientEvent,
     Severity,
     StepOutcome,
@@ -69,7 +66,6 @@ from .types import (
 logging.getLogger("ansys.resilient").addHandler(logging.NullHandler())
 
 __all__ = [
-    "ActivationCandidate",
     "Checkpoint",
     "CheckpointConfig",
     "CheckpointError",
@@ -79,19 +75,16 @@ __all__ = [
     "ErrorClasses",
     "EventKind",
     "FailoverError",
-    "Fix",
     "Journal",
     "ObjectOp",
     "PathResolutionError",
     "PoolConfig",
-    "RecoveryPolicy",
     "ResilientAdapter",
     "ResilientConfig",
     "ResilientController",
     "ResilientError",
     "ResilientEvent",
     "ResilientFailoverWarning",
-    "ResilientRecoveryWarning",
     "ResilientSession",
     "ResilientWarning",
     "SetOp",

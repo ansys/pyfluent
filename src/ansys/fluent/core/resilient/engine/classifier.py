@@ -44,10 +44,6 @@ from .adapter import ResilientAdapter
 from .types import Classification, ErrorCategory, Severity
 
 _SEVERITY = {
-    ErrorCategory.INACTIVE_TARGET: Severity.RECOVERABLE,
-    ErrorCategory.OUT_OF_RANGE: Severity.RECOVERABLE,
-    ErrorCategory.WRONG_VALUE: Severity.RECOVERABLE,
-    ErrorCategory.WRONG_TYPE: Severity.RECOVERABLE,
     ErrorCategory.READ_ONLY: Severity.HARD,
     ErrorCategory.FATAL: Severity.CATASTROPHIC,
     ErrorCategory.BENIGN_INTERRUPT: Severity.BENIGN,
@@ -55,26 +51,7 @@ _SEVERITY = {
 }
 
 _TEXT_RULES: tuple[tuple[ErrorCategory, tuple[str, ...]], ...] = (
-    (
-        ErrorCategory.INACTIVE_TARGET,
-        ("not active", "is inactive", "currently inactive"),
-    ),
     (ErrorCategory.READ_ONLY, ("read-only", "read only")),
-    (
-        ErrorCategory.OUT_OF_RANGE,
-        (
-            "out of range",
-            "not in range",
-            "below minimum",
-            "above maximum",
-            "out of bounds",
-            "invalid parameter value",
-        ),
-    ),
-    (
-        ErrorCategory.WRONG_VALUE,
-        ("allowed value", "not a valid", "not allowed", "disallowed"),
-    ),
 )
 
 
@@ -146,17 +123,9 @@ class ErrorClassifier:
         return make_classification(category, text)
 
     def _typed_category(self, err: BaseException) -> ErrorCategory | None:
-        classes = self._classes
-        for cls, category in (
-            (classes.inactive, ErrorCategory.INACTIVE_TARGET),
-            (classes.read_only, ErrorCategory.READ_ONLY),
-            (classes.disallowed, ErrorCategory.WRONG_VALUE),
-            (classes.invalid_arg, ErrorCategory.WRONG_VALUE),
-        ):
-            if cls is not None and isinstance(err, cls):
-                return category
-        if isinstance(err, TypeError):
-            return ErrorCategory.WRONG_TYPE
+        read_only = self._classes.read_only
+        if read_only is not None and isinstance(err, read_only):
+            return ErrorCategory.READ_ONLY
         return None
 
     @staticmethod

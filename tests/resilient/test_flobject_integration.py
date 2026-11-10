@@ -23,7 +23,6 @@
 """Resilient mode through PyFluent's real settings objects (no Fluent needed)."""
 
 from pathlib import Path
-import warnings
 
 from _flobject_model import ModelAdapter, ModelSession
 import pytest
@@ -35,11 +34,8 @@ from ansys.fluent.core.resilient.engine import (
     PoolConfig,
     ResilientConfig,
     ResilientFailoverWarning,
-    ResilientRecoveryWarning,
-    ResilientWarning,
     enable_resilient_mode,
 )
-from ansys.fluent.core.resilient.engine.interceptor import InactiveTargetProxy
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 
 pytestmark = pytest.mark.resilient
@@ -87,72 +83,20 @@ def test_inactive_navigation_raises_without_resilient_mode():
         session.settings.bc.inlet.thermal.temperature
 
 
-def test_inactive_navigation_raises_when_activation_is_not_allowed(tmp_path):
-    session, _ = _resilient(tmp_path)
+def test_inactive_navigation_raises_with_resilient_mode(tmp_path):
+    # Resilient mode never activates a governing model: an inactive object
+    # raises the usual error, whether reading or writing.
+    session, events = _resilient(tmp_path)
     with pytest.raises(InactiveObjectError):
         session.settings.bc.inlet.thermal.temperature
-
-
-def test_reading_an_inactive_object_never_activates_it(tmp_path):
-    session, events = _resilient(tmp_path, allow_model_activation=True)
-    temperature = session.settings.bc.inlet.thermal.temperature
-    assert isinstance(temperature, InactiveTargetProxy)
-    assert "thermal" in repr(temperature)
     with pytest.raises(InactiveObjectError):
-        temperature.get_state()
-    with pytest.raises(InactiveObjectError):
-        temperature()
-    assert (
-        session.server.objs["setup"].objs["models"].objs["energy"].objs["enabled"].value
-        is False
-    )
-    assert events == []
-
-
-def test_writing_an_inactive_object_activates_its_governing_model(tmp_path):
-    session, events = _resilient(tmp_path, allow_model_activation=True)
-    thermal = session.settings.bc.inlet.thermal
-    with pytest.warns(ResilientRecoveryWarning, match="energy"):
-        thermal.temperature = 350.0
-    assert session.settings.setup.models.energy.enabled() is True
-    assert session.settings.bc.inlet.thermal.temperature() == 350.0
-    assert [e.kind for e in events] == [EventKind.ACTIVATED]
-    paths = [op.path for op in session.resilient.journal.operations]
-    assert paths == ["setup/models/energy/enabled", "bc/inlet/thermal/temperature"]
-
-
-def test_failed_deferred_write_reverts_the_activation(tmp_path):
-    session, events = _resilient(tmp_path, allow_model_activation=True)
-    with pytest.raises(RuntimeError, match="unphysical"):
-        session.settings.bc.inlet.thermal.temperature = 1e6
+        session.settings.bc.inlet.thermal.temperature = 350.0
     assert session.settings.setup.models.energy.enabled() is False
-    assert len(session.resilient.journal) == 0
     assert events == []
 
 
-def test_revert_that_fails_is_reported_whatever_the_policy(tmp_path):
-    session, _ = _resilient(tmp_path, allow_model_activation=True, recovery="silent")
-    write = session.service.set_var
-
-    def set_var(path, value):
-        if path == "setup/models/energy/enabled" and value is False:
-            raise RuntimeError("locked")
-        write(path, value)
-
-    session.service.set_var = set_var
-    with pytest.warns(ResilientWarning, match="could not revert"):
-        with pytest.raises(RuntimeError, match="unphysical"):
-            session.settings.bc.inlet.thermal.temperature = 1e6
-
-
-def test_out_of_range_value_is_clamped_through_the_settings_tree(tmp_path):
-    session, _ = _resilient(tmp_path)
-    with pytest.warns(ResilientRecoveryWarning):
-        session.settings.bc.inlet.intensity = 1.05
-    assert session.settings.bc.inlet.intensity() == 1.0
-
-
-def test_value_far_outside_the_range_keeps_the_usual_error(tmp_path):
+def test_rejected_value_keeps_the_usual_error(tmp_path):
+    # An out-of-range value raises the original error unchanged.
     session, events = _resilient(tmp_path)
     with pytest.raises(RuntimeError, match="not in range"):
         session.settings.bc.inlet.intensity = 5.0
@@ -160,24 +104,12 @@ def test_value_far_outside_the_range_keeps_the_usual_error(tmp_path):
     assert events == []
 
 
-def test_close_typo_is_snapped_through_the_settings_tree(tmp_path):
-    session, _ = _resilient(tmp_path, recovery="silent")
-    session.settings.bc.inlet.specification = "Intensity and Hydraulic Diamete"
-    assert session.settings.bc.inlet.specification() == (
-        "Intensity and Hydraulic Diameter"
-    )
-
-
-def test_strict_policy_keeps_the_usual_settings_errors(tmp_path):
-    session, _ = _resilient(tmp_path, recovery="strict")
+def test_disallowed_value_keeps_the_usual_settings_error(tmp_path):
     # The settings tree reports a disallowed value as a ValueError listing the
     # closest allowed values, exactly as without resilient mode.
+    session, _ = _resilient(tmp_path)
     with pytest.raises(ValueError, match="most similar names"):
         session.settings.bc.inlet.specification = "Intensity and Hydraulic Diamete"
-    with warnings.catch_warnings():
-        warnings.simplefilter("error")
-        with pytest.raises(RuntimeError, match="not in range"):
-            session.settings.bc.inlet.intensity = 5.0
 
 
 def test_failed_solve_is_rolled_back_to_the_automatic_checkpoint(tmp_path):
@@ -210,7 +142,7 @@ def test_undo_through_the_settings_tree(tmp_path):
 
 
 def test_disable_restores_plain_settings_behavior(tmp_path):
-    session, _ = _resilient(tmp_path, allow_model_activation=True)
+    session, _ = _resilient(tmp_path)
     session.resilient.disable()
     with pytest.raises(InactiveObjectError):
         session.settings.bc.inlet.thermal.temperature

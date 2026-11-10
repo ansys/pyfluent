@@ -23,23 +23,19 @@
 """Behavior of a resilient session, driven through its settings service."""
 
 import sys
-import warnings
 
-from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession, service_of
+from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession
 import pytest
 
 from ansys.fluent.core.resilient.engine import (
-    ActivationCandidate,
     CheckpointConfig,
     CheckpointError,
     EventKind,
     FailoverError,
     PoolConfig,
-    RecoveryPolicy,
     ResilientConfig,
     ResilientError,
     ResilientFailoverWarning,
-    ResilientRecoveryWarning,
     ResilientSession,
     ResilientWarning,
     disable_resilient_mode,
@@ -58,7 +54,7 @@ def _enable(session=None, tmp_path=None, adapter=None, **config):
     enable_resilient_mode(
         session,
         ResilientConfig(**config),
-        adapter=adapter or FakeAdapter(candidates=[("setup.energy", True)]),
+        adapter=adapter or FakeAdapter(),
         journal_complete=True,
     )
     events = []
@@ -119,58 +115,20 @@ def test_accepted_write_is_journaled_with_its_previous_value():
     assert events == []
 
 
-def test_rejected_value_is_clamped_with_a_warning_and_an_event():
+def test_rejected_value_raises_the_original_error_unchanged():
+    # Resilient mode never changes a value to make a rejected write succeed.
     session, events = _enable()
-    with pytest.warns(ResilientRecoveryWarning, match="setup.intensity"):
-        _set(session, "setup.intensity", 1.05)
-    assert session.settings.setup.intensity.value == 1.0
-    outcome = session.resilient.last_outcome
-    assert outcome.fixes_applied == ["clamp"] and outcome.new_value == 1.0
-    assert [e.kind for e in events] == [EventKind.RECOVERED]
-    assert session.resilient.journal.operations[-1].fixes == ("clamp",)
-
-
-def test_unrecognized_message_is_reclassified_by_live_introspection():
-    session, _ = _enable(recovery="silent")
 
     def reject(value):
         if value > 1.0:
-            raise RuntimeError("Error: invalid input")
+            raise RuntimeError("Value is not in range.")
 
     session.settings.setup.intensity.reject = reject
-    _set(session, "setup.intensity", 1.05)
-    assert session.settings.setup.intensity.value == 1.0
-
-
-def test_value_far_outside_the_range_raises_the_original_error():
-    # 5 for a 0..1 fraction more likely means 5 %: it is not clamped to 1.
-    session, events = _enable()
     with pytest.raises(RuntimeError, match="not in range"):
-        _set(session, "setup.intensity", 5.0)
+        _set(session, "setup.intensity", 1.05)
     assert session.settings.setup.intensity.value == 0.05
     assert events == []
-
-
-def test_clamp_tolerance_must_not_be_negative():
-    with pytest.raises(ValueError, match="clamp_tolerance"):
-        ResilientConfig(clamp_tolerance=-0.1)
-
-
-def test_disallowed_value_is_snapped_to_the_closest_allowed_value():
-    session, events = _enable(recovery="silent")
-    with warnings.catch_warnings():
-        warnings.simplefilter("error")
-        _set(session, "setup.model", "k-omegaa")
-    assert session.settings.setup.model.value == "k-omega"
-    assert events[0].kind is EventKind.RECOVERED
-
-
-def test_strict_policy_propagates_the_original_error_unchanged():
-    session, events = _enable(recovery=RecoveryPolicy.STRICT)
-    with pytest.raises(RuntimeError, match="not in range"):
-        _set(session, "setup.intensity", 5.0)
-    assert session.settings.setup.intensity.value == 0.05
-    assert events == []
+    assert len(session.resilient.journal) == 0
 
 
 def test_unrepairable_error_propagates_unchanged():
@@ -187,63 +145,12 @@ def test_unrepairable_error_propagates_unchanged():
     assert len(session.resilient.journal) == 0
 
 
-def test_inactive_target_needs_model_activation_to_be_allowed():
+def test_inactive_target_write_raises_the_original_error():
+    # An inactive target raises; resilient mode does not activate a model.
     session, _ = _enable()
-    with pytest.raises(RuntimeError, match="not allowed"):
-        _set(session, "setup.temperature", 350.0)
-    assert session.settings.setup.energy.value is False
-
-
-def test_inactive_target_is_activated_when_allowed():
-    session, events = _enable(allow_model_activation=True, recovery="silent")
-    _set(session, "setup.temperature", 350.0)
-    assert session.settings.setup.energy.value is True
-    assert session.settings.setup.temperature.value == 350.0
-    assert session.resilient.last_outcome.activated == ["setup.energy"]
-    assert [e.kind for e in events] == [EventKind.ACTIVATED]
-
-
-def test_configured_activation_candidates_extend_the_built_in_ones():
-    # The adapter knows no governing model; the user's candidate is tried.
-    session, events = _enable(
-        adapter=FakeAdapter(),
-        allow_model_activation=True,
-        recovery="silent",
-        activation_candidates=(ActivationCandidate("setup.energy", True),),
-    )
-    _set(session, "setup.temperature", 350.0)
-    assert session.settings.setup.energy.value is True
-    assert session.resilient.last_outcome.activated == ["setup.energy"]
-    assert [e.kind for e in events] == [EventKind.ACTIVATED]
-
-
-def test_activation_candidate_that_does_not_activate_is_reverted():
-    session, _ = _enable(
-        adapter=FakeAdapter(),
-        allow_model_activation=True,
-        recovery="silent",
-        activation_candidates=(ActivationCandidate("setup.radiation", True),),
-    )
-    with pytest.raises(RuntimeError, match="not allowed"):
-        _set(session, "setup.temperature", 350.0)
-    assert session.settings.setup.radiation.value is False
-    assert session.settings.setup.energy.value is False
-
-
-def test_activation_candidates_must_be_typed():
-    with pytest.raises(TypeError, match="ActivationCandidate"):
-        ResilientConfig(activation_candidates=[("setup.energy", True)])
-
-
-def test_failed_repair_raises_the_original_error():
-    session, _ = _enable(allow_model_activation=True, recovery="silent")
-
-    def reject(value):
-        raise RuntimeError("Value is not in range.")
-
-    session.settings.setup.temperature.reject = reject
-    with pytest.raises(RuntimeError, match="not allowed"):
-        _set(session, "setup.temperature", 350.0)
+    session.settings.setup.plain = FakeLeaf(1.0, active=False)
+    with pytest.raises(RuntimeError, match="not allowed to be set"):
+        _set(session, "setup.plain", 2.0)
 
 
 # -- commands, checkpoints, rollback -------------------------------------------------
@@ -309,7 +216,7 @@ def test_failed_automatic_checkpoint_is_reported_and_the_command_runs(tmp_path):
         def write_checkpoint(self, session, file_path, *, include_data):
             raise OSError("No space left on device")
 
-    session, _ = _enable(tmp_path=tmp_path, adapter=_FullDisk(), recovery="silent")
+    session, _ = _enable(tmp_path=tmp_path, adapter=_FullDisk())
     _with_iterate(session)
     with pytest.warns(ResilientWarning, match="cannot be rolled back"):
         assert session._settings_service.execute_cmd("", "iterate", iter_count=2) == 2
@@ -524,14 +431,14 @@ def test_disable_exits_the_standbys(tmp_path):
 
 
 def test_listener_errors_do_not_break_the_session():
-    session, _ = _enable(recovery="silent")
+    session, _ = _enable()
 
     def broken(event):
         raise ValueError("listener bug")
 
     session.resilient.on_event(broken)
-    _set(session, "setup.intensity", 1.05)
-    assert session.settings.setup.intensity.value == 1.0
+    session.resilient.checkpoint("manual")
+    assert session.resilient.checkpoints[-1].name == "manual"
 
 
 def test_internal_leaf_without_activity_info():
