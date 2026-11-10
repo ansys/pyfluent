@@ -103,6 +103,14 @@ def test_user_config_is_not_modified():
     assert config.pool.size == 1
 
 
+def test_repr_reports_the_session_state():
+    session, _ = _enable()
+    text = repr(session.resilient)
+    assert text.startswith("<ResilientSession")
+    assert "enabled=True" in text
+    assert "journal=" in text and "checkpoints=" in text
+
+
 # -- value writes ----------------------------------------------------------------------
 
 
