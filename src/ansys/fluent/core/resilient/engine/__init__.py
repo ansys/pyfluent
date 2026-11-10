@@ -43,7 +43,6 @@ from .controller import ResilientController
 from .exceptions import (
     CheckpointError,
     FailoverError,
-    PathResolutionError,
     ResilientError,
     ResilientFailoverWarning,
     ResilientWarning,
@@ -77,7 +76,6 @@ __all__ = [
     "FailoverError",
     "Journal",
     "ObjectOp",
-    "PathResolutionError",
     "PoolConfig",
     "ResilientAdapter",
     "ResilientConfig",
