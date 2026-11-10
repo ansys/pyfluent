@@ -6,8 +6,7 @@ Install the project's pinned checker and run from the repository root:
 
 The generated model is excluded from the reported score by filtering its
 exported symbols from BasedPyright's JSON report. A temporary ``py.typed``
-marker and a standalone BasedPyright config are created for the run, so the
-repository's ``pyproject.toml`` does not affect the measurement.
+marker is created only when the package does not already have one.
 """
 
 from __future__ import annotations
@@ -56,39 +55,20 @@ def main() -> int:
                 for path in (source_directory, existing_pythonpath)
                 if path
             )
-            with tempfile.NamedTemporaryFile(
-                mode="w",
-                encoding="utf-8",
-                prefix=".basedpyrightconfig-",
-                suffix=".json",
-                dir=REPOSITORY_ROOT,
-                delete=False,
-            ) as config_file:
-                config_path = Path(config_file.name)
-                # Use a standalone config to bypass pyproject settings and exclude generated sources.
-                json.dump(
-                    {"exclude": ["src/ansys/fluent/core/generated"]},
-                    config_file,
-                )
-            try:
-                result = subprocess.run(
-                    [
-                        executable,
-                        "--project",
-                        str(config_path),
-                        "--verifytypes",
-                        PACKAGE,
-                        "--outputjson",
-                    ],
-                    cwd=REPOSITORY_ROOT,
-                    stdout=subprocess.PIPE,
-                    stderr=stderr,
-                    env=environment,
-                    text=True,
-                    check=False,
-                )
-            finally:
-                config_path.unlink()
+            result = subprocess.run(
+                [
+                    executable,
+                    "--verifytypes",
+                    PACKAGE,
+                    "--outputjson",
+                ],
+                cwd=REPOSITORY_ROOT,
+                stdout=subprocess.PIPE,
+                stderr=stderr,
+                env=environment,
+                text=True,
+                check=False,
+            )
             stderr.seek(0)
             stderr_text = stderr.read()
 
