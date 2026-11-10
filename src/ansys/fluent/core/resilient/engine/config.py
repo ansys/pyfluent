@@ -25,24 +25,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import enum
 import os
 from typing import Any, Callable
-
-from .types import ActivationCandidate
-
-
-class RecoveryPolicy(str, enum.Enum):
-    """What resilient mode may do when the server rejects a value."""
-
-    #: Never change a value: the original error propagates unchanged. Journaling,
-    #: checkpoints, rollback and failover still apply.
-    STRICT = "strict"
-    #: Repair the value (clamp, snap to the nearest allowed value, or coerce a
-    #: numeric string), apply it, and emit a ``ResilientRecoveryWarning``.
-    WARN = "warn"
-    #: Repair and apply the value; only log the repair.
-    SILENT = "silent"
 
 
 @dataclass
@@ -106,26 +90,6 @@ class ResilientConfig:
 
     Parameters
     ----------
-    recovery : RecoveryPolicy or str, optional
-        What to do when the server rejects a value. The default is
-        ``RecoveryPolicy.WARN``.
-    allow_model_activation : bool, optional
-        Whether resilient mode may enable a governing model (for example the
-        energy model) so that a write to an inactive setting succeeds. This changes
-        the physics of the case, so it is disabled by default.
-    activation_candidates : sequence of ActivationCandidate, optional
-        Governing-model settings to try, before the product's built-in ones, when
-        an inactive setting is written and ``allow_model_activation`` is
-        ``True``. A candidate is kept only if it activates the setting; otherwise
-        it is reverted. The default is no additional candidates.
-    max_resolver_attempts : int, optional
-        Maximum number of repair attempts for one write. The default is ``3``.
-    clamp_tolerance : float, optional
-        Largest overshoot that is clamped to the nearest bound, as a fraction of
-        the allowed range (with a single bound, of that bound's magnitude). A
-        value further outside the range is not repaired and the original error is
-        raised. Use ``0`` to never clamp and ``math.inf`` to always clamp. The
-        default is ``0.1``.
     auto_checkpoint : bool, optional
         Whether to write a checkpoint before each irreversible command (for
         example ``iterate`` or ``read_case``). The default is ``True``.
@@ -142,11 +106,6 @@ class ResilientConfig:
         Warm standby sessions for failover.
     """
 
-    recovery: RecoveryPolicy | str = RecoveryPolicy.WARN
-    allow_model_activation: bool = False
-    activation_candidates: tuple[ActivationCandidate, ...] = ()
-    max_resolver_attempts: int = 3
-    clamp_tolerance: float = 0.1
     auto_checkpoint: bool = True
     auto_rollback: bool = True
     journal_max_ops: int = 10_000
@@ -154,26 +113,5 @@ class ResilientConfig:
     pool: PoolConfig = field(default_factory=PoolConfig)
 
     def __post_init__(self):
-        try:
-            self.recovery = RecoveryPolicy(self.recovery)
-        except ValueError as err:
-            allowed = ", ".join(repr(p.value) for p in RecoveryPolicy)
-            raise ValueError(
-                f"Invalid recovery policy {self.recovery!r}; use one of {allowed}."
-            ) from err
-        self.activation_candidates = tuple(self.activation_candidates)
-        for candidate in self.activation_candidates:
-            if not isinstance(candidate, ActivationCandidate):
-                raise TypeError(
-                    "activation_candidates must contain ActivationCandidate "
-                    f"objects, for example ActivationCandidate(path, value); got "
-                    f"{candidate!r}."
-                )
-        if self.max_resolver_attempts < 0:
-            raise ValueError("max_resolver_attempts must not be negative.")
-        if not self.clamp_tolerance >= 0:
-            raise ValueError(
-                f"clamp_tolerance must be zero or positive, got {self.clamp_tolerance}."
-            )
         if self.journal_max_ops < 1:
             raise ValueError("journal_max_ops must be at least 1.")

@@ -432,18 +432,6 @@ class InactiveObjectError(RuntimeError):
         super().__init__(f"'{python_path}' is currently inactive.")
 
 
-def _handle_inactive_access(obj, name):
-    """Let the settings service handle access to child ``name`` of inactive ``obj``.
-
-    A settings service may implement ``on_inactive_access(obj, name)`` to return a
-    replacement object (resilient mode uses this to defer activation of a
-    governing model until a value is written). Returns ``None`` when the service
-    does not handle the access, in which case ``InactiveObjectError`` is raised.
-    """
-    handler = getattr(obj.flproxy, "on_inactive_access", None)
-    return handler(obj, name) if callable(handler) else None
-
-
 class ReadOnlyActionError(RuntimeError):
     """Read-only action execution."""
 
@@ -1768,9 +1756,6 @@ class Group(SettingsBase[DictStateType]):
             name in super().__getattribute__("child_names")
             and self.is_active() is False
         ):
-            replacement = _handle_inactive_access(self, name)
-            if replacement is not None:
-                return replacement
             raise InactiveObjectError(self.python_path)
         _raise_if_exposure_hidden(
             name, super().__getattribute__("_child_classes"), self

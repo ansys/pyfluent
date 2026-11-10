@@ -113,12 +113,3 @@ class AbstractSettings(ABC):
     def has_wildcard(self, name: str) -> bool:
         """Check whether a name has a wildcard pattern (v1: uses Settings.IsWildcard directly)."""
         pass
-
-    def on_inactive_access(self, obj: Any, name: str) -> Any:
-        """Handle access to child ``name`` of the inactive settings object ``obj``.
-
-        Returns ``None``, so that the settings object raises
-        ``InactiveObjectError``. A wrapping service, such as the one installed by
-        resilient mode, may return a replacement object instead.
-        """
-        return None

@@ -5,26 +5,24 @@
 Resilient mode
 ==============
 
-Resilient mode makes an automated setup-and-solve script survive the errors
-that would normally stop it. You keep writing ordinary PyFluent code. Resilient
-mode works inside the settings API:
+Resilient mode allows an automated setup-and-solve script to continue running
+despite failures that would normally halt execution, all while letting you write
+standard PyFluent code. Resilient mode works for solver sessions now:
 
-* **Recovery**: a rejected value (out of range, a near-miss of an allowed
-  string, or the wrong type) is repaired and applied. You get a warning.
-* **Model activation** (opt-in): writing a setting that is inactive because its
-  governing model is off (for example a thermal boundary condition while the
-  energy model is disabled) enables that model first.
 * **Checkpoints and rollback**: irreversible commands such as ``iterate``,
   ``calculate`` and ``read_case`` are preceded by an automatic case and data
   checkpoint. If such a command fails, the session is restored to that
   checkpoint and the original error is raised.
 * **Undo and redo** of settings writes from a journal.
-* **Failover**: with a warm pool of standby sessions, a solver that dies is
-  replaced by a standby. The standby is brought to the same state from the
-  newest checkpoint and the journal, and the failed call is retried.
+* **Failover**: with a warm pool of standby sessions, your script keeps running
+  on a standby session when the active solver process dies, resuming from the
+  latest checkpoint.
 
-Resilient mode only works with solver sessions. It does not apply to meshing
-sessions or to REST (``HttpSolver``) sessions.
+Resilient mode does not alter your settings. A value that Fluent rejects raises
+the original error unchanged, so your existing ``except`` clauses keep working.
+
+Resilient mode is available for solver sessions launched or connected over gRPC.
+It does not apply to meshing sessions or to REST (``HttpSolver``) sessions.
 
 
 Enable resilient mode
@@ -36,91 +34,20 @@ Every entry point that creates a solver session accepts ``resilient_mode`` and
 .. code-block:: python
 
     import ansys.fluent.core as pyfluent
-    from ansys.fluent.core.resilient import ResilientConfig
+    from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
 
-    solver = pyfluent.launch_fluent(mode="solver", resilient_mode=True)
+    solver = pyfluent.Solver.from_install(resilient_mode=True)
 
-    # The same options apply to connect_to_fluent and to Solver.from_install,
-    # Solver.from_container, Solver.from_pim and Solver.from_connection.
+    # The same options apply to connect_to_fluent and to Solver.from_container,
+    # Solver.from_pim and Solver.from_connection.
     solver = pyfluent.Solver.from_install(
         resilient_mode=True,
-        resilient_config=ResilientConfig(allow_model_activation=True),
+        resilient_config=ResilientConfig(pool=PoolConfig(size=2)),
     )
-
-You can also enable it on a session you already have:
-
-.. code-block:: python
-
-    from ansys.fluent.core.resilient import enable_resilient_mode
-
-    enable_resilient_mode(solver)
 
 Once enabled, ``solver.resilient`` gives access to every resilient-mode
 feature. :func:`~ansys.fluent.core.resilient.is_resilient` tells whether a session
 is resilient, and ``solver.resilient.disable()`` turns resilient mode off.
-
-
-Recovery
---------
-
-When Fluent rejects a write, resilient mode classifies the error and, if it can
-be repaired, applies a fix and retries:
-
-.. list-table::
-   :header-rows: 1
-
-   * - Rejected write
-     - Fix
-   * - Value just outside the allowed range
-     - Clamp to the nearest bound. Only an overshoot of up to
-       ``clamp_tolerance`` (10 % of the range by default) is clamped; a value
-       further away, such as ``5`` for a fraction from 0 to 1, is not repaired.
-   * - String that is not an allowed value
-     - Snap to the closest allowed value (close matches only).
-   * - Value of the wrong type, such as ``"0.5"`` for a real
-     - Convert to the expected type.
-   * - Setting that is inactive
-     - Enable the governing model (only when ``allow_model_activation=True``).
-
-``ResilientConfig.recovery`` selects how a repair is reported:
-
-* ``RecoveryPolicy.WARN`` (default): apply the fix and emit a
-  :class:`~ansys.fluent.core.resilient.ResilientRecoveryWarning`.
-* ``RecoveryPolicy.SILENT``: apply the fix and log it on the
-  ``ansys.resilient`` logger.
-* ``RecoveryPolicy.STRICT``: do not repair; raise the original error.
-
-When a value cannot be repaired, the original Fluent error is raised unchanged,
-so existing ``except`` clauses keep working.
-
-Model activation is off by default because enabling a model changes the
-physics. With ``allow_model_activation=True``, only writes trigger activation.
-Reading an inactive setting raises the usual error and never changes the
-model:
-
-.. code-block:: python
-
-    solver.settings.setup.models.energy.enabled = False
-    inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
-    inlet.thermal.temperature.value = 293.15  # enables the energy model, then writes
-
-Activation tries governing-model settings in turn and keeps one only if it makes
-the written setting active; otherwise the change is reverted and the original
-error is raised. The built-in rule enables the energy model
-(``setup.models.energy.enabled``). Add rules for your own cases with
-``ResilientConfig.activation_candidates``; they are tried before the built-in
-rule:
-
-.. code-block:: python
-
-    from ansys.fluent.core.resilient import ActivationCandidate, ResilientConfig
-
-    config = ResilientConfig(
-        allow_model_activation=True,
-        activation_candidates=(
-            ActivationCandidate("setup.models.viscous.model", "k-omega"),
-        ),
-    )
 
 
 Checkpoints and rollback
@@ -188,34 +115,26 @@ Failover needs at least one warm standby session:
 
     from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
 
-    solver = pyfluent.launch_fluent(
-        mode="solver",
+    solver = pyfluent.Solver.from_install(
         resilient_mode=True,
         resilient_config=ResilientConfig(pool=PoolConfig(size=2)),
     )
 
 ``PoolConfig.size`` counts the active session, so ``size=2`` launches one
 standby with the same launch arguments as the active session. If the active
-session dies during a settings write or command, resilient mode:
+session dies during a settings write or command, your script continues on a
+standby session, resuming from the latest checkpoint, and a
+:class:`~ansys.fluent.core.resilient.ResilientFailoverWarning` is emitted.
 
-#. promotes a healthy standby,
-#. restores the newest checkpoint on it and replays the journaled operations
-   recorded since then,
-#. retries the failed call, and
-#. emits a :class:`~ansys.fluent.core.resilient.ResilientFailoverWarning`.
+Keep these points in mind:
 
-A replacement standby is launched in the background.
-
-Keep these limits in mind:
-
-* Failover reroutes ``solver.settings``. Other services of the dead session, such
-  as field data, are not rerouted. Use ``solver.resilient.active_session`` to
-  reach the session that is currently serving.
-* Replay starts from the newest checkpoint. Without a checkpoint, the standby
-  starts from launch state, so take a checkpoint once the case is loaded.
-* The failed call is retried once, on the standby. If the call itself crashed
-  the server, the retry fails too and its error is raised.
-* Standbys are launched automatically only for local standalone sessions. For
+* Take a checkpoint once your case is loaded. Failover resumes from the latest
+  checkpoint; without one, the standby starts from an empty session.
+* Failover reroutes ``solver.settings``. Use ``solver.resilient.active_session``
+  to reach other services, such as field data, of the session now serving.
+* If a call itself caused the crash, it does not succeed after failover and its
+  error is raised.
+* Standbys are launched automatically for local standalone sessions. For
   container, PIM or remote sessions, pass ``PoolConfig.launch_kwargs`` or
   ``PoolConfig.launcher``.
 * Exiting ``solver`` exits all the sessions of the pool.
@@ -234,15 +153,14 @@ Register a listener to react to what resilient mode does:
     solver.resilient.on_event(show)
 
 Each event has one of the kinds listed in
-:class:`~ansys.fluent.core.resilient.EventKind`: ``RECOVERED``, ``ACTIVATED``,
-``CHECKPOINT``, ``ROLLBACK``, ``UNDO``, ``REDO`` and ``FAILOVER``. The same
-information is logged on the ``ansys.resilient`` logger, and
-``solver.resilient.journal.to_script()`` returns the journal as plain data.
+:class:`~ansys.fluent.core.resilient.EventKind`: ``CHECKPOINT``, ``ROLLBACK``,
+``UNDO``, ``REDO`` and ``FAILOVER``. The same information is logged on the
+``ansys.resilient`` logger, and ``solver.resilient.journal.to_script()`` returns
+the journal as plain data.
 
 If resilient mode cannot do something it normally does, for example when an
-automatic checkpoint fails or a failed repair cannot be fully reverted, it emits a
-:class:`~ansys.fluent.core.resilient.ResilientWarning` whatever the recovery
-policy.
+automatic checkpoint fails, it emits a
+:class:`~ansys.fluent.core.resilient.ResilientWarning`.
 
 
 Configuration reference
@@ -254,21 +172,6 @@ Configuration reference
    * - Option
      - Default
      - Description
-   * - ``recovery``
-     - ``RecoveryPolicy.WARN``
-     - How repairs are reported, or ``STRICT`` to disable them.
-   * - ``allow_model_activation``
-     - ``False``
-     - Enable a governing model when an inactive setting is written.
-   * - ``activation_candidates``
-     - ``()``
-     - Additional governing-model settings to try before the built-in ones.
-   * - ``max_resolver_attempts``
-     - ``3``
-     - Maximum repair attempts for a single write.
-   * - ``clamp_tolerance``
-     - ``0.1``
-     - Largest overshoot that is clamped, as a fraction of the allowed range.
    * - ``auto_checkpoint``
      - ``True``
      - Checkpoint before irreversible commands.
@@ -284,22 +187,3 @@ Configuration reference
    * - ``pool``
      - ``PoolConfig()``
      - ``size`` (``1``, no standby), ``launch_kwargs`` and ``launcher``.
-
-
-Design
-------
-
-Resilient mode is split into a product-neutral engine and a small product
-adapter:
-
-* ``ansys.fluent.core.resilient.engine`` holds the classifier, resolver,
-  journal, checkpoint store, warm pool and controller. It depends only on the
-  Python standard library, so other Ansys clients can reuse it. PyCFX uses it
-  through ``ansys-cfx-core[resilient]``.
-* :class:`~ansys.fluent.core.resilient.FluentAdapter` implements the Fluent
-  details: error types, health checks, checkpoint I/O, launching standbys and
-  the list of irreversible commands.
-
-The controller wraps the session's settings service. Every write, command and
-named-object change made through ``solver.settings`` therefore goes through
-resilient mode without any change to the settings classes.

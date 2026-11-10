@@ -33,14 +33,6 @@ from typing import Any
 class ErrorCategory(enum.Enum):
     """Machine-readable classification of an error raised by a settings call."""
 
-    #: The target is inactive in the current model state.
-    INACTIVE_TARGET = "inactive_target"
-    #: A numeric value is outside the live ``[min, max]`` bounds.
-    OUT_OF_RANGE = "out_of_range"
-    #: A value is not one of the live ``allowed_values``.
-    WRONG_VALUE = "wrong_value"
-    #: A value has the wrong Python type.
-    WRONG_TYPE = "wrong_type"
     #: The target is read-only.
     READ_ONLY = "read_only"
     #: The server is in a fatal state or no longer serving.
@@ -56,11 +48,9 @@ class Severity(enum.Enum):
 
     #: The session is unusable; fail over to a standby session if one exists.
     CATASTROPHIC = "catastrophic"
-    #: The engine can usually repair the value and retry.
-    RECOVERABLE = "recoverable"
     #: Not an error (clean solver stop).
     BENIGN = "benign"
-    #: Not catastrophic, but not repairable either.
+    #: Not catastrophic; the original error is raised unchanged.
     HARD = "hard"
 
 
@@ -74,11 +64,6 @@ class Classification:
     details: str | None = None
 
     @property
-    def recoverable(self) -> bool:
-        """Whether the engine can usually repair this error."""
-        return self.severity is Severity.RECOVERABLE
-
-    @property
     def catastrophic(self) -> bool:
         """Whether this error makes the session unusable."""
         return self.severity is Severity.CATASTROPHIC
@@ -87,28 +72,6 @@ class Classification:
     def benign(self) -> bool:
         """Whether this is a clean solver stop rather than an error."""
         return self.severity is Severity.BENIGN
-
-
-@dataclass(frozen=True)
-class ActivationCandidate:
-    """A setting that may activate inactive targets when set to ``value``.
-
-    ``path`` is a dotted Python path relative to the settings root, for example
-    ``"setup.models.energy.enabled"``.
-    """
-
-    path: str
-    value: Any = True
-
-
-@dataclass
-class Fix:
-    """A repair proposed by the resolver for a recoverable error."""
-
-    kind: str
-    description: str
-    new_value: Any = None
-    activations: tuple[ActivationCandidate, ...] = ()
 
 
 @dataclass
@@ -120,9 +83,6 @@ class StepOutcome:
     old_value: Any = None
     new_value: Any = None
     result: Any = None
-    attempts: int = 1
-    fixes_applied: list[str] = field(default_factory=list)
-    activated: list[str] = field(default_factory=list)
     rolled_back: bool = False
     failed_over: bool = False
     error: str | None = None
@@ -134,12 +94,6 @@ class StepOutcome:
             value = getattr(self, name)
             if value is not None:
                 data[name] = value
-        if self.attempts != 1:
-            data["attempts"] = self.attempts
-        if self.fixes_applied:
-            data["fixes_applied"] = list(self.fixes_applied)
-        if self.activated:
-            data["activated"] = list(self.activated)
         if self.rolled_back:
             data["rolled_back"] = True
         if self.failed_over:
@@ -175,10 +129,6 @@ class Checkpoint:
 class EventKind(str, enum.Enum):
     """Kinds of events reported by a resilient session."""
 
-    #: A rejected value was repaired (clamped, snapped or coerced) and applied.
-    RECOVERED = "recovered"
-    #: A governing model was enabled so that an inactive target could be set.
-    ACTIVATED = "activated"
     #: A checkpoint was written.
     CHECKPOINT = "checkpoint"
     #: The session was restored to a checkpoint.

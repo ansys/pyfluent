@@ -36,23 +36,20 @@ import weakref
 
 from .adapter import ResilientAdapter
 from .checkpoint import CheckpointStore
-from .classifier import ErrorClassifier, make_classification
-from .config import RecoveryPolicy, ResilientConfig
+from .classifier import ErrorClassifier
+from .config import ResilientConfig
 from .exceptions import (
     CheckpointError,
     FailoverError,
     ResilientFailoverWarning,
-    ResilientRecoveryWarning,
     ResilientWarning,
 )
-from .interceptor import InactiveTargetProxy, ResilientSettingsService
+from .interceptor import ResilientSettingsService
 from .journal import CommandOp, Journal, ObjectOp, SetOp
 from .pool import WarmSessionPool
-from .resolver import RecoverableErrorResolver, is_active
 from .types import (
     Checkpoint,
     Classification,
-    ErrorCategory,
     EventKind,
     ResilientEvent,
     StepOutcome,
@@ -80,18 +77,9 @@ def _summary(text: str, limit: int = 120) -> str:
 
 
 def _warn_degraded(message: str) -> None:
-    """Report that resilient mode could not do what it normally does.
-
-    Emitted whatever the recovery policy, because the user may rely on it.
-    """
+    """Report that resilient mode could not do what it normally does."""
     logger.warning(message)
     warnings.warn(message, ResilientWarning, stacklevel=4)
-
-
-def _navigate(obj: Any, chain: tuple[tuple[str, Any], ...]) -> Any:
-    for kind, key in chain:
-        obj = getattr(obj, key) if kind == "attr" else obj[key]
-    return obj
 
 
 class ResilientController:
@@ -134,16 +122,6 @@ class ResilientController:
         self.last_outcome: StepOutcome | None = None
         self.enabled = True
         self._classifier = ErrorClassifier(adapter)
-        self._resolver = RecoverableErrorResolver(
-            adapter,
-            session,
-            allow_model_activation=(
-                config.allow_model_activation
-                and config.recovery is not RecoveryPolicy.STRICT
-            ),
-            extra_candidates=config.activation_candidates,
-            clamp_tolerance=config.clamp_tolerance,
-        )
         self._journal_complete = journal_complete
         self._listeners: list[Callable[[ResilientEvent], None]] = []
         self._thread_state = threading.local()
@@ -266,10 +244,7 @@ class ResilientController:
 
     def _set(self, inner: Any, path: str, value: Any) -> StepOutcome:
         old, known = self._read(inner, path)
-        try:
-            inner.set_var(path, value)
-        except Exception as err:  # noqa: BLE001
-            return self._recover_set(inner, path, value, old, known, err)
+        inner.set_var(path, value)
         self.journal.record(SetOp(path, value, old, known))
         return StepOutcome(
             path=path,
@@ -277,235 +252,6 @@ class ResilientController:
             old_value=brief(old) if known else None,
             new_value=brief(value),
         )
-
-    def _recover_set(
-        self,
-        inner: Any,
-        path: str,
-        value: Any,
-        old: Any,
-        known: bool,
-        err: Exception,
-    ) -> StepOutcome:
-        cls = self._classifier.classify(err, self.session)
-        if cls.catastrophic or self.config.recovery is RecoveryPolicy.STRICT:
-            raise err
-        mark = self.journal.next_seq
-        with self._in_mode(_INTERNAL):
-            if not cls.recoverable:
-                cls = self._reclassify(path, value, cls)
-            result = (
-                self._retry_with_fixes(inner, path, value, old, known, cls)
-                if cls.recoverable
-                else None
-            )
-        if result is None:
-            self._revert_since(mark)
-            raise err
-        outcome, descriptions = result
-        self._announce_recovery(path, value, outcome, descriptions)
-        return outcome
-
-    def _reclassify(self, path: str, value: Any, cls: Classification) -> Classification:
-        """Use live introspection when the error message was not recognized."""
-        try:
-            target = self._resolver.resolve(path)
-        except Exception as err:  # noqa: BLE001
-            inactive_cls = self.adapter.error_classes().inactive
-            cause = err.__cause__ or err
-            if inactive_cls is not None and isinstance(cause, inactive_cls):
-                return make_classification(ErrorCategory.INACTIVE_TARGET, cls.message)
-            return cls
-        if is_active(target) is False:
-            return make_classification(ErrorCategory.INACTIVE_TARGET, cls.message)
-        if self._resolver.fix_range(target, value) is not None:
-            return make_classification(ErrorCategory.OUT_OF_RANGE, cls.message)
-        if self._resolver.fix_allowed_value(target, value) is not None:
-            return make_classification(ErrorCategory.WRONG_VALUE, cls.message)
-        return cls
-
-    def _retry_with_fixes(
-        self,
-        inner: Any,
-        path: str,
-        value: Any,
-        old: Any,
-        known: bool,
-        cls: Classification,
-    ) -> tuple[StepOutcome, list[str]] | None:
-        current_value, current_cls = value, cls
-        fixes: list[str] = []
-        descriptions: list[str] = []
-        activated: list[str] = []
-        for attempt in range(1, self.config.max_resolver_attempts + 1):
-            fix = self._resolver.propose(path, current_value, current_cls)
-            if fix is None:
-                return None
-            fixes.append(fix.kind)
-            descriptions.append(fix.description)
-            activated.extend(c.path for c in fix.activations)
-            if fix.new_value is not None:
-                current_value = fix.new_value
-            try:
-                inner.set_var(path, current_value)
-            except Exception as retry_err:  # noqa: BLE001
-                current_cls = self._classifier.classify(retry_err, self.session)
-                if current_cls.catastrophic:
-                    raise
-                continue
-            self.journal.record(
-                SetOp(path, current_value, old, known, fixes=tuple(fixes))
-            )
-            outcome = StepOutcome(
-                path=path,
-                ok=True,
-                old_value=brief(old) if known else None,
-                new_value=brief(current_value),
-                attempts=attempt + 1,
-                fixes_applied=fixes,
-                activated=activated,
-            )
-            return outcome, descriptions
-        return None
-
-    def _revert_since(self, mark: int) -> None:
-        """Undo the internal writes recorded since ``mark`` (a failed repair)."""
-        ops = self.journal.live_since(mark)
-        with self._in_mode(_UNTRACKED):
-            for op in reversed(ops):
-                if isinstance(op, SetOp) and op.old_value_known:
-                    try:
-                        self._inner.set_var(op.path, op.old_value)
-                    except Exception as err:  # noqa: BLE001
-                        _warn_degraded(
-                            f"Resilient mode could not revert {op.describe()} after "
-                            f"a failed repair: {_summary(err)}"
-                        )
-        self.journal.truncate(mark)
-
-    def _announce_recovery(
-        self, path: str, value: Any, outcome: StepOutcome, descriptions: list[str]
-    ) -> None:
-        warning = (
-            ResilientRecoveryWarning
-            if self.config.recovery is RecoveryPolicy.WARN
-            else None
-        )
-        if outcome.activated:
-            enabled = "; ".join(
-                d
-                for d, k in zip(descriptions, outcome.fixes_applied)
-                if k == "activate_model"
-            )
-            self._emit(
-                EventKind.ACTIVATED,
-                f"Enabled {enabled} so that {self._describe_path(path)} can be set.",
-                path=path,
-                warning=warning,
-                outcome=outcome.to_dict(),
-            )
-        value_fixes = [
-            d
-            for d, k in zip(descriptions, outcome.fixes_applied)
-            if k != "activate_model"
-        ]
-        if value_fixes:
-            self._emit(
-                EventKind.RECOVERED,
-                f"{self._describe_path(path)}: {brief(value)!r} was rejected; set "
-                f"{outcome.new_value!r} instead ({'; '.join(value_fixes)}).",
-                path=path,
-                warning=warning,
-                outcome=outcome.to_dict(),
-            )
-
-    # -- inactive objects ------------------------------------------------------------
-
-    def _display_path(self, path: str) -> str:
-        """Return ``path`` without the session and settings-root prefixes."""
-        text = path.removeprefix("<session>.")
-        for prefix in self.adapter.path_prefixes:
-            if text.startswith(prefix):
-                return text[len(prefix) :]
-        return text
-
-    def _describe_path(self, path: str) -> str:
-        """Return the Python path of the settings object at ``path``, for messages.
-
-        Falls back to ``path`` when the object or its Python path is unknown.
-        """
-        try:
-            with self._in_mode(_UNTRACKED):
-                python_path = self._resolver.resolve(path).python_path
-        except Exception:  # noqa: BLE001
-            return path
-        return self._display_path(python_path) if isinstance(python_path, str) else path
-
-    def on_inactive_access(self, obj: Any, name: str) -> Any:
-        """Return a write-deferring proxy for child ``name`` of inactive ``obj``."""
-        if (
-            not self.enabled
-            or self._mode() != _NORMAL
-            or not self._resolver.allow_model_activation
-        ):
-            return None
-        return InactiveTargetProxy(self, obj, (("attr", name),))
-
-    def navigate(self, inactive: Any, chain: tuple[tuple[str, Any], ...]) -> Any:
-        """Navigate ``chain`` below ``inactive`` without proxies.
-
-        Raises the product's inactive-object error if the target is still
-        inactive.
-        """
-        with self._in_mode(_UNTRACKED):
-            return _navigate(inactive, chain)
-
-    def write_inactive(
-        self,
-        inactive: Any,
-        chain: tuple[tuple[str, Any], ...],
-        action: Callable[[Any], Any],
-    ) -> Any:
-        """Activate ``inactive``, then apply ``action`` to the object at ``chain``.
-
-        Raises
-        ------
-        Exception
-            The product's inactive-object error if no governing model activates
-            ``inactive``, or the error raised by ``action``. The activation is
-            reverted before an error from ``action`` propagates.
-        """
-        mark = self.journal.next_seq
-        activated = []
-        if is_active(inactive) is not True:
-            with self._in_mode(_INTERNAL):
-                activated = self._resolver.activate(inactive)
-            if not activated:
-                # Raises the product's inactive-object error.
-                self.navigate(inactive, chain)
-        try:
-            result = action(_navigate(inactive, chain))
-        except Exception:
-            if activated:
-                self._revert_since(mark)
-            raise
-        if activated:
-            names = ", ".join(f"{c.path} = {c.value!r}" for c in activated)
-            location = self._display_path(
-                getattr(inactive, "python_path", None) or repr(inactive)
-            )
-            self._emit(
-                EventKind.ACTIVATED,
-                f"Enabled {names} so that {location} can be set.",
-                path=location,
-                warning=(
-                    ResilientRecoveryWarning
-                    if self.config.recovery is RecoveryPolicy.WARN
-                    else None
-                ),
-                activated=[c.path for c in activated],
-            )
-        return result
 
     # -- commands and structural changes -------------------------------------------
 
@@ -712,7 +458,6 @@ class ResilientController:
             self._retire(dead)
         self.pool.promote(standby, retire_previous=retire)
         self.session = standby
-        self._resolver.session = standby
         self.proxy.rebind_inner(self.adapter.settings_service(standby))
         self.bind(standby)
         self._emit(
@@ -832,6 +577,14 @@ class ResilientController:
         )
         return checkpoint
 
+    def _display_path(self, path: str) -> str:
+        """Return ``path`` without the session and settings-root prefixes."""
+        text = path.removeprefix("<session>.")
+        for prefix in self.adapter.path_prefixes:
+            if text.startswith(prefix):
+                return text[len(prefix) :]
+        return text
+
     def undo(self) -> SetOp:
         """Undo the most recent value write.
 
@@ -844,7 +597,7 @@ class ResilientController:
             op = self.journal.undo(self._inner.set_var)
         self._emit(
             EventKind.UNDO,
-            f"Undid {self._describe_path(op.path)} = {op.new_value!r}; restored "
+            f"Undid {self._display_path(op.path)} = {op.new_value!r}; restored "
             f"{op.old_value!r}.",
             path=op.path,
         )
@@ -862,7 +615,7 @@ class ResilientController:
             op = self.journal.redo(self._inner.set_var)
         self._emit(
             EventKind.REDO,
-            f"Redid {self._describe_path(op.path)} = {op.new_value!r}.",
+            f"Redid {self._display_path(op.path)} = {op.new_value!r}.",
             path=op.path,
         )
         return op

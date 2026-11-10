@@ -48,9 +48,5 @@ class ResilientWarning(UserWarning):
     """Base class for warnings emitted by resilient mode."""
 
 
-class ResilientRecoveryWarning(ResilientWarning):
-    """Resilient mode changed a value or enabled a model to complete a write."""
-
-
 class ResilientFailoverWarning(ResilientWarning):
     """A standby session took over from a session that died."""

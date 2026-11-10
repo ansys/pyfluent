@@ -36,7 +36,6 @@ from ansys.fluent.core.resilient.engine import (
     FailoverError,
     Journal,
     PoolConfig,
-    RecoveryPolicy,
     ResilientConfig,
     ResilientError,
     SetOp,
@@ -112,13 +111,12 @@ def test_journal_truncate():
 
 
 def test_config_validation():
-    assert ResilientConfig(recovery="strict").recovery is RecoveryPolicy.STRICT
-    with pytest.raises(ValueError, match="recovery policy"):
-        ResilientConfig(recovery="sometimes")
     with pytest.raises(ValueError):
         PoolConfig(size=0)
     with pytest.raises(ValueError):
         CheckpointConfig(keep_last=0)
+    with pytest.raises(ValueError, match="journal_max_ops"):
+        ResilientConfig(journal_max_ops=0)
 
 
 # -- checkpoint files --------------------------------------------------------------

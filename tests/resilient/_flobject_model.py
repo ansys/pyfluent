@@ -33,10 +33,7 @@ from pathlib import Path
 
 from _resilient_fakes import FakeErrorState
 
-from ansys.fluent.core.resilient.engine import (
-    ActivationCandidate,
-    ResilientAdapter,
-)
+from ansys.fluent.core.resilient.engine import ResilientAdapter
 from ansys.fluent.core.solver import flobject
 
 
@@ -367,6 +364,3 @@ class ModelAdapter(ResilientAdapter):
 
     def read_checkpoint(self, session, file_path, *, include_data):
         self.settings_root(session).file.read_case(file_name=file_path)
-
-    def activation_candidates(self, session):
-        return (ActivationCandidate("setup.models.energy.enabled", True),)

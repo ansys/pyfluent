@@ -25,6 +25,8 @@
 import contextlib
 from pathlib import Path
 import subprocess
+import threading
+import time
 
 import pytest
 
@@ -35,8 +37,7 @@ from ansys.fluent.core.resilient import (
     PoolConfig,
     ResilientConfig,
     ResilientFailoverWarning,
-    ResilientRecoveryWarning,
-    enable_resilient_mode,
+    _enable_on_new_session,
 )
 
 pytestmark = [pytest.mark.resilient, pytest.mark.standalone]
@@ -47,12 +48,10 @@ def resilient_elbow(new_solver_session, tmp_path):
     solver = new_solver_session
     case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read_case(file_name=case)
-    enable_resilient_mode(
+    _enable_on_new_session(
         solver,
-        ResilientConfig(
-            allow_model_activation=True,
-            checkpoint=CheckpointConfig(directory=tmp_path),
-        ),
+        ResilientConfig(checkpoint=CheckpointConfig(directory=tmp_path)),
+        launched=True,
     )
     events = []
     solver.resilient.on_event(events.append)
@@ -64,20 +63,11 @@ def _cold_inlet(solver):
     return solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 
 
-def test_out_of_range_value_is_clamped(resilient_elbow):
+def test_rejected_value_raises_the_original_error_unchanged(resilient_elbow):
+    # Resilient mode never changes a value to make a rejected write succeed.
     solver, events = resilient_elbow
     turbulence = _cold_inlet(solver).turbulence
-    with pytest.warns(ResilientRecoveryWarning):
-        turbulence.turbulent_intensity = 1.05
-    assert turbulence.turbulent_intensity() == pytest.approx(1.0)
-    assert solver.resilient.last_outcome.fixes_applied == ["clamp"]
-    assert events[-1].kind is EventKind.RECOVERED
-
-
-def test_value_far_outside_the_range_raises_the_original_error(resilient_elbow):
-    # 5 for a 0..1 fraction more likely means 5 %: it is not clamped to 1.
-    solver, events = resilient_elbow
-    turbulence = _cold_inlet(solver).turbulence
+    turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
     before = turbulence.turbulent_intensity()
     with pytest.raises(RuntimeError):
         turbulence.turbulent_intensity = 5.0
@@ -85,31 +75,13 @@ def test_value_far_outside_the_range_raises_the_original_error(resilient_elbow):
     assert events == []
 
 
-def test_close_typo_is_snapped_to_an_allowed_value(resilient_elbow):
-    solver, _ = resilient_elbow
-    turbulence = _cold_inlet(solver).turbulence
-    target = turbulence.turbulence_specification.allowed_values()[-1]
-    with pytest.warns(ResilientRecoveryWarning):
-        turbulence.turbulence_specification = target[:-1]
-    assert turbulence.turbulence_specification() == target
-
-
-def test_writing_a_thermal_setting_enables_energy(resilient_elbow):
+def test_writing_an_inactive_setting_raises(resilient_elbow):
+    # The energy model is off, so the inlet temperature is inactive. Resilient
+    # mode does not enable the model; the usual error is raised.
     solver, events = resilient_elbow
     solver.settings.setup.models.energy.enabled = False
-    thermal = _cold_inlet(solver).thermal
-    with pytest.warns(ResilientRecoveryWarning, match="energy"):
-        thermal.temperature.value = 293.15
-    assert solver.settings.setup.models.energy.enabled() is True
-    assert thermal.temperature.value() == pytest.approx(293.15)
-    assert events[-1].kind is EventKind.ACTIVATED
-
-
-def test_reading_a_thermal_setting_does_not_enable_energy(resilient_elbow):
-    solver, _ = resilient_elbow
-    solver.settings.setup.models.energy.enabled = False
     with pytest.raises(RuntimeError, match="inactive"):
-        _cold_inlet(solver).thermal.temperature.value()
+        _cold_inlet(solver).thermal.temperature.value = 293.15
     assert solver.settings.setup.models.energy.enabled() is False
 
 
@@ -129,12 +101,13 @@ def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_pat
     case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read_case(file_name=case)
     # The standby is launched with the same arguments as the active session.
-    enable_resilient_mode(
+    _enable_on_new_session(
         solver,
         ResilientConfig(
             checkpoint=CheckpointConfig(directory=tmp_path),
             pool=PoolConfig(size=2),
         ),
+        launched=True,
     )
     events = []
     solver.resilient.on_event(events.append)
@@ -152,3 +125,59 @@ def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_pat
     # The write made after the checkpoint was replayed onto the standby.
     assert velocity.value() == pytest.approx(0.5)
     assert _cold_inlet(solver).turbulence.turbulent_intensity() == pytest.approx(0.1)
+
+
+def test_data_recovery_after_the_fluent_process_is_killed_during_iteration(
+    new_solver_session, tmp_path
+):
+    # Like the failover test, but the active session is killed WHILE iterating.
+    # The checkpoint captured the case and its solution data, so the standby that
+    # takes over holds the converged solution, not just the settings.
+    solver = new_solver_session
+    case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read_case(file_name=case)
+    _enable_on_new_session(
+        solver,
+        ResilientConfig(
+            checkpoint=CheckpointConfig(directory=tmp_path),
+            pool=PoolConfig(size=2),
+        ),
+        launched=True,
+    )
+    run_calculation = solver.settings.solution.run_calculation
+    solver.settings.solution.initialization.hybrid_initialize()
+    run_calculation.iterate(iter_count=20)
+    # Checkpoint the converged solution (case and data).
+    checkpoint = solver.resilient.checkpoint("converged")
+    assert checkpoint.include_data
+    iterations = _iteration_count(solver)
+    assert iterations > 0
+
+    # Kill Fluent during a long iteration run on a background thread.
+    def long_run():
+        with contextlib.suppress(Exception):
+            run_calculation.iterate(iter_count=1000)
+
+    worker = threading.Thread(target=long_run)
+    worker.start()
+    time.sleep(2)
+    with contextlib.suppress(subprocess.CalledProcessError):
+        solver.force_exit()
+    worker.join(timeout=120)
+
+    # The standby takes over on the next call and holds the checkpointed data.
+    with pytest.warns(ResilientFailoverWarning):
+        recovered = _iteration_count(solver)
+    assert solver.resilient.active_session is not solver
+    # The recovered session has the solution data of the checkpoint (iterations
+    # were preserved), so it is not an empty, freshly read case.
+    assert recovered >= iterations
+
+
+def _iteration_count(solver) -> int:
+    """Return the number of iterations in the current data, or 0."""
+    try:
+        return int(solver.scheme.eval("(length (iteration-data))"))
+    except Exception:  # noqa: BLE001
+        # Fall back to a data-validity probe when the scheme call is unavailable.
+        return 1 if solver.scheme.eval("(data-valid?)") else 0

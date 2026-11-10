@@ -27,18 +27,16 @@ Resilient mode walkthrough
 This script shows each resilient-mode capability on live Fluent sessions, one
 chapter at a time:
 
-1. Repair of near-miss values, refusal to guess for values far outside the
-   allowed range, and activation of the energy model.
-2. Undo and redo of settings changes.
-3. Checkpoints before solves, and rollback.
-4. Failover to a warm standby after the Fluent process is killed.
-5. Automatic rollback of a diverging transient solve.
+1. Undo and redo of settings changes.
+2. Checkpoints before solves, and rollback.
+3. Failover to a warm standby after the Fluent process is killed.
+4. Automatic rollback of a diverging transient solve.
 
 Run it from a terminal::
 
     python demo_resilient_mode.py [--auto] [--failover] [--no-gui]
 
-``--auto`` runs without pausing between chapters. ``--failover`` adds chapter 4,
+``--auto`` runs without pausing between chapters. ``--failover`` adds chapter 3,
 which launches a second Fluent session as a warm standby. ``--no-gui`` runs Fluent
 without its GUI.
 
@@ -104,11 +102,6 @@ def first_line(error: Exception) -> str:
     return lines[0] if lines else type(error).__name__
 
 
-def intensity(value: float) -> str:
-    """Format a turbulent intensity, which the Fluent GUI shows in percent."""
-    return f"{value:g} ({value * 100:g} % in the Fluent GUI)"
-
-
 def show_event(event) -> None:
     """Print a resilient-mode event, wrapped, with short checkpoint file names."""
     message = event.message
@@ -136,16 +129,14 @@ def show_event(event) -> None:
 
 
 def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
-    """Run chapters 1 to 4 on the mixing elbow."""
-    solver = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.SOLVER,
+    """Run chapters 1 to 3 on the mixing elbow."""
+    solver = pyfluent.Solver.from_install(
         precision=pyfluent.Precision.DOUBLE,
         processor_count=2,
         ui_mode=ui_mode,
         start_transcript=False,
         resilient_mode=True,
         resilient_config=ResilientConfig(
-            allow_model_activation=True,
             pool=PoolConfig(size=2 if failover else 1),
         ),
     )
@@ -156,39 +147,9 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
         setup = solver.settings.setup
         cold_inlet = setup.boundary_conditions.velocity_inlet["cold-inlet"]
         hot_inlet = setup.boundary_conditions.velocity_inlet["hot-inlet"]
-
-        chapter(1, "Repair of rejected values", auto)
-        step("Write the cold-inlet temperature while the energy model is off.")
-        setup.models.energy.enabled = False
-        show("energy model enabled", setup.models.energy.enabled())
-        cold_inlet.thermal.temperature.value = 293.15
-        show("energy model enabled", setup.models.energy.enabled())
-        show("cold-inlet temperature", cold_inlet.thermal.temperature.value())
-
         turbulence = cold_inlet.turbulence
-        turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-        step(
-            "Write a turbulent intensity of 1.05, just above the allowed maximum of 1."
-        )
-        turbulence.turbulent_intensity = 1.05
-        show("turbulent intensity", intensity(turbulence.turbulent_intensity()))
 
-        step(
-            "Write a turbulent intensity of 5, which probably means 5 %. That is far "
-            "outside the range, so resilient mode does not guess: Fluent's error is "
-            "raised unchanged and the value stays as it was."
-        )
-        try:
-            turbulence.turbulent_intensity = 5
-        except RuntimeError as error:
-            show("Fluent error", first_line(error))
-        show("turbulent intensity", intensity(turbulence.turbulent_intensity()))
-
-        step("Write the hot-inlet specification with '&' instead of 'and'.")
-        hot_inlet.turbulence.turbulence_specification = "Intensity & Hydraulic Diameter"
-        show("specification", hot_inlet.turbulence.turbulence_specification())
-
-        chapter(2, "Undo and redo", auto)
+        chapter(1, "Undo and redo", auto)
         # Newer Fluent versions name the viscous model "turbulence".
         models = setup.models
         viscous = (
@@ -205,22 +166,21 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
         solver.resilient.undo()
         show("after a second undo", viscous.model())
 
-        chapter(3, "Checkpoints and rollback", auto)
+        chapter(2, "Checkpoints and rollback", auto)
         step(
             "Set the inlet conditions for the solve: 0.4 m/s and 5 % turbulent "
             "intensity at the cold inlet, 1.2 m/s and 313.15 K at the hot inlet. "
             "The settings API takes the intensity as a fraction, so 5 % is 0.05."
         )
+        turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
         cold_inlet.momentum.velocity_magnitude.value = 0.4
         turbulence.turbulent_intensity = 0.05
         turbulence.hydraulic_diameter = "4 [in]"
         hot_inlet.momentum.velocity_magnitude.value = 1.2
-        hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
-        hot_inlet.thermal.temperature.value = 313.15
-        show(
-            "cold-inlet turbulent intensity",
-            intensity(turbulence.turbulent_intensity()),
+        hot_inlet.turbulence.turbulence_specification = (
+            "Intensity and Hydraulic Diameter"
         )
+        hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
         run_calculation = solver.settings.solution.run_calculation
         solver.settings.solution.initialization.hybrid_initialize()
         step("Write a checkpoint named 'initialized'.")
@@ -239,7 +199,7 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
         show("cold-inlet velocity", cold_inlet.momentum.velocity_magnitude.value())
 
         if failover:
-            chapter(4, "Failover to a warm standby", auto)
+            chapter(3, "Failover to a warm standby", auto)
             step("Write a checkpoint, then change the cold-inlet velocity to 0.5.")
             solver.resilient.checkpoint("before-crash")
             cold_inlet.momentum.velocity_magnitude.value = 0.5
@@ -365,10 +325,9 @@ def setup_solidification(solver) -> None:
 
 
 def solidification(ui_mode: str, auto: bool) -> None:
-    """Run chapter 5 on the solidification case."""
-    chapter(5, "Automatic rollback of a diverging solve", auto)
-    solver = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.SOLVER,
+    """Run chapter 4 on the solidification case."""
+    chapter(4, "Automatic rollback of a diverging solve", auto)
+    solver = pyfluent.Solver.from_install(
         precision=pyfluent.Precision.DOUBLE,
         dimension=pyfluent.Dimension.TWO,
         ui_mode=ui_mode,
