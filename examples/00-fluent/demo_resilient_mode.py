@@ -144,84 +144,101 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
     try:
         mesh = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
         solver.settings.file.read_mesh(file_name=mesh)
-        setup = solver.settings.setup
-        cold_inlet = setup.boundary_conditions.velocity_inlet["cold-inlet"]
-        hot_inlet = setup.boundary_conditions.velocity_inlet["hot-inlet"]
-        turbulence = cold_inlet.turbulence
+        # Built-in solver objects:
+        viscous = pyfluent.solver.Viscous(settings_source=solver)
+        energy = pyfluent.solver.Energy(settings_source=solver)
+        cold_inlet = pyfluent.solver.VelocityInlet(
+            settings_source=solver, name="cold-inlet"
+        )
+        hot_inlet = pyfluent.solver.VelocityInlet(
+            settings_source=solver, name="hot-inlet"
+        )
+        initialization = pyfluent.solver.Initialization(settings_source=solver)
+        run_calculation = pyfluent.solver.RunCalculation(settings_source=solver)
+        # Aliasing reused objects:
+        cold_turbulence = cold_inlet.turbulence
+        hot_turbulence = hot_inlet.turbulence
+        cold_velocity = cold_inlet.momentum.velocity_magnitude
+        hot_velocity = hot_inlet.momentum.velocity_magnitude
+        resilient = solver.resilient
 
         chapter(1, "Undo and redo", auto)
-        # Newer Fluent versions name the viscous model "turbulence".
-        models = setup.models
-        viscous = (
-            models.turbulence if "turbulence" in models.child_names else models.viscous
-        )
         step("Switch the viscous model to laminar, then undo, redo and undo again.")
         show("viscous model", viscous.model())
         viscous.model = "laminar"
         show("viscous model", viscous.model())
-        solver.resilient.undo()
+        resilient.undo()
         show("after undo", viscous.model())
-        solver.resilient.redo()
+        resilient.redo()
         show("after redo", viscous.model())
-        solver.resilient.undo()
+        resilient.undo()
         show("after a second undo", viscous.model())
 
         chapter(2, "Checkpoints and rollback", auto)
         step(
-            "Set the inlet conditions for the solve: 0.4 m/s and 5 % turbulent "
-            "intensity at the cold inlet, 1.2 m/s and 313.15 K at the hot inlet. "
-            "The settings API takes the intensity as a fraction, so 5 % is 0.05."
+            "Enable the energy model and set the inlet conditions for the solve: "
+            "0.4 m/s, 5 % turbulent intensity and 293.15 K at the cold inlet, "
+            "1.2 m/s and 313.15 K at the hot inlet. The settings API takes the "
+            "turbulent intensity as a fraction, so 5 % is 0.05."
         )
-        turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-        cold_inlet.momentum.velocity_magnitude.value = 0.4
-        turbulence.turbulent_intensity = 0.05
-        turbulence.hydraulic_diameter = "4 [in]"
-        hot_inlet.momentum.velocity_magnitude.value = 1.2
-        hot_inlet.turbulence.turbulence_specification = (
-            "Intensity and Hydraulic Diameter"
+        energy.enabled = True
+        cold_velocity.value = 0.4
+        cold_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+        cold_turbulence.turbulent_intensity = 0.05
+        cold_turbulence.hydraulic_diameter = "4 [in]"
+        cold_inlet.thermal.temperature.value = 293.15
+        hot_velocity.value = 1.2
+        hot_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+        hot_turbulence.hydraulic_diameter = "1 [in]"
+        hot_inlet.thermal.temperature.value = 313.15
+        show(
+            "cold inlet",
+            f"{cold_velocity.value():g} m/s, turbulent intensity "
+            f"{cold_turbulence.turbulent_intensity():g}, "
+            f"{cold_inlet.thermal.temperature.value():g} K",
         )
-        hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
-        run_calculation = solver.settings.solution.run_calculation
-        solver.settings.solution.initialization.hybrid_initialize()
+        show(
+            "hot inlet",
+            f"{hot_velocity.value():g} m/s, "
+            f"{hot_inlet.thermal.temperature.value():g} K",
+        )
+        initialization.hybrid_initialize()
         step("Write a checkpoint named 'initialized'.")
-        checkpoint = solver.resilient.checkpoint("initialized")
+        checkpoint = resilient.checkpoint("initialized")
         show("checkpoint folder", os.path.dirname(checkpoint.path))
         step(
             "Change the cold-inlet velocity to 0.6 and iterate. Iterating cannot be "
             "undone, so resilient mode writes a checkpoint first."
         )
-        cold_inlet.momentum.velocity_magnitude.value = 0.6
+        cold_velocity.value = 0.6
         run_calculation.iterate(iter_count=20)
-        show("checkpoints", [c.name for c in solver.resilient.checkpoints])
+        show("checkpoints", [c.name for c in resilient.checkpoints])
         step("Roll back to 'initialized'.")
-        solver.resilient.rollback("initialized")
-        show("checkpoints", [c.name for c in solver.resilient.checkpoints])
-        show("cold-inlet velocity", cold_inlet.momentum.velocity_magnitude.value())
+        resilient.rollback("initialized")
+        show("checkpoints", [c.name for c in resilient.checkpoints])
+        show("cold-inlet velocity", cold_velocity.value())
 
         if failover:
             chapter(3, "Failover to a warm standby", auto)
             step("Write a checkpoint, then change the cold-inlet velocity to 0.5.")
-            solver.resilient.checkpoint("before-crash")
-            cold_inlet.momentum.velocity_magnitude.value = 0.5
+            resilient.checkpoint("before-crash")
+            cold_velocity.value = 0.5
             step("Kill the Fluent process of the active session.")
             # On Windows, Fluent's cleanup script can report a failure even though
             # it killed Fluent.
             with contextlib.suppress(subprocess.CalledProcessError):
                 solver.force_exit()
             step("Change the hot-inlet velocity on the session that was just killed.")
-            hot_inlet.momentum.velocity_magnitude.value = 1.0
-            standby = solver.resilient.active_session
+            hot_velocity.value = 1.0
+            standby = resilient.active_session
             show("served by another Fluent session", standby is not solver)
-            show(
-                "cold-inlet velocity (replayed)",
-                cold_inlet.momentum.velocity_magnitude.value(),
-            )
-            show("hot-inlet velocity", hot_inlet.momentum.velocity_magnitude.value())
+            show("cold-inlet velocity (replayed)", cold_velocity.value())
+            show("hot-inlet velocity", hot_velocity.value())
             step("Iterate on the standby.")
             run_calculation.iterate(iter_count=10)
         step("Summary of this resilient session.")
-        show("checkpoints", len(solver.resilient.checkpoints))
-        show("journaled operations", len(solver.resilient.journal))
+        show("checkpoints", len(resilient.checkpoints))
+        show("journaled operations", len(resilient.journal))
     finally:
         solver.exit()
 
@@ -234,16 +251,28 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
 def setup_solidification(solver) -> None:
     """Set up the solidification case and solve the steady conduction problem."""
     mesh = examples.download_file("solid.msh", "pyfluent/solidification")
-    settings = solver.settings
-    settings.file.read_mesh(file_name=mesh)
-    general = settings.setup.general
+    solver.settings.file.read_mesh(file_name=mesh)
+    # Built-in solver objects:
+    general = pyfluent.solver.General(settings_source=solver)
+    viscous = pyfluent.solver.Viscous(settings_source=solver)
+    materials = pyfluent.solver.Materials(settings_source=solver)
+    fluid = pyfluent.solver.FluidCellZone(settings_source=solver, name="fluid")
+    inlet = pyfluent.solver.VelocityInlet(settings_source=solver, name="inlet")
+    outlet = pyfluent.solver.VelocityInlet(settings_source=solver, name="outlet")
+    methods = pyfluent.solver.Methods(settings_source=solver)
+    controls = pyfluent.solver.Controls(settings_source=solver)
+    initialization = pyfluent.solver.Initialization(settings_source=solver)
+    results = pyfluent.solver.Results(settings_source=solver)
+    run_calculation = pyfluent.solver.RunCalculation(settings_source=solver)
+    # Aliasing reused objects:
+    outlet_momentum = outlet.momentum
+
     general.solver.two_dim_space = "swirl"
     general.operating_conditions.gravity = {"enable": True, "components": [-9.81]}
-    settings.setup.models.viscous.model = "laminar"
+    viscous.model = "laminar"
     solver.tui.define.models.solidification_melting(
         "yes", "constant", "100000", "yes", "no"
     )
-    materials = settings.setup.materials
     materials.database.copy_by_name(type="fluid", name="air", new_name="liquid-metal")
     materials.fluid["liquid-metal"] = {
         "density": {
@@ -257,52 +286,48 @@ def setup_solidification(solver) -> None:
         "tsolidus": {"value": 1150.0},
         "tliqidus": {"value": 1150.0},
     }
-    settings.setup.cell_zone_conditions.fluid["fluid"] = {
-        "general": {"material": "liquid-metal"}
-    }
-    conditions = settings.setup.boundary_conditions
-    inlet = conditions.velocity_inlet["inlet"]
+    fluid.general.material = "liquid-metal"
     inlet.momentum.velocity_magnitude.value = 0.00101
     inlet.thermal.temperature.value = 1300
-    outlet = conditions.velocity_inlet["outlet"]
-    outlet.momentum.velocity_specification_method = "Components"
-    outlet.momentum.swirl_angular_velocity = 1
-    outlet.momentum.velocity_components = [0.001, 0, 0]
+    outlet_momentum.velocity_specification_method = "Components"
+    outlet_momentum.swirl_angular_velocity = 1
+    outlet_momentum.velocity_components = [0.001, 0, 0]
     outlet.thermal.temperature.value = 500
-    conditions.wall["bottom-wall"] = {
-        "thermal": {"thermal_condition": "Temperature", "temperature": 1300}
-    }
-    conditions.wall["free-surface"] = {
-        "momentum": {
-            "shear_condition": "Marangoni Stress",
-            "surface_tension_gradient": -0.00036,
+    walls = {
+        "bottom-wall": {
+            "thermal": {"thermal_condition": "Temperature", "temperature": 1300}
         },
-        "thermal": {
-            "thermal_condition": "Convection",
-            "free_stream_temp": 1500,
-            "heat_transfer_coeff": 100,
+        "free-surface": {
+            "momentum": {
+                "shear_condition": "Marangoni Stress",
+                "surface_tension_gradient": -0.00036,
+            },
+            "thermal": {
+                "thermal_condition": "Convection",
+                "free_stream_temp": 1500,
+                "heat_transfer_coeff": 100,
+            },
+        },
+        "side-wall": {
+            "thermal": {"thermal_condition": "Temperature", "temperature": 1400}
+        },
+        "solid-wall": {
+            "momentum": {
+                "wall_motion": "Moving Wall",
+                "velocity_spec": "Rotational",
+                "rotation_speed": 1,
+            },
+            "thermal": {"thermal_condition": "Temperature", "temperature": 500},
         },
     }
-    conditions.wall["side-wall"] = {
-        "thermal": {"thermal_condition": "Temperature", "temperature": 1400}
-    }
-    conditions.wall["solid-wall"] = {
-        "momentum": {
-            "wall_motion": "Moving Wall",
-            "velocity_spec": "Rotational",
-            "rotation_speed": 1,
-        },
-        "thermal": {"thermal_condition": "Temperature", "temperature": 500},
-    }
-    methods = settings.solution.methods
+    for name, state in walls.items():
+        pyfluent.solver.WallBoundary(settings_source=solver, name=name).set_state(state)
     methods.p_v_coupling.flow_scheme = "Coupled"
     methods.spatial_discretization.discretization_scheme = {"pressure": "presto!"}
     methods.pseudo_time_method.formulation = {"coupled_solver": "global-time-step"}
-    controls = settings.solution.controls
     controls.equations = {"flow": False, "w-swirl": False}
-    initialization = settings.solution.initialization
     initialization.hybrid_initialize()
-    settings.results.custom_field_functions.create(
+    results.custom_field_functions.create(
         name="omegar", custom_field_function="1 * radial_coordinate"
     )
     for variable, value in (("x-pull-velocity", 0.001), ("z-pull-velocity", None)):
@@ -316,7 +341,6 @@ def setup_solidification(solver) -> None:
         if value is not None:
             patch["value"] = value
         initialization.patch.calculate_patch(**patch)
-    run_calculation = settings.solution.run_calculation
     run_calculation.pseudo_time_settings.time_step_method = {
         "time_step_method": "user-specified",
         "auto_time_size_calc_solid_zone": False,
@@ -338,12 +362,16 @@ def solidification(ui_mode: str, auto: bool) -> None:
     try:
         step("Set up the solidification case and solve the steady state.")
         setup_solidification(solver)
-        settings = solver.settings
-        settings.setup.general.solver.time = "unsteady-1st-order"
-        controls = settings.solution.controls
+        # Built-in solver objects:
+        general = pyfluent.solver.General(settings_source=solver)
+        controls = pyfluent.solver.Controls(settings_source=solver)
+        run_calculation = pyfluent.solver.RunCalculation(settings_source=solver)
+        # Aliasing reused objects:
+        transient_controls = run_calculation.transient_controls
+
+        general.solver.time = "unsteady-1st-order"
         controls.equations = {"flow": True, "w-swirl": True}
         controls.under_relaxation = {"delh": 0.1}
-        transient_controls = settings.solution.run_calculation.transient_controls
         transient_controls.time_step_size = 0.1
         transient_controls.time_step_count = 50
 
@@ -352,7 +380,7 @@ def solidification(ui_mode: str, auto: bool) -> None:
             "the solve diverges; resilient mode wrote a checkpoint before it."
         )
         try:
-            settings.solution.run_calculation.calculate()
+            run_calculation.calculate()
         except RuntimeError as error:
             show("Fluent error", first_line(error))
             show("rolled back", solver.resilient.last_outcome.rolled_back)
@@ -360,7 +388,7 @@ def solidification(ui_mode: str, auto: bool) -> None:
             controls.under_relaxation = {"delh": 0.02}
             transient_controls.time_step_size = 0.001
             transient_controls.time_step_count = 5
-            settings.solution.run_calculation.calculate()
+            run_calculation.calculate()
             show("retry", "completed")
         else:
             show("retry", "not needed; the solve did not diverge this time")
