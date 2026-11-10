@@ -163,7 +163,7 @@ class ResilientSession:
         standbys = len(pool.standbys) if pool is not None else 0
         return (
             f"<ResilientSession product={controller.adapter.product_name!r} "
-            f"enabled={controller.enabled} recovery={controller.config.recovery.value!r} "
+            f"enabled={controller.enabled} "
             f"standbys={standbys} checkpoints={len(controller.store.checkpoints)} "
             f"journal={len(controller.journal)}>"
         )
