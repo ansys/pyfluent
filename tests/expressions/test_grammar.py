@@ -13,7 +13,7 @@ from ansys.fluent.core.offline.expressions import (
     ExpressionBuildError,
     Weight,
 )
-from ansys.units import VariableCatalog as V
+from ansys.variable_descriptor import VariableCatalog as V
 
 
 @pytest.fixture

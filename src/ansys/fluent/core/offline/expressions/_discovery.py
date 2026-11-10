@@ -8,7 +8,7 @@ attached, accessors still work but simply return empty lists /
 conservative ``is_allowed`` answers.
 
 :class:`FluentDiscovery` implements the generic
-:class:`~._generic.Discovery` protocol. Three concerns are served:
+:class:`ansys.expressions.Discovery` protocol. Three concerns are served:
 
 * **Surfaces** (locations): live surface list from ``field_info`` when
   available, otherwise a walk of the settings tree.
@@ -23,7 +23,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from ansys.units.variable_descriptor import VariableDescriptor
+from ansys.variable_descriptor import VariableDescriptor
 
 from ._fluent import FLUENT_DIALECT
 

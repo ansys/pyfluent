@@ -50,7 +50,7 @@ Here's how to set up a simple example:
 .. code-block:: python
 
   >>> from ansys.fluent.core.solver import VelocityInlets
-  >>> from ansys.units import VariableCatalog
+  >>> from ansys.variable_descriptor import VariableCatalog
   >>> # Compute the minimum of absolute pressure across multiple solvers
   >>> reduction.minimum(
     ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,

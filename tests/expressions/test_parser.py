@@ -5,14 +5,7 @@
 
 import pytest
 
-from ansys.fluent.core.offline.expressions import (
-    ExpressionBuilder,
-    ExpressionBuildError,
-    Kind,
-    Weight,
-    parse,
-)
-from ansys.fluent.core.offline.expressions._generic import (
+from ansys.expressions import (
     BinOp,
     Call,
     Compare,
@@ -24,7 +17,14 @@ from ansys.fluent.core.offline.expressions._generic import (
     UnaryOp,
     Variable,
 )
-from ansys.units import VariableCatalog as V
+from ansys.fluent.core.offline.expressions import (
+    ExpressionBuilder,
+    ExpressionBuildError,
+    Kind,
+    Weight,
+    parse,
+)
+from ansys.variable_descriptor import VariableCatalog as V
 
 
 @pytest.fixture

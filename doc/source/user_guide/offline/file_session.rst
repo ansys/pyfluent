@@ -31,7 +31,7 @@ Single-phase
   >>>   SurfaceFieldDataRequest,
   >>>   VectorFieldDataRequest,
   >>> )
-  >>> from ansys.units import VariableCatalog
+  >>> from ansys.variable_descriptor import VariableCatalog
 
   >>> case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
   >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")

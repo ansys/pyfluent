@@ -12,7 +12,7 @@ from ansys.fluent.core.offline.expressions import (
     ExpressionBuilder,
     ExpressionBuildError,
 )
-from ansys.units import VariableCatalog as V
+from ansys.variable_descriptor import VariableCatalog as V
 
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def test_variable_maps_via_naming_strategy(b):
 
 
 def test_variable_unmapped_raises():
-    from ansys.fluent.core.offline.expressions._generic import Variable
+    from ansys.expressions import Variable
 
     # Fabricate a descriptor unknown to FluentExprNamingStrategy.
     class _Fake:

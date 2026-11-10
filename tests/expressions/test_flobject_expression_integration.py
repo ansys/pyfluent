@@ -38,7 +38,7 @@ from ansys.fluent.core.solver.flobject import (
     _render_settings_expression_list,
     _settings_expression_to_scheme,
 )
-from ansys.units import VariableCatalog as V
+from ansys.variable_descriptor import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
 # Test doubles                                                                #

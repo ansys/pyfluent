@@ -25,7 +25,7 @@
 Provides a ConversionStrategy for mapping VariableDescriptor to Fluent's SVAR names.
 """
 
-from ansys.units.variable_descriptor import (
+from ansys.variable_descriptor import (
     MappingConversionStrategy,
     VariableCatalog,
 )

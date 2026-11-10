@@ -26,7 +26,7 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.units.variable_descriptor import VariableCatalog
+from ansys.variable_descriptor import VariableCatalog
 
 
 def test_solution_variables(new_solver_session):

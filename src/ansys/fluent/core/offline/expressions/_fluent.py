@@ -23,9 +23,8 @@ from __future__ import annotations
 
 from enum import Enum
 
+from ansys.expressions import Dialect, FunctionRegistry, Kind, Param, Signature
 from ansys.fluent.core._variable_strategies import FluentExprNamingStrategy
-
-from ._generic import Dialect, FunctionRegistry, Kind, Param, Signature
 
 # --------------------------------------------------------------------------- #
 # Weighting options (for Sum's ``Weight=`` keyword argument)                  #

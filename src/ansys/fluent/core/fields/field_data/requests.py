@@ -33,7 +33,7 @@ from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     _validate_scalar_variable_descriptor,
     _validate_vector_variable_descriptor,
 )
-from ansys.units.variable_descriptor import (
+from ansys.variable_descriptor import (
     ScalarVariableDescriptor,
     VectorVariableDescriptor,
 )

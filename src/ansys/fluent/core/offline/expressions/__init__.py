@@ -7,10 +7,10 @@ A high-level, object-based API for constructing Fluent expression strings
 (e.g. ``AreaAve(AbsolutePressure,['velocity-inlet-5'])``) without hand-writing
 them.
 
-The package is split into:
+The product-agnostic expression trees, parser, and builder come from the
+``ansys.expressions`` package (``ansys-units`` distribution). This package
+adds the Fluent-specific parts:
 
-* :mod:`._generic`   -- product-agnostic expression trees, parser, and builder.
-  It must not import anything Fluent-specific.
 * :mod:`._fluent`    -- the Fluent dialect: variable naming and the catalog of
   Fluent expression functions.
 * :mod:`._discovery` -- discovery backed by a live PyFluent session.
@@ -19,7 +19,7 @@ The package is split into:
 Typical use::
 
     from ansys.fluent.core.offline.expressions import ExpressionBuilder
-    from ansys.units import VariableCatalog as V
+    from ansys.variable_descriptor import VariableCatalog as V
 
     builder = ExpressionBuilder(settings=solver.settings)
 
@@ -39,8 +39,7 @@ Typical use::
     solver.setup.named_expressions["dp"].definition = dp
 """
 
-from ._fluent import FLUENT_DIALECT, Weight  # noqa: F401
-from ._generic import (  # noqa: F401
+from ansys.expressions import (  # noqa: F401
     BooleanExpr,
     Expr,
     ExpressionBuildError,
@@ -50,4 +49,6 @@ from ._generic import (  # noqa: F401
     ScalarExpr,
     VectorExpr,
 )
+
+from ._fluent import FLUENT_DIALECT, Weight  # noqa: F401
 from .builder import ExpressionBuilder, make_call, parse  # noqa: F401

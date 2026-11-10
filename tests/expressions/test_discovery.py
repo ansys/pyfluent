@@ -11,7 +11,7 @@ No live Fluent session required.
 import pytest
 
 from ansys.fluent.core.offline.expressions import ExpressionBuilder
-from ansys.units import VariableCatalog as V
+from ansys.variable_descriptor import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
 # Fakes                                                                       #

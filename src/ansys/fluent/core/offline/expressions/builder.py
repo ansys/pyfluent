@@ -4,7 +4,7 @@
 """Fluent expression builder.
 
 :class:`ExpressionBuilder` is the generic
-:class:`~._generic.ExpressionBuilder` bound to the Fluent dialect, with
+:class:`ansys.expressions.ExpressionBuilder` bound to the Fluent dialect, with
 discovery backed by a live PyFluent session.
 """
 
@@ -12,13 +12,14 @@ from __future__ import annotations
 
 from typing import Any
 
+from ansys.expressions import Call, Expr
+from ansys.expressions import ExpressionBuilder as _GenericExpressionBuilder
+from ansys.expressions import Kind
+from ansys.expressions import make_call as _make_call
+from ansys.expressions import parse as _parse
+
 from ._discovery import FluentDiscovery
 from ._fluent import FLUENT_DIALECT
-from ._generic import Call, Expr
-from ._generic import ExpressionBuilder as _GenericExpressionBuilder
-from ._generic import Kind
-from ._generic import make_call as _make_call
-from ._generic import parse as _parse
 
 
 class ExpressionBuilder(_GenericExpressionBuilder):

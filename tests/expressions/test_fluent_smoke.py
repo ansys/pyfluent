@@ -15,7 +15,7 @@ from typing import Any
 import pytest
 
 from ansys.fluent.core.offline.expressions import ExpressionBuilder, parse
-from ansys.units import VariableCatalog as V
+from ansys.variable_descriptor import VariableCatalog as V
 
 
 @pytest.mark.fluent_version(">=25.1")
