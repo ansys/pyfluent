@@ -498,8 +498,11 @@ Generate surface mesh
 
 .. code:: python
 
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
     generate_surface_mesh = two_dim_mesh.generate_initial_surface_mesh
     mesh_preferences = two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences
+    mesh_preferences.show_advanced_options = True
     mesh_preferences.merge_edge_zones_based_on_labels = False
     mesh_preferences.merge_face_zones_based_on_labels = False
     generate_surface_mesh()
@@ -512,6 +515,10 @@ Generate surface mesh
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
+
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
+    mesh_preferences.show_advanced_options = True
     mesh_preferences.merge_edge_zones_based_on_labels = False
     mesh_preferences.merge_face_zones_based_on_labels = False
     generate_surface_mesh()
