@@ -9,6 +9,172 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.44.0 <https://github.com/ansys/pyfluent/releases/tag/v0.44.0>`_ - November 11, 2026
+======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add the `ansys.framework` platform namespace stub for the componentization of PyFluent (EPIC #4618), plus report-only import-linter contracts encoding the target layer and dependency rules and an optional `grpc` install extra.
+          - `#4618 <https://github.com/ansys/pyfluent/pull/4618>`_
+
+        * - Support the use of expression builder objects in settings parameter.
+          - `#5546 <https://github.com/ansys/pyfluent/pull/5546>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Slurm timeout update
+          - `#5443 <https://github.com/ansys/pyfluent/pull/5443>`_
+
+        * - Update settings test w.r.t. latest Fluent image.
+          - `#5496 <https://github.com/ansys/pyfluent/pull/5496>`_
+
+        * - Clean workspace of container
+          - `#5499 <https://github.com/ansys/pyfluent/pull/5499>`_
+
+        * - 'wait_process_finished' for standalone launcher.
+          - `#5531 <https://github.com/ansys/pyfluent/pull/5531>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Expression builder
+          - `#5498 <https://github.com/ansys/pyfluent/pull/5498>`_
+
+        * - Offline expression
+          - `#5508 <https://github.com/ansys/pyfluent/pull/5508>`_
+
+        * - Minor improvements in examples.
+          - `#5532 <https://github.com/ansys/pyfluent/pull/5532>`_
+
+        * - Update landing pages of API Reference and Solver.
+          - `#5534 <https://github.com/ansys/pyfluent/pull/5534>`_
+
+        * - Update meshing workflow user guide structure.
+          - `#5538 <https://github.com/ansys/pyfluent/pull/5538>`_
+
+        * - Update named object access in API Reference.
+          - `#5543 <https://github.com/ansys/pyfluent/pull/5543>`_
+
+        * - Update meshing user guide.
+          - `#5578 <https://github.com/ansys/pyfluent/pull/5578>`_
+
+        * - Fix Vale 3.25.1 errors
+          - `#5586 <https://github.com/ansys/pyfluent/pull/5586>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version to v0.44.dev0
+          - `#5495 <https://github.com/ansys/pyfluent/pull/5495>`_
+
+        * - Bump the dependencies group with 3 updates
+          - `#5549 <https://github.com/ansys/pyfluent/pull/5549>`_
+
+        * - Bump the actions group with 17 updates
+          - `#5550 <https://github.com/ansys/pyfluent/pull/5550>`_
+
+        * - Bump pytest from 9.1.1 to 9.2.0 in the dependencies group
+          - `#5558 <https://github.com/ansys/pyfluent/pull/5558>`_
+
+        * - Update flit requirement from >=4.1.0 to >=4.2.0
+          - `#5559 <https://github.com/ansys/pyfluent/pull/5559>`_
+
+        * - Bump the actions group with 10 updates
+          - `#5560 <https://github.com/ansys/pyfluent/pull/5560>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ci.yml to resolve logical inconsistencies.
+          - `#5479 <https://github.com/ansys/pyfluent/pull/5479>`_
+
+        * - Update CHANGELOG for v0.43.0
+          - `#5490 <https://github.com/ansys/pyfluent/pull/5490>`_
+
+        * - Fix release job using twine>7.
+          - `#5492 <https://github.com/ansys/pyfluent/pull/5492>`_
+
+        * - Update CHANGELOG for v0.41.3
+          - `#5535 <https://github.com/ansys/pyfluent/pull/5535>`_
+
+        * - Add dependabot pre-commit configuration
+          - `#5554 <https://github.com/ansys/pyfluent/pull/5554>`_
+
+        * - Bump the pre-commit-hooks group with 8 updates
+          - `#5557 <https://github.com/ansys/pyfluent/pull/5557>`_
+
+        * - Drop support for Python 3.10 and 3.11
+          - `#5561 <https://github.com/ansys/pyfluent/pull/5561>`_
+
+        * - Add migration workflow for forked PRs.
+          - `#5566 <https://github.com/ansys/pyfluent/pull/5566>`_
+
+        * - Migrate fork PR 5482
+          - `#5570 <https://github.com/ansys/pyfluent/pull/5570>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - 100% typehints
+          - `#5442 <https://github.com/ansys/pyfluent/pull/5442>`_
+
+        * - 'transfer_case' and simplify it's documentation.
+          - `#5536 <https://github.com/ansys/pyfluent/pull/5536>`_
+
+        * - Field data to use new VariableCatalog integrations.
+          - `#5537 <https://github.com/ansys/pyfluent/pull/5537>`_
+
+        * - Report only import linter contracts.
+          - `#5551 <https://github.com/ansys/pyfluent/pull/5551>`_
+
+        * - Update w.r.t. latest PyAnsys units.
+          - `#5568 <https://github.com/ansys/pyfluent/pull/5568>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add public API snapshot tests for the componentization effort (EPIC #4618): the `launch_fluent` signature, the backward-compatibility `sys.modules` aliases, the public session class import paths, and availability of key builtin solver settings classes.
+          - `#4618 <https://github.com/ansys/pyfluent/pull/4618>`_
+
+        * - Updated the test
+          - `#5533 <https://github.com/ansys/pyfluent/pull/5533>`_
+
+        * - Updated the httpsolver
+          - `#5544 <https://github.com/ansys/pyfluent/pull/5544>`_
+
+
 `0.41.3 <https://github.com/ansys/pyfluent/releases/tag/v0.41.3>`_ - October 26, 2026
 =====================================================================================
 
