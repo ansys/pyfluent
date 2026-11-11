@@ -8,7 +8,7 @@ A high-level, object-based API for constructing Fluent expression strings
 them.
 
 The product-agnostic expression trees, parser, and builder come from the
-``ansys.expressions`` package (``ansys-units`` distribution). This package
+``ansys.expressions`` package (``ansys-expressions`` distribution). This package
 adds the Fluent-specific parts:
 
 * :mod:`._fluent`    -- the Fluent dialect: variable naming and the catalog of

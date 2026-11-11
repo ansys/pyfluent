@@ -4,7 +4,7 @@
 Working with physical variables
 ===============================
 
-PyFluent integrates with the PyAnsys-units library, which provides a shared catalog of variable objects based on physical quantities like temperature, pressure, and velocity. These variable objects, or VariableDescriptors, can be used throughout PyFluent to reference fields and quantities in a clear, consistent, and reliable way.
+PyFluent integrates with the ``ansys-variable-descriptors`` library, which provides a shared catalog of variable objects based on physical quantities like temperature, pressure, and velocity. These variable objects, or VariableDescriptors, can be used throughout PyFluent to reference fields and quantities in a clear, consistent, and reliable way.
 
 Instead of relying on raw strings like ``"temperature"`` or ``"SV_T"``, which may vary between Fluent interfaces or be hard to interpret, you can use named descriptors from the catalog. This improves code readability, reduces the chance of errors, and makes it easier to work across different APIs.
 
@@ -76,4 +76,5 @@ Notes
 
 - All quantities used via ``VariableCatalog`` map to their correct Fluent field identifiers internally.
 - These objects can be validated against their expected dimensional types.
-- ``VariableCatalog`` is part of ``ansys-units``, which is automatically installed with PyFluent.
+- ``VariableCatalog`` is provided by the ``ansys.variable_descriptor`` package (``ansys-variable-descriptors``
+  distribution), which is automatically installed with PyFluent.
