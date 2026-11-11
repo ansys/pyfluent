@@ -161,6 +161,23 @@ jobs:
           name: generated-api-files
           path: src/ansys/fluent/core/generated
 
+      # Temporary until ansys-variable-descriptors and ansys-expressions are released.
+      # Uses job-scoped GIT_CONFIG_* env vars (not ``git config --global``) so the
+      # token is not persisted in ~/.gitconfig on self-hosted runners.
+      - &allow-private-deps
+        name: Allow pip to clone private variable-descriptors and expressions
+        shell: bash
+        env:
+          DEPS_TOKEN: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+        run: |
+          {
+            echo "GIT_CONFIG_COUNT=2"
+            echo "GIT_CONFIG_KEY_0=url.https://x-access-token:${DEPS_TOKEN}@github.com/ansys/variable-descriptors.insteadOf"
+            echo "GIT_CONFIG_VALUE_0=https://github.com/ansys/variable-descriptors"
+            echo "GIT_CONFIG_KEY_1=url.https://x-access-token:${DEPS_TOKEN}@github.com/ansys/expressions.insteadOf"
+            echo "GIT_CONFIG_VALUE_1=https://github.com/ansys/expressions"
+          } >> "$GITHUB_ENV"
+
       - name: Install package and import-linter
         shell: bash
         run: |
@@ -203,6 +220,8 @@ jobs:
           name: generated-api-files
           path: src/ansys/fluent/core/generated
 
+      - *allow-private-deps
+
       - name: Build wheelhouse and perform smoke test
         uses: ansys/actions/build-wheelhouse@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
         with:
@@ -215,6 +234,8 @@ jobs:
     name: "Check library vulnerabilities"
     runs-on: ubuntu-latest
     steps:
+      - *allow-private-deps
+
       - uses: ansys/actions/check-vulnerabilities@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
         with:
           # Python 3.10 venvs bundle a vulnerable setuptools that makes safety crash (ansys/actions#1646)
@@ -300,6 +321,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y poppler-utils
+
+      - *allow-private-deps
 
       - name: Install pyfluent
         run: make install
@@ -408,6 +431,8 @@ jobs:
 
       - name: Add version information
         run: make version-info
+
+      - *allow-private-deps
 
       - name: Install pyfluent
         run: make install
@@ -595,6 +620,8 @@ jobs:
           name: PyFluent-packages
           path: dist
 
+      - *allow-private-deps
+
       - name: Install pyfluent
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: pip install -q --force-reinstall dist/*.whl > /dev/null
@@ -670,6 +697,8 @@ jobs:
         with:
           name: PyFluent-packages
           path: dist
+
+      - *allow-private-deps
 
       - name: Install pyfluent
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
@@ -775,6 +804,8 @@ jobs:
         with:
           name: PyFluent-packages
           path: dist
+
+      - *allow-private-deps
 
       - name: Install pyfluent
         run: pip install -q --force-reinstall dist/*.whl > /dev/null
