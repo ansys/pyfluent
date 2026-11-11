@@ -268,7 +268,7 @@ Define leakage threshold
 .. code:: python
 
     leakage_threshold = fault_tolerant.define_leakage_threshold
-    leakage_threshold.add_child = "yes"
+    leakage_threshold.add_child = True
     leakage_threshold.flip_direction = True
     leakage_threshold.leakage_name = "leakage-1"
     leakage_threshold.plane_direction = "X"
@@ -441,7 +441,7 @@ Adding BOI
 .. code:: python
 
     add_local_sizing = two_dim_mesh.add_local_sizing_wtm
-    add_local_sizing.add_child = "yes"
+    add_local_sizing.add_child = True
     add_local_sizing.boi_control_name = "boi_1"
     add_local_sizing.boi_execution = "Body Of Influence"
     add_local_sizing.boi_face_label_list = ["boi"]
@@ -455,7 +455,7 @@ Set edge sizing
 
 .. code:: python
 
-    add_local_sizing.add_child = "yes"
+    add_local_sizing.add_child = True
     add_local_sizing.boi_control_name = "edgesize_1"
     add_local_sizing.boi_execution = "Edge Size"
     add_local_sizing.boi_size = 5.0
@@ -469,7 +469,7 @@ Set curvature sizing
 
 .. code:: python
 
-    add_local_sizing.add_child = "yes"
+    add_local_sizing.add_child = True
     add_local_sizing.boi_control_name = "curvature_1"
     add_local_sizing.boi_curvature_normal_angle = 10
     add_local_sizing.boi_execution = "Curvature"
@@ -487,7 +487,7 @@ Add boundary layer
 .. code:: python
 
     add_boundary_layers = two_dim_mesh.add_2d_boundary_layers
-    add_boundary_layers.add_child = "yes"
+    add_boundary_layers.add_child = True
     add_boundary_layers.control_name = "aspect-ratio_1"
     add_boundary_layers.number_of_layers = 4
     add_boundary_layers.offset_method_type = "aspect-ratio"
@@ -503,12 +503,12 @@ Generate surface mesh
     generate_surface_mesh = two_dim_mesh.generate_initial_surface_mesh
     mesh_preferences = two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences
     mesh_preferences.show_advanced_options = True
-    mesh_preferences.merge_edge_zones_based_on_labels = "no"
-    mesh_preferences.merge_face_zones_based_on_labels = "no"
+    mesh_preferences.merge_edge_zones_based_on_labels = False
+    mesh_preferences.merge_face_zones_based_on_labels = False
     generate_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
-    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = True
     two_dim_mesh.add_2d_boundary_layers_child_1.control_name = "uniform_1"
     two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
@@ -519,8 +519,8 @@ Generate surface mesh
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
     mesh_preferences.show_advanced_options = True
-    mesh_preferences.merge_edge_zones_based_on_labels = "no"
-    mesh_preferences.merge_face_zones_based_on_labels = "no"
+    mesh_preferences.merge_edge_zones_based_on_labels = False
+    mesh_preferences.merge_face_zones_based_on_labels = False
     generate_surface_mesh()
 
 Switch to solution mode
