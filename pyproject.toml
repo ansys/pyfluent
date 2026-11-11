@@ -1,9 +1,9 @@
 [build-system]
-requires = ["flit_core >=3.2,<5"]
-build-backend = "flit_core.buildapi"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-# Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
+# Check https://hatch.pypa.io/latest/config/metadata/ for all available sections
 name = "ansys-fluent-core"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
@@ -38,8 +38,25 @@ dependencies = [
 ]
 dynamic = ["version"]
 
-[tool.flit.sdist]
-include = ["src/ansys/fluent/core/generated/"]
+[tool.hatch.version]
+path = "src/ansys/fluent/core/__init__.py"
+
+# Ship both sibling packages of the ``ansys`` namespace (``ansys.fluent`` and
+# ``ansys.solver``). The generated API tree, the ``.pyi`` stubs and the packaged
+# README are produced during the build and are gitignored, so they are
+# force-included as artifacts.
+[tool.hatch.build]
+artifacts = [
+    "src/ansys/fluent/core/generated/**/*",
+    "src/ansys/fluent/core/docs/README.rst",
+    "src/ansys/fluent/core/**/*.pyi",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ansys"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/ansys", "LICENSE", "README.rst"]
 
 [project.optional-dependencies]
 reader = ["h5py>=3.15.1"]
@@ -113,9 +130,6 @@ ci_types = [
     "imageio",
     "tomli",
 ]
-
-[tool.flit.module]
-name = "ansys.fluent.core"
 
 [project.urls]
 Documentation = "https://fluent.docs.pyansys.com/"
@@ -276,14 +290,18 @@ baselineFile = ".ci/basedpyright.json"
 # report-only mode in CI during Phase 0 and become blocking in the hardening
 # phase. See doc/source/contributing/componentization.rst.
 [tool.importlinter]
-root_packages = ["ansys.fluent.core", "ansys.framework"]
+# ``ansys.api.fluent`` is an external, namespaced (``ansys.*``) package. It is
+# listed as a root package so the forbidden contract below can name it directly;
+# import-linter does not allow referencing subpackages of squashed external
+# packages (the shared ``ansys`` namespace).
+root_packages = ["ansys.fluent.core", "ansys.framework", "ansys.api.fluent"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
 name = "Platform layer is backend-agnostic (ansys.framework must not import grpc / ansys.api / ansys.fluent)"
 type = "forbidden"
 source_modules = ["ansys.framework"]
-forbidden_modules = ["grpc", "ansys.api", "ansys.fluent"]
+forbidden_modules = ["grpc", "ansys.api.fluent", "ansys.fluent.core"]
 
 [[tool.importlinter.contracts]]
 name = "Service contracts must not depend on the object framework (flobject)"

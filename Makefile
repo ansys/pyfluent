@@ -5,7 +5,7 @@ style:
 install:
 	@pip install -r requirements/requirements_build.txt
 	@git clean -fd
-	@flit build
+	@python -m build
 	@pip install -q --force-reinstall dist/*.whl
 	@pip install packaging
 	@python src/ansys/fluent/core/utils/report.py
