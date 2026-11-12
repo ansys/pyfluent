@@ -38,6 +38,8 @@ jobs:
             version: 261
           - image-tag: v27.1.latest
             version: 271
+          - image-tag: v27.2.latest
+            version: 272
     env:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
