@@ -302,7 +302,7 @@ def _get_channel(
     insecure_mode: bool,
     inside_container: bool,
 ):
-    # Same maximum message length is used in the server
+    # Same maximum message length is used in the server # test
     max_message_length = _get_max_c_int_limit()
     options = [
         ("grpc.max_send_message_length", max_message_length),
