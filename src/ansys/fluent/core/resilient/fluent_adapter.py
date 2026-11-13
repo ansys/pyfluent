@@ -132,17 +132,21 @@ class FluentAdapter(ResilientAdapter):
         return launch_fluent(**kwargs)
 
     def standby_launcher(self, session: Any) -> Callable[[], Any] | None:
-        """Return a launcher that repeats the launch of a local Fluent session.
+        """Return a launcher that repeats the launch of a local or container session.
 
-        Only sessions launched locally by PyFluent are supported. For container
-        or remote sessions, pass ``PoolConfig(launch_kwargs=...)``.
+        Sessions launched by PyFluent on the client machine, directly or in a
+        container, are supported. A container standby is another container
+        started with the same arguments, so it mounts the same host folder. For
+        PIM, remote, or file-transfer sessions, pass
+        ``PoolConfig(launch_kwargs=...)``.
         """
         from ansys.fluent.core import launch_fluent
 
         args = instance_attr(session, "_launcher_args")
-        if not args or not self.shares_client_filesystem(session):
+        if not args or instance_attr(session, "_file_transfer_service") is not None:
             return None
-        if args.get("container_dict") is not None:
+        in_container = args.get("container_dict") is not None
+        if not in_container and not self.shares_client_filesystem(session):
             return None
         accepted = inspect.signature(launch_fluent).parameters
         kwargs = {
@@ -150,6 +154,8 @@ class FluentAdapter(ResilientAdapter):
             for key, value in args.items()
             if key in accepted and key not in _NOT_FORWARDED
         }
+        if in_container:
+            kwargs["start_container"] = True
         # The recorded arguments include the graphics driver the launcher resolved,
         # which only applies to graphical modes; the launcher warns otherwise.
         if UIMode(args.get("ui_mode")) not in (UIMode.GUI, UIMode.HIDDEN_GUI):

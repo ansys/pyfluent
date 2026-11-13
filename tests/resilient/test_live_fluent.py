@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Resilient mode against a live Fluent solver (standalone only)."""
+"""Resilient mode against a live Fluent solver, standalone or in a container."""
 
 import contextlib
 from pathlib import Path
@@ -39,7 +39,26 @@ from ansys.fluent.core.resilient import (
     _enable_on_new_session,
 )
 
-pytestmark = [pytest.mark.resilient, pytest.mark.standalone]
+pytestmark = pytest.mark.resilient
+
+
+def _checkpoints(tmp_path):
+    """Write checkpoints to ``tmp_path``, or, in a container, to its working folder.
+
+    A container can only write inside itself; its working folder is the mounted
+    host folder, which standby containers mount too.
+    """
+    if pyfluent.config.launch_fluent_container:
+        return CheckpointConfig()
+    return CheckpointConfig(directory=tmp_path)
+
+
+def _client_path(checkpoint) -> Path:
+    """Return where the client sees the case file of ``checkpoint``."""
+    path = Path(checkpoint.path)
+    if pyfluent.config.launch_fluent_container:
+        return Path(pyfluent.config.container_mount_source) / path.name
+    return path
 
 
 @pytest.fixture
@@ -49,7 +68,7 @@ def resilient_elbow(new_solver_session, tmp_path):
     solver.settings.file.read_case(file_name=case)
     _enable_on_new_session(
         solver,
-        ResilientConfig(checkpoint=CheckpointConfig(directory=tmp_path)),
+        ResilientConfig(checkpoint=_checkpoints(tmp_path)),
         launched=True,
     )
     events = []
@@ -91,7 +110,7 @@ def test_checkpoint_rollback_and_automatic_checkpoint(resilient_elbow):
     resilient = solver.resilient
     pyfluent.solver.Initialization(settings_source=solver).hybrid_initialize()
     checkpoint = resilient.checkpoint("initialized")
-    assert Path(checkpoint.path).is_file()
+    assert _client_path(checkpoint).is_file()
     pyfluent.solver.RunCalculation(settings_source=solver).iterate(iter_count=2)
     assert resilient.checkpoints[-1].name == "auto-iterate"
     resilient.rollback("initialized")
@@ -105,7 +124,7 @@ def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_pat
     _enable_on_new_session(
         solver,
         ResilientConfig(
-            checkpoint=CheckpointConfig(directory=tmp_path),
+            checkpoint=_checkpoints(tmp_path),
             pool=PoolConfig(size=2),
         ),
         launched=True,
@@ -146,7 +165,7 @@ def test_solution_data_survives_the_fluent_process_being_killed(
     _enable_on_new_session(
         solver,
         ResilientConfig(
-            checkpoint=CheckpointConfig(directory=tmp_path),
+            checkpoint=_checkpoints(tmp_path),
             pool=PoolConfig(size=2),
         ),
         launched=True,
