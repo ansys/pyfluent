@@ -25,6 +25,8 @@
 import contextlib
 from pathlib import Path
 import subprocess
+import threading
+import time
 
 import pytest
 
@@ -191,6 +193,65 @@ def test_solution_data_survives_the_fluent_process_being_killed(
     # serving.
     assert solver.resilient.active_session is standby
     assert _data_is_valid(solver.resilient.active_session)
+
+
+def test_solution_data_survives_a_kill_during_iteration(new_solver_session, tmp_path):
+    # Fluent is killed while it iterates. The interrupted solve is not repeated
+    # on the standby, which takes over with the solution of the previous solve.
+    solver = new_solver_session
+    _enable_on_new_session(
+        solver,
+        ResilientConfig(
+            # Start iterating at once, so that the kill lands during the solve
+            # rather than during the automatic checkpoint before it.
+            auto_checkpoint=False,
+            checkpoint=_checkpoints(tmp_path),
+            pool=PoolConfig(size=2),
+        ),
+        launched=True,
+    )
+    events = []
+    solver.resilient.on_event(events.append)
+    case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read_case(file_name=case)
+    run_calculation = pyfluent.solver.RunCalculation(settings_source=solver)
+    pyfluent.solver.Initialization(settings_source=solver).hybrid_initialize()
+    run_calculation.iterate(iter_count=20)
+    assert solver.resilient.wait_for_standbys(timeout=600)
+    (standby,) = solver.resilient.pool.standbys
+    assert _data_is_valid(standby)
+
+    errors = []
+
+    def long_solve():
+        try:
+            run_calculation.iterate(iter_count=5000)
+        except Exception as err:  # noqa: BLE001
+            errors.append(err)
+
+    worker = threading.Thread(target=long_solve)
+    worker.start()
+    time.sleep(3)
+    assert worker.is_alive(), "The solve ended before Fluent was killed."
+    # On Windows, Fluent's cleanup script can report a failure even though it
+    # killed Fluent.
+    with contextlib.suppress(subprocess.CalledProcessError):
+        solver.force_exit()
+    worker.join(timeout=300)
+    assert not worker.is_alive()
+
+    # The solve failed over to the standby, raised its error, and was not
+    # repeated there.
+    (error,) = errors
+    assert "not repeated" in " ".join(getattr(error, "__notes__", []))
+    assert solver.resilient.active_session is standby
+    assert solver.resilient.last_outcome.failed_over
+    assert EventKind.FAILOVER in [e.kind for e in events]
+    # The standby holds the solution of the first solve and serves new calls.
+    assert _data_is_valid(standby)
+    turbulent_intensity = _cold_inlet(solver).turbulence.turbulent_intensity
+    turbulent_intensity.set_state(0.1)
+    assert turbulent_intensity() == pytest.approx(0.1)
 
 
 def _data_is_valid(solver) -> bool:

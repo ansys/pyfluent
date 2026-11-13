@@ -34,6 +34,7 @@ import functools
 import inspect
 from typing import Any, Callable
 
+from ansys.fluent.core.connectivity._file_staging import FileLocation, file_location
 from ansys.fluent.core.execution.launcher.launch_options import UIMode
 from ansys.fluent.core.resilient.engine import ErrorClasses, ResilientAdapter
 from ansys.fluent.core.resilient.engine.adapter import instance_attr
@@ -71,6 +72,8 @@ class FluentAdapter(ResilientAdapter):
             "read_data",
             "read_mesh",
             "read",
+            "replace_mesh",
+            "replace",
         }
     )
     interruptible_commands = frozenset({"iterate", "calculate", "dual_time_iterate"})
@@ -177,15 +180,7 @@ class FluentAdapter(ResilientAdapter):
 
     def shares_client_filesystem(self, session: Any) -> bool:
         """Return whether Fluent runs locally, outside a container."""
-        connection = instance_attr(session, "_fluent_connection")
-        if connection is None:
-            return False
-        if instance_attr(session, "_file_transfer_service") is not None:
-            return False
-        if getattr(connection, "_remote_instance", None) is not None:
-            return False
-        properties = getattr(connection, "connection_properties", None)
-        return not getattr(properties, "inside_container", False)
+        return file_location(session) is FileLocation.LOCAL
 
     @staticmethod
     def _scheme_flag(session: Any, expression: str) -> bool | None:
