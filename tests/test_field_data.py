@@ -52,7 +52,7 @@ from ansys.fluent.core.fields.field_data.live_field_data import (
 )
 from ansys.fluent.core.solver import VelocityInlet, VelocityInlets, WallBoundaries
 from ansys.fluent.core.utils.execution import timeout_loop
-from ansys.units.variable_descriptor import VariableCatalog
+from ansys.variables import Catalog as VariableCatalog
 
 HOT_INLET_TEMPERATURE = 313.15
 

@@ -36,7 +36,7 @@ from ansys.fluent.core import (
     examples,
 )
 from ansys.fluent.core.execution.session.file import FileSession
-from ansys.units.variable_descriptor import VariableCatalog
+from ansys.variables import Catalog as VariableCatalog
 
 
 def round_off_list_elements(input_list):
@@ -180,7 +180,7 @@ def test_use_variable_catalog_offline():
 
 
 def test_quantity_dimensions_subscription():
-    from ansys.units.variable_descriptor import VariableCatalog as vc
+    from ansys.variables import Catalog as vc
 
     vel = vc.VELOCITY
     assert vel.name == "velocity"

@@ -22,7 +22,12 @@ dependencies = [
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
-    "ansys-units>=0.16,<0.17",
+    # Temporary until ansys-units 0.17 is released; then use "ansys-units>=0.17,<1.0".
+    "ansys-units @ git+https://github.com/ansys/pyansys-units.git@refactor/units_variable_descriptor_expressions",
+    # Temporary until ansys-variables is released.
+    "ansys-variables @ git+https://github.com/ansys/variables.git@refactor/rename_to_variables",
+    # Temporary until ansys-expressions is released.
+    "ansys-expressions @ git+https://github.com/ansys/expressions.git@refactor/rename_to_variables",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",

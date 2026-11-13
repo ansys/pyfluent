@@ -126,7 +126,7 @@ To retrieve scalar field data, such as absolute pressure, use ``ScalarFieldDataR
 .. code-block:: python
 
   >>> from ansys.fluent.core import ScalarFieldDataRequest
-  >>> from ansys.units import VariableCatalog
+  >>> from ansys.variables import Catalog as VariableCatalog
 
   >>> absolute_pressure_request = ScalarFieldDataRequest(
   >>>     field_name=VariableCatalog.ABSOLUTE_PRESSURE,
@@ -286,7 +286,7 @@ Variables are strongly typed by tensor kind, so passing a scalar variable to
 
 .. code-block:: python
 
-  >>> from ansys.units import VariableCatalog
+  >>> from ansys.variables import Catalog as VariableCatalog
   >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY)
   True
   >>> field_data.scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)

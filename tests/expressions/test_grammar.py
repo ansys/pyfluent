@@ -13,7 +13,7 @@ from ansys.fluent.core.offline.expressions import (
     ExpressionBuildError,
     Weight,
 )
-from ansys.units import VariableCatalog as V
+from ansys.variables import Catalog as V
 
 
 @pytest.fixture
@@ -221,15 +221,19 @@ def test_if_in_reduction(b):
 
 
 def test_registered_groups(b):
-    from ansys.fluent.core.offline.expressions._registry import REGISTRY
+    from ansys.fluent.core.offline.expressions._fluent import FLUENT_FUNCTIONS
 
-    assert set(REGISTRY.groups()) >= {"reductions", "math", "vector", "conditional"}
+    assert set(FLUENT_FUNCTIONS.groups()) >= {
+        "reductions",
+        "math",
+        "vector",
+        "conditional",
+    }
 
 
 def test_make_call_escape_hatch(b):
     # For anything not yet catalogued, users can still hand-roll a Call.
-    from ansys.fluent.core.offline.expressions import Kind
-    from ansys.fluent.core.offline.expressions._registry import make_call
+    from ansys.fluent.core.offline.expressions import Kind, make_call
 
     node = make_call("Grad", b.variable(V.TEMPERATURE), returns=Kind.VECTOR)
     assert str(node) == "Grad(StaticTemperature)"

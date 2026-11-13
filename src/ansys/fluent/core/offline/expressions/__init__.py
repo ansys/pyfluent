@@ -7,16 +7,19 @@ A high-level, object-based API for constructing Fluent expression strings
 (e.g. ``AreaAve(AbsolutePressure,['velocity-inlet-5'])``) without hand-writing
 them.
 
-The package is organised in three layers:
+The product-agnostic expression trees, parser, and builder come from the
+``ansys.expressions`` package (``ansys-expressions`` distribution). This package
+adds the Fluent-specific parts:
 
-* :mod:`._ast`      -- Layer 2: typed, immutable expression AST.
-* :mod:`._registry` -- Layer 1: declarative catalog of Fluent functions.
-* :mod:`.builder`   -- Layer 3: user-facing fluent/discoverable facade.
+* :mod:`._fluent`    -- the Fluent dialect: variable naming and the catalog of
+  Fluent expression functions.
+* :mod:`._discovery` -- discovery backed by a live PyFluent session.
+* :mod:`.builder`    -- :class:`ExpressionBuilder` bound to the Fluent dialect.
 
 Typical use::
 
     from ansys.fluent.core.offline.expressions import ExpressionBuilder
-    from ansys.units import VariableCatalog as V
+    from ansys.variables import Catalog as V
 
     builder = ExpressionBuilder(settings=solver.settings)
 
@@ -36,16 +39,16 @@ Typical use::
     solver.setup.named_expressions["dp"].definition = dp
 """
 
-from ._ast import (  # noqa: F401
+from ansys.expressions import (  # noqa: F401
     BooleanExpr,
     Expr,
+    ExpressionBuildError,
     Kind,
     LocationList,
     Quantity,
     ScalarExpr,
     VectorExpr,
 )
-from ._parser import parse  # noqa: F401
-from ._registry import Weight  # noqa: F401
-from .builder import ExpressionBuilder  # noqa: F401
-from .errors import ExpressionBuildError  # noqa: F401
+
+from ._fluent import FLUENT_DIALECT, Weight  # noqa: F401
+from .builder import ExpressionBuilder, make_call, parse  # noqa: F401
