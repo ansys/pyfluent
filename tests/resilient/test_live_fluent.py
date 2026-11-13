@@ -100,9 +100,8 @@ def test_checkpoint_rollback_and_automatic_checkpoint(resilient_elbow):
 
 def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_path):
     solver = new_solver_session
-    case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read_case(file_name=case)
-    # The standby is launched with the same arguments as the active session.
+    # As resilient_mode=True does at launch. The standby is launched with the
+    # same arguments as the active session.
     _enable_on_new_session(
         solver,
         ResilientConfig(
@@ -113,11 +112,17 @@ def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_pat
     )
     events = []
     solver.resilient.on_event(events.append)
-    solver.resilient.checkpoint("before-crash")
+    case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read_case(file_name=case)
     cold_inlet = _cold_inlet(solver)
     velocity = cold_inlet.momentum.velocity_magnitude
     turbulent_intensity = cold_inlet.turbulence.turbulent_intensity
     velocity.value = 0.5
+    # The standby read the case and applied the write too.
+    assert solver.resilient.wait_for_standbys(timeout=300)
+    (standby,) = solver.resilient.pool.standbys
+    standby_velocity = _cold_inlet(standby).momentum.velocity_magnitude
+    assert standby_velocity.value() == pytest.approx(0.5)
     # On Windows, Fluent's cleanup script can report a failure even though it
     # killed Fluent.
     with contextlib.suppress(subprocess.CalledProcessError):
@@ -125,22 +130,19 @@ def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_pat
     # The next call fails over. A read is repeated on the standby.
     with pytest.warns(ResilientFailoverWarning):
         assert velocity.value() == pytest.approx(0.5)
-    assert solver.resilient.active_session is not solver
+    assert solver.resilient.active_session is standby
     assert EventKind.FAILOVER in [e.kind for e in events]
-    # The write made after the checkpoint was replayed onto the standby, which
-    # now serves new writes.
+    # The standby now serves new writes.
     turbulent_intensity.set_state(0.1)
     assert turbulent_intensity() == pytest.approx(0.1)
 
 
-def test_data_recovery_after_the_fluent_process_is_killed(new_solver_session, tmp_path):
-    # Like the failover test, but the checkpoint also captures solution data, so
-    # the standby that takes over holds the converged solution, not just the
-    # settings. The kill and the failover both happen on the main thread so that
-    # the ResilientFailoverWarning is observed here.
+def test_solution_data_survives_the_fluent_process_being_killed(
+    new_solver_session, tmp_path
+):
+    # Like the failover test, but with a solve: the standby runs the same solve,
+    # so the session that takes over holds the solution, not just the settings.
     solver = new_solver_session
-    case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read_case(file_name=case)
     _enable_on_new_session(
         solver,
         ResilientConfig(
@@ -149,14 +151,15 @@ def test_data_recovery_after_the_fluent_process_is_killed(new_solver_session, tm
         ),
         launched=True,
     )
+    case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read_case(file_name=case)
     turbulent_intensity = _cold_inlet(solver).turbulence.turbulent_intensity
     pyfluent.solver.Initialization(settings_source=solver).hybrid_initialize()
     pyfluent.solver.RunCalculation(settings_source=solver).iterate(iter_count=20)
-    # The solve produced valid solution data.
     assert _data_is_valid(solver)
-    # Checkpoint the converged solution (case and data).
-    checkpoint = solver.resilient.checkpoint("converged")
-    assert checkpoint.include_data
+    assert solver.resilient.wait_for_standbys(timeout=600)
+    (standby,) = solver.resilient.pool.standbys
+    assert _data_is_valid(standby)
 
     # Kill Fluent, then trigger failover with a read on the main thread.
     # On Windows, Fluent's cleanup script can report a failure even though it
@@ -165,10 +168,9 @@ def test_data_recovery_after_the_fluent_process_is_killed(new_solver_session, tm
         solver.force_exit()
     with pytest.warns(ResilientFailoverWarning):
         turbulent_intensity()
-    assert solver.resilient.active_session is not solver
-    # The standby reopened the checkpoint with its data, so the recovered session
-    # holds valid solution data, not an empty, freshly read case. Services other
-    # than settings are reached through the session that is now serving.
+    # Services other than settings are reached through the session that is now
+    # serving.
+    assert solver.resilient.active_session is standby
     assert _data_is_valid(solver.resilient.active_session)
 
 

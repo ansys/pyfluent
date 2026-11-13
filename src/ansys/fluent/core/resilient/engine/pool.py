@@ -23,9 +23,10 @@
 """Warm standby sessions for failover.
 
 Standbys are launched when the pool is created, so a failover does not wait for
-a product launch. Health is checked on demand (when a standby is needed) rather
-than by background polling. Replaced and retired sessions are exited on a
-background thread so that a failover never blocks on tearing down a dead server.
+a product launch; the resilient controller keeps them up to date with the active
+session. Health is checked on demand (when a standby is needed) rather than by
+background polling. Replaced and retired sessions are exited on a background
+thread so that a failover never blocks on tearing down a dead server.
 """
 
 from __future__ import annotations
@@ -75,6 +76,8 @@ class WarmSessionPool:
         self._standbys: list[Any] = []
         self._lock = threading.RLock()
         self._closed = False
+        #: Called with each standby launched after the pool was created.
+        self.on_standby_added: Callable[[Any], None] | None = None
         try:
             for _ in range(size - 1):
                 self._standbys.append(launcher())
@@ -103,10 +106,16 @@ class WarmSessionPool:
         """Return the configured number of sessions, including the active one."""
         return self._size
 
-    def take_standby(self) -> Any:
+    def take_standby(self, prefer: Callable[[Any], bool] | None = None) -> Any:
         """Remove and return a healthy standby session.
 
         Unhealthy standbys found on the way are exited.
+
+        Parameters
+        ----------
+        prefer : callable, optional
+            Called with each healthy standby; the first one for which it returns
+            ``True`` is taken. Otherwise the first healthy standby is taken.
 
         Raises
         ------
@@ -114,11 +123,17 @@ class WarmSessionPool:
             If no healthy standby is available.
         """
         with self._lock:
-            while self._standbys:
-                standby = self._standbys.pop(0)
-                if self._adapter.is_server_healthy(standby):
-                    return standby
-                self._retire(standby)
+            for standby in list(self._standbys):
+                if not self._adapter.is_server_healthy(standby):
+                    self._standbys.remove(standby)
+                    self._retire(standby)
+            chosen = next(
+                (s for s in self._standbys if prefer is not None and prefer(s)),
+                self._standbys[0] if self._standbys else None,
+            )
+            if chosen is not None:
+                self._standbys.remove(chosen)
+                return chosen
         raise FailoverError(
             f"No healthy standby {self._adapter.product_name} session is available "
             "for failover."
@@ -182,8 +197,10 @@ class WarmSessionPool:
             with self._lock:
                 if self._closed:
                     self._retire(standby)
-                else:
-                    self._standbys.append(standby)
+                    return
+                self._standbys.append(standby)
+            if self.on_standby_added is not None:
+                self.on_standby_added(standby)
 
         with self._lock:
             if self._closed or len(self._standbys) + 1 >= self._size:

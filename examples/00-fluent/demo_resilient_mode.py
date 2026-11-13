@@ -220,9 +220,21 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
 
         if failover:
             chapter(3, "Failover to a warm standby", auto)
-            step("Write a checkpoint, then change the cold-inlet velocity to 0.5.")
-            resilient.checkpoint("before-crash")
+            step(
+                "The standby has been applying every change made so far, in the "
+                "background. Change the cold-inlet velocity to 0.5, then wait until "
+                "the standby has applied it too."
+            )
             cold_velocity.value = 0.5
+            show("standby up to date", resilient.wait_for_standbys())
+            (standby,) = resilient.pool.standbys
+            standby_inlet = pyfluent.solver.VelocityInlet(
+                settings_source=standby, name="cold-inlet"
+            )
+            show(
+                "cold-inlet velocity on the standby",
+                standby_inlet.momentum.velocity_magnitude.value(),
+            )
             step("Kill the Fluent process of the active session.")
             # On Windows, Fluent's cleanup script can report a failure even though
             # it killed Fluent.
@@ -230,11 +242,11 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
                 solver.force_exit()
             step(
                 "Read the cold-inlet velocity from the session that was just killed. "
-                "A standby takes over and the read is repeated on it."
+                "The standby takes over, with nothing to rebuild, and the read is "
+                "repeated on it."
             )
-            show("cold-inlet velocity (replayed)", cold_velocity.value())
-            standby = resilient.active_session
-            show("served by another Fluent session", standby is not solver)
+            show("cold-inlet velocity", cold_velocity.value())
+            show("served by the standby", resilient.active_session is standby)
             step("Change the hot-inlet velocity. The standby applies it.")
             hot_velocity.value = 1.0
             show("hot-inlet velocity", hot_velocity.value())

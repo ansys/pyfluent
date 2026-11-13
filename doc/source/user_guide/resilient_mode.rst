@@ -14,9 +14,9 @@ standard PyFluent code. Resilient mode works for solver sessions now:
   checkpoint. If such a command fails, the session is restored to that
   checkpoint and the original error is raised.
 * **Undo and redo** of settings writes from a journal.
-* **Failover**: with a warm pool of standby sessions, your script keeps running
-  on a standby session when the active solver process dies, resuming from the
-  latest checkpoint.
+* **Failover**: with a warm pool of standby sessions that are kept up to date
+  with the active session, your script keeps running on a standby session when
+  the active solver process dies.
 
 Resilient mode does not alter your settings. A value that Fluent rejects raises
 the original error unchanged, so your existing ``except`` clauses keep working.
@@ -122,21 +122,43 @@ Failover needs at least one warm standby session:
     )
 
 ``PoolConfig.size`` counts the active session, so ``size=2`` launches one
-standby with the same launch arguments as the active session. If the active
-session dies, the next settings call fails over: a standby session takes over,
-rebuilt from the latest checkpoint and the settings calls that succeeded since,
-and a :class:`~ansys.fluent.core.resilient.ResilientFailoverWarning` is emitted.
-A read is then repeated on the standby, so your script continues.
+standby with the same launch arguments as the active session.
+
+Standbys are kept up to date with the active session. Every settings write,
+command and object change that succeeds on the active session is applied to
+each standby, in the same order, in the background, so your script does not
+wait for the standbys. Undo, redo and rollback are applied as well. Calls that
+fail are not applied, and neither are commands that only produce output, such
+as ``write_case``, exports and printing. Solve commands such as ``iterate``
+run on the standbys too, so each standby uses as much computing time as the
+active session.
+
+If the active session dies, the next settings call fails over: the standby
+first applies the changes it has not applied yet, then takes over, and a
+:class:`~ansys.fluent.core.resilient.ResilientFailoverWarning` is emitted. A
+read is then repeated on the standby, so your script continues.
 
 A write or command that was running when the session died is not repeated on
 the standby, because it may be what made Fluent fail. Its original error is
 raised with a note, and the standby has the state from before that call. Run
 the call again to apply it on the standby.
 
+A standby that cannot apply a change, for example because it rejects a value,
+is out of sync, and a :class:`~ansys.fluent.core.resilient.ResilientWarning`
+is emitted. An interrupted solve also puts the standbys out of sync, because
+it stopped part way. The next checkpoint brings them back in sync. If a
+standby that is out of sync must take over, it is rebuilt from the latest
+checkpoint and the changes made since. A standby launched to replace one that
+took over is brought up to date the same way.
+
+To wait until every standby applied the changes made so far, call
+``solver.resilient.wait_for_standbys()``. It returns whether every standby is
+in sync.
+
 Keep these points in mind:
 
-* Take a checkpoint once your case is loaded. Failover resumes from the latest
-  checkpoint; without one, the standby starts from an empty session.
+* Take a checkpoint once your case is loaded. It is the starting point for
+  bringing standbys back in sync.
 * Failover reroutes ``solver.settings``. Use ``solver.resilient.active_session``
   to reach other services, such as field data, of the session now serving.
 * Standbys are launched automatically for local standalone sessions. For
