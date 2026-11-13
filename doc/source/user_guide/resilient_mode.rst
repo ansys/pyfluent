@@ -9,7 +9,7 @@ Resilient mode allows an automated setup-and-solve script to continue running
 despite failures that would normally halt execution, all while letting you write
 standard PyFluent code. Resilient mode works for solver sessions now:
 
-* **Checkpoints and rollback**: irreversible commands such as ``iterate``,
+* **Checkpoints and rollback**: specific commands such as ``iterate``,
   ``calculate`` and ``read_case`` are preceded by an automatic case and data
   checkpoint. If such a command fails, the session is restored to that
   checkpoint and the original error is raised.
@@ -161,10 +161,53 @@ Keep these points in mind:
   bringing standbys back in sync.
 * Failover reroutes ``solver.settings``. Use ``solver.resilient.active_session``
   to reach other services, such as field data, of the session now serving.
-* Standbys are launched automatically for local standalone sessions. For
-  container, PIM or remote sessions, pass ``PoolConfig.launch_kwargs`` or
-  ``PoolConfig.launcher``.
+* Standbys are launched automatically for sessions that PyFluent launches on
+  your machine, directly or in a container. For PIM or remote sessions, or
+  sessions that use a file transfer service, pass ``PoolConfig.launch_kwargs``
+  or ``PoolConfig.launcher``.
 * Exiting ``solver`` exits all the sessions of the pool.
+
+Fluent in a container
+~~~~~~~~~~~~~~~~~~~~~
+
+Resilient mode works the same way when Fluent runs in a container:
+
+.. code-block:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
+
+    solver = pyfluent.Solver.from_container(
+        resilient_mode=True,
+        resilient_config=ResilientConfig(pool=PoolConfig(size=2)),
+    )
+
+Each standby is another container, started with the same arguments, so it
+mounts the same host folder: ``pyfluent.config.container_mount_source``, or the
+current working directory by default. Fluent's working directory in each
+container is that folder, mounted at ``pyfluent.config.container_mount_target``
+(``/home/container/workdir`` by default).
+
+By default, checkpoints are written to that working directory. They appear on
+the host in the mounted folder, and every standby can read them. To write them
+elsewhere, give ``CheckpointConfig.directory`` as a path inside the container
+that every container can read, such as a folder inside the mounted folder:
+
+.. code-block:: python
+
+    from ansys.fluent.core.resilient import CheckpointConfig
+
+    config = ResilientConfig(
+        checkpoint=CheckpointConfig(directory="/home/container/workdir/checkpoints"),
+        pool=PoolConfig(size=2),
+    )
+
+The folder must already exist. A host path does not work, because Fluent writes
+the files from inside the container. Checkpoints in a container are not deleted
+when more than ``CheckpointConfig.keep_last`` are written.
+
+Files that your script reads, such as case files, must be in the mounted folder
+so that the standbys can read them too.
 
 
 Event listeners and logging

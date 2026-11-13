@@ -143,12 +143,28 @@ def test_graphics_driver_is_forwarded_only_for_graphical_modes(ui_mode, forwarde
     assert launcher.keywords["ui_mode"] == ui_mode
 
 
+def test_standby_launcher_repeats_a_container_launch():
+    args = {"mode": "solver", "container_dict": {"mount_source": "/data"}}
+    session = _session(_launcher_args=args)
+    session._fluent_connection.connection_properties.inside_container = True
+    launcher = FluentAdapter().standby_launcher(session)
+    assert launcher.func is launch_fluent
+    assert launcher.keywords == {
+        "mode": "solver",
+        "container_dict": {"mount_source": "/data"},
+        "start_container": True,
+    }
+
+
 @pytest.mark.parametrize(
     "attributes",
     [
         {"_launcher_args": None},
-        {"_launcher_args": {"container_dict": {}, "mode": "solver"}},
         {"_launcher_args": {"mode": "solver"}, "_file_transfer_service": object()},
+        {
+            "_launcher_args": {"container_dict": {}, "mode": "solver"},
+            "_file_transfer_service": object(),
+        },
     ],
 )
 def test_no_standby_launcher_for_unknown_or_remote_launches(attributes):

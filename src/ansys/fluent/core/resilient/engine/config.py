@@ -39,7 +39,10 @@ class CheckpointConfig:
         Directory for checkpoint files. For a server that shares the client file
         system, the default is ``resilient_checkpoints/<run-id>`` under the
         current working directory. For a remote or containerized server, the
-        default is the server working directory.
+        default is the server working directory (for a container, the folder
+        mounted into it), and a directory you give is a path on the server (for
+        a container, a path inside it). It must already exist, and every standby
+        session must be able to read it.
     keep_last : int, optional
         Number of most recent checkpoints to keep. Older ones are deleted when the
         client can reach the files. The default is ``5``.
