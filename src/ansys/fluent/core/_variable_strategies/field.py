@@ -25,10 +25,8 @@
 Provides a ConversionStrategy for mapping VariableDescriptor to names used in Fluent's field data API.
 """
 
-from ansys.variable_descriptor import (
-    MappingConversionStrategy,
-    VariableCatalog,
-)
+from ansys.variables import Catalog as VariableCatalog
+from ansys.variables import MappingConversionStrategy
 
 
 class FluentFieldDataNamingStrategy(MappingConversionStrategy):

@@ -161,19 +161,19 @@ jobs:
           name: generated-api-files
           path: src/ansys/fluent/core/generated
 
-      # Temporary until ansys-variable-descriptors and ansys-expressions are released.
+      # Temporary until ansys-variables and ansys-expressions are released.
       # Uses job-scoped GIT_CONFIG_* env vars (not ``git config --global``) so the
       # token is not persisted in ~/.gitconfig on self-hosted runners.
       - &allow-private-deps
-        name: Allow pip to clone private variable-descriptors and expressions
+        name: Allow pip to clone private variables and expressions
         shell: bash
         env:
           DEPS_TOKEN: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
         run: |
           {
             echo "GIT_CONFIG_COUNT=2"
-            echo "GIT_CONFIG_KEY_0=url.https://x-access-token:${DEPS_TOKEN}@github.com/ansys/variable-descriptors.insteadOf"
-            echo "GIT_CONFIG_VALUE_0=https://github.com/ansys/variable-descriptors"
+            echo "GIT_CONFIG_KEY_0=url.https://x-access-token:${DEPS_TOKEN}@github.com/ansys/variables.insteadOf"
+            echo "GIT_CONFIG_VALUE_0=https://github.com/ansys/variables"
             echo "GIT_CONFIG_KEY_1=url.https://x-access-token:${DEPS_TOKEN}@github.com/ansys/expressions.insteadOf"
             echo "GIT_CONFIG_VALUE_1=https://github.com/ansys/expressions"
           } >> "$GITHUB_ENV"

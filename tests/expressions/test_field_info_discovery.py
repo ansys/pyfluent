@@ -12,7 +12,7 @@ Fluent connection.
 import pytest
 
 from ansys.fluent.core.offline.expressions import ExpressionBuilder
-from ansys.variable_descriptor import VariableCatalog as V
+from ansys.variables import Catalog as V
 
 # --------------------------------------------------------------------------- #
 # Fakes                                                                       #

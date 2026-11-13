@@ -4,7 +4,7 @@
 Working with physical variables
 ===============================
 
-PyFluent integrates with the ``ansys-variable-descriptors`` library, which provides a shared catalog of variable objects based on physical quantities like temperature, pressure, and velocity. These variable objects, or VariableDescriptors, can be used throughout PyFluent to reference fields and quantities in a clear, consistent, and reliable way.
+PyFluent integrates with the ``ansys-variables`` library, which provides a shared catalog of variable objects based on physical quantities like temperature, pressure, and velocity. These variable objects, or VariableDescriptors, can be used throughout PyFluent to reference fields and quantities in a clear, consistent, and reliable way.
 
 Instead of relying on raw strings like ``"temperature"`` or ``"SV_T"``, which may vary between Fluent interfaces or be hard to interpret, you can use named descriptors from the catalog. This improves code readability, reduces the chance of errors, and makes it easier to work across different APIs.
 
@@ -13,7 +13,7 @@ The same catalog is designed to work not just with PyFluent, but also with other
 Overview
 --------
 
-The key benefits of using the ``VariableCatalog`` include:
+The key benefits of using the ``Catalog`` include:
 
 - Code that is portable across Ansys products and more resistant to typos
 - Simplified refactoring when field names change in Fluent or across versions
@@ -23,12 +23,12 @@ The key benefits of using the ``VariableCatalog`` include:
 Accessing field data
 ---------------------
 
-Here’s how to use ``VariableCatalog`` to read and reduce field data using unit-aware quantity references:
+Here’s how to use ``Catalog`` to read and reduce field data using unit-aware quantity references:
 
 .. code-block:: python
 
     from ansys.fluent.core import Solver, examples, ScalarFieldDataRequest
-    from ansys.variable_descriptor import VariableCatalog
+    from ansys.variables import Catalog
 
     solver_session = Solver.from_install()
     case_path = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -36,7 +36,7 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
 
     solver_session.settings.solution.initialization.hybrid_initialize()
 
-    temperature = VariableCatalog.TEMPERATURE
+    temperature = Catalog.TEMPERATURE
     locations = ["hot-inlet"]
 
     # Access scalar field data
@@ -65,7 +65,7 @@ You can also use physical quantities in report definitions to improve clarity an
     solver_session.settings.solution.report_definitions.surface["avg_temp"] = {}
     surface_report = solver_session.settings.solution.report_definitions.surface["avg_temp"]
     surface_report.report_type = "surface-areaavg"
-    surface_report.field = temperature  # Note: using VariableCatalog, not a string
+    surface_report.field = temperature  # Note: using Catalog, not a string
     surface_report.surface_names = locations
 
     result = solver_session.settings.solution.report_definitions.compute(report_defs=["avg_temp"])
@@ -74,7 +74,7 @@ You can also use physical quantities in report definitions to improve clarity an
 Notes
 -----
 
-- All quantities used via ``VariableCatalog`` map to their correct Fluent field identifiers internally.
+- All quantities used via ``Catalog`` map to their correct Fluent field identifiers internally.
 - These objects can be validated against their expected dimensional types.
-- ``VariableCatalog`` is provided by the ``ansys.variable_descriptor`` package (``ansys-variable-descriptors``
+- ``Catalog`` is provided by the ``ansys.variables`` package (``ansys-variables``
   distribution), which is automatically installed with PyFluent.

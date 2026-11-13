@@ -37,7 +37,7 @@ jupyter:
 
 ```{python .imports}
 import ansys.fluent.core as pyfluent
-from ansys.variable_descriptor import VariableCatalog as VC
+from ansys.variables import Catalog as VC
 from ansys.fluent.core import (
     ScalarFieldDataRequest,
     VectorFieldDataRequest,

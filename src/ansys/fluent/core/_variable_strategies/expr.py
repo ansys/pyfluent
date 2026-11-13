@@ -25,10 +25,8 @@
 Provides a ConversionStrategy for mapping VariableDescriptor to variable names used in Fluent expressions.
 """
 
-from ansys.variable_descriptor import (
-    MappingConversionStrategy,
-    VariableCatalog,
-)
+from ansys.variables import Catalog as VariableCatalog
+from ansys.variables import MappingConversionStrategy
 
 
 class FluentExprNamingStrategy(MappingConversionStrategy):

@@ -17,7 +17,7 @@ Launch the fluent solver, and make solution variable objects available
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
-  >>> from ansys.variable_descriptor import VariableCatalog
+  >>> from ansys.variables import Catalog as VariableCatalog
   >>> import_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
   >>> solver_session = pyfluent.Solver.from_install()

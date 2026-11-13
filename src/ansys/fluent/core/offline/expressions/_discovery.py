@@ -23,7 +23,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from ansys.variable_descriptor import VariableDescriptor
+from ansys.variables import VariableDescriptor
 
 from ._fluent import FLUENT_DIALECT
 

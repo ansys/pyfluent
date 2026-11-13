@@ -95,7 +95,7 @@ from ansys.fluent.core.utils.get_completer_info import (
     get_completer_info as _get_completer_info,
 )
 import ansys.units
-from ansys.variable_descriptor import VariableDescriptor
+from ansys.variables import VariableDescriptor
 
 from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error

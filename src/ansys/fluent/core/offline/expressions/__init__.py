@@ -19,7 +19,7 @@ adds the Fluent-specific parts:
 Typical use::
 
     from ansys.fluent.core.offline.expressions import ExpressionBuilder
-    from ansys.variable_descriptor import VariableCatalog as V
+    from ansys.variables import Catalog as V
 
     builder = ExpressionBuilder(settings=solver.settings)
 

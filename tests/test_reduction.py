@@ -31,7 +31,7 @@ from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fields.reduction import Weight
 from ansys.fluent.core.fields.reduction import functional as reduction
-from ansys.variable_descriptor import VariableCatalog
+from ansys.variables import Catalog as VariableCatalog
 
 
 def _test_locn_extraction(solver1, solver2):
