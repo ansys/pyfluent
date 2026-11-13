@@ -939,8 +939,6 @@ class BaseSession:
         allow_remote_host: bool = False,
         certificates_folder: str | None = None,
         insecure_mode: bool = False,
-        resilient_mode: bool = False,
-        resilient_config: "ResilientConfig | None" = None,
     ):
         """Connect to an existing Fluent server instance.
 
@@ -970,15 +968,6 @@ class BaseSession:
             If True, Fluent's gRPC server will be connected in insecure mode without TLS.
             This mode is not recommended. For more details on the implications
             and usage of insecure mode, refer to the Fluent documentation.
-        resilient_mode : bool, optional
-            Whether to enable resilient mode on the connected solver session. The
-            default is ``False``. See :ref:`ref_resilient_guide`. Because the state
-            of the session before connecting is unknown, write a checkpoint with
-            ``session.resilient.checkpoint()`` before relying on failover.
-        resilient_config : ResilientConfig, optional
-            Resilient-mode configuration. Only used when ``resilient_mode`` is
-            ``True``. The default is ``None``, in which case the default
-            configuration is used.
 
         Raises
         ------
@@ -1005,9 +994,7 @@ class BaseSession:
                 f"Session type mismatch: expected {expected}, got {actual}."
             )
 
-        return _apply_resilient_mode(
-            session, resilient_mode, resilient_config, launched=False
-        )
+        return session
 
 
 def _apply_resilient_mode(

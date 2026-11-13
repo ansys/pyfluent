@@ -708,8 +708,6 @@ def connect_to_fluent(
     insecure_mode: bool = False,
     start_watchdog: bool | None = None,
     file_transfer_service: Any | None = None,
-    resilient_mode: bool = False,
-    resilient_config: ResilientConfig | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SolverAero:
     """Connect to an existing Fluent server instance.
 
@@ -758,15 +756,6 @@ def connect_to_fluent(
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
-    resilient_mode : bool, optional
-        Whether to enable resilient mode on the connected solver session. The
-        default is ``False``. See :ref:`ref_resilient_guide`. Because the state of
-        the session before connecting is unknown, write a checkpoint with
-        ``session.resilient.checkpoint()`` before relying on failover.
-    resilient_config : ResilientConfig, optional
-        Resilient-mode configuration. Only used when ``resilient_mode`` is
-        ``True``. The default is ``None``, in which case the default configuration
-        is used.
 
     Returns
     -------
@@ -843,8 +832,4 @@ def connect_to_fluent(
         start_transcript=start_transcript,
         file_transfer_service=file_transfer_service,
     )
-    if resilient_mode:
-        from ansys.fluent.core.resilient import _enable_on_new_session
-
-        session = _enable_on_new_session(session, resilient_config, launched=False)
     return session

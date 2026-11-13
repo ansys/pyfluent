@@ -21,14 +21,15 @@ standard PyFluent code. Resilient mode works for solver sessions now:
 Resilient mode does not alter your settings. A value that Fluent rejects raises
 the original error unchanged, so your existing ``except`` clauses keep working.
 
-Resilient mode is available for solver sessions launched or connected over gRPC.
-It does not apply to meshing sessions or to REST (``HttpSolver``) sessions.
+Resilient mode is available for solver sessions that PyFluent launches over
+gRPC. It does not apply to sessions you connect to, meshing sessions, or REST
+(``HttpSolver``) sessions.
 
 
 Enable resilient mode
 ---------------------
 
-Every entry point that creates a solver session accepts ``resilient_mode`` and
+Every function that launches a solver session accepts ``resilient_mode`` and
 ``resilient_config``:
 
 .. code-block:: python
@@ -38,8 +39,8 @@ Every entry point that creates a solver session accepts ``resilient_mode`` and
 
     solver = pyfluent.Solver.from_install(resilient_mode=True)
 
-    # The same options apply to connect_to_fluent and to Solver.from_container,
-    # Solver.from_pim and Solver.from_connection.
+    # The same options apply to launch_fluent, Solver.from_container and
+    # Solver.from_pim.
     solver = pyfluent.Solver.from_install(
         resilient_mode=True,
         resilient_config=ResilientConfig(pool=PoolConfig(size=2)),

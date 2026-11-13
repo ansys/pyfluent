@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""The Fluent adapter and the ``resilient_mode`` launch and connect options."""
+"""The Fluent adapter and the ``resilient_mode`` launch options."""
 
 import inspect
 from types import SimpleNamespace
@@ -211,23 +211,20 @@ def test_only_fluent_clean_stop_is_an_interrupt():
     assert not adapter.is_interrupt(ValueError("()"))
 
 
-@pytest.mark.parametrize("function", [launch_fluent, connect_to_fluent])
-def test_launch_and_connect_accept_resilient_options(function):
+def test_launch_fluent_accepts_resilient_options():
+    parameters = inspect.signature(launch_fluent).parameters
+    assert parameters["resilient_mode"].default is False
+    assert parameters["resilient_config"].default is None
+
+
+@pytest.mark.parametrize("function", [connect_to_fluent, BaseSession.from_connection])
+def test_connecting_does_not_offer_resilient_options(function):
     parameters = inspect.signature(function).parameters
-    assert parameters["resilient_mode"].default is False
-    assert parameters["resilient_config"].default is None
+    assert "resilient_mode" not in parameters
+    assert "resilient_config" not in parameters
 
 
-def test_from_connection_accepts_resilient_options():
-    parameters = inspect.signature(BaseSession.from_connection).parameters
-    assert parameters["resilient_mode"].default is False
-    assert parameters["resilient_config"].default is None
-
-
-@pytest.mark.parametrize(
-    "method",
-    ["from_install", "from_container", "from_pim", "from_connection"],
-)
+@pytest.mark.parametrize("method", ["from_install", "from_container", "from_pim"])
 def test_session_factories_document_resilient_options(method):
     doc = inspect.getdoc(getattr(BaseSession, method))
     assert "resilient_mode : bool" in doc

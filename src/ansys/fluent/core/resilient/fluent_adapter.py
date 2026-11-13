@@ -134,8 +134,8 @@ class FluentAdapter(ResilientAdapter):
     def standby_launcher(self, session: Any) -> Callable[[], Any] | None:
         """Return a launcher that repeats the launch of a local Fluent session.
 
-        Only sessions launched locally by PyFluent are supported. For container,
-        remote, or connected sessions, pass ``PoolConfig(launch_kwargs=...)``.
+        Only sessions launched locally by PyFluent are supported. For container
+        or remote sessions, pass ``PoolConfig(launch_kwargs=...)``.
         """
         from ansys.fluent.core import launch_fluent
 
