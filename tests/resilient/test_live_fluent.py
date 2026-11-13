@@ -205,7 +205,7 @@ def test_solution_data_survives_a_kill_during_iteration(new_solver_session, tmp_
             # Start iterating at once, so that the kill lands during the solve
             # rather than during the automatic checkpoint before it.
             auto_checkpoint=False,
-            checkpoint=CheckpointConfig(directory=tmp_path),
+            checkpoint=_checkpoints(tmp_path),
             pool=PoolConfig(size=2),
         ),
         launched=True,

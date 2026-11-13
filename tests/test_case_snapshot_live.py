@@ -116,7 +116,6 @@ def test_a_snapshot_of_a_case_file_can_be_saved(new_solver_session, tmp_path):
     assert saved.read_bytes() == file.read_bytes()
 
 
-@pytest.mark.standalone
 def test_applying_to_a_resilient_session_can_be_rolled_back(
     new_solver_session, new_solver_session_wo_exit, tmp_path
 ):
@@ -128,16 +127,20 @@ def test_applying_to_a_resilient_session_can_be_rolled_back(
         _enable_on_new_session,
     )
 
+    # A container writes checkpoints to its working folder, the mounted host
+    # folder, which its standby container mounts too.
+    checkpoints = (
+        CheckpointConfig()
+        if pyfluent.config.launch_fluent_container
+        else CheckpointConfig(directory=tmp_path)
+    )
     source, target = new_solver_session, new_solver_session_wo_exit
     try:
         # As resilient_mode=True does for a session it launches, with a standby
         # that is kept up to date.
         _enable_on_new_session(
             target,
-            ResilientConfig(
-                checkpoint=CheckpointConfig(directory=tmp_path),
-                pool=PoolConfig(size=2),
-            ),
+            ResilientConfig(checkpoint=checkpoints, pool=PoolConfig(size=2)),
             launched=True,
         )
         (standby,) = target.resilient.pool.standbys
