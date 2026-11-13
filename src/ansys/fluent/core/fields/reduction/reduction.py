@@ -61,6 +61,8 @@ class Reduction(AbstractReduction):
             raise ValueError(f"Invalid location input: '{loc}'")
 
     def _validate_locations(self, locations):
+        if isinstance(locations, list) and not locations:
+            raise RuntimeError("No locations specified.")
         for loc in locations:
             if isinstance(loc, Iterable) and not isinstance(loc, (str, bytes)):
                 raise DisallowedValuesError("location", loc, list(loc))

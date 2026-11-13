@@ -22,14 +22,16 @@
 # SOFTWARE.
 
 from typing import Any
+from unittest.mock import Mock
 
+import numpy as np
 import pytest
 
 from ansys.fluent.core import FluentVersion
 from ansys.fluent.core._grpc_services.reduction_service import _locn_names_and_objs
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fields.reduction import Weight
+from ansys.fluent.core.fields.reduction import Reduction, Weight
 from ansys.fluent.core.fields.reduction import functional as reduction
 from ansys.units import VariableCatalog
 
@@ -450,6 +452,41 @@ def test_functional_reduction_import_compatibility(monkeypatch):
     assert reduction.area_average("Pressure", ["a", "b"]) == 16.0
 
 
+@pytest.mark.parametrize(
+    "method_name,args",
+    [("area", ()), ("area_average", ("AbsolutePressure",)), ("centroid", ())],
+)
+@pytest.mark.parametrize("ctxt", [None, object()], ids=["implicit", "explicit"])
+def test_reduction_empty_locations(method_name, args, ctxt):
+    service = Mock()
+    client = Reduction(service)
+
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
+        getattr(client, method_name)(*args, locations=[], ctxt=ctxt)
+
+    assert not service.mock_calls
+
+
+@pytest.mark.parametrize(
+    "method_name,args",
+    [("area", ()), ("area_average", ("AbsolutePressure",)), ("centroid", ())],
+)
+@pytest.mark.parametrize("ctxt", [None, object()], ids=["implicit", "explicit"])
+@pytest.mark.parametrize(
+    "locations",
+    [["inlet1"], ("inlet1",), np.array(["inlet1"])],
+    ids=["list", "tuple", "array"],
+)
+def test_reduction_nonempty_locations(method_name, args, ctxt, locations):
+    service = Mock()
+    result = object()
+    getattr(service, method_name).return_value = result
+    client = Reduction(service)
+
+    assert getattr(client, method_name)(*args, locations=locations, ctxt=ctxt) is result
+    getattr(service, method_name).assert_called_once_with(*args, locations, ctxt)
+
+
 def test_reductions(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ) -> None:
@@ -536,26 +573,26 @@ def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
 
     assert solver.fields.reduction.area(locations=["inlet1"])
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.area(locations=[], ctxt=solver)
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.area_average(
             expression="AbsolutePressure", locations=[], ctxt=solver
         )
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.centroid(locations=[], ctxt=solver)
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert solver.fields.reduction.area(locations=[])
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert solver.fields.reduction.area_average(
             expression="AbsolutePressure", locations=[]
         )
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert solver.fields.reduction.centroid(locations=[])
 
 
