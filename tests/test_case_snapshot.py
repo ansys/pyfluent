@@ -536,6 +536,21 @@ def test_a_resilient_session_is_checkpointed_after_apply(solver, resilient):
     assert checkpoints == ["case-snapshot"]
 
 
+def test_standbys_read_a_staged_file_before_it_is_deleted(solver, resilient, tmp_path):
+    target = solver("mount")
+    resilient(target)
+    staged_during_wait = []
+    target.resilient.wait_for_standbys = lambda: staged_during_wait.extend(
+        target.fake.env.client_dir.iterdir()
+    )
+    file = case_file(tmp_path / "setup.cas.h5", case("laminar"))
+    CaseSnapshot.from_file(file).apply_to(target)
+    # The copy staged in the container mount still existed while the standbys
+    # read it, and was removed afterwards.
+    assert len(staged_during_wait) == 1
+    assert list(target.fake.env.client_dir.iterdir()) == []
+
+
 def test_a_failed_resilient_checkpoint_is_reported(solver, resilient):
     target = solver()
     resilient(target, fail=True)

@@ -24,6 +24,7 @@
 """CaseSnapshot between live Fluent solver sessions."""
 
 from pathlib import Path
+import warnings
 
 import pytest
 
@@ -121,27 +122,45 @@ def test_applying_to_a_resilient_session_can_be_rolled_back(
 ):
     from ansys.fluent.core.resilient import (
         CheckpointConfig,
+        PoolConfig,
         ResilientConfig,
+        ResilientWarning,
         _enable_on_new_session,
     )
 
     source, target = new_solver_session, new_solver_session_wo_exit
     try:
-        # As resilient_mode=True does for a session it launches.
+        # As resilient_mode=True does for a session it launches, with a standby
+        # that is kept up to date.
         _enable_on_new_session(
             target,
-            ResilientConfig(checkpoint=CheckpointConfig(directory=tmp_path)),
+            ResilientConfig(
+                checkpoint=CheckpointConfig(directory=tmp_path),
+                pool=PoolConfig(size=2),
+            ),
             launched=True,
         )
+        (standby,) = target.resilient.pool.standbys
         for solver in (source, target):
             solver.settings.file.read_case(file_name=_elbow_case())
         source.settings.setup.models.viscous.model = "laminar"
+        snapshot = pyfluent.CaseSnapshot.from_session(source)
 
-        pyfluent.CaseSnapshot.from_session(source).apply_to(target)
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            snapshot.apply_to(target)
+            assert _viscous_model(target) == "laminar"
+            assert target.resilient.checkpoints[-1].name == "case-snapshot"
+            target.resilient.rollback("auto-read_case")
+            assert _viscous_model(target) == "k-omega"
+            assert target.resilient.wait_for_standbys(timeout=300)
+            assert _viscous_model(standby) == "k-omega"
 
-        assert _viscous_model(target) == "laminar"
-        assert target.resilient.checkpoints[-1].name == "case-snapshot"
-        target.resilient.rollback("auto-read_case")
-        assert _viscous_model(target) == "k-omega"
+            # The standby also reads the temporary case files, before they are
+            # deleted.
+            snapshot.apply_to(target, include_mesh=False)
+            assert target.resilient.wait_for_standbys(timeout=300)
+        assert _viscous_model(standby) == "laminar"
+        assert not [w for w in caught if issubclass(w.category, ResilientWarning)]
     finally:
         target.exit()

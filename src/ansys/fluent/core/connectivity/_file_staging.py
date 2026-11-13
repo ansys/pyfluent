@@ -261,6 +261,7 @@ def read_file(session: Any, read: Callable[[str], Any], file: Path) -> None:
     file = Path(file).resolve()
     if location is FileLocation.LOCAL:
         read(str(file))
+        _wait_for_standbys(session)
     elif location is FileLocation.MOUNT:
         client_dir, container_dir = container_mount(session)
         try:
@@ -268,16 +269,31 @@ def read_file(session: Any, read: Callable[[str], Any], file: Path) -> None:
         except ValueError:
             with _unique_copy(file, client_dir) as staged:
                 read(str(container_dir / staged.name))
+                _wait_for_standbys(session)
         else:
             read(str(container_dir.joinpath(*relative.parts)))
+            _wait_for_standbys(session)
     elif _UNIQUE_NAME.fullmatch(file.name):
         # The settings API uploads the file under its name before reading it.
         read(str(file))
+        _wait_for_standbys(session)
     else:
         # A file of the same name may already be on the server, and file
         # transfer services keep that one: upload under a unique name instead.
         with _unique_copy(file, None) as staged:
             read(str(staged))
+            _wait_for_standbys(session)
+
+
+def _wait_for_standbys(session: Any) -> None:
+    """Wait until resilient standbys of ``session`` also read the file.
+
+    Resilient mode repeats the read on its standby sessions in the background;
+    the file must still exist then.
+    """
+    wait = getattr(instance_attr(session, "resilient"), "wait_for_standbys", None)
+    if callable(wait):
+        wait()
 
 
 @contextmanager
