@@ -32,10 +32,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from ansys.fluent.core.resilient.engine import (
-    ResilientAdapter,
-    paths,
-)
+from ansys.fluent.core.resilient.engine import ResilientAdapter
 
 
 class FakeLeaf:
@@ -167,7 +164,14 @@ class FakeSettingsService:
             raise ConnectionError("failed to connect to all addresses; Socket closed")
 
     def _resolve(self, path):
-        return paths.resolve(self.settings, path) if path else self.settings
+        obj = self.settings
+        for name in path.split(".") if path else ():
+            try:
+                obj = getattr(obj, name)
+            except AttributeError as err:
+                # A server rejects an unknown path, but the connection is alive.
+                raise LookupError(f"Cannot resolve {path!r}.") from err
+        return obj
 
     def set_var(self, path, value):
         self._check()

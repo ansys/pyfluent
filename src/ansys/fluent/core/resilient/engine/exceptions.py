@@ -32,10 +32,6 @@ class ResilientError(RuntimeError):
     """Base class for errors raised by the resilient engine itself."""
 
 
-class PathResolutionError(ResilientError, LookupError):
-    """Raised when a settings path cannot be resolved on the live session."""
-
-
 class CheckpointError(ResilientError):
     """Raised when a checkpoint cannot be written, found, or restored."""
 

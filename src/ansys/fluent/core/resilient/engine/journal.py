@@ -26,8 +26,8 @@ The journal records *operations* (value writes, commands and object changes),
 not copies of the server state. It serves two purposes:
 
 * **undo / redo** of value writes, using the value read just before each write;
-* **replay** onto a standby session after a failover, starting from the newest
-  checkpoint.
+* **catching up** a standby session that is not up to date with the active
+  session, starting from the newest checkpoint.
 """
 
 from __future__ import annotations

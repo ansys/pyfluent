@@ -22,7 +22,8 @@
 
 """Resilient mode for Fluent solver sessions.
 
-Enable it with ``resilient_mode=True`` on any launch or connect function. Ordinary
+Enable it with ``resilient_mode=True`` on any function that launches a solver
+session. Ordinary
 PyFluent code then gains:
 
 * a journal of settings writes with undo and redo;
@@ -61,7 +62,6 @@ from ansys.fluent.core.resilient.engine import (
     FailoverError,
     Journal,
     ObjectOp,
-    PathResolutionError,
     PoolConfig,
     ResilientAdapter,
     ResilientConfig,
@@ -99,7 +99,7 @@ def _unsupported_session_message(session: Any) -> str | None:
 def _enable_on_new_session(
     session: Any, config: ResilientConfig | None, *, launched: bool
 ) -> Any:
-    """Apply ``resilient_mode=True`` passed to a launch or connect function.
+    """Apply ``resilient_mode=True`` passed to a launch function.
 
     ``launched`` is ``True`` for a session started by the call, whose journal then
     covers its whole history.
@@ -132,7 +132,6 @@ __all__ = [
     "FluentAdapter",
     "Journal",
     "ObjectOp",
-    "PathResolutionError",
     "PoolConfig",
     "ResilientAdapter",
     "ResilientConfig",

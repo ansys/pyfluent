@@ -23,8 +23,9 @@
 """Behavior of a resilient session, driven through its settings service."""
 
 import sys
+import time
 
-from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession
+from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession, service_of
 import pytest
 
 from ansys.fluent.core.resilient.engine import (
@@ -275,7 +276,7 @@ def test_structural_changes_are_journaled():
     assert (op.method, op.path, op.args) == ("create", "setup", ("new_zone",))
 
 
-# -- failover -------------------------------------------------------------------------
+# -- standby pools --------------------------------------------------------------------
 
 
 def _session_with_iterate(**kwargs):
@@ -296,6 +297,119 @@ def _pool_session(tmp_path, *, size=2, **config):
     return session, events, adapter
 
 
+def _wait_for(condition, timeout=5.0):
+    deadline = time.monotonic() + timeout
+    while not condition():
+        assert time.monotonic() < deadline, "timed out"
+        time.sleep(0.01)
+
+
+# -- keeping standbys up to date --------------------------------------------------
+
+
+def test_changes_that_succeed_are_applied_to_every_standby(tmp_path):
+    session, _, adapter = _pool_session(tmp_path, size=3)
+    standbys = session.resilient.pool.standbys
+    _set(session, "setup.intensity", 0.4)
+    _set(session, "setup.model", "laminar")
+    session._settings_service.create("setup", "new_zone")
+    # iterate sets the intensity to 0.9 on the session that runs it.
+    session._settings_service.execute_cmd("", "iterate", iter_count=2)
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert len(standbys) == 2
+    for standby in standbys:
+        assert standby.settings.setup.model.value == "laminar"
+        assert standby.settings.setup.intensity.value == 0.9
+        assert hasattr(standby.settings.setup, "new_zone")
+
+
+def test_failed_calls_and_output_commands_are_not_applied_to_standbys(tmp_path):
+    session, _, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+    written = []
+    session.settings.commands["write_case"] = lambda **kwargs: written.append(kwargs)
+
+    def reject(value):
+        raise RuntimeError("Value is not in range.")
+
+    session.settings.setup.intensity.reject = reject
+    with pytest.raises(RuntimeError, match="not in range"):
+        _set(session, "setup.intensity", 2.0)
+    session._settings_service.execute_cmd("", "write_case", file_name="a.cas.h5")
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert written == [{"file_name": "a.cas.h5"}]
+    assert service_of(standby).calls == []
+
+
+def test_undo_redo_and_rollback_are_applied_to_standbys(tmp_path):
+    session, _, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+    _set(session, "setup.intensity", 0.4)
+    session.resilient.checkpoint("base")
+    _set(session, "setup.intensity", 0.7)
+    session.resilient.undo()
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert standby.settings.setup.intensity.value == 0.4
+    session.resilient.redo()
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert standby.settings.setup.intensity.value == 0.7
+    session.resilient.rollback("base")
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert standby.settings.setup.intensity.value == 0.4
+    assert standby.settings.file.reads
+
+
+def test_an_out_of_sync_standby_is_back_in_sync_at_the_next_checkpoint(tmp_path):
+    session, _, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+    _make_out_of_sync(session, standby)
+    _set(session, "setup.intensity", 0.3)
+    session.resilient.checkpoint("later")
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert standby.settings.setup.model.value == "laminar"
+    assert standby.settings.setup.intensity.value == 0.3
+    # Later changes are applied again.
+    _set(session, "setup.intensity", 0.6)
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert standby.settings.setup.intensity.value == 0.6
+
+
+def test_an_interrupted_solve_puts_standbys_out_of_sync_until_a_checkpoint(tmp_path):
+    session, _, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+
+    def interrupted(**kwargs):
+        raise RuntimeError("()")
+
+    session.settings.commands["iterate"] = interrupted
+    session._settings_service.execute_cmd("", "iterate", iter_count=100)
+    # It stopped part way, so it is not repeated on the standby.
+    assert not session.resilient.wait_for_standbys(timeout=5)
+    assert "iterate" not in [call[2] for call in service_of(standby).calls]
+    session.resilient.checkpoint("after")
+    assert session.resilient.wait_for_standbys(timeout=5)
+
+
+def test_a_replacement_standby_catches_up(tmp_path):
+    session, _, adapter = _pool_session(tmp_path)
+    _set(session, "setup.model", "laminar")
+    session.crash()
+    with pytest.warns(ResilientFailoverWarning):
+        session._settings_service.get_var("setup.model")
+    # A replacement standby is launched in the background, then caught up.
+    _wait_for(lambda: len(session.resilient.pool.standbys) == 1)
+    assert session.resilient.wait_for_standbys(timeout=5)
+    replacement = adapter.launched[1]
+    assert replacement.settings.setup.model.value == "laminar"
+    # It is kept up to date from then on.
+    _set(session, "setup.intensity", 0.2)
+    assert session.resilient.wait_for_standbys(timeout=5)
+    assert replacement.settings.setup.intensity.value == 0.2
+
+
+# -- failover ---------------------------------------------------------------------
+
+
 def test_crash_without_standbys_raises_the_original_error():
     session, _ = _enable()
     session.crash()
@@ -303,47 +417,117 @@ def test_crash_without_standbys_raises_the_original_error():
         _set(session, "setup.intensity", 0.5)
 
 
-def test_crash_fails_over_and_replays_the_journal(tmp_path):
+def test_crash_fails_over_to_an_up_to_date_standby(tmp_path):
     session, events, adapter = _pool_session(tmp_path)
     _set(session, "setup.intensity", 0.4)
     _set(session, "setup.model", "laminar")
     session.crash()
-    with pytest.warns(ResilientFailoverWarning):
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError):
         _set(session, "setup.intensity", 0.6)
     standby = session.resilient.active_session
     assert standby is adapter.launched[0]
+    # The standby has the state from before the failed write. It was kept up to
+    # date, so it was not rebuilt from a checkpoint.
     assert standby.settings.setup.model.value == "laminar"
-    assert standby.settings.setup.intensity.value == 0.6
+    assert standby.settings.setup.intensity.value == 0.4
+    assert standby.settings.file.reads == []
     assert session.resilient.last_outcome.failed_over
+    assert not session.resilient.last_outcome.ok
     assert events[-1].kind is EventKind.FAILOVER
     # Both the original and the new session route through the same proxy.
     assert session._settings_service is standby._settings_service
     assert standby.resilient is session.resilient
+    # Running the write again applies it on the standby.
+    _set(session, "setup.intensity", 0.6)
+    assert standby.settings.setup.intensity.value == 0.6
 
 
-def test_failover_starts_from_the_newest_checkpoint(tmp_path):
+def _make_out_of_sync(session, standby):
+    """Make ``standby`` miss a write that succeeds on ``session``."""
+
+    def reject(value):
+        raise RuntimeError("rejected on the standby")
+
+    standby.settings.setup.model.reject = reject
+    with pytest.warns(ResilientWarning, match="out of sync"):
+        _set(session, "setup.model", "laminar")
+        assert not session.resilient.wait_for_standbys(timeout=5)
+    standby.settings.setup.model.reject = None
+
+
+def test_an_out_of_sync_standby_is_rebuilt_from_the_newest_checkpoint(tmp_path):
     session, _, adapter = _pool_session(tmp_path)
-    session._settings_service.execute_cmd("", "iterate")
-    _set(session, "setup.model", "laminar")
+    standby = adapter.launched[0]
+    session.resilient.checkpoint("base")
+    _make_out_of_sync(session, standby)
     session.crash()
     with pytest.warns(ResilientFailoverWarning):
-        _set(session, "setup.intensity", 0.2)
-    standby = session.resilient.active_session
-    # Restored from the pre-iterate checkpoint, then iterate and the later write
-    # were replayed.
+        session._settings_service.get_var("setup.model")
+    assert session.resilient.active_session is standby
+    # Restored from the checkpoint, then the later write was replayed.
     assert standby.settings.file.reads
     assert standby.settings.setup.model.value == "laminar"
-    assert standby.settings.setup.intensity.value == 0.2
 
 
-def test_failover_of_a_failed_command_retries_it_on_the_standby(tmp_path):
+def test_a_command_that_hit_a_dead_server_is_not_repeated(tmp_path):
     session, _, adapter = _pool_session(tmp_path)
     session.crash()
-    with pytest.warns(ResilientFailoverWarning):
-        result = session._settings_service.execute_cmd("", "iterate", iter_count=7)
-    assert result == 7
-    assert session.resilient.last_outcome.failed_over
-    assert session.resilient.active_session is adapter.launched[0]
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError) as info:
+        session._settings_service.execute_cmd("", "iterate", iter_count=7)
+    standby = session.resilient.active_session
+    assert standby is adapter.launched[0]
+    assert "iterate" not in [call[2] for call in service_of(standby).calls]
+    outcome = session.resilient.last_outcome
+    assert outcome.failed_over and not outcome.ok
+    if sys.version_info >= (3, 11):
+        assert "not repeated" in info.value.__notes__[-1]
+    # Running the command again runs it on the standby.
+    assert session._settings_service.execute_cmd("", "iterate", iter_count=7) == 7
+
+
+def _crash_on(target, crashed):
+    """Mimic a call that makes the server of ``target`` fail."""
+    crashed.append(target)
+    target.crash()
+    raise ConnectionError("failed to connect to all addresses; Socket closed")
+
+
+def test_a_command_that_crashes_the_server_does_not_crash_the_standby(tmp_path):
+    session, events, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+    crashed = []
+    # The command crashes whichever server runs it.
+    for target in (session, standby):
+        target.settings.commands["poison"] = lambda target=target: _crash_on(
+            target, crashed
+        )
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError) as info:
+        session._settings_service.execute_cmd("", "poison")
+    assert crashed == [session]
+    assert session.resilient.active_session is standby
+    assert standby.serving
+    assert [e.kind for e in events].count(EventKind.FAILOVER) == 1
+    if sys.version_info >= (3, 11):
+        assert "not repeated" in info.value.__notes__[-1]
+    # The standby keeps serving.
+    _set(session, "setup.intensity", 0.3)
+    assert standby.settings.setup.intensity.value == 0.3
+
+
+def test_a_write_that_crashes_the_server_does_not_crash_the_standby(tmp_path):
+    session, _, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+    crashed = []
+    for target in (session, standby):
+        target.settings.setup.intensity.reject = lambda value, target=target: _crash_on(
+            target, crashed
+        )
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError):
+        _set(session, "setup.intensity", 0.7)
+    assert crashed == [session]
+    assert session.resilient.active_session is standby
+    assert standby.serving
+    assert standby.settings.setup.intensity.value == 0.05
 
 
 def test_read_on_a_dead_server_fails_over_and_is_repeated(tmp_path):
@@ -422,7 +606,7 @@ def test_exiting_the_session_exits_the_standbys(tmp_path):
 def test_after_failover_exiting_the_original_session_exits_the_pool(tmp_path):
     session, _, adapter = _pool_session(tmp_path)
     session.crash()
-    with pytest.warns(ResilientFailoverWarning):
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError):
         _set(session, "setup.intensity", 0.6)
     promoted = session.resilient.active_session
     # The dead original session is left for the user to exit.

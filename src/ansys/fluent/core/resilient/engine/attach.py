@@ -153,6 +153,27 @@ class ResilientSession:
         """
         self._controller.on_event(listener)
 
+    def wait_for_standbys(self, timeout: float | None = None) -> bool:
+        """Wait until the standby sessions applied every change made so far.
+
+        Changes that succeed on the active session are applied to the standbys in
+        the background. A failover already waits for them, so calling this is
+        only needed to know that the standbys are up to date.
+
+        Parameters
+        ----------
+        timeout : float, optional
+            Maximum time to wait, in seconds. The default is ``None``, which
+            waits as long as needed.
+
+        Returns
+        -------
+        bool
+            Whether every standby applied the changes in time and is in sync with
+            the active session.
+        """
+        return self._controller.wait_for_standbys(timeout)
+
     def disable(self) -> None:
         """Turn resilient mode off and exit the standby sessions."""
         self._controller.disable()

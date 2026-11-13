@@ -48,53 +48,72 @@ import_file_name = examples.download_file(
 # Launch Fluent in resilient mode
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver = pyfluent.Solver.from_install(
+solver_session = pyfluent.Solver.from_install(
     precision=pyfluent.Precision.DOUBLE,
     processor_count=2,
     resilient_mode=True,
 )
-solver.resilient.on_event(lambda event: print(f"[{event.kind.value}] {event.message}"))
+resilient = solver_session.resilient
+resilient.on_event(lambda event: print(f"[{event.kind.value}] {event.message}"))
 
 # %%
 # Read the mesh
 # ~~~~~~~~~~~~~
 
-solver.settings.file.read_mesh(file_name=import_file_name)
+solver_session.settings.file.read_mesh(file_name=import_file_name)
 
 # %%
 # Set up boundary conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver.settings.setup.models.energy.enabled = True
-cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+# Built-in solver objects:
+energy = pyfluent.solver.Energy(settings_source=solver_session)
+cold_inlet = pyfluent.solver.VelocityInlet(
+    settings_source=solver_session, name="cold-inlet"
+)
+hot_inlet = pyfluent.solver.VelocityInlet(
+    settings_source=solver_session, name="hot-inlet"
+)
+# Aliasing reused objects:
+cold_turbulence = cold_inlet.turbulence
+turbulent_intensity = cold_turbulence.turbulent_intensity
+hot_turbulence = hot_inlet.turbulence
+
+energy.enabled = True
 cold_inlet.momentum.velocity_magnitude.value = 0.4
-cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-cold_inlet.turbulence.turbulent_intensity = 0.05
-cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+cold_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+turbulent_intensity.set_state(0.05)
+cold_turbulence.hydraulic_diameter = "4 [in]"
 cold_inlet.thermal.temperature.value = 293.15
 
-hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 hot_inlet.momentum.velocity_magnitude.value = 1.2
-hot_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+hot_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+hot_turbulence.hydraulic_diameter = "1 [in]"
 hot_inlet.thermal.temperature.value = 313.15
 
 # %%
 # Undo and redo a settings change
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Try a higher turbulent intensity at the cold inlet. Undo restores the 0.05 set
+# above, and redo applies 0.1 again. A second undo keeps the setup at 0.05 for
+# the solve.
 
-cold_inlet.turbulence.turbulent_intensity = 0.05
-solver.resilient.undo()
-print("after undo:", cold_inlet.turbulence.turbulent_intensity())
-solver.resilient.redo()
-print("after redo:", cold_inlet.turbulence.turbulent_intensity())
+turbulent_intensity.set_state(0.1)
+print("changed:", turbulent_intensity())
+resilient.undo()
+print("after undo:", turbulent_intensity())
+resilient.redo()
+print("after redo:", turbulent_intensity())
+resilient.undo()
+print("after a second undo:", turbulent_intensity())
 
 # %%
 # Initialize and checkpoint
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver.settings.solution.initialization.hybrid_initialize()
-solver.resilient.checkpoint("initialized")
+initialization = pyfluent.solver.Initialization(settings_source=solver_session)
+initialization.hybrid_initialize()
+resilient.checkpoint("initialized")
 
 # %%
 # Solve
@@ -103,17 +122,18 @@ solver.resilient.checkpoint("initialized")
 # before it runs. If the solve failed, the session would be restored to that
 # checkpoint and the error raised.
 
-solver.settings.solution.run_calculation.iterate(iter_count=100)
-print("checkpoints:", [checkpoint.name for checkpoint in solver.resilient.checkpoints])
+run_calculation = pyfluent.solver.RunCalculation(settings_source=solver_session)
+run_calculation.iterate(iter_count=100)
+print("checkpoints:", [checkpoint.name for checkpoint in resilient.checkpoints])
 
 # %%
 # Roll back to the initialized state
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver.resilient.rollback("initialized")
+resilient.rollback("initialized")
 
 # %%
 # Exit
 # ~~~~
 
-solver.exit()
+solver_session.exit()

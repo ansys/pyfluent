@@ -67,7 +67,7 @@ class ResilientSettingsService:
     # -- state-changing calls ----------------------------------------------------
 
     def set_var(self, path: str, value: Any) -> None:
-        """Set a value with recovery, journaling and failover."""
+        """Set a value with journaling and failover."""
         self._controller.apply_set(path, value)
 
     def execute_cmd(self, path: str, command: str, **kwds: Any) -> Any:
