@@ -29,7 +29,7 @@ import logging
 import sys
 import threading
 import time
-from typing import Any, Callable, Iterator
+from typing import Any, Callable, Iterator, NoReturn
 import uuid
 import warnings
 import weakref
@@ -227,9 +227,7 @@ class ResilientController:
         try:
             outcome = self._set(self._inner, path, value)
         except Exception as err:  # noqa: BLE001
-            outcome = self._retry_after_failover(
-                err, session, lambda inner: self._set(inner, path, value)
-            )
+            self._fail_over_without_repeating(err, session, path)
         self.last_outcome = outcome
 
     @staticmethod
@@ -308,16 +306,7 @@ class ResilientController:
             self.last_outcome = StepOutcome(path=full, ok=True, result="interrupted")
             return None
         if cls.catastrophic:
-            if self.pool is None:
-                _add_note(err, self._no_pool_note())
-                raise err
-            inner = self._failover(cls, session)
-            result = inner.execute_cmd(path, command, **kwds)
-            self._record_command(path, command, kwds, checkpoint)
-            self.last_outcome = StepOutcome(
-                path=full, ok=True, result=brief(result), failed_over=True
-            )
-            return result
+            self._fail_over_without_repeating(err, session, full, cls)
         outcome = StepOutcome(path=full, ok=False, error=str(err))
         if self.config.auto_rollback and checkpoint is not None:
             try:
@@ -368,7 +357,7 @@ class ResilientController:
         try:
             outcome = call(self._inner)
         except Exception as err:  # noqa: BLE001
-            outcome = self._retry_after_failover(err, session, call)
+            self._fail_over_without_repeating(err, session, path, method=method)
         self.last_outcome = outcome
 
     # -- reads ---------------------------------------------------------------------
@@ -408,18 +397,52 @@ class ResilientController:
             "failover."
         )
 
-    def _retry_after_failover(
-        self, err: Exception, session: Any, retry: Callable[[Any], StepOutcome]
-    ) -> StepOutcome:
-        cls = self._classifier.classify(err, session)
+    def _fail_over_without_repeating(
+        self,
+        err: Exception,
+        session: Any,
+        path: str,
+        cls: Classification | None = None,
+        *,
+        method: str | None = None,
+    ) -> NoReturn:
+        """Fail over after a write or command hit a dead server, then raise ``err``.
+
+        The call is not repeated on the standby: if the call is what made the
+        server fail, repeating it would make the standby fail too. The standby
+        takes over with the state from before the call, because the journal
+        replayed onto it records only calls that succeeded.
+
+        Raises
+        ------
+        Exception
+            ``err``, with a note saying what resilient mode did.
+        FailoverError
+            If no standby can take over.
+        """
+        if cls is None:
+            cls = self._classifier.classify(err, session)
         if not cls.catastrophic:
             raise err
         if self.pool is None:
             _add_note(err, self._no_pool_note())
             raise err
-        outcome = retry(self._failover(cls, session))
-        outcome.failed_over = True
-        return outcome
+        self._failover(cls, session)
+        product = self.adapter.product_name
+        call = self._display_path(path)
+        if method is not None:
+            call = f"{method} {call}"
+        _add_note(
+            err,
+            f"Resilient mode: the {product} server failed during {call}. A "
+            "standby session took over with the state from before this call. The "
+            "call was not repeated, because it may be what made "
+            f"{product} fail. Run it again to apply it.",
+        )
+        self.last_outcome = StepOutcome(
+            path=path, ok=False, error=str(err), failed_over=True
+        )
+        raise err
 
     def _failover(self, cls: Classification, failed: Any) -> Any:
         """Replace the dead session ``failed`` with a standby; return its service.

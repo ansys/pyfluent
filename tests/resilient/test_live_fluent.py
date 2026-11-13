@@ -122,12 +122,14 @@ def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_pat
     # killed Fluent.
     with contextlib.suppress(subprocess.CalledProcessError):
         solver.force_exit()
+    # The next call fails over. A read is repeated on the standby.
     with pytest.warns(ResilientFailoverWarning):
-        turbulent_intensity.set_state(0.1)
+        assert velocity.value() == pytest.approx(0.5)
     assert solver.resilient.active_session is not solver
     assert EventKind.FAILOVER in [e.kind for e in events]
-    # The write made after the checkpoint was replayed onto the standby.
-    assert velocity.value() == pytest.approx(0.5)
+    # The write made after the checkpoint was replayed onto the standby, which
+    # now serves new writes.
+    turbulent_intensity.set_state(0.1)
     assert turbulent_intensity() == pytest.approx(0.1)
 
 
@@ -156,13 +158,13 @@ def test_data_recovery_after_the_fluent_process_is_killed(new_solver_session, tm
     checkpoint = solver.resilient.checkpoint("converged")
     assert checkpoint.include_data
 
-    # Kill Fluent, then trigger failover with the next call on the main thread.
+    # Kill Fluent, then trigger failover with a read on the main thread.
     # On Windows, Fluent's cleanup script can report a failure even though it
     # killed Fluent.
     with contextlib.suppress(subprocess.CalledProcessError):
         solver.force_exit()
     with pytest.warns(ResilientFailoverWarning):
-        turbulent_intensity.set_state(0.1)
+        turbulent_intensity()
     assert solver.resilient.active_session is not solver
     # The standby reopened the checkpoint with its data, so the recovered session
     # holds valid solution data, not an empty, freshly read case. Services other

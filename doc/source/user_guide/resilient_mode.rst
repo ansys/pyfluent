@@ -122,9 +122,15 @@ Failover needs at least one warm standby session:
 
 ``PoolConfig.size`` counts the active session, so ``size=2`` launches one
 standby with the same launch arguments as the active session. If the active
-session dies during a settings write or command, your script continues on a
-standby session, resuming from the latest checkpoint, and a
-:class:`~ansys.fluent.core.resilient.ResilientFailoverWarning` is emitted.
+session dies, the next settings call fails over: a standby session takes over,
+rebuilt from the latest checkpoint and the settings calls that succeeded since,
+and a :class:`~ansys.fluent.core.resilient.ResilientFailoverWarning` is emitted.
+A read is then repeated on the standby, so your script continues.
+
+A write or command that was running when the session died is not repeated on
+the standby, because it may be what made Fluent fail. Its original error is
+raised with a note, and the standby has the state from before that call. Run
+the call again to apply it on the standby.
 
 Keep these points in mind:
 
@@ -132,8 +138,6 @@ Keep these points in mind:
   checkpoint; without one, the standby starts from an empty session.
 * Failover reroutes ``solver.settings``. Use ``solver.resilient.active_session``
   to reach other services, such as field data, of the session now serving.
-* If a call itself caused the crash, it does not succeed after failover and its
-  error is raised.
 * Standbys are launched automatically for local standalone sessions. For
   container, PIM or remote sessions, pass ``PoolConfig.launch_kwargs`` or
   ``PoolConfig.launcher``.

@@ -24,7 +24,7 @@
 
 import sys
 
-from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession
+from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession, service_of
 import pytest
 
 from ansys.fluent.core.resilient.engine import (
@@ -308,17 +308,22 @@ def test_crash_fails_over_and_replays_the_journal(tmp_path):
     _set(session, "setup.intensity", 0.4)
     _set(session, "setup.model", "laminar")
     session.crash()
-    with pytest.warns(ResilientFailoverWarning):
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError):
         _set(session, "setup.intensity", 0.6)
     standby = session.resilient.active_session
     assert standby is adapter.launched[0]
+    # The standby has the state from before the failed write.
     assert standby.settings.setup.model.value == "laminar"
-    assert standby.settings.setup.intensity.value == 0.6
+    assert standby.settings.setup.intensity.value == 0.4
     assert session.resilient.last_outcome.failed_over
+    assert not session.resilient.last_outcome.ok
     assert events[-1].kind is EventKind.FAILOVER
     # Both the original and the new session route through the same proxy.
     assert session._settings_service is standby._settings_service
     assert standby.resilient is session.resilient
+    # Running the write again applies it on the standby.
+    _set(session, "setup.intensity", 0.6)
+    assert standby.settings.setup.intensity.value == 0.6
 
 
 def test_failover_starts_from_the_newest_checkpoint(tmp_path):
@@ -326,24 +331,75 @@ def test_failover_starts_from_the_newest_checkpoint(tmp_path):
     session._settings_service.execute_cmd("", "iterate")
     _set(session, "setup.model", "laminar")
     session.crash()
-    with pytest.warns(ResilientFailoverWarning):
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError):
         _set(session, "setup.intensity", 0.2)
     standby = session.resilient.active_session
-    # Restored from the pre-iterate checkpoint, then iterate and the later write
-    # were replayed.
+    # Restored from the pre-iterate checkpoint, then iterate (which sets the
+    # intensity to 0.9) and the later write were replayed.
     assert standby.settings.file.reads
     assert standby.settings.setup.model.value == "laminar"
-    assert standby.settings.setup.intensity.value == 0.2
+    assert standby.settings.setup.intensity.value == 0.9
 
 
-def test_failover_of_a_failed_command_retries_it_on_the_standby(tmp_path):
+def test_a_command_that_hit_a_dead_server_is_not_repeated(tmp_path):
     session, _, adapter = _pool_session(tmp_path)
     session.crash()
-    with pytest.warns(ResilientFailoverWarning):
-        result = session._settings_service.execute_cmd("", "iterate", iter_count=7)
-    assert result == 7
-    assert session.resilient.last_outcome.failed_over
-    assert session.resilient.active_session is adapter.launched[0]
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError) as info:
+        session._settings_service.execute_cmd("", "iterate", iter_count=7)
+    standby = session.resilient.active_session
+    assert standby is adapter.launched[0]
+    assert "iterate" not in [call[2] for call in service_of(standby).calls]
+    outcome = session.resilient.last_outcome
+    assert outcome.failed_over and not outcome.ok
+    if sys.version_info >= (3, 11):
+        assert "not repeated" in info.value.__notes__[-1]
+    # Running the command again runs it on the standby.
+    assert session._settings_service.execute_cmd("", "iterate", iter_count=7) == 7
+
+
+def _crash_on(target, crashed):
+    """Mimic a call that makes the server of ``target`` fail."""
+    crashed.append(target)
+    target.crash()
+    raise ConnectionError("failed to connect to all addresses; Socket closed")
+
+
+def test_a_command_that_crashes_the_server_does_not_crash_the_standby(tmp_path):
+    session, events, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+    crashed = []
+    # The command crashes whichever server runs it.
+    for target in (session, standby):
+        target.settings.commands["poison"] = lambda target=target: _crash_on(
+            target, crashed
+        )
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError) as info:
+        session._settings_service.execute_cmd("", "poison")
+    assert crashed == [session]
+    assert session.resilient.active_session is standby
+    assert standby.serving
+    assert [e.kind for e in events].count(EventKind.FAILOVER) == 1
+    if sys.version_info >= (3, 11):
+        assert "not repeated" in info.value.__notes__[-1]
+    # The standby keeps serving.
+    _set(session, "setup.intensity", 0.3)
+    assert standby.settings.setup.intensity.value == 0.3
+
+
+def test_a_write_that_crashes_the_server_does_not_crash_the_standby(tmp_path):
+    session, _, adapter = _pool_session(tmp_path)
+    standby = adapter.launched[0]
+    crashed = []
+    for target in (session, standby):
+        target.settings.setup.intensity.reject = lambda value, target=target: _crash_on(
+            target, crashed
+        )
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError):
+        _set(session, "setup.intensity", 0.7)
+    assert crashed == [session]
+    assert session.resilient.active_session is standby
+    assert standby.serving
+    assert standby.settings.setup.intensity.value == 0.05
 
 
 def test_read_on_a_dead_server_fails_over_and_is_repeated(tmp_path):
@@ -422,7 +478,7 @@ def test_exiting_the_session_exits_the_standbys(tmp_path):
 def test_after_failover_exiting_the_original_session_exits_the_pool(tmp_path):
     session, _, adapter = _pool_session(tmp_path)
     session.crash()
-    with pytest.warns(ResilientFailoverWarning):
+    with pytest.warns(ResilientFailoverWarning), pytest.raises(ConnectionError):
         _set(session, "setup.intensity", 0.6)
     promoted = session.resilient.active_session
     # The dead original session is left for the user to exit.

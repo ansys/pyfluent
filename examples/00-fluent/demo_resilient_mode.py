@@ -228,11 +228,15 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
             # it killed Fluent.
             with contextlib.suppress(subprocess.CalledProcessError):
                 solver.force_exit()
-            step("Change the hot-inlet velocity on the session that was just killed.")
-            hot_velocity.value = 1.0
+            step(
+                "Read the cold-inlet velocity from the session that was just killed. "
+                "A standby takes over and the read is repeated on it."
+            )
+            show("cold-inlet velocity (replayed)", cold_velocity.value())
             standby = resilient.active_session
             show("served by another Fluent session", standby is not solver)
-            show("cold-inlet velocity (replayed)", cold_velocity.value())
+            step("Change the hot-inlet velocity. The standby applies it.")
+            hot_velocity.value = 1.0
             show("hot-inlet velocity", hot_velocity.value())
             step("Iterate on the standby.")
             run_calculation.iterate(iter_count=10)
