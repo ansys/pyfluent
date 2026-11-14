@@ -183,7 +183,7 @@ class ReductionService(ServiceProtocol):
 
     def volume_average(self, expression, locations, ctxt=None) -> Any:
         """Get volume average."""
-        request = self._make_request("VolumeRequest", locations, ctxt, expression)
+        request = self._make_request("VolumeAveRequest", locations, ctxt, expression)
         response = self._stub.VolumeAve(request, metadata=self._metadata)
         return _convert_variant_to_value(response.value)
 
