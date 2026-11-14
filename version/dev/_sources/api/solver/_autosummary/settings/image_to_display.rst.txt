@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _image_to_display:
+
+image_to_display
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.image_to_display
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`lic_item <lic_item>`      'child_object_type' of lic.
+
+:ref:`olic_item <olic_item>`   'child_object_type' of olic.
+
+============================   ============================
+

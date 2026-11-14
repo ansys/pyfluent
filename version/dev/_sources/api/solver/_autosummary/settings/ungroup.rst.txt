@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _ungroup:
+
+ungroup
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.ungroup
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   =======================
+
+Argument                                     Summary
+
+==========================   =======================
+:ref:`surface <surface_5>`   The surface to ungroup.
+
+==========================   =======================
+
+.. rubric:: Included in:
+
+====================================   ====================================================================
+
+Parent                                                                                              Summary
+
+====================================   ====================================================================
+:ref:`group_surface <group_surface>`   Provides access to creating new group and ungroup existing surfaces.
+
+====================================   ====================================================================
+

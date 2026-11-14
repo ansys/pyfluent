@@ -1,0 +1,21 @@
+:orphan:
+
+.. _power_law_model_child:
+
+power_law_model_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.power_law_model_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================================
+
+Parent                                                                          Summary
+
+========================================   ============================================
+:ref:`power_law_model <power_law_model>`       Constants C0 and C1 for power law model.
+
+========================================   ============================================
+

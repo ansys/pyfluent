@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _user_defined_comp_item:
+
+user_defined_comp_item
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.user_defined_comp_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================   ======================
+
+Attribute                             Summary
+
+====================   ======================
+:ref:`name <name_7>`            Species Name.
+
+:ref:`mf <mf>`         Species Mass Fraction.
+
+====================   ======================
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`user_defined_comp <user_defined_comp>`   User Defined Composition.
+
+============================================   =========================
+

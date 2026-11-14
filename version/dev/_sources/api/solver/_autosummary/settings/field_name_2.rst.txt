@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _field_name_2:
+
+field_name
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.field_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ====================================
+
+Parent                                                                                    Summary
+
+==========================================================   ====================================
+:ref:`usd_export_via_connector <usd_export_via_connector>`   Export data for Omniverse rendering.
+
+==========================================================   ====================================
+

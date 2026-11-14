@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _viscous_terms:
+
+viscous_terms
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.viscous_terms
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =================================================
+
+Parent                                                       Summary
+
+================   =================================================
+:ref:`fmg <fmg>`   The set full-multigrid for initialization object.
+
+================   =================================================
+

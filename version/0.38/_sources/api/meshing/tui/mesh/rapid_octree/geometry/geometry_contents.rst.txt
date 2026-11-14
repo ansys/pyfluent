@@ -1,0 +1,14 @@
+.. _ref_meshing_tui_mesh_rapid_octree_geometry:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_261.main_menu.mesh.rapid_octree.geometry
+   :members: bounding_box, distribute_geometry, input_object, reference_size, reset_bounding_box, volume_specification
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

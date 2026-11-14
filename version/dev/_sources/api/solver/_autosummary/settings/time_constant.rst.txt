@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _time_constant:
+
+time_constant
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.time_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =================================
+
+Parent                                               Summary
+
+========================   =================================
+:ref:`cross <cross>`         Cross model viscosity settings.
+
+:ref:`carreau <carreau>`   Carreau model viscosity settings.
+
+========================   =================================
+

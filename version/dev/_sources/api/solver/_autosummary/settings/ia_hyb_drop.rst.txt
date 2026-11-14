@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _ia_hyb_drop:
+
+ia_hyb_drop
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.ia_hyb_drop
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`intf_area_item <intf_area_item>`   'child_object_type' of intf_area.
+
+======================================   =================================
+

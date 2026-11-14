@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _observable_1:
+
+observable
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.observable_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`unary_operation_item <unary_operation_item>`   'child_object_type' of unary_operation.
+
+==================================================   =======================================
+

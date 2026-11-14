@@ -1,0 +1,39 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _force_1_item:
+
+force_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.force_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ====================
+
+Attribute                                   Summary
+
+============================   ====================
+:ref:`name <name_5>`            Name of the object.
+
+:ref:`walls <walls>`           Wall zone name list.
+
+:ref:`location <location_4>`            The object.
+
+:ref:`vector <vector_2>`              Force vector.
+
+============================   ====================
+
+.. rubric:: Included in:
+
+======================   =============================
+
+Parent                                         Summary
+
+======================   =============================
+:ref:`force <force_1>`   Force observable definitions.
+
+======================   =============================
+

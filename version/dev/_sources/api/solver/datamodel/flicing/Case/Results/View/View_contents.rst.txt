@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Results_View:
+
+View
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.Results.View
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`View <ref_solver_datamodel_flicing_Case_Results_View__View>`
+
+``View`` is organised like a dictionary. You can access each :ref:`View <ref_solver_datamodel_flicing_Case_Results_View__View>` by name using ``View['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _View/_View_contents

@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_wrap_main:
+
+wrap_main
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.wrap_main
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`wrap_main <ref_meshing_datamodel_meshing_workflow_task_object_wrap_main__wrap_main>`
+
+``wrap_main`` is organised like a dictionary. You can access each :ref:`wrap_main <ref_meshing_datamodel_meshing_workflow_task_object_wrap_main__wrap_main>` by name using ``wrap_main['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _wrap_main/_wrap_main_contents

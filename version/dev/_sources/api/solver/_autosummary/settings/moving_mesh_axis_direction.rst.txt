@@ -1,0 +1,43 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _moving_mesh_axis_direction:
+
+moving_mesh_axis_direction
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.moving_mesh_axis_direction
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`moving_mesh_axis_direction_item <moving_mesh_axis_direction_item>`
+
+Access each :ref:`moving_mesh_axis_direction_item <moving_mesh_axis_direction_item>` by index using ``moving_mesh_axis_direction[<index>]``.
+
+
+.. rubric:: Included in:
+
+==================================   =========================================================
+
+Parent                                                                                 Summary
+
+==================================   =========================================================
+:ref:`mesh_motion <mesh_motion>`     Allows to change mesh-motion model variables or settings.
+
+:ref:`mesh_motion <mesh_motion_1>`   Allows to change mesh-motion model variables or settings.
+
+==================================   =========================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turbulence_options:
+
+turbulence_options
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turbulence_options
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   =======================================
+
+Parent                                                                                                     Summary
+
+========================================================================   =======================================
+:ref:`warped_face_gradient_correction <warped_face_gradient_correction>`   Warped-face-gradient-correction object.
+
+========================================================================   =======================================
+

@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _lights:
+
+lights
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.lights
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`lights_item <lights_item>`
+
+Access each :ref:`lights_item <lights_item>` by index using ``lights[<index>]``.
+
+
+.. rubric:: Included in:
+
+==========================   =========================================================================
+
+Parent                                                                                         Summary
+
+==========================   =========================================================================
+:ref:`lighting <lighting>`   Configure global and individual light settings for 3D graphics rendering.
+
+==========================   =========================================================================
+

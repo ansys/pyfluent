@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _matrix_component:
+
+matrix_component
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.matrix_component
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`anisotropic <anisotropic_2>`   Anisotropic conductivity settings.
+
+:ref:`anisotropic <anisotropic_3>`   Anisotropic conductivity settings.
+
+==================================   ==================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _option_14:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.option_14
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ==========================
+
+Parent                                                                    Summary
+
+====================================================   ==========================
+:ref:`energy_prandtl_number <energy_prandtl_number>`   The energy Prandtl number.
+
+====================================================   ==========================
+

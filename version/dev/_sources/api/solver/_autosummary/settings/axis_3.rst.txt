@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _axis_3:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.axis_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`copy_move_cell_zone <copy_move_cell_zone>`   Copy and translate or rotate a cell zone.
+
+================================================   =========================================
+

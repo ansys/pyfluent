@@ -1,0 +1,34 @@
+:orphan:
+
+.. _nh3_species:
+
+nh3_species
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.nh3_species
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =======================
+
+Attribute                                                    Summary
+
+==========================================   =======================
+:ref:`add <add_2>`                               Enable/disable NH3.
+
+:ref:`molecular_weight <molecular_weight>`        Molecular weights.
+
+==========================================   =======================
+
+.. rubric:: Included in:
+
+==========================   ====================
+
+Parent                                    Summary
+
+==========================   ====================
+:ref:`expert_2 <expert_2>`       NOx expert mode.
+
+==========================   ====================
+

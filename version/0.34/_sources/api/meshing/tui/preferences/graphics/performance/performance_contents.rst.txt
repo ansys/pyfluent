@@ -1,0 +1,20 @@
+.. _ref_meshing_tui_preferences_graphics_performance:
+
+performance
+===========
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_252.main_menu.preferences.graphics.performance
+   :members: optimize_for, ratio_of_target_frame_rate_to_classify_heavy_geometry, ratio_of_target_frame_rate_to_declassify_heavy_geometry, surface_caching
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   fast_display_mode/fast_display_mode_contents
+   minimum_frame_rate/minimum_frame_rate_contents
+   optimize_input_data/optimize_input_data_contents

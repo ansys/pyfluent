@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _width:
+
+width
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.width
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================================
+
+Parent                                                                    Summary
+
+==============================   ================================================
+:ref:`dimensions <dimensions>`   Check the auto-computed dimensions of this core.
+
+==============================   ================================================
+

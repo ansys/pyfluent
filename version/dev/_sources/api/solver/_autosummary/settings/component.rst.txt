@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _component:
+
+component
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.component
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==============
+
+Parent                                        Summary
+
+====================================   ==============
+:ref:`read_rgp_file <read_rgp_file>`   Read RGP file.
+
+====================================   ==============
+

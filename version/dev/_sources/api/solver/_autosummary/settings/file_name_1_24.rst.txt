@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _file_name_1_24:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.file_name_1_24
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================================================
+
+Parent                                                                                 Summary
+
+================================   ===========================================================
+:ref:`read_table <read_table>`              Read heat transfer table from a .tab or .txt file.
+
+:ref:`read_table <read_table_1>`   Read velocity-effectiveness table from a .tab or .txt file.
+
+================================   ===========================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _previous_values:
+
+previous_values
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.previous_values
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`convergence_reports_item <convergence_reports_item>`   'child_object_type' of convergence_reports.
+
+==========================================================   ===========================================
+

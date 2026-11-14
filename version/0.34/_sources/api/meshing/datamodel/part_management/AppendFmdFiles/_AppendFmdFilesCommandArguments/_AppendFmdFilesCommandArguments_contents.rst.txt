@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_part_management_AppendFmdFiles__AppendFmdFilesCommandArguments:
+
+_AppendFmdFilesCommandArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.AppendFmdFiles._AppendFmdFilesCommandArguments
+   :members: _AssemblyParentNode, _FilePath, _FileUnit, _IgnoreSolidNamesAppend, _JtLOD, _PartPerBody, _PrefixParentName, _RemoveEmptyParts, _Route
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _Options/_Options_contents
+   _RefacetOptions/_RefacetOptions_contents

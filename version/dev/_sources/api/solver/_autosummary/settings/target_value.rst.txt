@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _target_value:
+
+target_value
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.target_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`quadratic_penalty_item <quadratic_penalty_item>`   'child_object_type' of quadratic_penalty.
+
+======================================================   =========================================
+

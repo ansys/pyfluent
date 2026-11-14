@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_15_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.phase_15_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=======================   ==================================
+
+Parent                                               Summary
+
+=======================   ==================================
+:ref:`phase <phase_15>`   Domain name to define settings on.
+
+=======================   ==================================
+

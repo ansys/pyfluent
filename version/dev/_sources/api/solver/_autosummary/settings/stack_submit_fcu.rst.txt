@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _stack_submit_fcu:
+
+stack_submit_fcu
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.stack_submit_fcu
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   =======================
+
+Argument                                 Summary
+
+======================   =======================
+:ref:`submit <submit>`   Submit new stack setup.
+
+======================   =======================
+
+.. rubric:: Included in:
+
+==========================================   =================
+
+Parent                                                 Summary
+
+==========================================   =================
+:ref:`stack_management <stack_management>`   Stack management.
+
+==========================================   =================
+

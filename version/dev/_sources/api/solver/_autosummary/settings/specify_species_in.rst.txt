@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _specify_species_in:
+
+specify_species_in
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.specify_species_in
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`boundary <boundary>`   PDF Boundary Options.
+
+==========================   =====================
+

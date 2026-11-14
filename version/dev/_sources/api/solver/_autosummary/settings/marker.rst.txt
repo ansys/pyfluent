@@ -1,0 +1,39 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _marker:
+
+marker
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.marker
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===================
+
+Attribute                            Summary
+
+======================   ===================
+:ref:`symbol <symbol>`   Data marker symbol.
+
+:ref:`size <size_1>`       Data marker size.
+
+:ref:`color <color_2>`    Data marker color.
+
+======================   ===================
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`curves_item <curves_item>`   'child_object_type' of curves.
+
+:ref:`curves <curves_2>`                   Parameters for curves.
+
+================================   ==============================
+

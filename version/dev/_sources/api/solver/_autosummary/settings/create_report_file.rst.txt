@@ -1,0 +1,54 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _create_report_file:
+
+create_report_file
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.create_report_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================   ================================================
+
+Parent                                                                                                          Summary
+
+====================================================================   ================================================
+:ref:`mesh_item <mesh_1_item>`                                                             'child_object_type' of mesh.
+
+:ref:`surface_item <surface_1_item>`                                                    'child_object_type' of surface.
+
+:ref:`volume_item <volume_3_item>`                                                       'child_object_type' of volume.
+
+:ref:`force_item <force_item>`                                                            'child_object_type' of force.
+
+:ref:`lift_item <lift_1_item>`                                                             'child_object_type' of lift.
+
+:ref:`drag_item <drag_1_item>`                                                             'child_object_type' of drag.
+
+:ref:`moment_item <moment_item>`                                                         'child_object_type' of moment.
+
+:ref:`time_item <time_1_item>`                                                             'child_object_type' of time.
+
+:ref:`flux_item <flux_1_item>`                                                             'child_object_type' of flux.
+
+:ref:`vbm_item <vbm_item>`                                                                  'child_object_type' of vbm.
+
+:ref:`injection_item <injection_2_item>`                                              'child_object_type' of injection.
+
+:ref:`user_defined_item <user_defined_21_item>`                                    'child_object_type' of user_defined.
+
+:ref:`aeromechanics_item <aeromechanics_item>`                                    'child_object_type' of aeromechanics.
+
+:ref:`icing_item <icing_4_item>`                                                          'child_object_type' of icing.
+
+:ref:`expression_item <expression_7_item>`                                           'child_object_type' of expression.
+
+:ref:`single_valued_expression_item <single_valued_expression_item>`   'child_object_type' of single_valued_expression.
+
+:ref:`custom_item <custom_item>`                                                         'child_object_type' of custom.
+
+====================================================================   ================================================
+

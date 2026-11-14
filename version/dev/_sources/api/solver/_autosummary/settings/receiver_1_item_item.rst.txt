@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _receiver_1_item_item:
+
+receiver_item_item
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.receiver_1_item_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ========================================================================
+
+Attribute                                                                                                 Summary
+
+======================================   ========================================================================
+:ref:`input_filename <input_filename>`                               The input file to be used for this receiver.
+
+:ref:`frf_filename <frf_filename>`       The Frequency Response Function (FRF) file to be used for this receiver.
+
+======================================   ========================================================================
+
+.. rubric:: Included in:
+
+======================================   ================================
+
+Parent                                                            Summary
+
+======================================   ================================
+:ref:`receiver_item <receiver_1_item>`   'child_object_type' of receiver.
+
+======================================   ================================
+

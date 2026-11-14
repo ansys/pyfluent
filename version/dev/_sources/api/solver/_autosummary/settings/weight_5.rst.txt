@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _weight_5:
+
+weight
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.weight_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==================================================
+
+Parent                                                            Summary
+
+====================   ==================================================
+:ref:`line <line_1>`   Configure line settings for a specific plot curve.
+
+====================   ==================================================
+

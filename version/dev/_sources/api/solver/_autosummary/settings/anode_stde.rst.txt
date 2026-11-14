@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _anode_stde:
+
+anode_stde
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.anode_stde
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================
+
+Parent                                       Summary
+
+================================   =================
+:ref:`parameters <parameters_4>`   Model parameters.
+
+:ref:`parameters <parameters_5>`   Model parameters.
+
+================================   =================
+

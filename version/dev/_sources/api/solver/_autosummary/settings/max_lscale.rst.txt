@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _max_lscale:
+
+max_lscale
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_lscale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===================
+
+Parent                                         Summary
+
+================================   ===================
+:ref:`parameters <parameters_6>`   'parameters' child.
+
+================================   ===================
+

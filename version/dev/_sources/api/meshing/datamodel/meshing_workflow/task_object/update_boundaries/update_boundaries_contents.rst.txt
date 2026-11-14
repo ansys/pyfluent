@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_update_boundaries:
+
+update_boundaries
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.update_boundaries
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`update_boundaries <ref_meshing_datamodel_meshing_workflow_task_object_update_boundaries__update_boundaries>`
+
+``update_boundaries`` is organised like a dictionary. You can access each :ref:`update_boundaries <ref_meshing_datamodel_meshing_workflow_task_object_update_boundaries__update_boundaries>` by name using ``update_boundaries['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _update_boundaries/_update_boundaries_contents

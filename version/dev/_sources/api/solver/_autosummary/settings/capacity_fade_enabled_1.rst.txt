@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _capacity_fade_enabled_1:
+
+capacity_fade_enabled
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.capacity_fade_enabled_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================
+
+Parent                                                                Summary
+
+============================================   ==============================
+:ref:`ecm_curve_fitting <ecm_curve_fitting>`   ECM parameter estimation tool.
+
+============================================   ==============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _origin_13:
+
+origin
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.origin_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`scaling_item <scaling_1_item>`   'child_object_type' of scaling.
+
+====================================   ===============================
+

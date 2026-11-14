@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_solver_workflow_Zone:
+
+Zone
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.solver_workflow.Root.Zone
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`Zone <ref_solver_datamodel_solver_workflow_Zone__Zone>`
+
+``Zone`` is organised like a dictionary. You can access each :ref:`Zone <ref_solver_datamodel_solver_workflow_Zone__Zone>` by name using ``Zone['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _Zone/_Zone_contents

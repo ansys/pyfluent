@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _spatial_discretization:
+
+spatial_discretization
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.spatial_discretization
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ======================
+
+Attribute                                                             Summary
+
+====================================================   ======================
+:ref:`gradient_scheme <gradient_scheme>`                     Gradient scheme.
+
+:ref:`discretization_scheme <discretization_scheme>`   Discretization scheme.
+
+====================================================   ======================
+
+.. rubric:: Included in:
+
+==========================   ============================
+
+Parent                                            Summary
+
+==========================   ============================
+:ref:`methods <methods_2>`   The solution methods object.
+
+==========================   ============================
+

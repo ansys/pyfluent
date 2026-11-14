@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_19:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.name_19
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`parts_item <parts_item>`        'child_object_type' of parts.
+
+:ref:`bodies_item <bodies_1_item>`   'child_object_type' of bodies.
+
+:ref:`faces_item <faces_item>`        'child_object_type' of faces.
+
+==================================   ==============================
+

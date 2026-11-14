@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _adjoint_activation_1:
+
+adjoint_activation
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.adjoint_activation_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`adjoint_equations_item <adjoint_equations_item>`   'child_object_type' of adjoint_equations.
+
+======================================================   =========================================
+

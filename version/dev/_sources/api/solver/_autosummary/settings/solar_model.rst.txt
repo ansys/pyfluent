@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _solar_model:
+
+solar_model
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.solar_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`solar_load <solar_load>`   Activate a solar load model.
+
+==============================   ============================
+

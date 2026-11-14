@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _courant_number:
+
+courant_number
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.courant_number
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`controls <controls_1>`   Solution controls object.
+
+============================   =========================
+

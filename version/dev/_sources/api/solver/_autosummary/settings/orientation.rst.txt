@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _orientation:
+
+orientation
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.orientation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ==============
+
+Attribute                       Summary
+
+======================   ==============
+:ref:`angle <angle_6>`   'angle' child.
+
+:ref:`axis <axis_8>`      'axis' child.
+
+======================   ==============
+
+.. rubric:: Included in:
+
+====================================================   ==============================
+
+Parent                                                                        Summary
+
+====================================================   ==============================
+:ref:`rigid_body_properties <rigid_body_properties>`   'rigid_body_properties' child.
+
+====================================================   ==============================
+

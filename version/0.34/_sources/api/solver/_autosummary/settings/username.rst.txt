@@ -1,0 +1,21 @@
+:orphan:
+
+.. _username:
+
+username
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.username
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================
+
+Parent                                                            Summary
+
+==============================================   ========================
+:ref:`connect_to_cluster <connect_to_cluster>`       Set Cluster Details.
+
+==============================================   ========================
+

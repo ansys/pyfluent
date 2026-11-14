@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _run_adjoint:
+
+run_adjoint
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.run_adjoint
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =========================================
+
+Parent                                                       Summary
+
+========================   =========================================
+:ref:`solvers <solvers>`   Required solvers before running analysis.
+
+========================   =========================================
+

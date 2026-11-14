@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _specified_time_step:
+
+specified_time_step
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.specified_time_step
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================
+
+Parent                                                              Summary
+
+==============================================   ==========================
+:ref:`transient_controls <transient_controls>`   Transient controls object.
+
+==============================================   ==========================
+

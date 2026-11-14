@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _setup_method:
+
+setup_method
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.setup_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ======================
+
+Parent                                                    Summary
+
+========================================   ======================
+:ref:`perforated_wall <perforated_wall>`   Perforated wall model.
+
+========================================   ======================
+

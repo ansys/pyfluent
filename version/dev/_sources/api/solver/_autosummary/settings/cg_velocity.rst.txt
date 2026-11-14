@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cg_velocity:
+
+cg_velocity
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cg_velocity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ==============================
+
+Parent                                                                        Summary
+
+====================================================   ==============================
+:ref:`rigid_body_properties <rigid_body_properties>`   'rigid_body_properties' child.
+
+====================================================   ==============================
+

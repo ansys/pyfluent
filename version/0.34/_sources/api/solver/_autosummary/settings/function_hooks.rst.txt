@@ -1,0 +1,102 @@
+:orphan:
+
+.. _function_hooks:
+
+function_hooks
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.function_hooks
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ================================================================================
+
+Attribute                                                                                                                                           Summary
+
+========================================================================   ================================================================================
+:ref:`initialization <initialization>`                                                                   Hook up user-defined functions for initialization.
+
+:ref:`adjust <adjust>`                                                                                        Hook up user-defined functions for adjusting.
+
+:ref:`execute_at_end <execute_at_end>`                                                             Hook up user-defined functions for executing at the end.
+
+:ref:`read_legacy_case <read_legacy_case>`                                                          Hook up user-defined functions for reading legacy case.
+
+:ref:`read_case <read_case_1>`                                                                             Hook up user-defined functions for reading case.
+
+:ref:`write_legacy_case <write_legacy_case>`                                                        Hook up user-defined functions for writing legacy case.
+
+:ref:`write_case <write_case_1>`                                                                           Hook up user-defined functions for writing case.
+
+:ref:`read_legacy_data <read_legacy_data>`                                                          Hook up user-defined functions for reading legacy data.
+
+:ref:`read_data <read_data_2>`                                                                             Hook up user-defined functions for reading data.
+
+:ref:`write_legacy_data <write_legacy_data>`                                                        Hook up user-defined functions for writing legacy data.
+
+:ref:`write_data <write_data_2>`                                                                           Hook up user-defined functions for writing data.
+
+:ref:`execute_at_exit <execute_at_exit>`                                                              Hook up user-defined functions for executing at exit.
+
+:ref:`wall_heat_flux <wall_heat_flux>`                                                                   Hook up user-defined functions for wall heat flux.
+
+:ref:`wall_nodal_displacement <wall_nodal_displacement>`                                        Hook up user-defined functions for wall nodal displacement.
+
+:ref:`wall_nodal_force <wall_nodal_force>`                                                             Hook up user-defined functions for wall nodal force.
+
+:ref:`net_reaction_rate <net_reaction_rate>`                                                          Hook up user-defined functions for net reaction rate.
+
+:ref:`relax_to_equilibrium <relax_to_equilibrium>`                                              Hook up user-defined functions for relaxing to equilibrium.
+
+:ref:`vol_reaction_rate <vol_reaction_rate>`                                                       Hook up user-defined functions for volume reaction rate.
+
+:ref:`dynamic_cd_for_perforated_walls <dynamic_cd_for_perforated_walls>`                Hook up user-defined functions for Dynamic Cd for Perforated Walls.
+
+:ref:`surface_reaction_rate <surface_reaction_rate>`                                              Hook up user-defined functions for surface reaction rate.
+
+:ref:`particle_reaction_rate <particle_reaction_rate>`                                                Hook up user-defined functions for particle reaction.
+
+:ref:`electrochemical_reaction_rate <electrochemical_reaction_rate>`                      Hook up user-defined functions for electrochemical reaction rate.
+
+:ref:`turbulent_premixed_source <turbulent_premixed_source>`                                  Hook up user-defined functions for turbulent premixed source.
+
+:ref:`thickened_flame <thickened_flame_1>`                                             Hook up user-defined functions for Thickened Flame Model Parameters.
+
+:ref:`chemistry_step <chemistry_step>`                                                                   Hook up user-defined functions for chemistry step.
+
+:ref:`cphi_mixing_model <cphi_mixing_model>`                                               Hook up user-defined functions for Mixing Model Constant (Cphi).
+
+:ref:`flame_area_density <flame_area_density_1>`                                                     Hook up user-defined functions for Flame Area Density.
+
+:ref:`ignition_source <ignition_source>`                                                                Hook up user-defined functions for Ignition Source.
+
+:ref:`cavitation_mass_rate <cavitation_mass_rate>`                                                 Hook up user-defined functions for Cavitation Mass Rate.
+
+:ref:`do_source <do_source>`                                                                  Hook up user-defined functions for Discrete Ordinates Source.
+
+:ref:`do_diffuse_reflectivity <do_diffuse_reflectivity>`                        Hook up user-defined functions for Discrete Ordinates Diffuse Reflectivity.
+
+:ref:`do_specular_reflectivity <do_specular_reflectivity>`                     Hook up user-defined functions for Discrete Ordinates Specular Reflectivity.
+
+:ref:`emissivity_weighting_factor <emissivity_weighting_factor>`                            Hook up user-defined functions for Emissivity Weighting Factor.
+
+:ref:`solar_transmissivity <solar_transmissivity>`                                                 Hook up user-defined functions for Solar Transmissivity.
+
+:ref:`pdf_table <pdf_table>`                                                                                  Hook up user-defined functions for PDF Table.
+
+:ref:`reacting_channel_solver <reacting_channel_solver>`                                        Hook up user-defined functions for Reacting Channel Solver.
+
+========================================================================   ================================================================================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

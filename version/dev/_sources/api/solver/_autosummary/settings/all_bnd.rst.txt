@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _all_bnd:
+
+all_bnd
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.all_bnd
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ========================
+
+Parent                                      Summary
+
+========================   ========================
+:ref:`create <create_8>`   Create a mesh interface.
+
+========================   ========================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _polar_real_intensity:
+
+polar_real_intensity
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.polar_real_intensity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`polar_data_pairs_item <polar_data_pairs_item>`   'child_object_type' of polar_data_pairs.
+
+====================================================   ========================================
+

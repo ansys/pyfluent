@@ -1,0 +1,21 @@
+:orphan:
+
+.. _des_limiter:
+
+des_limiter
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.des_limiter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ================
+
+Parent                      Summary
+
+================   ================
+:ref:`des <des>`       DES options.
+
+================   ================
+

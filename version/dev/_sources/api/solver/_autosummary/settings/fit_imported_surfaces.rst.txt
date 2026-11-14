@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fit_imported_surfaces:
+
+fit_imported_surfaces
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fit_imported_surfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`bounded_by_surfaces_item <bounded_by_surfaces_item>`   'child_object_type' of bounded_by_surfaces.
+
+==========================================================   ===========================================
+

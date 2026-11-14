@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _remove_2:
+
+remove
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.remove_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ======================================
+
+Argument                                                Summary
+
+======================   ======================================
+:ref:`files <files_1>`   List of training data files to remove.
+
+======================   ======================================
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`manage_data <manage_data_1>`   The training parameters.
+
+==================================   ========================
+

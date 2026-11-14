@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _axis_direction_3:
+
+axis_direction
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.axis_direction_3
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`axis_direction_item <axis_direction_3_item>`
+
+Access each :ref:`axis_direction_item <axis_direction_3_item>` by index using ``axis_direction[<index>]``.
+
+
+.. rubric:: Included in:
+
+============================   =================================================
+
+Parent                                                                   Summary
+
+============================   =================================================
+:ref:`periodic <periodic_1>`   Periodic boundary condition settings for threads.
+
+============================   =================================================
+

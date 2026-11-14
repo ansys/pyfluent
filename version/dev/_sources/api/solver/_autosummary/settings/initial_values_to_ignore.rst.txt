@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _initial_values_to_ignore:
+
+initial_values_to_ignore
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.initial_values_to_ignore
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`convergence_reports_item <convergence_reports_item>`   'child_object_type' of convergence_reports.
+
+==========================================================   ===========================================
+

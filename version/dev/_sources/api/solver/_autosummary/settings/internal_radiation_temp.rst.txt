@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _internal_radiation_temp:
+
+internal_radiation_temp
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.internal_radiation_temp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`thermal <thermal>`   Allows to change thermal model variables or settings.
+
+========================   =====================================================
+

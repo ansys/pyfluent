@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _nco_species:
+
+nco_species
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.nco_species
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ===================
+
+Attribute                                                Summary
+
+==========================================   ===================
+:ref:`add <add_6>`                           Enable/disable NCO.
+
+:ref:`molecular_weight <molecular_weight>`    Molecular weights.
+
+==========================================   ===================
+
+.. rubric:: Included in:
+
+========================   ================
+
+Parent                              Summary
+
+========================   ================
+:ref:`expert <expert_2>`   NOx expert mode.
+
+========================   ================
+

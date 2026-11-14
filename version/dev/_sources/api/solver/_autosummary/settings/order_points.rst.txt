@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _order_points:
+
+order_points
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.order_points
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=====================   =============================================
+
+Parent                                                        Summary
+
+=====================   =============================================
+:ref:`plot <plot_12>`   Provides access to plot solution on surfaces.
+
+=====================   =============================================
+

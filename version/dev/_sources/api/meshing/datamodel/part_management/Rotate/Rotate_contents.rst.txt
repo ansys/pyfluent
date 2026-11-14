@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_part_management_Rotate:
+
+Rotate
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.part_management.Root.Rotate
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`Rotate <ref_meshing_datamodel_part_management_Rotate__Rotate>`
+
+``Rotate`` is organised like a dictionary. You can access each :ref:`Rotate <ref_meshing_datamodel_part_management_Rotate__Rotate>` by name using ``Rotate['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _Rotate/_Rotate_contents

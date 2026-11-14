@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _from_zone_name:
+
+from_zone_name
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.from_zone_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================================================================================
+
+Parent                                                                                                                Summary
+
+==========================   ================================================================================================
+:ref:`compute <compute_1>`   Initiates automatic computation of reference values based on selected zones and flow conditions.
+
+==========================   ================================================================================================
+

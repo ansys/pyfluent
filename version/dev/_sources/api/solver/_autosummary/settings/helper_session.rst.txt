@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _helper_session:
+
+helper_session
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.helper_session
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ===============
+
+Parent                       Summary
+
+==================   ===============
+:ref:`set <set_5>`   The set object.
+
+==================   ===============
+

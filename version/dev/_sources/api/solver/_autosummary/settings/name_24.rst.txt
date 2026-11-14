@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_24:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.name_24
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`create <create_6>`   Create new boundary.
+
+:ref:`create <create_5>`   Create new boundary.
+
+========================   ====================
+

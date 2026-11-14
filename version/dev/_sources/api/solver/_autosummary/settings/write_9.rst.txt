@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _write_9:
+
+write
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.write_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`fft <fft>`   Plot FFT of file data.
+
+================   ======================
+

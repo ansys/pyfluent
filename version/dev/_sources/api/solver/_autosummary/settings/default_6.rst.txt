@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _default_6:
+
+default
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.default_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ======================
+
+Parent                                              Summary
+
+==================================   ======================
+:ref:`observables <observables_1>`   Optimizer observables.
+
+==================================   ======================
+

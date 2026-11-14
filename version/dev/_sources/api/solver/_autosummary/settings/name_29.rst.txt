@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_29:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.name_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`turbo_interface_item <turbo_interface_item>`      'child_object_type' of turbo_interface.
+
+:ref:`turbo_interfaces_item <turbo_interfaces_item>`   'child_object_type' of turbo_interfaces.
+
+====================================================   ========================================
+

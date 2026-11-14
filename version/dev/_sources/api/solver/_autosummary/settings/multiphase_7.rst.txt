@@ -1,0 +1,47 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _multiphase_7:
+
+multiphase
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.multiphase_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ===================================
+
+Attribute                                                                                            Summary
+
+======================================================================   ===================================
+:ref:`slip_velocity_specification <slip_velocity_specification>`         Slip Velocity Specification Method.
+
+:ref:`phase_velocity_ratio <phase_velocity_ratio>`                                    Phase Velocity Ratio .
+
+:ref:`volume_fraction <volume_fraction>`                                                    Volume Fraction.
+
+:ref:`granular_temperature <granular_temperature>`                                     Granular temperature.
+
+:ref:`interfacial_area_concentration <interfacial_area_concentration>`       Interfacial area concentration.
+
+======================================================================   ===================================
+
+.. rubric:: Included in:
+
+======================================================   ========================================
+
+Parent                                                                                    Summary
+
+======================================================   ========================================
+:ref:`mass_flow_outlet_item <mass_flow_outlet_item>`     'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_item <phase_14_item>`                                   'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_item <mass_flow_outlet_1_item>`   'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_item <phase_38_item>`                                   'child_object_type' of phase.
+
+======================================================   ========================================
+

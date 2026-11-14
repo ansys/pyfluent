@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _under_relaxation_factor:
+
+under_relaxation_factor
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.under_relaxation_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ===========================================
+
+Parent                                                                                                       Summary
+
+======================================================================   ===========================================
+:ref:`target_mass_flow_rate_settings <target_mass_flow_rate_settings>`   The targeted mass flow rate setting object.
+
+======================================================================   ===========================================
+

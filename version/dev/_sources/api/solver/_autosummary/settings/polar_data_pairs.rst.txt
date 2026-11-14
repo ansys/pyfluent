@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _polar_data_pairs:
+
+polar_data_pairs
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.polar_data_pairs
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`polar_data_pairs_item <polar_data_pairs_item>`
+
+Access each :ref:`polar_data_pairs_item <polar_data_pairs_item>` by index using ``polar_data_pairs[<index>]``.
+
+
+.. rubric:: Included in:
+
+==================================================================================   =====================================
+
+Parent                                                                                                             Summary
+
+==================================================================================   =====================================
+:ref:`polar_distribution_function_settings <polar_distribution_function_settings>`   Polar distribution function settings.
+
+==================================================================================   =====================================
+

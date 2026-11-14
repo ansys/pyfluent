@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _droplet_diameter_model_options:
+
+droplet_diameter_model_options
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.droplet_diameter_model_options
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`boiling_parameters <boiling_parameters>`   Multiphase boiling parameters object.
+
+==============================================   =====================================
+

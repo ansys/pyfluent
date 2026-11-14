@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _change_as_percentage:
+
+change_as_percentage
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.change_as_percentage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`definitions_item <definitions_1_item>`   'child_object_type' of definitions.
+
+============================================   ===================================
+

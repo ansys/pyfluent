@@ -1,0 +1,69 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _momentum_2:
+
+momentum
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.momentum_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   ================================================
+
+Attribute                                                                                                                     Summary
+
+==================================================================================   ================================================
+:ref:`reference_frame <reference_frame_4>`                                                                           Reference Frame.
+
+:ref:`gauge_total_pressure <gauge_total_pressure>`                                                              Gauge Total Pressure.
+
+:ref:`supersonic_or_initial_gauge_pressure <supersonic_or_initial_gauge_pressure>`                 Supersonic/Initial Gauge Pressure.
+
+:ref:`gauge_static_pressure <gauge_static_pressure>`                                                           Gauge static pressure.
+
+:ref:`direction_specification_method <direction_specification_method>`                                Direction Specification Method.
+
+:ref:`coordinate_system <coordinate_system_1>`                                                                     Coordinate System.
+
+:ref:`flow_direction <flow_direction>`                                                                     Flow direction components.
+
+:ref:`direction_vector <direction_vector>`                                                               Direction vector components.
+
+:ref:`axis_direction <axis_direction_2>`                                                                   Axis direction components.
+
+:ref:`axis_origin <axis_origin_2>`                                                                            Axis origin components.
+
+:ref:`prevent_reverse_flow <prevent_reverse_flow_1>`                                 Build artificial walls to prevent reverse flow?.
+
+:ref:`acoustic_wave_model <acoustic_wave_model>`                                                                 Acoustic wave model.
+
+:ref:`impedance_parameters <impedance_parameters>`                                                     Impedance boundary parameters.
+
+:ref:`incoming_wave <incoming_wave>`                                                                                   Incoming wave.
+
+:ref:`loss_coefficient <loss_coefficient>`                                                                          Loss Coefficient.
+
+:ref:`strength <strength>`                                                                                                  Strength.
+
+==================================================================================   ================================================
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`inlet_vent_item <inlet_vent_item>`     'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_9_item>`                  'child_object_type' of phase.
+
+:ref:`inlet_vent_item <inlet_vent_1_item>`   'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_33_item>`                 'child_object_type' of phase.
+
+==========================================   ==================================
+

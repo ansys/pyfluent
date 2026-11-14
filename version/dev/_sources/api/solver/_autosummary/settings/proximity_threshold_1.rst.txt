@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _proximity_threshold_1:
+
+proximity_threshold
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.proximity_threshold_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================================
+
+Parent                                                                   Summary
+
+==========================================   ===================================
+:ref:`gap_regions_item <gap_regions_item>`   'child_object_type' of gap_regions.
+
+==========================================   ===================================
+

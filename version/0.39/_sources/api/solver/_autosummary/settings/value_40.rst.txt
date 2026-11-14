@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_40:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.value_40
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================
+
+Parent                                      Summary
+
+================================   ================
+:ref:`isat_weight <isat_weight>`       ISAT weight.
+
+================================   ================
+

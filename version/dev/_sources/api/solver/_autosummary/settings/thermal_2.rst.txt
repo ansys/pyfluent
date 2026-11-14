@@ -1,0 +1,57 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thermal_2:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.thermal_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===================
+
+Attribute                                                    Summary
+
+==============================================   ===================
+:ref:`total_temperature <total_temperature>`      Total temperature.
+
+:ref:`static_temperature <static_temperature>`   Static temperature.
+
+==============================================   ===================
+
+.. rubric:: Included in:
+
+==================================================   ======================================
+
+Parent                                                                              Summary
+
+==================================================   ======================================
+:ref:`inlet_vent_item <inlet_vent_item>`                 'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_9_item>`                              'child_object_type' of phase.
+
+:ref:`intake_fan_item <intake_fan_item>`                 'child_object_type' of intake_fan.
+
+:ref:`phase_item <phase_10_item>`                             'child_object_type' of phase.
+
+:ref:`pressure_inlet_item <pressure_inlet_item>`     'child_object_type' of pressure_inlet.
+
+:ref:`phase_item <phase_22_item>`                             'child_object_type' of phase.
+
+:ref:`inlet_vent_item <inlet_vent_1_item>`               'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_33_item>`                             'child_object_type' of phase.
+
+:ref:`intake_fan_item <intake_fan_1_item>`               'child_object_type' of intake_fan.
+
+:ref:`phase_item <phase_34_item>`                             'child_object_type' of phase.
+
+:ref:`pressure_inlet_item <pressure_inlet_1_item>`   'child_object_type' of pressure_inlet.
+
+:ref:`phase_item <phase_46_item>`                             'child_object_type' of phase.
+
+==================================================   ======================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _explicit_urf:
+
+explicit_urf
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.explicit_urf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ============================
+
+Parent                                                              Summary
+
+============================================   ============================
+:ref:`general_settings <general_settings_1>`   The general settings object.
+
+============================================   ============================
+

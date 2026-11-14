@@ -1,0 +1,28 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _expression_definition:
+
+expression_definition
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.expression_definition
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ====================================================
+
+Parent                                                                                                                      Summary
+
+============================================================================   ====================================================
+:ref:`expression_volume_item <expression_volume_item>`                                    'child_object_type' of expression_volume.
+
+:ref:`wrapped_body_surface_item <wrapped_body_surface_item>`                           'child_object_type' of wrapped_body_surface.
+
+:ref:`wrapped_part_surface_item <wrapped_part_surface_item>`                           'child_object_type' of wrapped_part_surface.
+
+:ref:`wrapped_solid_region_surface_item <wrapped_solid_region_surface_item>`   'child_object_type' of wrapped_solid_region_surface.
+
+============================================================================   ====================================================
+

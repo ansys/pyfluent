@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _standard_resolution:
+
+standard_resolution
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.standard_resolution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =========================================
+
+Parent                                                       Summary
+
+========================   =========================================
+:ref:`picture <picture>`   The hardcopy/save-picture options object.
+
+========================   =========================================
+

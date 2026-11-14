@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mirror_planes_item:
+
+mirror_planes_item
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mirror_planes_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ==========================================
+
+Attribute                                                                           Summary
+
+==============================================   ==========================================
+:ref:`plane_coefficients <plane_coefficients>`               The cofficients of X, Y and Z.
+
+:ref:`distance <distance>`                       The distance of the plane from the origin.
+
+:ref:`visible <visible_1>`                           Know whether plane is diplayed or not.
+
+==============================================   ==========================================
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`mirror_planes <mirror_planes>`   The mirror planes options object.
+
+====================================   =================================
+

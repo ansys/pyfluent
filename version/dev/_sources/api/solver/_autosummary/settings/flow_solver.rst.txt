@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _flow_solver:
+
+flow_solver
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.flow_solver
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`methods_item <methods_4_item>`                               'child_object_type' of methods.
+
+:ref:`adjoint_equations_item <adjoint_equations_item>`   'child_object_type' of adjoint_equations.
+
+======================================================   =========================================
+

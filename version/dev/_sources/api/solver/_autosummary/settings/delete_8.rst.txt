@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _delete_8:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.delete_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ================================================================================
+
+Parent                                                                                                                  Summary
+
+============================================   ================================================================================
+:ref:`turbo_description <turbo_description>`   Turbomachine description defining rows, sectors, and rotational characteristics.
+
+============================================   ================================================================================
+

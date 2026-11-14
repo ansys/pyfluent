@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _receding_angle_method:
+
+receding_angle_method
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.receding_angle_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   ==================================================
+
+Parent                                                                                                                Summary
+
+========================================================================   ==================================================
+:ref:`dynamic_contact_angle_list_item <dynamic_contact_angle_list_item>`   'child_object_type' of dynamic_contact_angle_list.
+
+========================================================================   ==================================================
+

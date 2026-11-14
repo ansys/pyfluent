@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_material_item:
+
+phase_material_item
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.phase_material_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===============
+
+Parent                                           Summary
+
+======================================   ===============
+:ref:`phase_material <phase_material>`   Phase Material.
+
+======================================   ===============
+

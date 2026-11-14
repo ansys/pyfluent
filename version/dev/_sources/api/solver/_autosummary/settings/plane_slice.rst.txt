@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _plane_slice:
+
+plane_slice
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.plane_slice
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`plane_slice_item <plane_slice_item>`
+
+``plane_slice`` is organised like a dictionary. You can access each :ref:`plane_slice_item <plane_slice_item>` by name using ``plane_slice['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+=============================   ===========================================================================================
+
+Parent                                                                                                              Summary
+
+=============================   ===========================================================================================
+:ref:`surfaces <surfaces_10>`   Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+=============================   ===========================================================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _std_moment_boundary_condition_item:
+
+std_moment_boundary_condition_item
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.std_moment_boundary_condition_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================   ==================================================================
+
+Parent                                                                                                                            Summary
+
+====================================================================   ==================================================================
+:ref:`std_moment_boundary_condition <std_moment_boundary_condition>`   List of boundary conditions for Standard population balance model.
+
+====================================================================   ==================================================================
+

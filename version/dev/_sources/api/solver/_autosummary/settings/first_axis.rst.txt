@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _first_axis:
+
+first_axis
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.first_axis
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =============================
+
+Attribute                                            Summary
+
+============================   =============================
+:ref:`axis_from <axis_from>`   The initial state properties.
+
+:ref:`axis_to <axis_to>`       The initial state properties.
+
+============================   =============================
+
+.. rubric:: Included in:
+
+==================================   ====================================================
+
+Parent                                                                            Summary
+
+==================================   ====================================================
+:ref:`orientation <orientation_1>`   The orientation of the axis of your reference frame.
+
+==================================   ====================================================
+

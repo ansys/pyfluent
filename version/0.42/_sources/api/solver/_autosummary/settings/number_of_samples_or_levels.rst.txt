@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_of_samples_or_levels:
+
+number_of_samples_or_levels
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.number_of_samples_or_levels
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================================
+
+Parent                                                                     Summary
+
+==============================   =================================================
+:ref:`create_doe <create_doe>`       Create Design of Experiments using optiSLang.
+
+==============================   =================================================
+

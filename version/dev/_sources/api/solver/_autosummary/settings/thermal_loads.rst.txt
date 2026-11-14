@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thermal_loads:
+
+thermal_loads
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.thermal_loads
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`mapdl_item <mapdl_item>`           'child_object_type' of mapdl.
+
+:ref:`nastran_item <nastran_1_item>`   'child_object_type' of nastran.
+
+====================================   ===============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _factor_of_cells:
+
+factor_of_cells
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.factor_of_cells
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================================================
+
+Parent                                                               Summary
+
+======================   ===================================================
+:ref:`target <target>`   The target type and value for anisotropic adaption.
+
+======================   ===================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mass_flux_correction_method:
+
+mass_flux_correction_method
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mass_flux_correction_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =========================================
+
+Parent                                                         Summary
+
+==========================   =========================================
+:ref:`expert_7 <expert_7>`       Overset expert solver options object.
+
+==========================   =========================================
+

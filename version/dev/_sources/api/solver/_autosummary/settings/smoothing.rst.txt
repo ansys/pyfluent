@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _smoothing:
+
+smoothing
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.smoothing
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================
+
+Parent                                                                  Summary
+
+================================================   ============================
+:ref:`viewfactor_settings <viewfactor_settings>`   Viewfactor related settings.
+
+================================================   ============================
+

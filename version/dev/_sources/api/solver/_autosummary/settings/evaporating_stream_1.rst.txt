@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _evaporating_stream_1:
+
+evaporating_stream
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.evaporating_stream_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`components_item <components_1_item>`   'child_object_type' of components.
+
+==========================================   ==================================
+

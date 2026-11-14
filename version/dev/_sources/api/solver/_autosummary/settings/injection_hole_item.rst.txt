@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _injection_hole_item:
+
+injection_hole_item
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.injection_hole_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =============================================
+
+Attribute                                                                          Summary
+
+==========================================   =============================================
+:ref:`point1 <point1>`                                         The coordinates of point 1.
+
+:ref:`point2_or_vector <point2_or_vector>`   The coordinates of point 2 or vector of axis.
+
+:ref:`diameter <diameter_3>`                                    The diameter of cyclinder.
+
+==========================================   =============================================
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`injection_hole <injection_hole>`   The injection holes.
+
+======================================   ====================
+

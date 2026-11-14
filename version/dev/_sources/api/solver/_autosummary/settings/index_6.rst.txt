@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _index_6:
+
+index
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.index_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`definitions_item <definitions_3_item>`   'child_object_type' of definitions.
+
+============================================   ===================================
+

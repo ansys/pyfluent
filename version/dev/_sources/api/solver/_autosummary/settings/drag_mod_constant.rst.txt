@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _drag_mod_constant:
+
+drag_mod_constant
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.drag_mod_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`drag_item <drag_item>`   'child_object_type' of drag.
+
+============================   ============================
+

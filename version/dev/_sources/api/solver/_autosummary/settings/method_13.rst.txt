@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _method_13:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.method_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================   ================================================
+
+Parent                                                                                                          Summary
+
+====================================================================   ================================================
+:ref:`perdisp_group_properties_item <perdisp_group_properties_item>`   'child_object_type' of perdisp_group_properties.
+
+====================================================================   ================================================
+

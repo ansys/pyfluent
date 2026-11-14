@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _drag_opt_tsd_relax:
+
+drag_opt_tsd_relax
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.drag_opt_tsd_relax
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`drag_item <drag_item>`   'child_object_type' of drag.
+
+============================   ============================
+

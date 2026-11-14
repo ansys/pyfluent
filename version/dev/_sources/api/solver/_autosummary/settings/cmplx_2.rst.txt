@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cmplx_2:
+
+cmplx
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cmplx_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`objects_item <objects_item>`   'child_object_type' of objects.
+
+==================================   ===============================
+

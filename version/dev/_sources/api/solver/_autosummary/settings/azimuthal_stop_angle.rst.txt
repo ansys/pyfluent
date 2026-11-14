@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _azimuthal_stop_angle:
+
+azimuthal_stop_angle
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.azimuthal_stop_angle
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ================================================
+
+Parent                                                                  Summary
+
+============================   ================================================
+:ref:`location <location_1>`   Lagrangian particle injection location settings.
+
+============================   ================================================
+

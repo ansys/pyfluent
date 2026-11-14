@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _bounding_offset:
+
+bounding_offset
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.bounding_offset
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`bounded_by_surfaces_item <bounded_by_surfaces_item>`   'child_object_type' of bounded_by_surfaces.
+
+==========================================================   ===========================================
+

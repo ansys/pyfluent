@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _retain_size_distribution:
+
+retain_size_distribution
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.retain_size_distribution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`settings <settings_2>`   'settings' child.
+
+============================   =================
+

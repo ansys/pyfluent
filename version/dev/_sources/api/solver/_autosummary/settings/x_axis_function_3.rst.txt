@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _x_axis_function_3:
+
+x_axis_function
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.x_axis_function_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=====================   =============================================
+
+Parent                                                        Summary
+
+=====================   =============================================
+:ref:`plot <plot_12>`   Provides access to plot solution on surfaces.
+
+=====================   =============================================
+

@@ -1,0 +1,39 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interior_1:
+
+interior
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.interior_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ============================================
+
+Attribute                                                                                               Summary
+
+================================================================   ============================================
+:ref:`is_not_a_rans_les_interface <is_not_a_rans_les_interface>`   This should never appear in the GUI nor TUI.
+
+================================================================   ============================================
+
+.. rubric:: Included in:
+
+======================================   ================================
+
+Parent                                                            Summary
+
+======================================   ================================
+:ref:`interior_item <interior_item>`     'child_object_type' of interior.
+
+:ref:`phase_item <phase_12_item>`           'child_object_type' of phase.
+
+:ref:`interior_item <interior_2_item>`   'child_object_type' of interior.
+
+:ref:`phase_item <phase_36_item>`           'child_object_type' of phase.
+
+======================================   ================================
+

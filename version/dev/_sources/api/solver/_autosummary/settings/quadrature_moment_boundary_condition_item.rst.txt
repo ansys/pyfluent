@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _quadrature_moment_boundary_condition_item:
+
+quadrature_moment_boundary_condition_item
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.quadrature_moment_boundary_condition_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================================   ===========================================================================
+
+Parent                                                                                                                                                   Summary
+
+==================================================================================   ===========================================================================
+:ref:`quadrature_moment_boundary_condition <quadrature_moment_boundary_condition>`   List of boundary conditions for Quadrature Moment population balance model.
+
+==================================================================================   ===========================================================================
+

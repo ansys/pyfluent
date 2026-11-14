@@ -1,0 +1,21 @@
+:orphan:
+
+.. _hide_environment_keep_effects:
+
+hide_environment_keep_effects
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.hide_environment_keep_effects
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =======================================================================================================
+
+Parent                                                                                                                               Summary
+
+==================================   =======================================================================================================
+:ref:`background_3 <background_3>`       Ability to adjust various settings and effects for the realistic raytracing environment background.
+
+==================================   =======================================================================================================
+

@@ -1,0 +1,62 @@
+:orphan:
+
+.. _setup:
+
+setup
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.setup
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ====================================================================================================================================
+
+Attribute                                                                                                                                                                         Summary
+
+==================================================   ====================================================================================================================================
+:ref:`general <general>`                                                               Configures general solver settings such as dimensionality, solver type, and time-stepping options.
+
+:ref:`models <models>`                                                                      Enables and configures physical models such as turbulence, energy, multiphase, and radiation.
+
+:ref:`materials <materials>`                             Accesses the material database and configuration tools for defining fluid, solid, and particle materials used in the simulation.
+
+:ref:`cell_zone_conditions <cell_zone_conditions>`                                                                                                       The cell zone conditions object.
+
+:ref:`model_topology <model_topology>`                                                                                                                                 List the topology.
+
+:ref:`physics <physics_1>`                                                                                                                                       UTL physics definitions.
+
+:ref:`boundary_conditions <boundary_conditions>`                                                                                                          The boundary conditions object.
+
+:ref:`mesh_interfaces <mesh_interfaces>`                                                                                                                      The mesh interfaces object.
+
+:ref:`turbo_interfaces <turbo_interfaces>`                                                                                                                       Create turbo interfaces.
+
+:ref:`dynamic_mesh <dynamic_mesh>`                                                                                                                                  'dynamic_mesh' child.
+
+:ref:`reference_values <reference_values>`                                                  Manages reference values used in calculations of coefficients and non-dimensional quantities.
+
+:ref:`reference_frames <reference_frames>`                                          Create local coordinate systems with a given position and orientation, either with or without motion.
+
+:ref:`named_expressions <named_expressions>`                                                                          Accesses the interface for creating and managing named expressions.
+
+:ref:`turbomachinery <turbomachinery>`                                                                                                                         The turbomachinery models.
+
+:ref:`user_defined <user_defined_1>`                                                                                                                              User-defined functions.
+
+:ref:`profiles <profiles>`                                                                                                                                        Profile display object.
+
+==================================================   ====================================================================================================================================
+
+.. rubric:: Included in:
+
+======================   ==================
+
+Parent                              Summary
+
+======================   ==================
+:ref:`root <ref_root>`       'root' object.
+
+======================   ==================
+

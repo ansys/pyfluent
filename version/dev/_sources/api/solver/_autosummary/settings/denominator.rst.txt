@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _denominator:
+
+denominator
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.denominator
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`ratio_item <ratio_2_item>`   'child_object_type' of ratio.
+
+================================   =============================
+

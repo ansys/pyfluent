@@ -1,0 +1,36 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _value_17:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.value_17
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   ==================================================
+
+Parent                                                                                                                Summary
+
+========================================================================   ==================================================
+:ref:`contact_resis_item <contact_resis_item>`                                          'child_object_type' of contact_resis.
+
+:ref:`contact_resistance_item <contact_resistance_item>`                           'child_object_type' of contact_resistance.
+
+:ref:`tortuosity_interface_item <tortuosity_interface_item>`                     'child_object_type' of tortuosity_interface.
+
+:ref:`pore_size_interface_item <pore_size_interface_item>`                        'child_object_type' of pore_size_interface.
+
+:ref:`conductive_regions_item <conductive_regions_item>`                           'child_object_type' of conductive_regions.
+
+:ref:`contact_resistance_regions_item <contact_resistance_regions_item>`   'child_object_type' of contact_resistance_regions.
+
+:ref:`contact_resis_item <contact_resis_1_item>`                                        'child_object_type' of contact_resis.
+
+:ref:`init_value_item <init_value_item>`                                                   'child_object_type' of init_value.
+
+========================================================================   ==================================================
+

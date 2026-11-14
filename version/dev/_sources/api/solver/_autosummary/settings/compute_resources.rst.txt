@@ -1,0 +1,57 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compute_resources:
+
+compute_resources
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.compute_resources
+
+.. rubric:: Methods
+
+==============================================   =================================================
+
+Method                                                                                     Summary
+
+==============================================   =================================================
+:ref:`create <create>`                           Create a new instance of the current object type.
+
+:ref:`delete <delete_12>`                                                 Delete Compute Resource.
+
+:ref:`rename <rename>`                                                          Rename the object.
+
+:ref:`list <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                      Create a copy of the object.
+
+:ref:`add <add_8>`                                                          Add Computer Resource.
+
+:ref:`get_current <get_current>`                                     Get Current Compute Resource.
+
+:ref:`set_current <set_current>`                                     Set Current Compute Resource.
+
+:ref:`disconnect_current <disconnect_current>`                Disconnect Current Compute Resource.
+
+==============================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`compute_resources_item <compute_resources_item>`
+
+``compute_resources`` is organised like a dictionary. You can access each :ref:`compute_resources_item <compute_resources_item>` by name using ``compute_resources['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   =======================
+
+Parent                                                     Summary
+
+========================================   =======================
+:ref:`run_calculation <run_calculation>`   Run-calculation object.
+
+========================================   =======================
+

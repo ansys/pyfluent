@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _material_10:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.material_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`type_name_item <type_name_item>`   'child_object_type' of type_name.
+
+======================================   =================================
+

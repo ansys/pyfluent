@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _index_3:
+
+index
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.index_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ============================================================
+
+Parent                                                                                      Summary
+
+====================================   ============================================================
+:ref:`edit_reactant <edit_reactant>`   Modify the reactant at the specified index in this reaction.
+
+====================================   ============================================================
+

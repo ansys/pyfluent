@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _balanced:
+
+balanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.balanced
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================
+
+Parent                                                    Summary
+
+==========================   ====================================
+:ref:`methods <methods_4>`   The adjoint solution methods object.
+
+==========================   ====================================
+

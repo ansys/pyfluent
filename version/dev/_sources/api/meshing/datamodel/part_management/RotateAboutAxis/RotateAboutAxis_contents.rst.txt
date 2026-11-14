@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_part_management_RotateAboutAxis:
+
+RotateAboutAxis
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.part_management.Root.RotateAboutAxis
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`RotateAboutAxis <ref_meshing_datamodel_part_management_RotateAboutAxis__RotateAboutAxis>`
+
+``RotateAboutAxis`` is organised like a dictionary. You can access each :ref:`RotateAboutAxis <ref_meshing_datamodel_part_management_RotateAboutAxis__RotateAboutAxis>` by name using ``RotateAboutAxis['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _RotateAboutAxis/_RotateAboutAxis_contents

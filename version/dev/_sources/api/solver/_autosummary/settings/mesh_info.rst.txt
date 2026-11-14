@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mesh_info:
+
+mesh_info
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mesh_info
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ============================
+
+Argument                                                Summary
+
+================================   ============================
+:ref:`print_level <print_level>`   Print zone information size.
+
+================================   ============================
+
+.. rubric:: Included in:
+
+==================   ======================================================================================================
+
+Parent                                                                                                              Summary
+
+==================   ======================================================================================================
+:ref:`mesh <mesh>`   Provides access to mesh operations such as generation, transformation, repair, import/export and more.
+
+==================   ======================================================================================================
+

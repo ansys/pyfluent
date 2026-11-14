@@ -1,0 +1,53 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interfaces:
+
+interfaces
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.interfaces
+
+.. rubric:: Methods
+
+==========================================   ===============================================
+
+Method                                                                               Summary
+
+==========================================   ===============================================
+:ref:`create <create_7>`                                             Create mesh interfaces.
+
+:ref:`delete <delete_2>`                                            Delete selected objects.
+
+:ref:`rename <rename>`                                                    Rename the object.
+
+:ref:`list <list_1>`                                          List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`             List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                Create a copy of the object.
+
+:ref:`auto_create <auto_create>`                                     Create mesh interfaces.
+
+:ref:`list_all <list_all_1>`                 List all mesh interfaces with area information.
+
+==========================================   ===============================================
+
+.. rubric:: Named object type
+
+:ref:`interfaces_item <interfaces_item>`
+
+``interfaces`` is organised like a dictionary. You can access each :ref:`interfaces_item <interfaces_item>` by name using ``interfaces['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   ========================
+
+Parent                                        Summary
+
+==========================   ========================
+:ref:`physics <physics_1>`   UTL physics definitions.
+
+==========================   ========================
+

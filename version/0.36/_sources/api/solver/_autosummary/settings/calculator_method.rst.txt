@@ -1,0 +1,23 @@
+:orphan:
+
+.. _calculator_method:
+
+calculator_method
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.calculator_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==================================
+
+Parent                                                                          Summary
+
+==================================================   ==================================
+:ref:`solar_calculator <solar_calculator>`               Settings for solar calculator.
+
+:ref:`solar_calculator_gui <solar_calculator_gui>`       Settings for solar calculator.
+
+==================================================   ==================================
+

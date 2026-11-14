@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _max_point:
+
+max_point
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_point
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================
+
+Parent                                       Summary
+
+==============================   ===================
+:ref:`hexahedron <hexahedron>`   'hexahedron' child.
+
+==============================   ===================
+

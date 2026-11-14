@@ -1,0 +1,38 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _per_selection:
+
+per_selection
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.per_selection
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`mesh_item <mesh_1_item>`                            'child_object_type' of mesh.
+
+:ref:`surface_item <surface_1_item>`                   'child_object_type' of surface.
+
+:ref:`volume_item <volume_3_item>`                      'child_object_type' of volume.
+
+:ref:`force_item <force_item>`                           'child_object_type' of force.
+
+:ref:`lift_item <lift_1_item>`                            'child_object_type' of lift.
+
+:ref:`drag_item <drag_1_item>`                            'child_object_type' of drag.
+
+:ref:`moment_item <moment_item>`                        'child_object_type' of moment.
+
+:ref:`flux_item <flux_1_item>`                            'child_object_type' of flux.
+
+:ref:`aeromechanics_item <aeromechanics_item>`   'child_object_type' of aeromechanics.
+
+==============================================   =====================================
+

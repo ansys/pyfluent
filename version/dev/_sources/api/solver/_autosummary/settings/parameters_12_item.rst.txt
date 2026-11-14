@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parameters_12_item:
+
+parameters_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.parameters_12_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ==========================
+
+Attribute                                                             Summary
+
+================================================   ==========================
+:ref:`value <value_42>`                                      Parameter value.
+
+:ref:`affected_conditions <affected_conditions>`   Affected conditions value.
+
+================================================   ==========================
+
+.. rubric:: Included in:
+
+=================================   ========================
+
+Parent                                               Summary
+
+=================================   ========================
+:ref:`parameters <parameters_12>`   Design change parameter.
+
+=================================   ========================
+

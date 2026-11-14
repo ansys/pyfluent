@@ -1,0 +1,28 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _conical:
+
+conical
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.conical
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`fluid_item <fluid_1_item>`   'child_object_type' of fluid.
+
+:ref:`phase_item <phase_2_item>`   'child_object_type' of phase.
+
+:ref:`fluid_item <fluid_2_item>`   'child_object_type' of fluid.
+
+:ref:`phase_item <phase_4_item>`   'child_object_type' of phase.
+
+================================   =============================
+

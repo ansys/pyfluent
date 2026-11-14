@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _distance_from_origin:
+
+distance_from_origin
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.distance_from_origin
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================================
+
+Parent                                                                   Summary
+
+==========================================   ===================================
+:ref:`plane_slice_item <plane_slice_item>`   'child_object_type' of plane_slice.
+
+==========================================   ===================================
+

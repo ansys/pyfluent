@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _relative_physics_region:
+
+relative_physics_region
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.relative_physics_region
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================
+
+Parent                                                      Summary
+
+========================================   ========================
+:ref:`relative_motion <relative_motion>`   'relative_motion' child.
+
+========================================   ========================
+

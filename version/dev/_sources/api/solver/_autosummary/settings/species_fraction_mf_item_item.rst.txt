@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_fraction_mf_item_item:
+
+species_fraction_mf_item_item
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.species_fraction_mf_item_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`species_fraction_mf_item <species_fraction_mf_item>`   'child_object_type' of species_fraction_mf.
+
+==========================================================   ===========================================
+

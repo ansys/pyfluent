@@ -1,0 +1,42 @@
+:orphan:
+
+.. _energy:
+
+energy
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.energy
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ========================================================================================================================================
+
+Attribute                                                                                                                                                                           Summary
+
+================================================   ========================================================================================================================================
+:ref:`enabled <enabled>`                                                                                                                                 Enable the energy transport model.
+
+:ref:`viscous_dissipation <viscous_dissipation>`       Include viscous dissipation in energy equation. This is only applicable for compressible flows and when the energy model is enabled.
+
+:ref:`pressure_work <pressure_work>`                         Include pressure work in energy equation. This is only applicable for compressible flows and when the energy model is enabled.
+
+:ref:`kinetic_energy <kinetic_energy>`                      Include kinetic energy in energy equation. This is only applicable for compressible flows and when the energy model is enabled.
+
+:ref:`inlet_diffusion <inlet_diffusion>`               Include diffusion at inlets in energy equation. This is only applicable for compressible flows and when the energy model is enabled.
+
+:ref:`two_temperature <two_temperature>`                                                                                                               Define two-temperature model object.
+
+================================================   ========================================================================================================================================
+
+.. rubric:: Included in:
+
+======================   =================================================================================================
+
+Parent                                                                                                             Summary
+
+======================   =================================================================================================
+:ref:`models <models>`       Enables and configures physical models such as turbulence, energy, multiphase, and radiation.
+
+======================   =================================================================================================
+

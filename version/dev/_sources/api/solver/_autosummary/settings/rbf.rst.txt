@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rbf:
+
+rbf
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rbf
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ========================
+
+Attribute                                                           Summary
+
+================================================   ========================
+:ref:`freeform_motions <freeform_motions_1>`       Freeform motions object.
+
+:ref:`constraint_settings <constraint_settings>`       Constraint settings.
+
+================================================   ========================
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`numerics <numerics_1>`   Design tool numerics object.
+
+============================   ============================
+

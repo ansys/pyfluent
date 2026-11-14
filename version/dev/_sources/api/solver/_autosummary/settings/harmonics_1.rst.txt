@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _harmonics_1:
+
+harmonics
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.harmonics_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   =================================================
+
+Parent                                                                                                             Summary
+
+======================================================================   =================================================
+:ref:`user_defined_disturbances_item <user_defined_disturbances_item>`   'child_object_type' of user_defined_disturbances.
+
+======================================================================   =================================================
+

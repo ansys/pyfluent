@@ -1,0 +1,37 @@
+:orphan:
+
+.. _job_id:
+
+job_id
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.job_id
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ================================================
+
+Parent                                                                                          Summary
+
+====================================================   ================================================
+:ref:`abort <abort>`                                                                         Abort Job.
+
+:ref:`interrupt_1 <interrupt_1>`                                                         Interrupt Job.
+
+:ref:`rerun <rerun>`                                                                         Rerun Job.
+
+:ref:`connect_to_web_ui <connect_to_web_ui>`                                 Connect to Web UI for Job.
+
+:ref:`download_output_files <download_output_files>`                 Download all output files for Job.
+
+:ref:`delete_job <delete_job>`                                          Delete Job from Remote Cluster.
+
+:ref:`open_in_web_portal <open_in_web_portal>`                                  Open job in Web Portal.
+
+:ref:`get_status_of_job <get_status_of_job>`                   Get status of a job from remote cluster.
+
+:ref:`get_properties_of_job <get_properties_of_job>`       Get properties of a job from remote cluster.
+
+====================================================   ================================================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _sdof_properties_child:
+
+sdof_properties_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sdof_properties_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ================================
+
+Attribute                                                                   Summary
+
+================================================   ================================
+:ref:`name <name_4>`                                            Name of the object.
+
+:ref:`mass <mass>`                                                    'mass' child.
+
+:ref:`one_dof_translation <one_dof_translation>`       'one_dof_translation' child.
+
+:ref:`one_dof_rotation <one_dof_rotation>`                'one_dof_rotation' child.
+
+:ref:`inertia_tensor <inertia_tensor>`                      'inertia_tensor' child.
+
+================================================   ================================
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`sdof_properties <sdof_properties>`       'sdof_properties' child.
+
+========================================   ============================
+

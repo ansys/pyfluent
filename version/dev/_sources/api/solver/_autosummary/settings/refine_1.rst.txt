@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _refine_1:
+
+refine
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.refine_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ======================================
+
+Parent                                                                            Summary
+
+================================================   ======================================
+:ref:`cell_registers_item <cell_registers_item>`   'child_object_type' of cell_registers.
+
+================================================   ======================================
+

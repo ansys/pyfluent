@@ -1,0 +1,36 @@
+:orphan:
+
+.. _create_group_surfaces:
+
+create_group_surfaces
+=====================
+
+.. deprecated:: Ansys 2025R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_group_surfaces
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=============================   ===================================
+
+Argument                                                    Summary
+
+=============================   ===================================
+:ref:`surfaces <surfaces_13>`                     List of surfaces.
+
+:ref:`name <name_30>`               The name for the group surface.
+
+=============================   ===================================
+
+.. rubric:: Included in:
+
+==============================   ===============================================================================================
+
+Parent                                                                                                                   Summary
+
+==============================   ===============================================================================================
+:ref:`surfaces_8 <surfaces_8>`       Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+==============================   ===============================================================================================
+

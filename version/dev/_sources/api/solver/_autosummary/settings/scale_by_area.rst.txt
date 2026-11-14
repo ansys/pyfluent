@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _scale_by_area:
+
+scale_by_area
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.scale_by_area
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================================
+
+Parent                                                                               Summary
+
+========================================   =================================================
+:ref:`mass_flow_rate <mass_flow_rate_2>`   Lagrangian particle injection flow rate settings.
+
+========================================   =================================================
+

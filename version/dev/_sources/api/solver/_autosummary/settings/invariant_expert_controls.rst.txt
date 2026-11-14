@@ -1,0 +1,51 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _invariant_expert_controls:
+
+invariant_expert_controls
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.invariant_expert_controls
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`invariant_expert_controls_item <invariant_expert_controls_item>`
+
+Access each :ref:`invariant_expert_controls_item <invariant_expert_controls_item>` by index using ``invariant_expert_controls[<index>]``.
+
+
+.. rubric:: Included in:
+
+======================   ==========================================
+
+Parent                                                      Summary
+
+======================   ==========================================
+:ref:`x <x_11>`               Region conditions in the X direction.
+
+:ref:`y <y_11>`               Region conditions in the Y direction.
+
+:ref:`z <z_10>`               Region conditions in the Z direction.
+
+:ref:`theta <theta_2>`    Region conditions in the theta direction.
+
+:ref:`radial <radial>`   Region conditions in the radial direction.
+
+:ref:`axial <axial>`      Region conditions in the axial direction.
+
+======================   ==========================================
+

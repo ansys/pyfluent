@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mixing_plane_thread:
+
+mixing_plane_thread
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mixing_plane_thread
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================================
+
+Parent                                                                               Summary
+
+========================================   =================================================
+:ref:`discrete_phase <discrete_phase_2>`   Allows to change DPM model variables or settings.
+
+:ref:`discrete_phase <discrete_phase_4>`   Allows to change DPM model variables or settings.
+
+========================================   =================================================
+

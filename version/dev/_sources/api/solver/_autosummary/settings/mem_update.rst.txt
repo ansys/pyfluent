@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mem_update:
+
+mem_update
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mem_update
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==========================
+
+Parent                                          Summary
+
+==========================   ==========================
+:ref:`mem_zone <mem_zone>`   Up electrolyte cell zones.
+
+:ref:`membrane <membrane>`                 Up membrane.
+
+==========================   ==========================
+

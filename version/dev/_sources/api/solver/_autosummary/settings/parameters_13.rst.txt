@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parameters_13:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.parameters_13
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`parameters_item <parameters_13_item>`
+
+Access each :ref:`parameters_item <parameters_13_item>` by index using ``parameters[<index>]``.
+
+
+.. rubric:: Included in:
+
+====================================================   =====================================================
+
+Parent                                                                                               Summary
+
+====================================================   =====================================================
+:ref:`operating_conditions <operating_conditions_1>`   Operating conditions for multiobjective optimization.
+
+====================================================   =====================================================
+

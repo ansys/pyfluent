@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _expression_9:
+
+expression
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.expression_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ================================
+
+Parent                                                            Summary
+
+======================================   ================================
+:ref:`add_objective <add_objective>`                       Add Objective.
+
+:ref:`add_constraint <add_constraint>`                    Add Constraint.
+
+:ref:`criteria_item <criteria_1_item>`   'child_object_type' of criteria.
+
+======================================   ================================
+

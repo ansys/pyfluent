@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enabled_56:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enabled_56
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ===================================
+
+Parent                                         Summary
+
+================   ===================================
+:ref:`oka <oka>`   Settings for the Oka erosion model.
+
+================   ===================================
+

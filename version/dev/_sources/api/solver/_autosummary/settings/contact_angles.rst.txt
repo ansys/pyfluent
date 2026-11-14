@@ -1,0 +1,51 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _contact_angles:
+
+contact_angles
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.contact_angles
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`contact_angles_item <contact_angles_item>`
+
+``contact_angles`` is organised like a dictionary. You can access each :ref:`contact_angles_item <contact_angles_item>` by name using ``contact_angles['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================   =========================================================
+
+Parent                                                                                 Summary
+
+==================================   =========================================================
+:ref:`multiphase <multiphase_3>`      Allows to change multiphase model variables or settings.
+
+:ref:`porous_jump <porous_jump_1>`   Allows to change porous-jump model variables or settings.
+
+==================================   =========================================================
+

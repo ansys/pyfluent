@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _polar_data_pairs_item:
+
+polar_data_pairs_item
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.polar_data_pairs_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ========
+
+Attribute                                             Summary
+
+==================================================   ========
+:ref:`polar_real_angle <polar_real_angle>`           Element.
+
+:ref:`polar_real_intensity <polar_real_intensity>`   Element.
+
+==================================================   ========
+
+.. rubric:: Included in:
+
+==========================================   =================
+
+Parent                                                 Summary
+
+==========================================   =================
+:ref:`polar_data_pairs <polar_data_pairs>`   Polar data pairs.
+
+==========================================   =================
+

@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _velocity_inlet:
+
+velocity_inlet
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.velocity_inlet
+
+.. rubric:: Methods
+
+==========================================   =====================================
+
+Method                                                                     Summary
+
+==========================================   =====================================
+:ref:`create <create_6>`                                      Create new boundary.
+
+:ref:`delete <delete_2>`                                  Delete selected objects.
+
+:ref:`rename <rename>`                                          Rename the object.
+
+:ref:`list <list_1>`                                List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                      Create a copy of the object.
+
+==========================================   =====================================
+
+.. rubric:: Named object type
+
+:ref:`velocity_inlet_item <velocity_inlet_item>`
+
+``velocity_inlet`` is organised like a dictionary. You can access each :ref:`velocity_inlet_item <velocity_inlet_item>` by name using ``velocity_inlet['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`boundaries <boundaries>`   Defines physics boundaries for a volume region.
+
+==============================   ===============================================
+

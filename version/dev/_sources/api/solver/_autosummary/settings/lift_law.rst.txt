@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _lift_law:
+
+lift_law
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.lift_law
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ======================================
+
+Parent                                                                        Summary
+
+============================================   ======================================
+:ref:`particle_rotation <particle_rotation>`   Lagrangian particle rotation settings.
+
+============================================   ======================================
+

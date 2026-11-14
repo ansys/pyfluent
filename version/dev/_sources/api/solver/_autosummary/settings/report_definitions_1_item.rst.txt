@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report_definitions_1_item:
+
+report_definitions_item
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.report_definitions_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   =====================================================================
+
+Attribute                                                                                                    Summary
+
+============================================   =====================================================================
+:ref:`name <name_5>`                                                                             Name of the object.
+
+:ref:`report_definition <report_definition>`   Specifies the report definition used to compute the output parameter.
+
+============================================   =====================================================================
+
+.. rubric:: Included in:
+
+================================================   =======================================================
+
+Parent                                                                                             Summary
+
+================================================   =======================================================
+:ref:`report_definitions <report_definitions_1>`   Accesses output parameters based on report definitions.
+
+================================================   =======================================================
+

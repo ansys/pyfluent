@@ -1,0 +1,32 @@
+:orphan:
+
+.. _zone_track:
+
+zone_track
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zone_track
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =======================================================
+
+Attribute                                                                        Summary
+
+==============================   =======================================================
+:ref:`track_zone <track_zone>`       The zone you want to attach the reference frame to.
+
+==============================   =======================================================
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`motion_1 <motion_1>`       Give motion properties.
+
+==========================   ===========================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turbulence_multiphase_models:
+
+turbulence_multiphase_models
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turbulence_multiphase_models
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ====================================
+
+Parent                                                                              Summary
+
+====================================================   ====================================
+:ref:`multiphase_turbulence <multiphase_turbulence>`   Multiphase turbulence model options.
+
+====================================================   ====================================
+

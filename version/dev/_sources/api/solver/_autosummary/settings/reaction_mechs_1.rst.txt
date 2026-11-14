@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reaction_mechs_1:
+
+reaction_mechs
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reaction_mechs_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`reaction <reaction>`   Allows to change reaction model variables or settings.
+
+:ref:`species <species_8>`    Allows to change species model variables or settings.
+
+==========================   ======================================================
+

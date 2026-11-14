@@ -1,0 +1,12 @@
+.. _ref_ansys_fluent_core_fields_reduction_abstract_reduction:
+
+abstract_reduction
+==================
+
+.. automodule:: ansys.fluent.core.fields.reduction.abstract_reduction
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:

@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _read_from_file_1:
+
+read_from_file
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.read_from_file_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   ==========
+
+Argument                               Summary
+
+=================================   ==========
+:ref:`file_name <file_name_1_38>`   File name.
+
+=================================   ==========
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`xy_plot_item <xy_plot_item>`   'child_object_type' of xy_plot.
+
+==================================   ===============================
+

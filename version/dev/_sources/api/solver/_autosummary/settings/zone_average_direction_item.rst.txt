@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _zone_average_direction_item:
+
+zone_average_direction_item
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.zone_average_direction_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ==================================
+
+Parent                                                                              Summary
+
+======================================================   ==================================
+:ref:`zone_average_direction <zone_average_direction>`   Zone Average direction components.
+
+======================================================   ==================================
+

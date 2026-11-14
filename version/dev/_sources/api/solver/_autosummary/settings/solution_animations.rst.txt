@@ -1,0 +1,55 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _solution_animations:
+
+solution_animations
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.solution_animations
+
+.. rubric:: Methods
+
+==========================================   =========================================
+
+Method                                                                         Summary
+
+==========================================   =========================================
+:ref:`create <create_18>`                        Create New solution animation Object.
+
+:ref:`delete <delete_2>`                                      Delete selected objects.
+
+:ref:`rename <rename>`                                              Rename the object.
+
+:ref:`list <list_1>`                                    List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`       List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy_1>`                               Copy graphics object.
+
+:ref:`display <display_10>`                                   Display graphics object.
+
+:ref:`add_to_graphics <add_to_graphics>`     Add graphics object to existing graphics.
+
+:ref:`clear_history <clear_history>`                             Clear object history.
+
+==========================================   =========================================
+
+.. rubric:: Named object type
+
+:ref:`solution_animations_item <solution_animations_item>`
+
+``solution_animations`` is organised like a dictionary. You can access each :ref:`solution_animations_item <solution_animations_item>` by name using ``solution_animations['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================   =========================================================================================
+
+Parent                                                                                                                                 Summary
+
+==================================================   =========================================================================================
+:ref:`calculation_activity <calculation_activity>`   Manages additional solution-time activities like animations and mesh quality diagnostics.
+
+==================================================   =========================================================================================
+

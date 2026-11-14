@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _front_faces_transparent:
+
+front_faces_transparent
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.front_faces_transparent
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ======================================
+
+Parent                                                                            Summary
+
+================================================   ======================================
+:ref:`display_states_item <display_states_item>`   'child_object_type' of display_states.
+
+================================================   ======================================
+

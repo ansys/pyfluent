@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _texture_spacing:
+
+texture_spacing
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.texture_spacing
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`lic_item <lic_item>`      'child_object_type' of lic.
+
+:ref:`olic_item <olic_item>`   'child_object_type' of olic.
+
+============================   ============================
+

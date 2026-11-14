@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_1:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.option_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ===================================================
+
+Parent                                                           Summary
+
+==================   ===================================================
+:ref:`type <type>`       The type for this automatic adaption criterion.
+
+==================   ===================================================
+

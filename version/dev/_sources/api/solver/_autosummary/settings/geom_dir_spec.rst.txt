@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _geom_dir_spec:
+
+geom_dir_spec
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.geom_dir_spec
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================================================
+
+Parent                                                                        Summary
+
+============================   ======================================================
+:ref:`geometry <geometry_8>`   Allows to change geometry model variables or settings.
+
+:ref:`geometry <geometry_9>`                  Geometry settings for periodic threads.
+
+============================   ======================================================
+

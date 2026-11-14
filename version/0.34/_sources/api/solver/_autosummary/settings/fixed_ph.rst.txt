@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fixed_ph:
+
+fixed_ph
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.fixed_ph
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================================
+
+Parent                                                                                    Summary
+
+==========================================   ====================================================
+:ref:`input_parameters <input_parameters>`       Input parameters in water chemistry calculation.
+
+==========================================   ====================================================
+

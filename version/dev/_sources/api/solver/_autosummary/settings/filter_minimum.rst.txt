@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _filter_minimum:
+
+filter_minimum
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.filter_minimum
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================
+
+Parent                                                  Summary
+
+========================================   ====================
+:ref:`filter_settings <filter_settings>`   The filter settings.
+
+========================================   ====================
+

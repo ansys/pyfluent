@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _gap:
+
+gap
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.gap
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   =============================
+
+Parent                                              Summary
+
+===========================   =============================
+:ref:`options <options_16>`   The rendering options object.
+
+===========================   =============================
+

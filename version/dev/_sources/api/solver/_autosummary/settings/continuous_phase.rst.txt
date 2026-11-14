@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _continuous_phase:
+
+continuous_phase
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.continuous_phase
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================================
+
+Parent                                                             Summary
+
+==================================   =====================================
+:ref:`interaction <interaction_1>`   Lagrangian two-way coupling settings.
+
+==================================   =====================================
+

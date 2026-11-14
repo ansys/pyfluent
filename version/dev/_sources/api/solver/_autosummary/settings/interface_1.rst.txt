@@ -1,0 +1,39 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interface_1:
+
+interface
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.interface_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ======================================================================
+
+Attribute                                                                                                             Summary
+
+====================================================   ======================================================================
+:ref:`non_overlap_zone_name <non_overlap_zone_name>`   Name of the non-overlapping zone associated with the interface thread.
+
+====================================================   ======================================================================
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`interface_item <interface_item>`     'child_object_type' of interface.
+
+:ref:`phase_item <phase_11_item>`              'child_object_type' of phase.
+
+:ref:`interface_item <interface_2_item>`   'child_object_type' of interface.
+
+:ref:`phase_item <phase_35_item>`              'child_object_type' of phase.
+
+========================================   =================================
+

@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _settings_7:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.settings_7
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`settings_item <settings_7_item>`
+
+Access each :ref:`settings_item <settings_7_item>` by index using ``settings[<index>]``.
+
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`clip_box_options <clip_box_options>`   Provide clip box(es) options.
+
+==========================================   =============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _random_eddy_lifetime:
+
+random_eddy_lifetime
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.random_eddy_lifetime
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =========================================
+
+Parent                                                                                 Summary
+
+==================================================   =========================================
+:ref:`turbulent_dispersion <turbulent_dispersion>`   Lagrangian turbulent dispersion settings.
+
+==================================================   =========================================
+

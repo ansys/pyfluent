@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _archive_name_1:
+
+archive_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.archive_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===============================================================
+
+Parent                                                                               Summary
+
+==========================   ===============================================================
+:ref:`archive <archive_1>`   Archive the current Fluent project to a compressed .flprz file.
+
+==========================   ===============================================================
+

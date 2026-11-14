@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _abuse_rate_matrix_item:
+
+abuse_rate_matrix_item
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.abuse_rate_matrix_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================================================
+
+Parent                                                                                                      Summary
+
+============================================   ====================================================================
+:ref:`abuse_rate_matrix <abuse_rate_matrix>`   Data class to hold abuse reaction kinetics in the N-eqn abuse model.
+
+============================================   ====================================================================
+

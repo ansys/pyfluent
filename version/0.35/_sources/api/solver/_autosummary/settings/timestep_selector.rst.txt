@@ -1,0 +1,47 @@
+:orphan:
+
+.. _timestep_selector:
+
+timestep_selector
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.timestep_selector
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ===========================================================
+
+Attribute                                                                      Summary
+
+========================   ===========================================================
+:ref:`custom <custom_1>`       Settings related to customizing the selected timesteps.
+
+========================   ===========================================================
+
+.. rubric:: Methods
+
+====================   ================================================================================================================================================================================================
+
+Method                                                                                                                                                                                                          Summary
+
+====================   ================================================================================================================================================================================================
+:ref:`first <first>`                                                                                                                                                        Select only the first timestep in the list.
+
+:ref:`last <last>`                                                                                                                                                           Select only the last timestep in the list.
+
+:ref:`all <all_1>`         Select all of the timesteps for transient postprocessing. These are the data files that the software finds in the working directory according to the latest data file loaded in the session.
+
+====================   ================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+============================================================   ======================================================
+
+Parent                                                                                                        Summary
+
+============================================================   ======================================================
+:ref:`transient_post_processing <transient_post_processing>`       Commands associated with transient postprocessing.
+
+============================================================   ======================================================
+

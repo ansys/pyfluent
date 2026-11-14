@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enclosure_temp:
+
+enclosure_temp
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enclosure_temp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`thermal_abuse_fitting <thermal_abuse_fitting>`   Thermal abuse parameter estimation tool.
+
+:ref:`test_data_sets_item <test_data_sets_item>`         'child_object_type' of test_data_sets.
+
+====================================================   ========================================
+

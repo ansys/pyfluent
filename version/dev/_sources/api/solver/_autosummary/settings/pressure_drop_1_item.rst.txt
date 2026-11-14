@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _pressure_drop_1_item:
+
+pressure_drop_item
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.pressure_drop_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===================
+
+Attribute                                              Summary
+
+========================================   ===================
+:ref:`name <name_5>`                       Name of the object.
+
+:ref:`inlets <inlets_2>`                      Inlet zone list.
+
+:ref:`outlets <outlets_2>`                   Outlet zone list.
+
+:ref:`inlet_location <inlet_location>`             The object.
+
+:ref:`outlet_location <outlet_location>`           The object.
+
+========================================   ===================
+
+.. rubric:: Included in:
+
+======================================   =====================================
+
+Parent                                                                 Summary
+
+======================================   =====================================
+:ref:`pressure_drop <pressure_drop_1>`   Pressure drop observable definitions.
+
+======================================   =====================================
+

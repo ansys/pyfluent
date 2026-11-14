@@ -1,0 +1,28 @@
+.. _ref_solver_tui_file_import_:
+
+import_
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu.file.import_
+   :members: chemkin_mechanism, chemkin_report_each_line, ensight, fidap, flamelet, fluent4_case, gambit, hypermesh, ideas_universal, marc_post, prebfc_structured, ptc_mechanica
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   abaqus/abaqus_contents
+   cfx/cfx_contents
+   cgns/cgns_contents
+   fmu_file/fmu_file_contents
+   lstc/lstc_contents
+   mechanical_apdl/mechanical_apdl_contents
+   nastran/nastran_contents
+   partition/partition_contents
+   patran/patran_contents
+   plot3d/plot3d_contents
+   tecplot/tecplot_contents

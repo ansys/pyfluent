@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _base_frequency:
+
+base_frequency
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.base_frequency
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ==============================================
+
+Parent                                                                                                    Summary
+
+================================================================   ==============================================
+:ref:`inter_row_disturbances_item <inter_row_disturbances_item>`   'child_object_type' of inter_row_disturbances.
+
+================================================================   ==============================================
+

@@ -1,0 +1,34 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _annotations_list:
+
+annotations_list
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.annotations_list
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ======================================
+
+Parent                                                                            Summary
+
+================================================   ======================================
+:ref:`mesh_item <mesh_2_item>`                               'child_object_type' of mesh.
+
+:ref:`contour_item <contour_item>`                        'child_object_type' of contour.
+
+:ref:`vector_item <vector_1_item>`                         'child_object_type' of vector.
+
+:ref:`pathline_item <pathline_item>`                     'child_object_type' of pathline.
+
+:ref:`particle_track_item <particle_track_item>`   'child_object_type' of particle_track.
+
+:ref:`lic_item <lic_item>`                                    'child_object_type' of lic.
+
+:ref:`olic_item <olic_item>`                                 'child_object_type' of olic.
+
+================================================   ======================================
+

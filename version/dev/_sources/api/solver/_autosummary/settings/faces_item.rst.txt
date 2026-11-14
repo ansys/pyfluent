@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _faces_item:
+
+faces_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.faces_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=====================   ===============
+
+Attribute                       Summary
+
+=====================   ===============
+:ref:`name <name_19>`   Input new name.
+
+=====================   ===============
+
+.. rubric:: Included in:
+
+====================   ======================
+
+Parent                                Summary
+
+====================   ======================
+:ref:`faces <faces>`   Define topology faces.
+
+====================   ======================
+

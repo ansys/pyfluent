@@ -1,0 +1,45 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _formation_enthalpy:
+
+formation_enthalpy
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.formation_enthalpy
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ======================================
+
+Attribute                                                  Summary
+
+=========================   ======================================
+:ref:`option <option_47>`                Material property method.
+
+:ref:`value <value_25>`     Constant or expression property value.
+
+=========================   ======================================
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`fluid_item <fluid_item>`                                          'child_object_type' of fluid.
+
+:ref:`volumetric_species_item <volumetric_species_item>`   'child_object_type' of volumetric_species.
+
+:ref:`material_item <material_4_item>`                               'child_object_type' of material.
+
+:ref:`droplet_particle_item <droplet_particle_item>`         'child_object_type' of droplet_particle.
+
+:ref:`particle_species_item <particle_species_item>`         'child_object_type' of particle_species.
+
+:ref:`material_item <material_5_item>`                               'child_object_type' of material.
+
+========================================================   ==========================================
+

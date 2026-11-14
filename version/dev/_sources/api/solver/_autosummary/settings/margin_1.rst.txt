@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _margin_1:
+
+margin
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.margin_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`pixel_size <pixel_size>`   Margin space around video frames.
+
+==============================   =================================
+

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _scale_search_limiter:
+
+scale_search_limiter
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.scale_search_limiter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`turbulence <turbulence_3>`   Allows to change turbulence model variables or settings.
+
+:ref:`turbulence <turbulence_7>`   Allows to change turbulence model variables or settings.
+
+================================   ========================================================
+

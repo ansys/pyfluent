@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _expression_6:
+
+expression
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.expression_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===============================================
+
+Parent                                                             Summary
+
+========================   ===============================================
+:ref:`ccorner <ccorner>`   The corner flow correction coefficient CCORNER.
+
+========================   ===============================================
+

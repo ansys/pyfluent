@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _modeled_sectors:
+
+modeled_sectors
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.modeled_sectors
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`rows_item <rows_1_item>`   'child_object_type' of rows.
+
+==============================   ============================
+

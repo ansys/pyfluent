@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_compute_size_fields__compute_size_fields_insert_composite_child_task:
+
+insert_composite_child_task
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.compute_size_fields._compute_size_fields.insert_composite_child_task
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _insert_composite_child_taskArguments/_insert_composite_child_taskArguments_contents

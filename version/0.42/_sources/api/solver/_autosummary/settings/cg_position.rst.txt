@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cg_position:
+
+cg_position
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cg_position
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ==================================
+
+Parent                                                                            Summary
+
+====================================================   ==================================
+:ref:`rigid_body_properties <rigid_body_properties>`       'rigid_body_properties' child.
+
+====================================================   ==================================
+

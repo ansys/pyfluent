@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _number_local_layers:
+
+number_local_layers
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.number_local_layers
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================
+
+Parent                                                      Summary
+
+========================================   ========================
+:ref:`radial_settings <radial_settings>`   'radial_settings' child.
+
+========================================   ========================
+

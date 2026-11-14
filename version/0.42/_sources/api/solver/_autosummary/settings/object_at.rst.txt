@@ -1,0 +1,21 @@
+:orphan:
+
+.. _object_at:
+
+object_at
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.object_at
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =======================================
+
+Parent                                                                         Summary
+
+============================================   =======================================
+:ref:`list_properties_2 <list_properties_2>`       List properties of selected object.
+
+============================================   =======================================
+

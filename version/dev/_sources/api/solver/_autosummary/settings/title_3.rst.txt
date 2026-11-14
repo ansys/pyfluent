@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _title_3:
+
+title
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.title_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`scene_item <scene_item>`   'child_object_type' of scene.
+
+==============================   =============================
+

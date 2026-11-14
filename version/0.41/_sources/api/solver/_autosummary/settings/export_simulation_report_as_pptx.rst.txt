@@ -1,0 +1,34 @@
+:orphan:
+
+.. _export_simulation_report_as_pptx:
+
+export_simulation_report_as_pptx
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.export_simulation_report_as_pptx
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ======================================================================
+
+Argument                                                                                            Summary
+
+==================================   ======================================================================
+:ref:`report_name <report_name_5>`                         Simulation report to be exported as a PPTX file.
+
+:ref:`file_name <file_name_33>`          File name and path to export the simulation report as a PPTX file.
+
+==================================   ======================================================================
+
+.. rubric:: Included in:
+
+==============================================   ======================================================================================================================
+
+Parent                                                                                                                                                          Summary
+
+==============================================   ======================================================================================================================
+:ref:`simulation_reports <simulation_reports>`       Provides access to simulation reports, allowing to generate, view, export, and manage reports for the simulations.
+
+==============================================   ======================================================================================================================
+

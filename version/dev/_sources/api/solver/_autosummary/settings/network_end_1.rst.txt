@@ -1,0 +1,43 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _network_end_1:
+
+network_end
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.network_end_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ================
+
+Attribute                                     Summary
+
+==================================   ================
+:ref:`thermal_bc <thermal_bc>`       Thermal BC Type.
+
+:ref:`temperature <temperature_3>`       Temperature.
+
+:ref:`q <q>`                               Heat Flux.
+
+==================================   ================
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`network_end_item <network_end_item>`     'child_object_type' of network_end.
+
+:ref:`phase_item <phase_16_item>`                    'child_object_type' of phase.
+
+:ref:`network_end_item <network_end_2_item>`   'child_object_type' of network_end.
+
+:ref:`phase_item <phase_40_item>`                    'child_object_type' of phase.
+
+============================================   ===================================
+

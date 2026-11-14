@@ -1,0 +1,54 @@
+:orphan:
+
+.. _multiphase_8:
+
+multiphase
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.multiphase_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   =========================================
+
+Attribute                                                                                          Summary
+
+==============================================================   =========================================
+:ref:`gtemp_bc <gtemp_bc>`                                                            Granular Conditions.
+
+:ref:`g_temperature <g_temperature>`                                                 Granular Temperature.
+
+:ref:`g_qflux <g_qflux>`                                                                    Granular Flux.
+
+:ref:`wall_restitution_coeff <wall_restitution_coeff>`                            Restitution Coefficient.
+
+:ref:`volume_frac_spec_method <volume_frac_spec_method_1>`           Volume Fraction Specification Method.
+
+:ref:`volume_fraction <volume_fraction>`                                                  Volume Fraction.
+
+:ref:`contact_angles <contact_angles>`                                               Contact angle values.
+
+:ref:`dynamic_contact_angle_list <dynamic_contact_angle_list>`              Dynamic Contact Angles Inputs.
+
+==============================================================   =========================================
+
+.. rubric:: Included in:
+
+==================================================================   ==================================================
+
+Parent                                                                                                          Summary
+
+==================================================================   ==================================================
+:ref:`wall_child <wall_child>`                                                             'child_object_type' of wall.
+
+:ref:`phase_27_child <phase_27_child>`                                                    'child_object_type' of phase.
+
+:ref:`overlapping_boundaries_child <overlapping_boundaries_child>`       'child_object_type' of overlapping_boundaries.
+
+:ref:`wall_1_child <wall_1_child>`                                                         'child_object_type' of wall.
+
+:ref:`phase_51_child <phase_51_child>`                                                    'child_object_type' of phase.
+
+==================================================================   ==================================================
+

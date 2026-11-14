@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surfaces_13:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.surfaces_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`create <create_20>`                                  Create a group of surfaces.
+
+:ref:`group_surface_item <group_surface_item>`   'child_object_type' of group_surface.
+
+==============================================   =====================================
+

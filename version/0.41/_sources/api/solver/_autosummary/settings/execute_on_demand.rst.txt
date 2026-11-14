@@ -1,0 +1,32 @@
+:orphan:
+
+.. _execute_on_demand:
+
+execute_on_demand
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.execute_on_demand
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   ====================================
+
+Argument                                                  Summary
+
+==========================   ====================================
+:ref:`lib_name <lib_name>`       Execute on demand function name.
+
+==========================   ====================================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

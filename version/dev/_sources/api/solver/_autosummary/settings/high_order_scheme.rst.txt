@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _high_order_scheme:
+
+high_order_scheme
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.high_order_scheme
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================================
+
+Parent                                                       Summary
+
+============================   =====================================
+:ref:`tracking <tracking_1>`   Configures particle tracking schemes.
+
+============================   =====================================
+

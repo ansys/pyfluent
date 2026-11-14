@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _nec_deposition_rate_yplus:
+
+nec_deposition_rate_yplus
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.nec_deposition_rate_yplus
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==========================================
+
+Parent                                                              Summary
+
+==============================   ==========================================
+:ref:`wall_film <wall_film_1>`   Wall Film Settings for boundary-condition.
+
+==============================   ==========================================
+

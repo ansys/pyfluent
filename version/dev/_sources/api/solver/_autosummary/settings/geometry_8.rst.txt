@@ -1,0 +1,233 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _geometry_8:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.geometry_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===============================
+
+Attribute                                                      Summary
+
+====================================   ===============================
+:ref:`geom_disable <geom_disable>`     Disable Geometry Based Adption.
+
+:ref:`geom_dir_spec <geom_dir_spec>`          Direction Specification.
+
+:ref:`geom_dir_x <geom_dir_x>`                            X Direction.
+
+:ref:`geom_dir_y <geom_dir_y>`                            Y Direction.
+
+:ref:`geom_dir_z <geom_dir_z>`                            Z Direction.
+
+:ref:`geom_levels <geom_levels>`                               Levels.
+
+:ref:`geom_bgthread <geom_bgthread>`                Background Thread.
+
+====================================   ===============================
+
+.. rubric:: Included in:
+
+================================================================   =================================================
+
+Parent                                                                                                       Summary
+
+================================================================   =================================================
+:ref:`axis_item <axis_6_item>`                                                          'child_object_type' of axis.
+
+:ref:`phase_item <phase_6_item>`                                                       'child_object_type' of phase.
+
+:ref:`netm_solid_wall <netm_solid_wall>`                                        Define settings for NETM solid wall.
+
+:ref:`degassing_item <degassing_item>`                                             'child_object_type' of degassing.
+
+:ref:`exhaust_fan_item <exhaust_fan_item>`                                       'child_object_type' of exhaust_fan.
+
+:ref:`phase_item <phase_7_item>`                                                       'child_object_type' of phase.
+
+:ref:`fan_item <fan_item>`                                                               'child_object_type' of fan.
+
+:ref:`phase_item <phase_8_item>`                                                       'child_object_type' of phase.
+
+:ref:`geometry_item <geometry_7_item>`                                              'child_object_type' of geometry.
+
+:ref:`inlet_vent_item <inlet_vent_item>`                                          'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_9_item>`                                                       'child_object_type' of phase.
+
+:ref:`intake_fan_item <intake_fan_item>`                                          'child_object_type' of intake_fan.
+
+:ref:`phase_item <phase_10_item>`                                                      'child_object_type' of phase.
+
+:ref:`interface_item <interface_item>`                                             'child_object_type' of interface.
+
+:ref:`phase_item <phase_11_item>`                                                      'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_item>`                           'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_item <phase_13_item>`                                                      'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_item <mass_flow_outlet_item>`                        'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_item <phase_14_item>`                                                      'child_object_type' of phase.
+
+:ref:`outflow_item <outflow_item>`                                                   'child_object_type' of outflow.
+
+:ref:`phase_item <phase_17_item>`                                                      'child_object_type' of phase.
+
+:ref:`outlet_vent_item <outlet_vent_item>`                                       'child_object_type' of outlet_vent.
+
+:ref:`phase_item <phase_18_item>`                                                      'child_object_type' of phase.
+
+:ref:`overset_item <overset_1_item>`                                                 'child_object_type' of overset.
+
+:ref:`porous_jump_item <porous_jump_item>`                                       'child_object_type' of porous_jump.
+
+:ref:`phase_item <phase_20_item>`                                                      'child_object_type' of phase.
+
+:ref:`pressure_far_field_item <pressure_far_field_item>`                  'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_21_item>`                                                      'child_object_type' of phase.
+
+:ref:`pressure_inlet_item <pressure_inlet_item>`                              'child_object_type' of pressure_inlet.
+
+:ref:`phase_item <phase_22_item>`                                                      'child_object_type' of phase.
+
+:ref:`pressure_outlet_item <pressure_outlet_item>`                           'child_object_type' of pressure_outlet.
+
+:ref:`phase_item <phase_23_item>`                                                      'child_object_type' of phase.
+
+:ref:`radiator_item <radiator_item>`                                                'child_object_type' of radiator.
+
+:ref:`phase_item <phase_24_item>`                                                      'child_object_type' of phase.
+
+:ref:`rans_les_interface_item <rans_les_interface_item>`                  'child_object_type' of rans_les_interface.
+
+:ref:`phase_item <phase_25_item>`                                                      'child_object_type' of phase.
+
+:ref:`recirculation_inlet_item <recirculation_inlet_item>`               'child_object_type' of recirculation_inlet.
+
+:ref:`phase_item <phase_26_item>`                                                      'child_object_type' of phase.
+
+:ref:`recirculation_outlet_item <recirculation_outlet_item>`            'child_object_type' of recirculation_outlet.
+
+:ref:`phase_item <phase_27_item>`                                                      'child_object_type' of phase.
+
+:ref:`shadow_item <shadow_item>`                                                      'child_object_type' of shadow.
+
+:ref:`symmetry_item <symmetry_item>`                                                'child_object_type' of symmetry.
+
+:ref:`velocity_inlet_item <velocity_inlet_item>`                              'child_object_type' of velocity_inlet.
+
+:ref:`phase_item <phase_28_item>`                                                      'child_object_type' of phase.
+
+:ref:`wall_item <wall_item>`                                                            'child_object_type' of wall.
+
+:ref:`phase_item <phase_29_item>`                                                      'child_object_type' of phase.
+
+:ref:`overlapping_boundaries_item <overlapping_boundaries_item>`      'child_object_type' of overlapping_boundaries.
+
+:ref:`fan_settings <fan_settings>`                                 Define settings for overlapping boundary portion.
+
+:ref:`porous_jump_settings <porous_jump_settings>`                 Define settings for overlapping boundary portion.
+
+:ref:`radiator_settings <radiator_settings>`                       Define settings for overlapping boundary portion.
+
+:ref:`axis_item <axis_7_item>`                                                          'child_object_type' of axis.
+
+:ref:`phase_item <phase_30_item>`                                                      'child_object_type' of phase.
+
+:ref:`degassing_item <degassing_1_item>`                                           'child_object_type' of degassing.
+
+:ref:`exhaust_fan_item <exhaust_fan_1_item>`                                     'child_object_type' of exhaust_fan.
+
+:ref:`phase_item <phase_31_item>`                                                      'child_object_type' of phase.
+
+:ref:`fan_item <fan_1_item>`                                                             'child_object_type' of fan.
+
+:ref:`phase_item <phase_32_item>`                                                      'child_object_type' of phase.
+
+:ref:`geometry_item <geometry_10_item>`                                             'child_object_type' of geometry.
+
+:ref:`inlet_vent_item <inlet_vent_1_item>`                                        'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_33_item>`                                                      'child_object_type' of phase.
+
+:ref:`intake_fan_item <intake_fan_1_item>`                                        'child_object_type' of intake_fan.
+
+:ref:`phase_item <phase_34_item>`                                                      'child_object_type' of phase.
+
+:ref:`interface_item <interface_2_item>`                                           'child_object_type' of interface.
+
+:ref:`phase_item <phase_35_item>`                                                      'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_1_item>`                         'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_item <phase_37_item>`                                                      'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_item <mass_flow_outlet_1_item>`                      'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_item <phase_38_item>`                                                      'child_object_type' of phase.
+
+:ref:`outflow_item <outflow_1_item>`                                                 'child_object_type' of outflow.
+
+:ref:`phase_item <phase_41_item>`                                                      'child_object_type' of phase.
+
+:ref:`outlet_vent_item <outlet_vent_1_item>`                                     'child_object_type' of outlet_vent.
+
+:ref:`phase_item <phase_42_item>`                                                      'child_object_type' of phase.
+
+:ref:`overset_item <overset_2_item>`                                                 'child_object_type' of overset.
+
+:ref:`porous_jump_item <porous_jump_2_item>`                                     'child_object_type' of porous_jump.
+
+:ref:`phase_item <phase_44_item>`                                                      'child_object_type' of phase.
+
+:ref:`pressure_far_field_item <pressure_far_field_1_item>`                'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_45_item>`                                                      'child_object_type' of phase.
+
+:ref:`pressure_inlet_item <pressure_inlet_1_item>`                            'child_object_type' of pressure_inlet.
+
+:ref:`phase_item <phase_46_item>`                                                      'child_object_type' of phase.
+
+:ref:`pressure_outlet_item <pressure_outlet_1_item>`                         'child_object_type' of pressure_outlet.
+
+:ref:`phase_item <phase_47_item>`                                                      'child_object_type' of phase.
+
+:ref:`radiator_item <radiator_2_item>`                                              'child_object_type' of radiator.
+
+:ref:`phase_item <phase_48_item>`                                                      'child_object_type' of phase.
+
+:ref:`rans_les_interface_item <rans_les_interface_1_item>`                'child_object_type' of rans_les_interface.
+
+:ref:`phase_item <phase_49_item>`                                                      'child_object_type' of phase.
+
+:ref:`recirculation_inlet_item <recirculation_inlet_2_item>`             'child_object_type' of recirculation_inlet.
+
+:ref:`phase_item <phase_50_item>`                                                      'child_object_type' of phase.
+
+:ref:`recirculation_outlet_item <recirculation_outlet_2_item>`          'child_object_type' of recirculation_outlet.
+
+:ref:`phase_item <phase_51_item>`                                                      'child_object_type' of phase.
+
+:ref:`shadow_item <shadow_1_item>`                                                    'child_object_type' of shadow.
+
+:ref:`symmetry_item <symmetry_1_item>`                                              'child_object_type' of symmetry.
+
+:ref:`velocity_inlet_item <velocity_inlet_1_item>`                            'child_object_type' of velocity_inlet.
+
+:ref:`phase_item <phase_52_item>`                                                      'child_object_type' of phase.
+
+:ref:`wall_item <wall_1_item>`                                                          'child_object_type' of wall.
+
+:ref:`phase_item <phase_53_item>`                                                      'child_object_type' of phase.
+
+================================================================   =================================================
+

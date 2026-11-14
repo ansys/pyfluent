@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _color_filter:
+
+color_filter
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.color_filter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ================================
+
+Parent                                          Summary
+
+====================   ================================
+:ref:`video <video>`   The video window options object.
+
+====================   ================================
+

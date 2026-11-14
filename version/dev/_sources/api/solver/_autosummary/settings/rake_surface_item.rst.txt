@@ -1,0 +1,50 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rake_surface_item:
+
+rake_surface_item
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rake_surface_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ====================================================================
+
+Attribute                                                                                                 Summary
+
+==========================================   ====================================================================
+:ref:`name <name_5>`                                                                          Name of the object.
+
+:ref:`p0 <p0>`                                                            The XYZ coordinates of the start point.
+
+:ref:`p1 <p1>`                                                              The XYZ coordinates of the end point.
+
+:ref:`number_of_points <number_of_points>`   The number of points to be equally spaced between the two endpoints.
+
+==========================================   ====================================================================
+
+.. rubric:: Methods
+
+===========================   ==================
+
+Method                                   Summary
+
+===========================   ==================
+:ref:`display <display_12>`   Display a surface.
+
+===========================   ==================
+
+.. rubric:: Included in:
+
+==================================   ===================================================================
+
+Parent                                                                                           Summary
+
+==================================   ===================================================================
+:ref:`rake_surface <rake_surface>`   Provides access to creating new and editing existing rake surfaces.
+
+==================================   ===================================================================
+

@@ -1,0 +1,117 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _potential_1:
+
+potential
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.potential_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================================   =====================================================================================================================================
+
+Attribute                                                                                                                                                                                                                  Summary
+
+==========================================================================================   =====================================================================================================================================
+:ref:`potential_boundary_condition <potential_boundary_condition>`                                                                                                                                   Potential Boundary Condition.
+
+:ref:`potential_boundary_value <potential_boundary_value>`                                                                                                                                     Potential or Current density Value.
+
+:ref:`electrolyte_potential_boundary_condition <electrolyte_potential_boundary_condition>`                                                                                               Electrolyte Potential Boundary Condition.
+
+:ref:`current_density_boundary_value <current_density_boundary_value>`                       Defines the current density value at a boundary for electrochemical simulations, used to model charge transfer or electrode behavior.
+
+==========================================================================================   =====================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`exhaust_fan_item <exhaust_fan_item>`                          'child_object_type' of exhaust_fan.
+
+:ref:`phase_item <phase_7_item>`                                          'child_object_type' of phase.
+
+:ref:`inlet_vent_item <inlet_vent_item>`                             'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_9_item>`                                          'child_object_type' of phase.
+
+:ref:`intake_fan_item <intake_fan_item>`                             'child_object_type' of intake_fan.
+
+:ref:`phase_item <phase_10_item>`                                         'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_item>`              'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_item <phase_13_item>`                                         'child_object_type' of phase.
+
+:ref:`outflow_item <outflow_item>`                                      'child_object_type' of outflow.
+
+:ref:`phase_item <phase_17_item>`                                         'child_object_type' of phase.
+
+:ref:`outlet_vent_item <outlet_vent_item>`                          'child_object_type' of outlet_vent.
+
+:ref:`phase_item <phase_18_item>`                                         'child_object_type' of phase.
+
+:ref:`pressure_far_field_item <pressure_far_field_item>`     'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_21_item>`                                         'child_object_type' of phase.
+
+:ref:`pressure_inlet_item <pressure_inlet_item>`                 'child_object_type' of pressure_inlet.
+
+:ref:`phase_item <phase_22_item>`                                         'child_object_type' of phase.
+
+:ref:`pressure_outlet_item <pressure_outlet_item>`              'child_object_type' of pressure_outlet.
+
+:ref:`phase_item <phase_23_item>`                                         'child_object_type' of phase.
+
+:ref:`velocity_inlet_item <velocity_inlet_item>`                 'child_object_type' of velocity_inlet.
+
+:ref:`phase_item <phase_28_item>`                                         'child_object_type' of phase.
+
+:ref:`exhaust_fan_item <exhaust_fan_1_item>`                        'child_object_type' of exhaust_fan.
+
+:ref:`phase_item <phase_31_item>`                                         'child_object_type' of phase.
+
+:ref:`inlet_vent_item <inlet_vent_1_item>`                           'child_object_type' of inlet_vent.
+
+:ref:`phase_item <phase_33_item>`                                         'child_object_type' of phase.
+
+:ref:`intake_fan_item <intake_fan_1_item>`                           'child_object_type' of intake_fan.
+
+:ref:`phase_item <phase_34_item>`                                         'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_1_item>`            'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_item <phase_37_item>`                                         'child_object_type' of phase.
+
+:ref:`outflow_item <outflow_1_item>`                                    'child_object_type' of outflow.
+
+:ref:`phase_item <phase_41_item>`                                         'child_object_type' of phase.
+
+:ref:`outlet_vent_item <outlet_vent_1_item>`                        'child_object_type' of outlet_vent.
+
+:ref:`phase_item <phase_42_item>`                                         'child_object_type' of phase.
+
+:ref:`pressure_far_field_item <pressure_far_field_1_item>`   'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_45_item>`                                         'child_object_type' of phase.
+
+:ref:`pressure_inlet_item <pressure_inlet_1_item>`               'child_object_type' of pressure_inlet.
+
+:ref:`phase_item <phase_46_item>`                                         'child_object_type' of phase.
+
+:ref:`pressure_outlet_item <pressure_outlet_1_item>`            'child_object_type' of pressure_outlet.
+
+:ref:`phase_item <phase_47_item>`                                         'child_object_type' of phase.
+
+:ref:`velocity_inlet_item <velocity_inlet_1_item>`               'child_object_type' of velocity_inlet.
+
+:ref:`phase_item <phase_52_item>`                                         'child_object_type' of phase.
+
+==========================================================   ==========================================
+

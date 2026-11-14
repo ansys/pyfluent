@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _units_item:
+
+units_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.units_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ==============
+
+Attribute                                   Summary
+
+==================================   ==============
+:ref:`unit_name <unit_name>`           Units Names.
+
+:ref:`scale_factor <scale_factor>`    Scale Factor.
+
+:ref:`offset <offset_5>`             Offset Factor.
+
+==================================   ==============
+
+.. rubric:: Included in:
+
+====================   =======
+
+Parent                 Summary
+
+====================   =======
+:ref:`units <units>`    Units.
+
+====================   =======
+

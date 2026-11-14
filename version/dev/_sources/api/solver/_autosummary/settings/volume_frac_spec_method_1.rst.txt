@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _volume_frac_spec_method_1:
+
+volume_frac_spec_method
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.volume_frac_spec_method_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`multiphase <multiphase_4>`   Multiphase settings.
+
+================================   ====================
+

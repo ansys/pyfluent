@@ -1,0 +1,53 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reference_frame_3:
+
+reference_frame
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reference_frame_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   ==================================================
+
+Attribute                                                                                                                       Summary
+
+==================================================================================   ==================================================
+:ref:`frame_motion <frame_motion>`                                                                                       Frame Motion?.
+
+:ref:`mrf_relative_to_thread <mrf_relative_to_thread>`                                                           Relative To Cell Zone.
+
+:ref:`mrf_omega <mrf_omega>`                                                                            Reference Frame Rotation Speed.
+
+:ref:`reference_frame_velocity <reference_frame_velocity>`                                         Reference frame velocity components.
+
+:ref:`reference_frame_axis_origin <reference_frame_axis_origin>`                                Reference frame axis origin components.
+
+:ref:`reference_frame_axis_direction <reference_frame_axis_direction>`                       Reference frame axis direction components.
+
+:ref:`reference_frame_zone_motion_function <reference_frame_zone_motion_function>`   Reference Frame User Defined Zone Motion Function.
+
+==================================================================================   ==================================================
+
+.. rubric:: Included in:
+
+============================================   ======================================
+
+Parent                                                                        Summary
+
+============================================   ======================================
+:ref:`solid_item <solid_2_item>`                        'child_object_type' of solid.
+
+:ref:`phase_item <phase_3_item>`                        'child_object_type' of phase.
+
+:ref:`netm_solid_region <netm_solid_region>`   Define settings for NETM solid region.
+
+:ref:`solid_item <solid_3_item>`                        'child_object_type' of solid.
+
+:ref:`phase_item <phase_5_item>`                        'child_object_type' of phase.
+
+============================================   ======================================
+

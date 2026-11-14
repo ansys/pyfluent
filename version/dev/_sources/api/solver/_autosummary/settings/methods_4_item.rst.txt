@@ -1,0 +1,39 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _methods_4_item:
+
+methods_item
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.methods_4_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =======================================================
+
+Attribute                                                                                        Summary
+
+==============================================   =======================================================
+:ref:`flow_solver <flow_solver>`                                         Method used by the flow solver.
+
+:ref:`adjoint_solver <adjoint_solver>`                                Method used by the adjoint solver.
+
+:ref:`adjoint_activation <adjoint_activation>`   Activate adjoint computation for this set of equations.
+
+:ref:`adjoint_equations <adjoint_equations>`                               Associated adjoint equations.
+
+==============================================   =======================================================
+
+.. rubric:: Included in:
+
+==========================   ====================================
+
+Parent                                                    Summary
+
+==========================   ====================================
+:ref:`methods <methods_4>`   The adjoint solution methods object.
+
+==========================   ====================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _motion_def:
+
+motion_def
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.motion_def
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===============
+
+Parent                           Summary
+
+======================   ===============
+:ref:`motion <motion>`   'motion' child.
+
+======================   ===============
+

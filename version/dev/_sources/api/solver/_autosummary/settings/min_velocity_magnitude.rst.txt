@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _min_velocity_magnitude:
+
+min_velocity_magnitude
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.min_velocity_magnitude
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===========================================
+
+Parent                                                                     Summary
+
+====================================   ===========================================
+:ref:`sponge_layer <sponge_layer_1>`   Advanced settings for the gap sponge layer.
+
+====================================   ===========================================
+

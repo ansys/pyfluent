@@ -1,0 +1,89 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _set_type_3:
+
+set_type
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.set_type_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   ===============
+
+Argument                       Summary
+
+====================   ===============
+:ref:`type <type_7>`   Input new type.
+
+====================   ===============
+
+.. rubric:: Included in:
+
+============================================================   ============================================
+
+Parent                                                                                              Summary
+
+============================================================   ============================================
+:ref:`axis_item <axis_6_item>`                                                 'child_object_type' of axis.
+
+:ref:`degassing_item <degassing_item>`                                    'child_object_type' of degassing.
+
+:ref:`exhaust_fan_item <exhaust_fan_item>`                              'child_object_type' of exhaust_fan.
+
+:ref:`fan_item <fan_item>`                                                      'child_object_type' of fan.
+
+:ref:`geometry_item <geometry_7_item>`                                     'child_object_type' of geometry.
+
+:ref:`inlet_vent_item <inlet_vent_item>`                                 'child_object_type' of inlet_vent.
+
+:ref:`intake_fan_item <intake_fan_item>`                                 'child_object_type' of intake_fan.
+
+:ref:`interface_item <interface_item>`                                    'child_object_type' of interface.
+
+:ref:`interior_item <interior_item>`                                       'child_object_type' of interior.
+
+:ref:`mass_flow_inlet_item <mass_flow_inlet_item>`                  'child_object_type' of mass_flow_inlet.
+
+:ref:`mass_flow_outlet_item <mass_flow_outlet_item>`               'child_object_type' of mass_flow_outlet.
+
+:ref:`network_item <network_item>`                                          'child_object_type' of network.
+
+:ref:`network_end_item <network_end_item>`                              'child_object_type' of network_end.
+
+:ref:`outflow_item <outflow_item>`                                          'child_object_type' of outflow.
+
+:ref:`outlet_vent_item <outlet_vent_item>`                              'child_object_type' of outlet_vent.
+
+:ref:`overset_item <overset_1_item>`                                        'child_object_type' of overset.
+
+:ref:`periodic_item <periodic_item>`                                       'child_object_type' of periodic.
+
+:ref:`porous_jump_item <porous_jump_item>`                              'child_object_type' of porous_jump.
+
+:ref:`pressure_far_field_item <pressure_far_field_item>`         'child_object_type' of pressure_far_field.
+
+:ref:`pressure_inlet_item <pressure_inlet_item>`                     'child_object_type' of pressure_inlet.
+
+:ref:`pressure_outlet_item <pressure_outlet_item>`                  'child_object_type' of pressure_outlet.
+
+:ref:`radiator_item <radiator_item>`                                       'child_object_type' of radiator.
+
+:ref:`rans_les_interface_item <rans_les_interface_item>`         'child_object_type' of rans_les_interface.
+
+:ref:`recirculation_inlet_item <recirculation_inlet_item>`      'child_object_type' of recirculation_inlet.
+
+:ref:`recirculation_outlet_item <recirculation_outlet_item>`   'child_object_type' of recirculation_outlet.
+
+:ref:`shadow_item <shadow_item>`                                             'child_object_type' of shadow.
+
+:ref:`symmetry_item <symmetry_item>`                                       'child_object_type' of symmetry.
+
+:ref:`velocity_inlet_item <velocity_inlet_item>`                     'child_object_type' of velocity_inlet.
+
+:ref:`wall_item <wall_item>`                                                   'child_object_type' of wall.
+
+============================================================   ============================================
+

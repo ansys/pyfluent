@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _skip_5:
+
+skip
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.skip_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ==========================================
+
+Parent                                                         Summary
+
+=========================   ==========================================
+:ref:`option <option_80>`   Check the Particle-tracks control options.
+
+=========================   ==========================================
+

@@ -1,0 +1,57 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _axis_origin_2:
+
+axis_origin
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.axis_origin_2
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`axis_origin_item <axis_origin_2_item>`
+
+Access each :ref:`axis_origin_item <axis_origin_2_item>` by index using ``axis_origin[<index>]``.
+
+
+.. rubric:: Included in:
+
+=============================   ======================================================
+
+Parent                                                                         Summary
+
+=============================   ======================================================
+:ref:`momentum <momentum_1>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_2>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_3>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_4>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_7>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_8>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_9>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_10>`   Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_11>`   Allows to change momentum model variables or settings.
+
+=============================   ======================================================
+

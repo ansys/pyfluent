@@ -1,0 +1,56 @@
+:orphan:
+
+.. _manage_criteria_child:
+
+manage_criteria_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.manage_criteria_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ================================================================================================================================
+
+Attribute                                                                                                                                                               Summary
+
+============================================   ================================================================================================================================
+:ref:`name <name_1>`                                                                                                            The name for this automatic adaption criterion.
+
+:ref:`menu <menu>`                                                                                                                                                'menu' child.
+
+:ref:`sync <sync>`                                                                                                                                                'sync' child.
+
+:ref:`index <index>`                                                                                                                                             'index' child.
+
+:ref:`type <type>`                                                                                                              The type for this automatic adaption criterion.
+
+:ref:`offset <offset>`                                                                                                  An offset to the adaption frequency for this criterion.
+
+:ref:`manual <manual>`                                                                                                                                          'manual' child.
+
+:ref:`active <active>`                                                                                      Activate / deactivate the use of this automatic adaption criterion.
+
+:ref:`frequency <frequency>`                       The interval for how many iterations or time steps must pass between two consecutive automatic adaptions for this criterion.
+
+:ref:`skip_until <skip_until>`                                                       Skip applying the automatic adaption criterion until the specified iteration or time step.
+
+:ref:`anisotropic <anisotropic>`                                        Enable / disable anisotropic adaption for prismatic cells as part of this automatic adaption criterion.
+
+:ref:`refinement_layers <refinement_layers>`                             The number of additional cell layers that can be refined as part of this automatic adaption criterion.
+
+:ref:`predicates <predicates>`                                                                                                                              'predicates' child.
+
+============================================   ================================================================================================================================
+
+.. rubric:: Included in:
+
+========================================   ============================================
+
+Parent                                                                          Summary
+
+========================================   ============================================
+:ref:`manage_criteria <manage_criteria>`       The adaption criteria management object.
+
+========================================   ============================================
+

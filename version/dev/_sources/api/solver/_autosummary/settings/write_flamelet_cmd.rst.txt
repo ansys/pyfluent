@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _write_flamelet_cmd:
+
+write_flamelet_cmd
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.write_flamelet_cmd
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================   ===================
+
+Argument                                                       Summary
+
+================================================   ===================
+:ref:`write_flamelet_file <write_flamelet_file>`   Name Flamelet File.
+
+================================================   ===================
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`parameters <parameters_2>`   PDF Flamelet Parameters.
+
+================================   ========================
+

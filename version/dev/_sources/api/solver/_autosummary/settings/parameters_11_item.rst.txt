@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parameters_11_item:
+
+parameters_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.parameters_11_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =============================
+
+Attribute                                              Summary
+
+==============================   =============================
+:ref:`prescribed <prescribed>`   Prescribed or freeform value.
+
+:ref:`value <value_41>`                      Prescribed value.
+
+==============================   =============================
+
+.. rubric:: Included in:
+
+=================================   ==================================
+
+Parent                                                         Summary
+
+=================================   ==================================
+:ref:`parameters <parameters_11>`   Parameters for prescribed profile.
+
+=================================   ==================================
+

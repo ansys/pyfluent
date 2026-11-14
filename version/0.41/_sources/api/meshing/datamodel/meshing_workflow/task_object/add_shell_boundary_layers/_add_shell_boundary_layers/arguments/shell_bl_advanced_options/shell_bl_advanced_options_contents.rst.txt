@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_shell_boundary_layers__add_shell_boundary_layers_arguments_shell_bl_advanced_options:
+
+shell_bl_advanced_options
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.add_shell_boundary_layers._add_shell_boundary_layers.arguments.shell_bl_advanced_options
+   :members: adjacent_attach_angle, expose_side, gap_factor, last_ratio_num_layers, last_ratio_percentage, max_aspect_ratio, min_aspect_ratio, show_in_gui
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

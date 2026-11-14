@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _length_min:
+
+length_min
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.length_min
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`settings <settings_2>`   'settings' child.
+
+============================   =================
+

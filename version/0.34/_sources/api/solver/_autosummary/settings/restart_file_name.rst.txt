@@ -1,0 +1,21 @@
+:orphan:
+
+.. _restart_file_name:
+
+restart_file_name
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.restart_file_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`standalone_echem_model <standalone_echem_model>`       Run standalone echem model.
+
+======================================================   ===============================
+

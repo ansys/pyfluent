@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _tsv_file_name:
+
+tsv_file_name
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.tsv_file_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================
+
+Parent                              Summary
+
+========================   ================
+:ref:`export <export_1>`   Export Commands.
+
+========================   ================
+

@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _solver_1:
+
+solver
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.solver_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ======================
+
+Attribute                                             Summary
+
+====================================   ======================
+:ref:`stabilization <stabilization>`   'stabilization' child.
+
+====================================   ======================
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`dynamic_zones_item <dynamic_zones_item>`   'child_object_type' of dynamic_zones.
+
+==============================================   =====================================
+

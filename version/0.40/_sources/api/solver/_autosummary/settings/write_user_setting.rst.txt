@@ -1,0 +1,32 @@
+:orphan:
+
+.. _write_user_setting:
+
+write_user_setting
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_user_setting
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ============================================================
+
+Argument                                                                               Summary
+
+===============================   ============================================================
+:ref:`file_name <file_name_39>`       Writes all user-modified settings to the specified file.
+
+===============================   ============================================================
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================================================
+
+Parent                                                                                                                           Summary
+
+==========================================================   ===========================================================================
+:ref:`modified_setting_options <modified_setting_options>`       Displays and manages user-modified settings compared to default values.
+
+==========================================================   ===========================================================================
+

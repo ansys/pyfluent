@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _delete_13:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.delete_13
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =============================================================
+
+Argument                                                                                 Summary
+
+================================   =============================================================
+:ref:`delete_all <delete_all_8>`   Yes: "Delete all animations", no: "Delete single animation.".
+
+:ref:`name <name_53>`                                                       Animation to delete.
+
+================================   =============================================================
+
+.. rubric:: Included in:
+
+==========================   =====================================================
+
+Parent                                                                     Summary
+
+==========================   =====================================================
+:ref:`playback <playback>`   Control the playback settings of animation sequences.
+
+==========================   =====================================================
+

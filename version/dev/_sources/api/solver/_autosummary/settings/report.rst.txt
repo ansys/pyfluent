@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report:
+
+report
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.report
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ========================
+
+Parent                                    Summary
+
+======================   ========================
+:ref:`optics <optics>`   The optics model object.
+
+======================   ========================
+

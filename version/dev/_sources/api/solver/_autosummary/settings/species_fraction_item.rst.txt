@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_fraction_item:
+
+species_fraction_item
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.species_fraction_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`species_fraction <species_fraction>`   Configure species settings object.
+
+==========================================   ==================================
+

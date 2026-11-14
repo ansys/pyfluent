@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _scope_2:
+
+scope
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.scope_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`cgns <cgns>`                         Write a CGNS file.
+
+:ref:`cgns_item <cgns_1_item>`   'child_object_type' of cgns.
+
+==============================   ============================
+

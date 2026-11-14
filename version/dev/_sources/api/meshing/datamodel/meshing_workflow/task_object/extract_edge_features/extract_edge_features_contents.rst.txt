@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_extract_edge_features:
+
+extract_edge_features
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.extract_edge_features
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`extract_edge_features <ref_meshing_datamodel_meshing_workflow_task_object_extract_edge_features__extract_edge_features>`
+
+``extract_edge_features`` is organised like a dictionary. You can access each :ref:`extract_edge_features <ref_meshing_datamodel_meshing_workflow_task_object_extract_edge_features__extract_edge_features>` by name using ``extract_edge_features['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _extract_edge_features/_extract_edge_features_contents

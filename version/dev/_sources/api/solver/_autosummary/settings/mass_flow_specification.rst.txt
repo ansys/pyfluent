@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mass_flow_specification:
+
+mass_flow_specification
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mass_flow_specification
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ==================================================================
+
+Parent                                                                                                            Summary
+
+====================================================   ==================================================================
+:ref:`momentum <momentum_4>`                                       Allows to change momentum model variables or settings.
+
+:ref:`recirculation_outlet <recirculation_outlet_1>`   Allows to change recirculation-outlet model variables or settings.
+
+====================================================   ==================================================================
+

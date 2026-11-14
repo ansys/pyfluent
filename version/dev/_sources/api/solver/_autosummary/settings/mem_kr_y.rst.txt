@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mem_kr_y:
+
+mem_kr_y
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mem_kr_y
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==========================
+
+Parent                                          Summary
+
+==========================   ==========================
+:ref:`mem_zone <mem_zone>`   Up electrolyte cell zones.
+
+==========================   ==========================
+

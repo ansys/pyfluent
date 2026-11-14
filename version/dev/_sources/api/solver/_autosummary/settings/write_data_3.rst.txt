@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _write_data_3:
+
+write_data
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.write_data_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`create <create_23>`                                        Add new Design Point.
+
+:ref:`design_points_item <design_points_item>`   'child_object_type' of design_points.
+
+==============================================   =====================================
+

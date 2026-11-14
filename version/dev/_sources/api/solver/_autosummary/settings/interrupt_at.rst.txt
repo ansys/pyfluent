@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interrupt_at:
+
+interrupt_at
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.interrupt_at
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`interrupt <interrupt>`   Interrupt the iterations.
+
+============================   =========================
+

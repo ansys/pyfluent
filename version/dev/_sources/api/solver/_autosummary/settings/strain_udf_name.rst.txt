@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _strain_udf_name:
+
+strain_udf_name
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.strain_udf_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==================
+
+Parent                                              Summary
+
+======================================   ==================
+:ref:`swelling_model <swelling_model>`   Up swelling model.
+
+======================================   ==================
+

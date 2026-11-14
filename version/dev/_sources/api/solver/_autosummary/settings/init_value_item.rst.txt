@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _init_value_item:
+
+init_value_item
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.init_value_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   =========================================
+
+Attribute                                                                Summary
+
+====================================   =========================================
+:ref:`species_name <species_name_4>`   Species name in species-real-pair object.
+
+:ref:`value <value_17>`                        Value in thread-real-pair object.
+
+====================================   =========================================
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`init_value <init_value>`   Initial concentration (kmol/m3).
+
+==============================   ================================
+

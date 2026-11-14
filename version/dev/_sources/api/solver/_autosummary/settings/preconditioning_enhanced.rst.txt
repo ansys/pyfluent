@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _preconditioning_enhanced:
+
+preconditioning_enhanced
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.preconditioning_enhanced
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ========================
+
+Parent                                                        Summary
+
+==========================================   ========================
+:ref:`freeform_motions <freeform_motions>`   Freeform motions object.
+
+==========================================   ========================
+

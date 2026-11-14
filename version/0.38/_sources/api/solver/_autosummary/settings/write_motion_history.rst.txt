@@ -1,0 +1,21 @@
+:orphan:
+
+.. _write_motion_history:
+
+write_motion_history
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_motion_history
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`six_dof <six_dof>`       'six_dof' child.
+
+========================   ====================
+

@@ -1,0 +1,63 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _icing_1:
+
+icing
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.icing_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ===============================================================
+
+Attribute                                                                                                                        Summary
+
+======================================================================   ===============================================================
+:ref:`fensapice_flow_bc_subtype <fensapice_flow_bc_subtype>`             Sets the flow boundary condition subtype for icing simulations.
+
+:ref:`fensapice_dpm_outlet_condition <fensapice_dpm_outlet_condition>`           Sets the outlet condition for DPM simulations in icing.
+
+:ref:`fensapice_dpm_rh_mode <fensapice_dpm_rh_mode>`                       Sets the relative humidity mode for DPM simulations in icing.
+
+:ref:`fensapice_drop_vrh <fensapice_drop_vrh>`                                        Sets the drop volume radius for icing simulations.
+
+:ref:`fensapice_drop_vc <fensapice_drop_vc>`                                   Sets the drop volume concentration for icing simulations.
+
+======================================================================   ===============================================================
+
+.. rubric:: Included in:
+
+====================================================   =======================================
+
+Parent                                                                                 Summary
+
+====================================================   =======================================
+:ref:`exhaust_fan_item <exhaust_fan_item>`                 'child_object_type' of exhaust_fan.
+
+:ref:`phase_item <phase_7_item>`                                 'child_object_type' of phase.
+
+:ref:`outlet_vent_item <outlet_vent_item>`                 'child_object_type' of outlet_vent.
+
+:ref:`phase_item <phase_18_item>`                                'child_object_type' of phase.
+
+:ref:`pressure_outlet_item <pressure_outlet_item>`     'child_object_type' of pressure_outlet.
+
+:ref:`phase_item <phase_23_item>`                                'child_object_type' of phase.
+
+:ref:`exhaust_fan_item <exhaust_fan_1_item>`               'child_object_type' of exhaust_fan.
+
+:ref:`phase_item <phase_31_item>`                                'child_object_type' of phase.
+
+:ref:`outlet_vent_item <outlet_vent_1_item>`               'child_object_type' of outlet_vent.
+
+:ref:`phase_item <phase_42_item>`                                'child_object_type' of phase.
+
+:ref:`pressure_outlet_item <pressure_outlet_1_item>`   'child_object_type' of pressure_outlet.
+
+:ref:`phase_item <phase_47_item>`                                'child_object_type' of phase.
+
+====================================================   =======================================
+

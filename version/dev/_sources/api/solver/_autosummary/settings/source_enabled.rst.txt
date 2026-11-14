@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _source_enabled:
+
+source_enabled
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.source_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============
+
+Parent                              Summary
+
+==========================   ==============
+:ref:`options <options_5>`   Model options.
+
+==========================   ==============
+

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _delimiter:
+
+delimiter
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.delimiter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`ascii <ascii>`                        Write an ASCII file.
+
+:ref:`ascii_item <ascii_1_item>`   'child_object_type' of ascii.
+
+================================   =============================
+

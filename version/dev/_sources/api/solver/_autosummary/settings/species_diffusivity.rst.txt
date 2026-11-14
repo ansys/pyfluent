@@ -1,0 +1,51 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_diffusivity:
+
+species_diffusivity
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.species_diffusivity
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`species_diffusivity_item <species_diffusivity_item>`
+
+``species_diffusivity`` is organised like a dictionary. You can access each :ref:`species_diffusivity_item <species_diffusivity_item>` by name using ``species_diffusivity['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`mass_diffusivity <mass_diffusivity>`            Material property: mass-diffusivity.
+
+:ref:`thermal_diffusivity <thermal_diffusivity>`   Material property: thermal-diffusivity.
+
+================================================   =======================================
+

@@ -1,0 +1,23 @@
+.. _ref_meshing_datamodel_part_management_Mirror__Mirror:
+
+_Mirror
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.Mirror._Mirror
+   :members: Applied, Children, Context, Global, MirrorAbout, Name, Type, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Add/Add_contents
+   Apply/Apply_contents
+   Remove/Remove_contents
+   Rename/Rename_contents
+   Undo/Undo_contents
+   Update/Update_contents

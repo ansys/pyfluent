@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _hostname:
+
+hostname
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.hostname
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================================
+
+Parent                                                                        Summary
+
+==============================   ====================================================
+:ref:`spawn_node <spawn_node>`   Spawn a compute node process on a specified machine.
+
+==============================   ====================================================
+

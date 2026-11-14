@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _material_6:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.material_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =====================================================
+
+Parent                                                                     Summary
+
+==========================   =====================================================
+:ref:`general <general_2>`   Allows to change general model variables or settings.
+
+:ref:`general <general_3>`   Allows to change general model variables or settings.
+
+:ref:`thermal <thermal>`     Allows to change thermal model variables or settings.
+
+==========================   =====================================================
+

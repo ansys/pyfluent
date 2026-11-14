@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _display_16:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.display_16
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`xy_plot_item <xy_plot_item>`   'child_object_type' of xy_plot.
+
+==================================   ===============================
+

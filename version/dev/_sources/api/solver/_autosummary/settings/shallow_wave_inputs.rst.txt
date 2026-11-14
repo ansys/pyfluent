@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _shallow_wave_inputs:
+
+shallow_wave_inputs
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.shallow_wave_inputs
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`shallow_wave_inputs_item <shallow_wave_inputs_item>`
+
+Access each :ref:`shallow_wave_inputs_item <shallow_wave_inputs_item>` by index using ``shallow_wave_inputs[<index>]``.
+
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`multiphase <multiphase_8>`   Allows to change multiphase model variables or settings.
+
+================================   ========================================================
+

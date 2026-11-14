@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fixed_walls_constraint:
+
+fixed_walls_constraint
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fixed_walls_constraint
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`fixed_walls_constraint_item <fixed_walls_constraint_item>`
+
+``fixed_walls_constraint`` is organised like a dictionary. You can access each :ref:`fixed_walls_constraint_item <fixed_walls_constraint_item>` by name using ``fixed_walls_constraint['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================   =============================
+
+Parent                                                     Summary
+
+==================================   =============================
+:ref:`definitions <definitions_2>`   Design condition definitions.
+
+==================================   =============================
+

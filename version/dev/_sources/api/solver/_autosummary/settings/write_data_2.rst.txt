@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _write_data_2:
+
+write_data
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.write_data_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===============================
+
+Parent                                                           Summary
+
+======================================   ===============================
+:ref:`function_hooks <function_hooks>`   Hook up user-defined functions.
+
+======================================   ===============================
+

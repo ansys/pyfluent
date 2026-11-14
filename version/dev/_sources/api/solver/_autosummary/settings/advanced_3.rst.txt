@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _advanced_3:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.advanced_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ===========================
+
+Attribute                                                                          Summary
+
+============================================================   ===========================
+:ref:`delay_model_change_update <delay_model_change_update>`     Model change call update.
+
+:ref:`batch_thread_update <batch_thread_update>`               Batch thread update option.
+
+============================================================   ===========================
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`settings <settings_1>`   'settings' child.
+
+============================   =================
+

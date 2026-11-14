@@ -1,0 +1,36 @@
+:orphan:
+
+.. _create_11:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_11
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ======================================================================================================================================
+
+Argument                                                                                                                                                          Summary
+
+================================   ======================================================================================================================================
+:ref:`name <name_26>`                                                                                                  Name of the solution animation you want to create.
+
+:ref:`storage_dir <storage_dir>`       The directory where animation images are stored using either an absolute or relative (./) path to currently opened case directory.
+
+:ref:`animate_on <animate_on>`                                                      A graphics object to animate. The images will be captured at the specified frequency.
+
+================================   ======================================================================================================================================
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`solution_animations <solution_animations>`       'solution_animations' child.
+
+================================================   ================================
+

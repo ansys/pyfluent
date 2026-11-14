@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_ResultsInfo_ParticleVariables:
+
+ParticleVariables
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.ResultsInfo.ParticleVariables
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`ParticleVariables <ref_solver_datamodel_flicing_Case_ResultsInfo_ParticleVariables__ParticleVariables>`
+
+``ParticleVariables`` is organised like a dictionary. You can access each :ref:`ParticleVariables <ref_solver_datamodel_flicing_Case_ResultsInfo_ParticleVariables__ParticleVariables>` by name using ``ParticleVariables['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _ParticleVariables/_ParticleVariables_contents

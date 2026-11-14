@@ -1,0 +1,59 @@
+:orphan:
+
+.. _phase_3:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_3
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`phase_3_child <phase_3_child>`
+
+
+.. rubric:: Included in:
+
+============================================   ======================================
+
+Parent                                                                        Summary
+
+============================================   ======================================
+:ref:`settings_1 <settings_1>`                     Domain name to define settings on.
+
+:ref:`axis_6_child <axis_6_child>`                       'child_object_type' of axis.
+
+:ref:`degassing_1_child <degassing_1_child>`        'child_object_type' of degassing.
+
+:ref:`geometry_8_child <geometry_8_child>`           'child_object_type' of geometry.
+
+:ref:`overset_1_child <overset_1_child>`              'child_object_type' of overset.
+
+:ref:`shadow_1_child <shadow_1_child>`                 'child_object_type' of shadow.
+
+:ref:`symmetry_1_child <symmetry_1_child>`           'child_object_type' of symmetry.
+
+============================================   ======================================
+

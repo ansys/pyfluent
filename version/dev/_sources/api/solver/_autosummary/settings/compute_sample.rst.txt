@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compute_sample:
+
+compute_sample
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.compute_sample
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ========================================================
+
+Argument                                                                        Summary
+
+============================   ========================================================
+:ref:`sample <sample_3>`              Pick a sample to calculate a variable range from.
+
+:ref:`variable <variable_2>`   From the sample, pick a variable to calculate its range.
+
+============================   ========================================================
+
+.. rubric:: Included in:
+
+==============================   ==============================================================
+
+Parent                                                                                  Summary
+
+==============================   ==============================================================
+:ref:`histogram <histogram_1>`   Configure how particle data is reduced for histogram analysis.
+
+==============================   ==============================================================
+

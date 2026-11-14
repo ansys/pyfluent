@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _n_save:
+
+n_save
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.n_save
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   ================================
+
+Parent                                                 Summary
+
+===========================   ================================
+:ref:`options <options_13>`   Options for reporting residuals.
+
+===========================   ================================
+

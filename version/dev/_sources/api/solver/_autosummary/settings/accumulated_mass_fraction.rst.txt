@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _accumulated_mass_fraction:
+
+accumulated_mass_fraction
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.accumulated_mass_fraction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==============================================
+
+Parent                                                                          Summary
+
+======================================   ==============================================
+:ref:`tabulated_size <tabulated_size>`   Tabulated particle size distribution settings.
+
+======================================   ==============================================
+

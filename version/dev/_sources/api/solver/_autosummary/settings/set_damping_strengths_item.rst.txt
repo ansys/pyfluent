@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _set_damping_strengths_item:
+
+set_damping_strengths_item
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.set_damping_strengths_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =================
+
+Parent                                                           Summary
+
+====================================================   =================
+:ref:`set_damping_strengths <set_damping_strengths>`   Damping strength.
+
+====================================================   =================
+

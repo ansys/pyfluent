@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _dispx_field_1:
+
+dispx_field
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.dispx_field_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`objects_item <objects_item>`   'child_object_type' of objects.
+
+==================================   ===============================
+

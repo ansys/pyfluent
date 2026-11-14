@@ -1,0 +1,50 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parts_item:
+
+parts_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.parts_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ======================
+
+Attribute                                 Summary
+
+========================   ======================
+:ref:`name <name_19>`             Input new name.
+
+:ref:`bodies <bodies_1>`    Define topology body.
+
+:ref:`groups <groups_1>`   Define topology group.
+
+========================   ======================
+
+.. rubric:: Methods
+
+==============================================   ======================================
+
+Method                                                                          Summary
+
+==============================================   ======================================
+:ref:`create_shared_face <create_shared_face>`   Create shared-face between two bodies.
+
+:ref:`display <display_5>`                               Display topology part command.
+
+==============================================   ======================================
+
+.. rubric:: Included in:
+
+====================   =====================
+
+Parent                               Summary
+
+====================   =====================
+:ref:`parts <parts>`   Define topology Part.
+
+====================   =====================
+

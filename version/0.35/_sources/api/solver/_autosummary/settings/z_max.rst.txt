@@ -1,0 +1,21 @@
+:orphan:
+
+.. _z_max:
+
+z_max
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.z_max
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================
+
+Parent                                                                      Summary
+
+============================================   ====================================
+:ref:`settings_31_child <settings_31_child>`       'child_object_type' of settings.
+
+============================================   ====================================
+

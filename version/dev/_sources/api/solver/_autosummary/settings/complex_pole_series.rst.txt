@@ -1,0 +1,43 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _complex_pole_series:
+
+complex_pole_series
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.complex_pole_series
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`complex_pole_series_item <complex_pole_series_item>`
+
+Access each :ref:`complex_pole_series_item <complex_pole_series_item>` by index using ``complex_pole_series[<index>]``.
+
+
+.. rubric:: Included in:
+
+==================================================   ======================================================
+
+Parent                                                                                              Summary
+
+==================================================   ======================================================
+:ref:`impedance_parameters <impedance_parameters>`                           Impedance boundary parameters.
+
+:ref:`momentum <momentum_4>`                         Allows to change momentum model variables or settings.
+
+==================================================   ======================================================
+

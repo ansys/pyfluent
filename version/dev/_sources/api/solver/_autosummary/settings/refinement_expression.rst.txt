@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _refinement_expression:
+
+refinement_expression
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.refinement_expression
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================
+
+Parent                                       Summary
+
+==============================   ===================
+:ref:`expression <expression>`   'expression' child.
+
+==============================   ===================
+

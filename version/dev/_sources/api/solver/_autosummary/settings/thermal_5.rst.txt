@@ -1,0 +1,43 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thermal_5:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.thermal_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================   =======================================
+
+Attribute                                                                                                        Summary
+
+==============================================================================   =======================================
+:ref:`temperature <temperature_3>`                                                                          Temperature.
+
+:ref:`non_equil_boundary <non_equil_boundary>`                                   Thermodynamic Non-Equilibrium Boundary.
+
+:ref:`vibrational_electronic_temperature <vibrational_electronic_temperature>`       Vibrational-Electronic Temperature.
+
+==============================================================================   =======================================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`pressure_far_field_item <pressure_far_field_item>`     'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_21_item>`                                         'child_object_type' of phase.
+
+:ref:`pressure_far_field_item <pressure_far_field_1_item>`   'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_45_item>`                                         'child_object_type' of phase.
+
+==========================================================   ==========================================
+

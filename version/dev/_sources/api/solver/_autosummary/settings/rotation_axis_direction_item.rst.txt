@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rotation_axis_direction_item:
+
+rotation_axis_direction_item
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rotation_axis_direction_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ===================================
+
+Parent                                                                                 Summary
+
+========================================================   ===================================
+:ref:`rotation_axis_direction <rotation_axis_direction>`   Rotation axis direction components.
+
+========================================================   ===================================
+

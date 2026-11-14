@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _invalidate_case:
+
+invalidate_case
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.invalidate_case
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===================================================
+
+Parent                                                                     Summary
+
+============================   ===================================================
+:ref:`kill_node <kill_node>`   Kill a compute node process on a specified machine.
+
+============================   ===================================================
+

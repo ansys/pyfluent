@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _coarsen_2:
+
+coarsen
+=======
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coarsen_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ================================
+
+Parent                                                          Summary
+
+====================================   ================================
+:ref:`pathline_item <pathline_item>`   'child_object_type' of pathline.
+
+====================================   ================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _imagy_udf:
+
+imagy_udf
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.imagy_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ======================================
+
+Parent                                                     Summary
+
+=========================   ======================================
+:ref:`create <create_14>`   Create a new Generalized Force object.
+
+=========================   ======================================
+

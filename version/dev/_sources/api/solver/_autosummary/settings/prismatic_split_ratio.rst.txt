@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _prismatic_split_ratio:
+
+prismatic_split_ratio
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.prismatic_split_ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ========================
+
+Parent                              Summary
+
+================   ========================
+:ref:`set <set>`   The adaption set object.
+
+================   ========================
+

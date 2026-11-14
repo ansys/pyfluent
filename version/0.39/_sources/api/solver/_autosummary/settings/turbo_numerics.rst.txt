@@ -1,0 +1,34 @@
+:orphan:
+
+.. _turbo_numerics:
+
+turbo_numerics
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.turbo_numerics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===========================   =========================================================
+
+Attribute                                                                       Summary
+
+===========================   =========================================================
+:ref:`enable <enable_35>`         Activate/deactivate turbomachinery-specific numerics.
+
+:ref:`options <options_10>`            Turbomachinery-specific numerics options object.
+
+===========================   =========================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

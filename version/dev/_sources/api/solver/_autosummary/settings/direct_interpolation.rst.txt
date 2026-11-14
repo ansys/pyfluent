@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _direct_interpolation:
+
+direct_interpolation
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.direct_interpolation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ========================
+
+Attribute                                                       Summary
+
+============================================   ========================
+:ref:`freeform_motions <freeform_motions_2>`   Freeform motions object.
+
+============================================   ========================
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`numerics <numerics_1>`   Design tool numerics object.
+
+============================   ============================
+

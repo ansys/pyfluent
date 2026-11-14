@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Solution_Monitors_Residuals_Equation:
+
+Equation
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.Solution.Monitors.Residuals.Equation
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`Equation <ref_solver_datamodel_flicing_Case_Solution_Monitors_Residuals_Equation__Equation>`
+
+``Equation`` is organised like a dictionary. You can access each :ref:`Equation <ref_solver_datamodel_flicing_Case_Solution_Monitors_Residuals_Equation__Equation>` by name using ``Equation['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _Equation/_Equation_contents

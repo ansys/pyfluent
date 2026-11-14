@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interior_cell_faces:
+
+interior_cell_faces
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.interior_cell_faces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`partition_surface_item <partition_surface_item>`   'child_object_type' of partition_surface.
+
+======================================================   =========================================
+

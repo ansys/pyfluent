@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enabled_19:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enabled_19
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================================================================================
+
+Parent                                                                                                       Summary
+
+==============================   ===================================================================================
+:ref:`dpm_domain <dpm_domain>`   Configures the secondary DPM domain that can optionally be used in hybrid tracking.
+
+==============================   ===================================================================================
+

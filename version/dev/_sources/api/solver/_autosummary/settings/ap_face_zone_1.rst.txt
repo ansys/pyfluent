@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _ap_face_zone_1:
+
+ap_face_zone
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.ap_face_zone_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`beams_item <beams_item>`   'child_object_type' of beams.
+
+==============================   =============================
+

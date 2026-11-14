@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _precision_2:
+
+precision
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.precision_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ================================================================================
+
+Parent                                                                                                            Summary
+
+======================================   ================================================================================
+:ref:`number_format <number_format_1>`   Contains controls for changing the format of the data labels on the active axis.
+
+======================================   ================================================================================
+

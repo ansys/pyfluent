@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _up:
+
+up
+==
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.up
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ======================================
+
+Parent                                                Summary
+
+====================   ======================================
+:ref:`dolly <dolly>`   Adjust the camera position and target.
+
+====================   ======================================
+

@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_custom_journal_task:
+
+custom_journal_task
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.meshing.meshing_workflow.Root.task_object.custom_journal_task
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`custom_journal_task <ref_meshing_datamodel_meshing_workflow_task_object_custom_journal_task__custom_journal_task>`
+
+``custom_journal_task`` is organised like a dictionary. You can access each :ref:`custom_journal_task <ref_meshing_datamodel_meshing_workflow_task_object_custom_journal_task__custom_journal_task>` by name using ``custom_journal_task['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _custom_journal_task/_custom_journal_task_contents

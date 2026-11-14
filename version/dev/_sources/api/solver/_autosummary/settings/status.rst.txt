@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _status:
+
+status
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.status
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================
+
+Parent                                                Summary
+
+============================   ==============================
+:ref:`view_jobs <view_jobs>`   View jobs from remote cluster.
+
+============================   ==============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report_defs:
+
+report_defs
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.report_defs
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===============================
+
+Parent                                               Summary
+
+==========================   ===============================
+:ref:`compute <compute_3>`   Compute and view the net value.
+
+==========================   ===============================
+

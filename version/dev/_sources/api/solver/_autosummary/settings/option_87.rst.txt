@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _option_87:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.option_87
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==============================================
+
+Parent                                                            Summary
+
+========================   ==============================================
+:ref:`forces <forces_1>`   Provides access to settings for force reports.
+
+========================   ==============================================
+

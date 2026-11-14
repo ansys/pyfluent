@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _current_parametric_study:
+
+current_parametric_study
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.current_parametric_study
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================================================
+
+Parent                                                                                                         Summary
+
+================================================   ===================================================================
+:ref:`parameter_workspace <parameter_workspace>`   Provides access to parameter management and parametric study tools.
+
+================================================   ===================================================================
+

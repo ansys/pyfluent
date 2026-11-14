@@ -1,0 +1,73 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _locations_5:
+
+locations
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.locations_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=============================   =================
+
+Attribute                                 Summary
+
+=============================   =================
+:ref:`physics <physics_3>`       'physics' child.
+
+:ref:`geometry <geometry_12>`   'geometry' child.
+
+:ref:`surfaces <surfaces_9>`    'surfaces' child.
+
+=============================   =================
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`mesh_item <mesh_1_item>`                                  'child_object_type' of mesh.
+
+:ref:`surface_item <surface_1_item>`                         'child_object_type' of surface.
+
+:ref:`volume_item <volume_3_item>`                            'child_object_type' of volume.
+
+:ref:`force_item <force_item>`                                 'child_object_type' of force.
+
+:ref:`lift_item <lift_1_item>`                                  'child_object_type' of lift.
+
+:ref:`drag_item <drag_1_item>`                                  'child_object_type' of drag.
+
+:ref:`moment_item <moment_item>`                              'child_object_type' of moment.
+
+:ref:`flux_item <flux_1_item>`                                  'child_object_type' of flux.
+
+:ref:`injection_item <injection_2_item>`                   'child_object_type' of injection.
+
+:ref:`boundary <boundary_4>`                                               'boundary' child.
+
+:ref:`yplus_star <yplus_star>`                                           'yplus_star' child.
+
+:ref:`yplus_ystar <yplus_ystar_1>`                                      'yplus_ystar' child.
+
+:ref:`mesh_item <mesh_2_item>`                                  'child_object_type' of mesh.
+
+:ref:`contour_item <contour_item>`                           'child_object_type' of contour.
+
+:ref:`vector_item <vector_1_item>`                            'child_object_type' of vector.
+
+:ref:`lic_item <lic_item>`                                       'child_object_type' of lic.
+
+:ref:`olic_item <olic_item>`                                    'child_object_type' of olic.
+
+:ref:`xy_plot_item <xy_plot_item>`                           'child_object_type' of xy_plot.
+
+:ref:`cumulative_plot_item <cumulative_plot_item>`   'child_object_type' of cumulative_plot.
+
+==================================================   =======================================
+

@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _test_data_sets:
+
+test_data_sets
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.test_data_sets
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`test_data_sets_item <test_data_sets_item>`
+
+Access each :ref:`test_data_sets_item <test_data_sets_item>` by index using ``test_data_sets[<index>]``.
+
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`thermal_abuse_fitting <thermal_abuse_fitting>`   Thermal abuse parameter estimation tool.
+
+====================================================   ========================================
+

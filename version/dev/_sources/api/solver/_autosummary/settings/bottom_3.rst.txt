@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _bottom_3:
+
+bottom
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.bottom_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ===============================
+
+Parent                                         Summary
+
+====================   ===============================
+:ref:`text <text_1>`   The text window options object.
+
+====================   ===============================
+

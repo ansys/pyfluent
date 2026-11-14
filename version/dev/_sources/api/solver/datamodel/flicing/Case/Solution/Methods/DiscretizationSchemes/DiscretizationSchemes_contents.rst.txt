@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Solution_Methods_DiscretizationSchemes:
+
+DiscretizationSchemes
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.Solution.Methods.DiscretizationSchemes
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`DiscretizationSchemes <ref_solver_datamodel_flicing_Case_Solution_Methods_DiscretizationSchemes__DiscretizationSchemes>`
+
+``DiscretizationSchemes`` is organised like a dictionary. You can access each :ref:`DiscretizationSchemes <ref_solver_datamodel_flicing_Case_Solution_Methods_DiscretizationSchemes__DiscretizationSchemes>` by name using ``DiscretizationSchemes['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _DiscretizationSchemes/_DiscretizationSchemes_contents

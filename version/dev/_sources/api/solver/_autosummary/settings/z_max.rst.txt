@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _z_max:
+
+z_max
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.z_max
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ================================
+
+Parent                                                            Summary
+
+======================================   ================================
+:ref:`settings_item <settings_7_item>`   'child_object_type' of settings.
+
+======================================   ================================
+

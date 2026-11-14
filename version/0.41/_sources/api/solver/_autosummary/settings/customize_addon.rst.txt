@@ -1,0 +1,21 @@
+:orphan:
+
+.. _customize_addon:
+
+customize_addon
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.customize_addon
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =====================================
+
+Parent                                                                                     Summary
+
+==========================================================   =====================================
+:ref:`customized_addon_library <customized_addon_library>`       Compile customized addon module?.
+
+==========================================================   =====================================
+

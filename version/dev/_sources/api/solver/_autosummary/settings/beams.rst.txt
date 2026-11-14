@@ -1,0 +1,51 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _beams:
+
+beams
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.beams
+
+.. rubric:: Methods
+
+==========================================   =====================================
+
+Method                                                                     Summary
+
+==========================================   =====================================
+:ref:`create <create_2>`                                   Copy optical beam grid.
+
+:ref:`delete <delete_2>`                                  Delete selected objects.
+
+:ref:`rename <rename>`                                          Rename the object.
+
+:ref:`list <list_1>`                                List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                      Create a copy of the object.
+
+:ref:`copy <copy>`                                         Copy optical beam grid.
+
+==========================================   =====================================
+
+.. rubric:: Named object type
+
+:ref:`beams_item <beams_item>`
+
+``beams`` is organised like a dictionary. You can access each :ref:`beams_item <beams_item>` by name using ``beams['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================   ========================
+
+Parent                                    Summary
+
+======================   ========================
+:ref:`optics <optics>`   The optics model object.
+
+======================   ========================
+

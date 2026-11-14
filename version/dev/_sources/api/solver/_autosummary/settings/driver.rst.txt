@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _driver:
+
+driver
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.driver
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ====================
+
+Argument                                        Summary
+
+================================   ====================
+:ref:`driver_name <driver_name>`   New graphics driver.
+
+================================   ====================
+
+.. rubric:: Included in:
+
+============================================   ================================================================
+
+Parent                                                                                                  Summary
+
+============================================   ================================================================
+:ref:`rendering_options <rendering_options>`   Rendering features like antialiasing, shadows, and transparency.
+
+============================================   ================================================================
+

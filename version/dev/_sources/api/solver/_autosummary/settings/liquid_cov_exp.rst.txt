@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _liquid_cov_exp:
+
+liquid_cov_exp
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.liquid_cov_exp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================
+
+Parent                                       Summary
+
+================================   =================
+:ref:`parameters <parameters_5>`   Model parameters.
+
+================================   =================
+

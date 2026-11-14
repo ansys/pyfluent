@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _value_42:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.value_42
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================================   ==================================
+
+Parent                                                                   Summary
+
+===========================================   ==================================
+:ref:`parameters_item <parameters_12_item>`   'child_object_type' of parameters.
+
+===========================================   ==================================
+

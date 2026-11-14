@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _edge_type_options:
+
+edge_type_options
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.edge_type_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ========================================
+
+Attribute                                                                 Summary
+
+======================================   ========================================
+:ref:`edge_type <edge_type_1>`                      The rendering options object.
+
+:ref:`feature_angle <feature_angle_1>`   The feature angle for the feature edges.
+
+======================================   ========================================
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`mesh_item <mesh_2_item>`   'child_object_type' of mesh.
+
+==============================   ============================
+

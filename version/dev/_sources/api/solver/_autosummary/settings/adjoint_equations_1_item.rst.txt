@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _adjoint_equations_1_item:
+
+adjoint_equations_item
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.adjoint_equations_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   =============================================
+
+Attribute                                                                            Summary
+
+============================================   =============================================
+:ref:`check_convergence <check_convergence>`            Which currently-monitored residuals.
+
+:ref:`absolute_criteria <absolute_criteria>`   Convergence criteria for residuals which are.
+
+============================================   =============================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================================================
+
+Parent                                                                                                   Summary
+
+==============================================   ===============================================================
+:ref:`adjoint_equations <adjoint_equations_1>`   Monitors the solution of adjoint equations during optimization.
+
+==============================================   ===============================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reorder_partitions:
+
+reorder_partitions
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reorder_partitions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`partition <partition_3>`   The partition domain object.
+
+==============================   ============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_4:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.name_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`phases_item <phases_item>`   'child_object_type' of phases.
+
+================================   ==============================
+

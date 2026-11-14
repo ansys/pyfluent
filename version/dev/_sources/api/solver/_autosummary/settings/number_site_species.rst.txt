@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _number_site_species:
+
+number_site_species
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.number_site_species
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ==============
+
+Parent                          Summary
+
+======================   ==============
+:ref:`model <model_6>`   Species model.
+
+======================   ==============
+

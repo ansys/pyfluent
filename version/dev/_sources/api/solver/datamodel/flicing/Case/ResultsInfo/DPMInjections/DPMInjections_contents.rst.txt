@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_ResultsInfo_DPMInjections:
+
+DPMInjections
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.ResultsInfo.DPMInjections
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`DPMInjections <ref_solver_datamodel_flicing_Case_ResultsInfo_DPMInjections__DPMInjections>`
+
+``DPMInjections`` is organised like a dictionary. You can access each :ref:`DPMInjections <ref_solver_datamodel_flicing_Case_ResultsInfo_DPMInjections__DPMInjections>` by name using ``DPMInjections['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _DPMInjections/_DPMInjections_contents

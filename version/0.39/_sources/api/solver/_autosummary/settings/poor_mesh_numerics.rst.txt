@@ -1,0 +1,73 @@
+:orphan:
+
+.. _poor_mesh_numerics:
+
+poor_mesh_numerics
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.poor_mesh_numerics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   ================================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                                                     Summary
+
+==================================================================================   ================================================================================================================================================================================================================================
+:ref:`cell_quality_based <cell_quality_based>`                                                                                                                                                                                                           Enable/disable poor mesh numerics on cells with low quality.
+
+:ref:`quality_threshold <quality_threshold>`                                                                                                                                                                                                                                                       Quality threshold.
+
+:ref:`turbulence_production_term <turbulence_production_term>`                                                                                                                                                                                      Enable/disable poor mesh numerics for turbulence production term.
+
+:ref:`solution_and_quality_based <solution_and_quality_based>`                                                                                                                                                                                  Enable/disable poor mesh numerics based on solution and cell quality.
+
+:ref:`combined_quality_imbalance_threshold <combined_quality_imbalance_threshold>`                                                                                                                                                             Threshold for combined quality and imbalance-based poor mesh numerics.
+
+:ref:`combined_quality_marking_frequency <combined_quality_marking_frequency>`                                                                                                                                                         Marking frequency for combined quality and imbalance-based poor mesh numerics.
+
+:ref:`tangent_skewness_quality_based <tangent_skewness_quality_based>`                                                                                                                                                                           Enable/disable poor mesh numerics based on tangent skewness quality.
+
+:ref:`tangent_skewness_threshold <tangent_skewness_threshold_2>`                                                                                                                                                                                     Threshold for tangent skewness quality-based poor mesh numerics.
+
+:ref:`gradient_quality_based <gradient_quality_based>`                                                                                                                                                                                              Enable/disable poor mesh numerics based on cell gradient quality.
+
+:ref:`gradient_quality_threshold <gradient_quality_threshold>`                                                                                                                                                                                               Threshold for gradient quality-based poor mesh numerics.
+
+:ref:`solution_based_pmn <solution_based_pmn>`                                                                                                                                                                                                 Solution-based poor mesh numerics marking based on solution imbalance.
+
+:ref:`reset_poor_elements <reset_poor_elements>`                                                                                                                                                                                                                                 Reset marking of poor cell elements.
+
+:ref:`enhanced_pmn <enhanced_pmn>`                                                       This option is available with the density-based solver. When enabled, it will apply quality-based poor-mesh-numerics order=1 on any cells with a quality-measure below 0.2. In addition, their CFL number is limited to 1.0.
+
+==================================================================================   ================================================================================================================================================================================================================================
+
+.. rubric:: Methods
+
+======================================================================================   ============================================================================================
+
+Method                                                                                                                                                                        Summary
+
+======================================================================================   ============================================================================================
+:ref:`pmn_enable_solution_order <pmn_enable_solution_order>`                                                                           Solution correction on meshes of poor quality.
+
+:ref:`orthogonality_enhancing_cell_centroids <orthogonality_enhancing_cell_centroids>`       Relocate select cell centroids, to improve orthogonality metrics and solution stability.
+
+:ref:`improve_tangent_skewness <improve_tangent_skewness>`                                   Relocate select cell centroids, to improve orthogonality metrics and solution stability.
+
+:ref:`poor_mesh_numerics_on_register <poor_mesh_numerics_on_register>`                                                               Include cells in register in poor mesh numerics.
+
+======================================================================================   ============================================================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

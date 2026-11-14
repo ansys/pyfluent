@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mass_flow_rate_4:
+
+mass_flow_rate
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mass_flow_rate_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`static_injection_item <static_injection_item>`   'child_object_type' of static_injection.
+
+====================================================   ========================================
+

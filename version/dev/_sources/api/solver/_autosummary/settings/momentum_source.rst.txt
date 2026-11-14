@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _momentum_source:
+
+momentum_source
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.momentum_source
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`momentum_source_item <momentum_source_item>`
+
+Access each :ref:`momentum_source_item <momentum_source_item>` by index using ``momentum_source[<index>]``.
+
+
+.. rubric:: Included in:
+
+==============================   ==========================================
+
+Parent                                                              Summary
+
+==============================   ==========================================
+:ref:`wall_film <wall_film_1>`   Wall Film Settings for boundary-condition.
+
+==============================   ==========================================
+

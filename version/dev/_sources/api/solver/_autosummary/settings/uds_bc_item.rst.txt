@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _uds_bc_item:
+
+uds_bc_item
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.uds_bc_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =======================================
+
+Parent                                                   Summary
+
+======================   =======================================
+:ref:`uds_bc <uds_bc>`   User-defined scalar boundary condition.
+
+======================   =======================================
+

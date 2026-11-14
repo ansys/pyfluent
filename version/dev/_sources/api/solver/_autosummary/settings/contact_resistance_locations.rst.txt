@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _contact_resistance_locations:
+
+contact_resistance_locations
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.contact_resistance_locations
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`create <create_3>`                     Create Resistances for physics region.
+
+:ref:`delete <delete_2>`                                   Delete selected objects.
+
+:ref:`rename <rename>`                                           Rename the object.
+
+:ref:`list <list_1>`                                 List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`    List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                       Create a copy of the object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`contact_resistance_locations_item <contact_resistance_locations_item>`
+
+``contact_resistance_locations`` is organised like a dictionary. You can access each :ref:`contact_resistance_locations_item <contact_resistance_locations_item>` by name using ``contact_resistance_locations['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   =======================
+
+Parent                                                     Summary
+
+========================================   =======================
+:ref:`advanced_models <advanced_models>`   Advanced model options.
+
+========================================   =======================
+

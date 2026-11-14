@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cbf_lam:
+
+cbf_lam
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cbf_lam
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`auxiliary_constants <auxiliary_constants>`   Auxiliary GEKO model constants group.
+
+================================================   =====================================
+

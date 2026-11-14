@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _p2d_porosity_p:
+
+p2d_porosity_p
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.p2d_porosity_p
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===================================
+
+Parent                                                     Summary
+
+============================   ===================================
+:ref:`udf_hooks <udf_hooks>`   Hook up battery model related UDFs.
+
+============================   ===================================
+

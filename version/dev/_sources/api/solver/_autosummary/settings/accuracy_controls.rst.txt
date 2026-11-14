@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _accuracy_controls:
+
+accuracy_controls
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.accuracy_controls
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ==========================
+
+Parent                                         Summary
+
+=========================   ==========================
+:ref:`option <option_77>`   Check the control options.
+
+=========================   ==========================
+

@@ -1,0 +1,36 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _acoustic_wave_model:
+
+acoustic_wave_model
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.acoustic_wave_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=============================   ======================================================
+
+Parent                                                                         Summary
+
+=============================   ======================================================
+:ref:`momentum <momentum_1>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_2>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_3>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_4>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_7>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_9>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_10>`   Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_11>`   Allows to change momentum model variables or settings.
+
+=============================   ======================================================
+

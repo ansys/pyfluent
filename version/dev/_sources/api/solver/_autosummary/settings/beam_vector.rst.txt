@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _beam_vector:
+
+beam_vector
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.beam_vector
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`create <create_2>`               Copy optical beam grid.
+
+:ref:`beams_item <beams_item>`   'child_object_type' of beams.
+
+==============================   =============================
+

@@ -1,0 +1,51 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _porosity_models:
+
+porosity_models
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.porosity_models
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+:ref:`read_from_file <read_from_file>`             Read core porosity models from a .hxc file.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`porosity_models_item <porosity_models_item>`
+
+``porosity_models`` is organised like a dictionary. You can access each :ref:`porosity_models_item <porosity_models_item>` by name using ``porosity_models['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ==========================
+
+Parent                                                                Summary
+
+================================================   ==========================
+:ref:`core_porosity_model <core_porosity_model>`   Core porosity model group.
+
+================================================   ==========================
+

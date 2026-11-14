@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enabled_29:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enabled_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ========================================
+
+Parent                                                            Summary
+
+==============================   ========================================
+:ref:`echemistry <echemistry>`   The potential/echemistry model settings.
+
+==============================   ========================================
+

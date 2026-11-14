@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _density_interpolation_method:
+
+density_interpolation_method
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.density_interpolation_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`multiphase <multiphase_4>`   Multiphase settings.
+
+================================   ====================
+

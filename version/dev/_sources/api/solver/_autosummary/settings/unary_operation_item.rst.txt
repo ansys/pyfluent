@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _unary_operation_item:
+
+unary_operation_item
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.unary_operation_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ===================
+
+Attribute                                      Summary
+
+================================   ===================
+:ref:`name <name_5>`               Name of the object.
+
+:ref:`operator <operator>`             Unary operator.
+
+:ref:`observable <observable_1>`      Observable name.
+
+================================   ===================
+
+.. rubric:: Included in:
+
+========================================   =======================================
+
+Parent                                                                     Summary
+
+========================================   =======================================
+:ref:`unary_operation <unary_operation>`   Unary operation observable definitions.
+
+========================================   =======================================
+

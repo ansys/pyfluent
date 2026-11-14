@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _partition_origin_vector:
+
+partition_origin_vector
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.partition_origin_vector
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`partition_origin_vector_item <partition_origin_vector_item>`
+
+Access each :ref:`partition_origin_vector_item <partition_origin_vector_item>` by index using ``partition_origin_vector[<index>]``.
+
+
+.. rubric:: Included in:
+
+==================   ===========
+
+Parent                   Summary
+
+==================   ===========
+:ref:`set <set_3>`   The object.
+
+==================   ===========
+

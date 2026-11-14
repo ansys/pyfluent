@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _composition_dependent_density:
+
+composition_dependent_density
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.composition_dependent_density
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ===================================
+
+Parent                                                                                       Summary
+
+==============================================================   ===================================
+:ref:`multiple_surface_reactions <multiple_surface_reactions>`   Multiple surface reactions setting.
+
+==============================================================   ===================================
+

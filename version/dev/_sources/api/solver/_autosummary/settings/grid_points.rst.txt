@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _grid_points:
+
+grid_points
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.grid_points
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`edit_f_grid_settings <edit_f_grid_settings>`   Editor group for flamelet f-grid settings.
+
+==================================================   ==========================================
+

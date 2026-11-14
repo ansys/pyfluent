@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _theory_1:
+
+theory
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.theory_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ===========================================
+
+Parent                                                                                           Summary
+
+==========================================================   ===========================================
+:ref:`shallow_wave_inputs_item <shallow_wave_inputs_item>`   'child_object_type' of shallow_wave_inputs.
+
+==========================================================   ===========================================
+

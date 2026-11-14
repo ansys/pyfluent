@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _direction_vector:
+
+direction_vector
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.direction_vector
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`direction_vector_item <direction_vector_item>`
+
+Access each :ref:`direction_vector_item <direction_vector_item>` by index using ``direction_vector[<index>]``.
+
+
+.. rubric:: Included in:
+
+==================================================   =================================================================
+
+Parent                                                                                                         Summary
+
+==================================================   =================================================================
+:ref:`momentum <momentum_2>`                                    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_3>`                                    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_4>`                                    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_9>`                                    Allows to change momentum model variables or settings.
+
+:ref:`recirculation_inlet <recirculation_inlet_1>`   Allows to change recirculation-inlet model variables or settings.
+
+==================================================   =================================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _print_gpgpu_statistics:
+
+print_gpgpu_statistics
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.print_gpgpu_statistics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==============
+
+Parent                            Summary
+
+========================   ==============
+:ref:`system <system_1>`   System object.
+
+========================   ==============
+

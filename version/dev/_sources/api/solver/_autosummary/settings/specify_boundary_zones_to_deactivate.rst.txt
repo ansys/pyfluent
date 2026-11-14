@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _specify_boundary_zones_to_deactivate:
+
+specify_boundary_zones_to_deactivate
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.specify_boundary_zones_to_deactivate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ===================================
+
+Parent                                                                                         Summary
+
+================================================================   ===================================
+:ref:`radiation_boundary_coupling <radiation_boundary_coupling>`   Radiation boundary coupling object.
+
+================================================================   ===================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _scalar_dissipation_stoichiometric:
+
+scalar_dissipation_stoichiometric
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.scalar_dissipation_stoichiometric
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`parameters <parameters_2>`   PDF Flamelet Parameters.
+
+================================   ========================
+

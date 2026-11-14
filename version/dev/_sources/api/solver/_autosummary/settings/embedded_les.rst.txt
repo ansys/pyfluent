@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _embedded_les:
+
+embedded_les
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.embedded_les
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   =================================================
+
+Attribute                                                                                            Summary
+
+========================================================   =================================================
+:ref:`les_zone <les_zone>`                                                                        LES zone?.
+
+:ref:`laminar_mut_zero <laminar_mut_zero>`                 Turbulent Viscosity to zero within laminar zone?.
+
+:ref:`les_embedded_spec <les_embedded_spec>`                                   Embedded Subgrid-Scale Model.
+
+:ref:`les_embedded_mom_scheme <les_embedded_mom_scheme>`                    Momentum Spatial Discretization.
+
+:ref:`les_embedded_c_wale <les_embedded_c_wale>`                                                      Cwale.
+
+:ref:`les_embedded_c_smag <les_embedded_c_smag>`                                                         Cs.
+
+========================================================   =================================================
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`fluid_item <fluid_1_item>`   'child_object_type' of fluid.
+
+:ref:`phase_item <phase_2_item>`   'child_object_type' of phase.
+
+:ref:`fluid_item <fluid_2_item>`   'child_object_type' of fluid.
+
+:ref:`phase_item <phase_4_item>`   'child_object_type' of phase.
+
+================================   =============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _zone_4:
+
+zone
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.zone_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`dynamic_zones_item <dynamic_zones_item>`   'child_object_type' of dynamic_zones.
+
+==============================================   =====================================
+

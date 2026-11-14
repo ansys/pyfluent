@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _file_name_51:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.file_name_51
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=======================================   ===========================
+
+Parent                                                        Summary
+
+=======================================   ===========================
+:ref:`write_to_file <write_to_file_10>`         Write report to file.
+
+:ref:`autosave <autosave_1>`              Optimizer reporting object.
+
+=======================================   ===========================
+

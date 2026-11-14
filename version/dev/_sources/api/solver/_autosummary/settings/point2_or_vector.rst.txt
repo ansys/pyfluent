@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _point2_or_vector:
+
+point2_or_vector
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.point2_or_vector
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ======================================
+
+Parent                                                                            Summary
+
+================================================   ======================================
+:ref:`injection_hole_item <injection_hole_item>`   'child_object_type' of injection_hole.
+
+================================================   ======================================
+

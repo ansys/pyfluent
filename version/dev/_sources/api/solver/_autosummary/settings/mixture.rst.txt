@@ -1,0 +1,49 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mixture:
+
+mixture
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mixture
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`mixture_item <mixture_item>`
+
+``mixture`` is organised like a dictionary. You can access each :ref:`mixture_item <mixture_item>` by name using ``mixture['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   ================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+============================   ================================================================================================================================
+:ref:`materials <materials>`   Accesses the material database and configuration tools for defining fluid, solid, and particle materials used in the simulation.
+
+============================   ================================================================================================================================
+

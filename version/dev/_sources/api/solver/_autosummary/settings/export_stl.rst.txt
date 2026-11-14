@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _export_stl:
+
+export_stl
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.export_stl
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ========================================================
+
+Argument                                                                           Summary
+
+===============================   ========================================================
+:ref:`file_name <file_name_59>`   Export specified surfaces from 3D cases as an .stl file.
+
+===============================   ========================================================
+
+.. rubric:: Included in:
+
+==========================   ==========================
+
+Parent                                          Summary
+
+==========================   ==========================
+:ref:`preview <preview_1>`   Design tool export object.
+
+==========================   ==========================
+

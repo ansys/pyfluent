@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _matching:
+
+matching
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.matching
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================================
+
+Parent                                                                                           Summary
+
+================================================   =====================================================
+:ref:`mrf_to_sliding_mesh <mrf_to_sliding_mesh>`   Change motion specification from MRF to sliding mesh.
+
+================================================   =====================================================
+

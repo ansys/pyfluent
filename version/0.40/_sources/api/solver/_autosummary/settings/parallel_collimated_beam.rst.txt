@@ -1,0 +1,23 @@
+:orphan:
+
+.. _parallel_collimated_beam:
+
+parallel_collimated_beam
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parallel_collimated_beam
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================   ================================
+
+Parent                                                                                          Summary
+
+====================================================================   ================================
+:ref:`direct_irradiation_settings <direct_irradiation_settings>`           Direct irradiation settings.
+
+:ref:`direct_irradiation_settings_1 <direct_irradiation_settings_1>`       Direct irradiation settings.
+
+====================================================================   ================================
+

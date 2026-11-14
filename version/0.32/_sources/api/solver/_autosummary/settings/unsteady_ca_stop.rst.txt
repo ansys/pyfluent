@@ -1,0 +1,21 @@
+:orphan:
+
+.. _unsteady_ca_stop:
+
+unsteady_ca_stop
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.unsteady_ca_stop
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`crank_angles <crank_angles>`       Lagrangian in-cylinder particle injection time settings.
+
+==================================   ============================================================
+

@@ -1,0 +1,30 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _coordinate_system:
+
+coordinate_system
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coordinate_system
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=============================   ======================================================
+
+Parent                                                                         Summary
+
+=============================   ======================================================
+:ref:`momentum <momentum_1>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_7>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_8>`    Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_10>`   Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_11>`   Allows to change momentum model variables or settings.
+
+=============================   ======================================================
+

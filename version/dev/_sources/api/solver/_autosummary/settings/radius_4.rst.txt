@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _radius_4:
+
+radius
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.radius_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`sphere <sphere_1>`         'sphere' child.
+
+:ref:`cylinder <cylinder_1>`   'cylinder' child.
+
+============================   =================
+

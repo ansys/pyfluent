@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _scaling_type:
+
+scaling_type
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.scaling_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`scaling_item <scaling_1_item>`   'child_object_type' of scaling.
+
+====================================   ===============================
+

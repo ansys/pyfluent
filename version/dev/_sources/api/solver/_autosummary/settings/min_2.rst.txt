@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _min_2:
+
+min
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.min_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`data_sets_item <data_sets_item>`   'child_object_type' of data_sets.
+
+======================================   =================================
+

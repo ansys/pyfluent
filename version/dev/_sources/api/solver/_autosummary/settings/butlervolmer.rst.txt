@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _butlervolmer:
+
+butlervolmer
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.butlervolmer
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============
+
+Parent                              Summary
+
+==========================   ==============
+:ref:`options <options_7>`   Model options.
+
+==========================   ==============
+

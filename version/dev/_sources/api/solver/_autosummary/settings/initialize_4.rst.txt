@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _initialize_4:
+
+initialize
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.initialize_4
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================================   =================================================================
+
+Argument                                                                                                                     Summary
+
+================================================================   =================================================================
+:ref:`turbulence_design_variables <turbulence_design_variables>`   Initialize the turbulence design variables in the design region?.
+
+================================================================   =================================================================
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`calculation <calculation_1>`   Optimizer calculation commands.
+
+==================================   ===============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _number_format_2:
+
+number_format
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.number_format_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==================================
+
+Parent                                                                Summary
+
+========================================   ==================================
+:ref:`annotation_item <annotation_item>`   'child_object_type' of annotation.
+
+========================================   ==================================
+

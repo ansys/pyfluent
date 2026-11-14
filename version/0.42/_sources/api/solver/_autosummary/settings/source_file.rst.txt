@@ -1,0 +1,23 @@
+:orphan:
+
+.. _source_file:
+
+source_file
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.source_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`customized_udf <customized_udf>`           Customized UDFs settings.
+
+:ref:`customized_udf_1 <customized_udf_1>`       Customized UDFs settings.
+
+==========================================   =============================
+

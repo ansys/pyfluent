@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_6:
+
+use
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.use_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==========================================
+
+Parent                                                                    Summary
+
+====================================   ==========================================
+:ref:`mesh_adaption <mesh_adaption>`       Use load balancing for mesh adaption?.
+
+====================================   ==========================================
+

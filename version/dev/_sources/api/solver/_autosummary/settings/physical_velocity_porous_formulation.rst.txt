@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _physical_velocity_porous_formulation:
+
+physical_velocity_porous_formulation
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.physical_velocity_porous_formulation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`settings <settings_1>`   'settings' child.
+
+============================   =================
+

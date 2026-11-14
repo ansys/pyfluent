@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _react:
+
+react
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.react
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`reaction <reaction>`   Allows to change reaction model variables or settings.
+
+==========================   ======================================================
+

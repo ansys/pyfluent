@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mesh_interface_name:
+
+mesh_interface_name
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mesh_interface_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   ============================
+
+Parent                                           Summary
+
+=========================   ============================
+:ref:`create <create_10>`   Create turbo mesh interface.
+
+=========================   ============================
+

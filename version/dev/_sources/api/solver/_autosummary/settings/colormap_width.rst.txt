@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _colormap_width:
+
+colormap_width
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.colormap_width
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================================
+
+Parent                                                                                  Summary
+
+====================================================   ========================================
+:ref:`graphics_objects_item <graphics_objects_item>`   'child_object_type' of graphics_objects.
+
+====================================================   ========================================
+

@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _point_3:
+
+point
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.point_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ========================================
+
+Parent                                                                                                    Summary
+
+======================================================================   ========================================
+:ref:`point_surface_item <point_surface_item>`                              'child_object_type' of point_surface.
+
+:ref:`plane_surface_item <plane_surface_item>`                              'child_object_type' of plane_surface.
+
+:ref:`create_multiple_plane_surfaces <create_multiple_plane_surfaces>`   Specify the attributes of plane surface.
+
+======================================================================   ========================================
+

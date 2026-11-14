@@ -1,0 +1,48 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _lights_item:
+
+lights_item
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.lights_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ====================================
+
+Attribute                                                     Summary
+
+==============================   ====================================
+:ref:`on <on>`                                 Turn the light on/off.
+
+:ref:`rgb <rgb>`                 Color (RGB components) of the light.
+
+:ref:`direction <direction_7>`                Direction of the light.
+
+==============================   ====================================
+
+.. rubric:: Methods
+
+======================================================================   ===================================================
+
+Method                                                                                                               Summary
+
+======================================================================   ===================================================
+:ref:`set_direction_from_view_vector <set_direction_from_view_vector>`   Set the light direction to the current view vector.
+
+======================================================================   ===================================================
+
+.. rubric:: Included in:
+
+======================   ==================================================================
+
+Parent                                                                              Summary
+
+======================   ==================================================================
+:ref:`lights <lights>`   Access and manage directional light sources used in the 3D viewer.
+
+======================   ==================================================================
+

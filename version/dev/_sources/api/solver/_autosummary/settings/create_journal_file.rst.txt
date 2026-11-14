@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _create_journal_file:
+
+create_journal_file
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.create_journal_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ===============================
+
+Argument                                               Summary
+
+============================   ===============================
+:ref:`rom_type <rom_type_2>`   ROM type in the ROM simulation.
+
+============================   ===============================
+
+.. rubric:: Included in:
+
+====================================================   =============
+
+Parent                                                       Summary
+
+====================================================   =============
+:ref:`rom_data_creator_tool <rom_data_creator_tool>`   Rom tool kit.
+
+====================================================   =============
+

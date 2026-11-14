@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _les_embedded_fluctuations:
+
+les_embedded_fluctuations
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.les_embedded_fluctuations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`turbulence <turbulence_6>`   Allows to change turbulence model variables or settings.
+
+================================   ========================================================
+

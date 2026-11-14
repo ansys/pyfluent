@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _load_hosts:
+
+load_hosts
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.load_hosts
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ====================================
+
+Argument                                                    Summary
+
+============================   ====================================
+:ref:`host_file <host_file>`   Selects the hosts file name to read.
+
+============================   ====================================
+
+.. rubric:: Included in:
+
+==========================   =================================
+
+Parent                                                 Summary
+
+==========================   =================================
+:ref:`network <network_2>`   The network configuration object.
+
+==========================   =================================
+

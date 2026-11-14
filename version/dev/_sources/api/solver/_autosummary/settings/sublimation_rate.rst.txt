@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _sublimation_rate:
+
+sublimation_rate
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.sublimation_rate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================
+
+Parent                                       Summary
+
+================================   =================
+:ref:`parameters <parameters_5>`   Model parameters.
+
+================================   =================
+

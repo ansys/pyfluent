@@ -1,0 +1,21 @@
+:orphan:
+
+.. _correlation_length_2d:
+
+correlation_length_2d
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.correlation_length_2d
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`fwh_options <fwh_options>`       Entering object.
+
+================================   ====================
+

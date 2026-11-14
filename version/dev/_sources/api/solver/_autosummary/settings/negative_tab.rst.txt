@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _negative_tab:
+
+negative_tab
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.negative_tab
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ========================
+
+Parent                                                        Summary
+
+==========================================   ========================
+:ref:`zone_assignment <zone_assignment_1>`   Battery zone assignment.
+
+==========================================   ========================
+

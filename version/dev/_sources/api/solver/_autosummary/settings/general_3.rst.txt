@@ -1,0 +1,43 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _general_3:
+
+general
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.general_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ==========================
+
+Attribute                                                                         Summary
+
+============================================================   ==========================
+:ref:`material <material_6>`                                               Material Name.
+
+:ref:`participates_in_radiation <participates_in_radiation>`   Participates in radiation.
+
+============================================================   ==========================
+
+.. rubric:: Included in:
+
+============================================   ======================================
+
+Parent                                                                        Summary
+
+============================================   ======================================
+:ref:`solid_item <solid_2_item>`                        'child_object_type' of solid.
+
+:ref:`phase_item <phase_3_item>`                        'child_object_type' of phase.
+
+:ref:`netm_solid_region <netm_solid_region>`   Define settings for NETM solid region.
+
+:ref:`solid_item <solid_3_item>`                        'child_object_type' of solid.
+
+:ref:`phase_item <phase_5_item>`                        'child_object_type' of phase.
+
+============================================   ======================================
+

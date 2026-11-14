@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _combustion_mixture:
+
+combustion_mixture
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.combustion_mixture
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ========================================
+
+Parent                                                                                Summary
+
+==================================================   ========================================
+:ref:`premix_laminar_speed <premix_laminar_speed>`   Material property: premix-laminar-speed.
+
+==================================================   ========================================
+

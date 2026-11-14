@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _inj_mass_rate_prev_mass:
+
+inj_mass_rate_prev_mass
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.inj_mass_rate_prev_mass
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`injection_item <injection_2_item>`   'child_object_type' of injection.
+
+========================================   =================================
+

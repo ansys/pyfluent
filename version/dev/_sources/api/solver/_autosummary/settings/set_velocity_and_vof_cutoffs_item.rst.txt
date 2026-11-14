@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _set_velocity_and_vof_cutoffs_item:
+
+set_velocity_and_vof_cutoffs_item
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.set_velocity_and_vof_cutoffs_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===========================
+
+Attribute                                                      Summary
+
+========================================   ===========================
+:ref:`max_vel_mag <max_vel_mag>`           Maximum velocity magnitude.
+
+:ref:`vol_frac_cutoff <vol_frac_cutoff>`      Volume fraction cut-off.
+
+========================================   ===========================
+
+.. rubric:: Included in:
+
+==================================================================   ========================
+
+Parent                                                                                Summary
+
+==================================================================   ========================
+:ref:`set_velocity_and_vof_cutoffs <set_velocity_and_vof_cutoffs>`   Velocity and vof cutoff.
+
+==================================================================   ========================
+

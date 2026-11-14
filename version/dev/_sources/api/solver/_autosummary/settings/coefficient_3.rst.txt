@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _coefficient_3:
+
+coefficient
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coefficient_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`entries_item <entries_item>`   'child_object_type' of entries.
+
+==================================   ===============================
+

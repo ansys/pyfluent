@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _y_axis_function:
+
+y_axis_function
+===============
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.y_axis_function
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`xy_plot_item <xy_plot_item>`   'child_object_type' of xy_plot.
+
+==================================   ===============================
+

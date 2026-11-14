@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turb_buoyancy_effects:
+
+turb_buoyancy_effects
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turb_buoyancy_effects
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==========================
+
+Parent                                          Summary
+
+==========================   ==========================
+:ref:`options <options_1>`   The viscous model options.
+
+==========================   ==========================
+

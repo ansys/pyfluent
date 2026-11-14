@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _geometry_4:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.geometry_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===================================================
+
+Attribute                                                                              Summary
+
+========================================   ===================================================
+:ref:`layout <layout>`                     Tube bank pass and row/column counts for this core.
+
+:ref:`flow_directions <flow_directions>`            Flow directions for a heat exchanger core.
+
+:ref:`dimensions <dimensions>`                Check the auto-computed dimensions of this core.
+
+========================================   ===================================================
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`cores_item <cores_item>`   'child_object_type' of cores.
+
+==============================   =============================
+

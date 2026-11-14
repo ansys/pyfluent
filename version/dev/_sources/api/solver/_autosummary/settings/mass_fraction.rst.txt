@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mass_fraction:
+
+mass_fraction
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mass_fraction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`components_item <components_1_item>`   'child_object_type' of components.
+
+==========================================   ==================================
+

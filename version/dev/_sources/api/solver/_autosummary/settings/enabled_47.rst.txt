@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enabled_47:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enabled_47
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================
+
+Parent                                                 Summary
+
+========================================   ===================
+:ref:`coolant_channel <coolant_channel>`   Up coolant channel.
+
+========================================   ===================
+

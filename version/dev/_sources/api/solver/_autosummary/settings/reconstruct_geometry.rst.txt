@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reconstruct_geometry:
+
+reconstruct_geometry
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reconstruct_geometry
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =============================
+
+Parent                                               Summary
+
+============================   =============================
+:ref:`geometry <geometry_2>`   The adaption geometry object.
+
+============================   =============================
+

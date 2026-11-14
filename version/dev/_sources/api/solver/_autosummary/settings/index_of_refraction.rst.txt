@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _index_of_refraction:
+
+index_of_refraction
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.index_of_refraction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ========================
+
+Parent                                    Summary
+
+======================   ========================
+:ref:`optics <optics>`   The optics model object.
+
+======================   ========================
+

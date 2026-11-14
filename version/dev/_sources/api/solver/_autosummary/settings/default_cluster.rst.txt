@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _default_cluster:
+
+default_cluster
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.default_cluster
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =========================================
+
+Parent                                                                                     Summary
+
+======================================================   =========================================
+:ref:`add <add_8>`                                                          Add Computer Resource.
+
+:ref:`compute_resources_item <compute_resources_item>`   'child_object_type' of compute_resources.
+
+======================================================   =========================================
+

@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reconstruction:
+
+reconstruction
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reconstruction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ===========================================
+
+Attribute                                                        Summary
+
+==========================   ===========================================
+:ref:`zone_ids <zone_ids>`   The face zones for geometry reconstruction.
+
+==========================   ===========================================
+
+.. rubric:: Included in:
+
+====================   ===========================
+
+Parent                                     Summary
+
+====================   ===========================
+:ref:`type <type_3>`   The type for this geometry.
+
+====================   ===========================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _cathode_stde:
+
+cathode_stde
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cathode_stde
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_3 <parameters_3>`       Model parameters.
+
+:ref:`parameters_4 <parameters_4>`       Model parameters.
+
+==================================   =====================
+

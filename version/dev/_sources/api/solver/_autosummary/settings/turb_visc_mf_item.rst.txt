@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turb_visc_mf_item:
+
+turb_visc_mf_item
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.turb_visc_mf_item
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =============================
+
+Parent                                                     Summary
+
+==================================   =============================
+:ref:`turb_visc_mf <turb_visc_mf>`   Turbulent viscosity function.
+
+==================================   =============================
+

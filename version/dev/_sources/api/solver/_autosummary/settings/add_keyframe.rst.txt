@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _add_keyframe:
+
+add_keyframe
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.add_keyframe
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================   =============================================================
+
+Argument                                                                 Summary
+
+================   =============================================================
+:ref:`key <key>`   Insert a keyframe at the current time in the scene animation.
+
+================   =============================================================
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`scene_animation <scene_animation>`   Keyframe animation option object.
+
+========================================   =================================
+

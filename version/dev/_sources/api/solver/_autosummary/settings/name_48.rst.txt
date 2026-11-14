@@ -1,0 +1,26 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_48:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.name_48
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================
+
+Parent                                                                               Summary
+
+====================================================   =====================================
+:ref:`create <create_20>`                                        Create a group of surfaces.
+
+:ref:`group_surface_item <group_surface_item>`         'child_object_type' of group_surface.
+
+:ref:`create_group_surfaces <create_group_surfaces>`             Create a group of surfaces.
+
+====================================================   =====================================
+

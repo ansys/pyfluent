@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surfaces_12:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.surfaces_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ================================
+
+Parent                                                          Summary
+
+====================================   ================================
+:ref:`iso_clip_item <iso_clip_item>`   'child_object_type' of iso_clip.
+
+====================================   ================================
+

@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _sources_2:
+
+sources
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.sources_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ==========================================
+
+Attribute                                                      Summary
+
+=========================   ==========================================
+:ref:`enable <enable_21>`   Enable source terms for this solid region.
+
+:ref:`terms <terms_1>`                Collection of source term lists.
+
+=========================   ==========================================
+
+.. rubric:: Included in:
+
+==================================   ===============================
+
+Parent                                                       Summary
+
+==================================   ===============================
+:ref:`regions_item <regions_item>`   'child_object_type' of regions.
+
+==================================   ===============================
+

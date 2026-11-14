@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _stg_turbulent_intensity:
+
+stg_turbulent_intensity
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.stg_turbulent_intensity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================================
+
+Parent                                                                              Summary
+
+================================   ========================================================
+:ref:`turbulence <turbulence_3>`   Allows to change turbulence model variables or settings.
+
+:ref:`turbulence <turbulence_7>`   Allows to change turbulence model variables or settings.
+
+================================   ========================================================
+

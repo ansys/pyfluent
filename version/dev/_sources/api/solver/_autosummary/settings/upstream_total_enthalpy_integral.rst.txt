@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _upstream_total_enthalpy_integral:
+
+upstream_total_enthalpy_integral
+================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.upstream_total_enthalpy_integral
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================================
+
+Parent                                                                               Summary
+
+========================================   =================================================
+:ref:`discrete_phase <discrete_phase_4>`   Allows to change DPM model variables or settings.
+
+========================================   =================================================
+

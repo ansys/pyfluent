@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _hsf_file:
+
+hsf_file
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.hsf_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   ==============
+
+Argument                                   Summary
+
+=================================   ==============
+:ref:`file_name <file_name_1_41>`   HSF file name.
+
+=================================   ==============
+
+.. rubric:: Included in:
+
+===========================   ====================================================
+
+Parent                                                                     Summary
+
+===========================   ====================================================
+:ref:`display <display_14>`   Show selected graphics objects in the active window.
+
+===========================   ====================================================
+

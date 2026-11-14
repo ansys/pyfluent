@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _number_of_bands:
+
+number_of_bands
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.number_of_bands
+    :show-inheritance:
+
+.. rubric:: Methods
+
+======================================================   ===============================================================================
+
+Method                                                                                                                           Summary
+
+======================================================   ===============================================================================
+:ref:`on_all_interfaces <on_all_interfaces>`                            Maximum number of bands to be employed at all the mixing planes.
+
+:ref:`on_specified_interface <on_specified_interface>`   Maximum number of bands to be employed at the specified mixing plane interface.
+
+======================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+==============================================   ===========================================
+
+Parent                                                                               Summary
+
+==============================================   ===========================================
+:ref:`mixing_plane_model <mixing_plane_model>`   The expert parameters for turbo interfaces.
+
+==============================================   ===========================================
+

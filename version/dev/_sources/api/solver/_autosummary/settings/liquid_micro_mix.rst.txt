@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _liquid_micro_mix:
+
+liquid_micro_mix
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.liquid_micro_mix
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============
+
+Parent                            Summary
+
+==========================   ============
+:ref:`options <options_3>`   PDF options.
+
+==========================   ============
+

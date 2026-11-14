@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _add_mass_flow_at_outlets_expression:
+
+add_mass_flow_at_outlets_expression
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.add_mass_flow_at_outlets_expression
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========
+
+Parent                                 Summary
+
+================================   ===========
+:ref:`performance <performance>`   The object.
+
+================================   ===========
+

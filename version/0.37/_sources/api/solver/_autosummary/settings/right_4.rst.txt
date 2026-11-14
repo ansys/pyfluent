@@ -1,0 +1,21 @@
+:orphan:
+
+.. _right_4:
+
+right
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.right_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ========================================
+
+Parent                                                Summary
+
+==================   ========================================
+:ref:`main <main>`       The main view window options object.
+
+==================   ========================================
+

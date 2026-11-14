@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _increase_pre_sweeps:
+
+increase_pre_sweeps
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.increase_pre_sweeps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =========================
+
+Parent                               Summary
+
+================   =========================
+:ref:`amg <amg>`   Flexible numerics object.
+
+================   =========================
+

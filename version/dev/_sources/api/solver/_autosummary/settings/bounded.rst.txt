@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _bounded:
+
+bounded
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.bounded
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ========================================
+
+Parent                                                                                                    Summary
+
+======================================================================   ========================================
+:ref:`plane_surface_item <plane_surface_item>`                              'child_object_type' of plane_surface.
+
+:ref:`create_multiple_plane_surfaces <create_multiple_plane_surfaces>`   Specify the attributes of plane surface.
+
+======================================================================   ========================================
+

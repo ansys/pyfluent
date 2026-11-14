@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rxn_product_list:
+
+rxn_product_list
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rxn_product_list
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`rxn_product_list_item <rxn_product_list_item>`
+
+Access each :ref:`rxn_product_list_item <rxn_product_list_item>` by index using ``rxn_product_list[<index>]``.
+
+
+.. rubric:: Included in:
+
+================================================   ======================================
+
+Parent                                                                            Summary
+
+================================================   ======================================
+:ref:`reactions_list_item <reactions_list_item>`   'child_object_type' of reactions_list.
+
+================================================   ======================================
+

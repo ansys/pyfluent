@@ -1,0 +1,36 @@
+:orphan:
+
+.. _hexahedron:
+
+hexahedron
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.hexahedron
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================================
+
+Attribute                                                                                         Summary
+
+============================   ==========================================================================
+:ref:`min_point <min_point>`                                  The minimum coordinates for the hexahedron.
+
+:ref:`max_point <max_point>`                                  The maximum coordinates for the hexahedron.
+
+:ref:`inside <inside>`             Specifies whether this register marks cells inside the defined region.
+
+============================   ==========================================================================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_14 <type_14>`       The type for this cell register.
+
+========================   ====================================
+

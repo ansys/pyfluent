@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _carbon_content_percentage:
+
+carbon_content_percentage
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.carbon_content_percentage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==============================
+
+Parent                                    Summary
+
+================   ==============================
+:ref:`cbk <cbk>`   CBK combustion model settings.
+
+================   ==============================
+

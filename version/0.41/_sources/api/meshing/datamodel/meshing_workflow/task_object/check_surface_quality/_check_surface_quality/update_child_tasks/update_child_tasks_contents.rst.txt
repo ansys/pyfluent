@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_check_surface_quality__check_surface_quality_update_child_tasks:
+
+update_child_tasks
+==================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.check_surface_quality._check_surface_quality.update_child_tasks
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _update_child_tasksArguments/_update_child_tasksArguments_contents

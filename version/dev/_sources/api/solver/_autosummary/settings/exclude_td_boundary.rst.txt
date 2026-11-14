@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _exclude_td_boundary:
+
+exclude_td_boundary
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.exclude_td_boundary
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===================================================================
+
+Parent                                                                                                             Summary
+
+====================================================   ===================================================================
+:ref:`turbulent_dispersion <turbulent_dispersion_1>`   Limiting and transition function controls for turbulent dispersion.
+
+====================================================   ===================================================================
+

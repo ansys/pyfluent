@@ -1,0 +1,27 @@
+.. _ref_solver_tui_solve:
+
+solve
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu.solve
+   :members: convergence_conditions, dpm_update, dual_time_iterate, iterate, iterate_steady_2way_fsi, max_iterations_per_time_step, mesh_motion, multistage_time_iterate, patch, update_physical_time
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   animate/animate_contents
+   cell_register_operations/cell_register_operations_contents
+   cell_registers/cell_registers_contents
+   execute_commands/execute_commands_contents
+   initialize/initialize_contents
+   monitors/monitors_contents
+   report_definitions/report_definitions_contents
+   report_files/report_files_contents
+   report_plots/report_plots_contents
+   set/set_contents

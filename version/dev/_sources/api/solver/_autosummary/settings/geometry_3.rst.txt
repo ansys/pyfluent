@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _geometry_3:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.geometry_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`manage_item <manage_item>`   'child_object_type' of manage.
+
+================================   ==============================
+

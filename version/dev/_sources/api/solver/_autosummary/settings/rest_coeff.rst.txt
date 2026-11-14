@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rest_coeff:
+
+rest_coeff
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.rest_coeff
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`rest_coeff_item <rest_coeff_item>`
+
+Access each :ref:`rest_coeff_item <rest_coeff_item>` by index using ``rest_coeff[<index>]``.
+
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`forces <forces>`   Interfacial forces.
+
+======================   ===================
+

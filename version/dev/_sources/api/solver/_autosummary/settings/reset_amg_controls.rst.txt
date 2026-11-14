@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reset_amg_controls:
+
+reset_amg_controls
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reset_amg_controls
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`controls <controls_1>`   Solution controls object.
+
+============================   =========================
+

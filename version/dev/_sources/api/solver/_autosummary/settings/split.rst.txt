@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _split:
+
+split
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.split
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   =======================================================
+
+Argument                                                                         Summary
+
+==============================   =======================================================
+:ref:`name <name_22>`                                             Input new volume name.
+
+:ref:`locations <locations_3>`   Input location name which should be part of new volume.
+
+==============================   =======================================================
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`fluid_item <fluid_2_item>`   'child_object_type' of fluid.
+
+:ref:`solid_item <solid_3_item>`   'child_object_type' of solid.
+
+================================   =============================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _flux_type:
+
+flux_type
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.flux_type
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =====================
+
+Attribute                                      Summary
+
+==============================   =====================
+:ref:`dbns_cases <dbns_cases>`       Flux type object.
+
+:ref:`pbns_cases <pbns_cases>`       Flux type object.
+
+==============================   =====================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_1 <methods_1>`       The solution methods object.
+
+============================   ================================
+

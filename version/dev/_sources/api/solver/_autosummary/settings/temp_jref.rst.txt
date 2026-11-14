@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _temp_jref:
+
+temp_jref
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.temp_jref
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============
+
+Parent                              Summary
+
+==========================   ==============
+:ref:`options <options_7>`   Model options.
+
+==========================   ==============
+

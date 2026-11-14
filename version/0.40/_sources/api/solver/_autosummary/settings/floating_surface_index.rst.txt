@@ -1,0 +1,21 @@
+:orphan:
+
+.. _floating_surface_index:
+
+floating_surface_index
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.floating_surface_index
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==============================================
+
+Parent                                                            Summary
+
+========================   ==============================================
+:ref:`disk_id <disk_id>`       Menu to define the disk face/surface name:
+
+========================   ==============================================
+

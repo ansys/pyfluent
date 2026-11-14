@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report_type_1:
+
+report_type
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.report_type_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ======================
+
+Parent                                                  Summary
+
+======================================   ======================
+:ref:`number_density <number_density>`   Number density report.
+
+======================================   ======================
+

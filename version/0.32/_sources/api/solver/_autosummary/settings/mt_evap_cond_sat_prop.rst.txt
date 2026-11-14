@@ -1,0 +1,74 @@
+:orphan:
+
+.. _mt_evap_cond_sat_prop:
+
+mt_evap_cond_sat_prop
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_evap_cond_sat_prop
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================================   ===========================================================
+
+Attribute                                                                                                                                                  Summary
+
+====================================================================================================   ===========================================================
+:ref:`mt_evap_cond_sat_temp <mt_evap_cond_sat_temp>`                                                                 Evaporation-condesation saturation temp f(P).
+
+:ref:`mt_evap_cond_sat_temp_constant <mt_evap_cond_sat_temp_constant>`                                                                Constant sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_temp_udf <mt_evap_cond_sat_temp_udf>`                                                       User-defined sat-temp evaporation-condensation.
+
+:ref:`mt_evap_cond_sat_temp_polynomial <mt_evap_cond_sat_temp_polynomial>`                                                          Polynomial sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_temp_piecewise_polynomial <mt_evap_cond_sat_temp_piecewise_polynomial>`                            Piecewise-polynomial sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_temp_piecewise_linear <mt_evap_cond_sat_temp_piecewise_linear>`                                        Piecewise-linear sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_temp_ptl_tabular_table_name <mt_evap_cond_sat_temp_ptl_tabular_table_name>`         PTL tabular name setting for evap-cond sat temperature.
+
+:ref:`mt_evap_cond_sat_temp_ptl_tabular_sat_temp <mt_evap_cond_sat_temp_ptl_tabular_sat_temp>`                                 PTL TSAT name setting for sat temp.
+
+:ref:`mt_evap_cond_sat_temp_ptl_tabular_sat_press <mt_evap_cond_sat_temp_ptl_tabular_sat_press>`                               PTL PSAT name setting for sat temp.
+
+:ref:`mt_evap_cond_sat_temp_ptl_tabular_lat_heat <mt_evap_cond_sat_temp_ptl_tabular_lat_heat>`                                 PTL LSAT name setting for sat temp.
+
+:ref:`mt_evap_cond_sat_temp_rgp_data_set <mt_evap_cond_sat_temp_rgp_data_set>`                                                                  RGP table columns.
+
+:ref:`mt_evap_cond_sat_press <mt_evap_cond_sat_press>`                                                              Evaporation-condesation saturation press f(T).
+
+:ref:`mt_evap_cond_sat_press_constant <mt_evap_cond_sat_press_constant>`                                                          Constant sat pressure evap-cond.
+
+:ref:`mt_evap_cond_sat_press_udf <mt_evap_cond_sat_press_udf>`                                                    User-defined sat-press evaporation-condensation.
+
+:ref:`mt_evap_cond_sat_press_polynomial <mt_evap_cond_sat_press_polynomial>`                                                    Polynomial sat pressure evap-cond.
+
+:ref:`mt_evap_cond_sat_press_piecewise_polynomial <mt_evap_cond_sat_press_piecewise_polynomial>`                      Piecewise-polynomial sat-pressure evap-cond.
+
+:ref:`mt_evap_cond_sat_press_piecewise_linear <mt_evap_cond_sat_press_piecewise_linear>`                                  Piecewise-linear sat-pressure evap-cond.
+
+:ref:`mt_evap_cond_sat_press_ptl_tabular_table_name <mt_evap_cond_sat_press_ptl_tabular_table_name>`          PTL tabular name setting for evap-cond sat pressure.
+
+:ref:`mt_evap_cond_sat_press_ptl_tabular_sat_temp <mt_evap_cond_sat_press_ptl_tabular_sat_temp>`                               PTL TSAT name setting for sat temp.
+
+:ref:`mt_evap_cond_sat_press_ptl_tabular_sat_press <mt_evap_cond_sat_press_ptl_tabular_sat_press>`                         PTL PSAT name setting for sat pressure.
+
+:ref:`mt_evap_cond_sat_press_ptl_tabular_lat_heat <mt_evap_cond_sat_press_ptl_tabular_lat_heat>`                            PTL PSAT name setting for latent heat.
+
+:ref:`mt_evap_cond_sat_press_rgp_data_set <mt_evap_cond_sat_press_rgp_data_set>`                                                                RGP table columns.
+
+====================================================================================================   ===========================================================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

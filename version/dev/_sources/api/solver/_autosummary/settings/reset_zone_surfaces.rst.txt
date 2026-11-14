@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reset_zone_surfaces:
+
+reset_zone_surfaces
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.reset_zone_surfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=============================   ===========================================================================================
+
+Parent                                                                                                              Summary
+
+=============================   ===========================================================================================
+:ref:`surfaces <surfaces_10>`   Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+=============================   ===========================================================================================
+

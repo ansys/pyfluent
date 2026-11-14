@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compute_node_count:
+
+compute_node_count
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.compute_node_count
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`volumes_item <volumes_4_item>`   'child_object_type' of volumes.
+
+====================================   ===============================
+

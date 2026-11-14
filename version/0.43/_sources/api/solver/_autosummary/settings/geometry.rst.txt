@@ -1,0 +1,21 @@
+:orphan:
+
+.. _geometry:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.geometry
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===============
+
+Parent                                 Summary
+
+============================   ===============
+:ref:`locations <locations>`       The object.
+
+============================   ===============
+

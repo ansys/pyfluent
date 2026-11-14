@@ -1,0 +1,21 @@
+:orphan:
+
+.. _field_variable_1:
+
+field_variable
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.field_variable_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ============================================
+
+Parent                                                                                        Summary
+
+======================================================   ============================================
+:ref:`surface_integral_child <surface_integral_child>`       'child_object_type' of surface_integral.
+
+======================================================   ============================================
+

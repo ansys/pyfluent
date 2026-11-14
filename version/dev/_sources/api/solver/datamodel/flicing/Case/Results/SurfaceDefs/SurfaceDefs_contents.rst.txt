@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Results_SurfaceDefs:
+
+SurfaceDefs
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.object_model.flicing.Root.Case.Results.SurfaceDefs
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`SurfaceDefs <ref_solver_datamodel_flicing_Case_Results_SurfaceDefs__SurfaceDefs>`
+
+``SurfaceDefs`` is organised like a dictionary. You can access each :ref:`SurfaceDefs <ref_solver_datamodel_flicing_Case_Results_SurfaceDefs__SurfaceDefs>` by name using ``SurfaceDefs['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _SurfaceDefs/_SurfaceDefs_contents

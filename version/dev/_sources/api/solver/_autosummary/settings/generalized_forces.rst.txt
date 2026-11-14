@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _generalized_forces:
+
+generalized_forces
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.generalized_forces
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===========================   =================================================
+
+Attribute                                                               Summary
+
+===========================   =================================================
+:ref:`enabled <enabled_70>`   Enable or disable Generalized Forces calculation.
+
+:ref:`objects <objects>`                     Manage Generalized Forces objects.
+
+===========================   =================================================
+
+.. rubric:: Included in:
+
+========================   ==========================
+
+Parent                                        Summary
+
+========================   ==========================
+:ref:`models <models_1>`   The turbo-models settings.
+
+========================   ==========================
+
