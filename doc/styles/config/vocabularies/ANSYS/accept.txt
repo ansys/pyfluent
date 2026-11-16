@@ -89,6 +89,7 @@ discoverability
 NGons
 config
 user_guide_variables
+_user_guide_variables
 Synopsys
 synopsys
 subpackage

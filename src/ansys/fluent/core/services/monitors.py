@@ -30,7 +30,6 @@ service. The grpc service implementation lives in:
 * ``ansys.fluent.core._grpc_services.monitor_service_v0`` (v0 proto API)
 """
 
-
 from ansys.fluent.core.services.abstract_monitors import AbstractMonitor
 
 

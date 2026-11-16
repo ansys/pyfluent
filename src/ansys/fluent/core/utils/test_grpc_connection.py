@@ -23,7 +23,6 @@
 
 """Script to test viability of gRPC connection in the current machine."""
 
-
 from argparse import ArgumentParser
 import socket
 

@@ -318,10 +318,10 @@ field data streaming callback mechanism with visualization
 tools from the Python ecosystem, making it easy to visualize the data of interest.
 
 .. note::
-   In **Meshing mode**, only 'field_data_streaming' provides a valid interface as of now.
+   In **Meshing mode**, only ``field_data_streaming`` provides a valid interface as of now.
    Other methods currently return an empty array when used in Meshing mode.
 
-   The 'field_data_streaming' is available only for the **Meshing mode**.
+   The ``field_data_streaming`` is available only for the **Meshing mode**.
 
 The following example demonstrates how to update mesh data in **Meshing mode**
 using the field data streaming mechanism:

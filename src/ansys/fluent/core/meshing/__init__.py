@@ -27,6 +27,9 @@ This package exposes the :class:`Meshing` and :class:`PureMeshing` session
 classes, along with helpers for creating and loading Fluent meshing workflows.
 Both session classes inherit from the internal :class:`~ansys.fluent.core.meshing.session.base_meshing.BaseMeshing` class, which
 extends :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
+
+Meshing workflows use the underlying meshing workflow object. See the
+:ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` for details.
 """
 
 import warnings

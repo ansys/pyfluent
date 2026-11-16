@@ -63,10 +63,10 @@ from ansys.fluent.core import using  # noqa: F401
 logger = logging.getLogger("pyfluent.general")
 
 try:
+    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
     from ansys.fluent.core.generated.solver.settings_builtin import (
         __all__ as _settings_all,
     )
-    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
 except (ImportError, AttributeError, SyntaxError, ValueError) as ex:
     _settings_all = []
     logger.debug(ex)
