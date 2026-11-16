@@ -163,7 +163,7 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
     iteration_index = set()
 
     def cb(session, event_info):
-        nonlocal event_index, iteration_index
+        nonlocal event_index, iteration_index  # noqa: F824
         event_index.update(event_info.index)
         iteration_index.update(session.scheme.eval("(get-current-iteration)"))
 

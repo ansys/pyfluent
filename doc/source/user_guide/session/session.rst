@@ -32,7 +32,7 @@ Solution mode sessions
 ----------------------
 
 The above :obj:`~ansys.fluent.core.solver.session.solver.Solver` session object exposes a variety of Python child objects that provide access to the data
-and functions of the connected Fluent solver_session. A consistent interface style is maintained across those Python objects
+and functions of the connected Fluent session. A consistent interface style is maintained across those Python objects
 and each object adopts a specific responsibility that is reflected in its particular interface. For instance,
 the :obj:`~ansys.fluent.core.solver.session.solver.Solver` session provides child objects for solver settings and field data access respectively.
 You can see these ``fields`` and ``settings`` children by executing ``dir(solver)``. You can discover the

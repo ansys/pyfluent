@@ -54,10 +54,18 @@ class FluentRestError(RuntimeError):
         same request has a reasonable chance of succeeding.
     """
 
-    def __init__(self, status: int, message: str, *, retryable: bool = False) -> None:
+    def __init__(self, status: int, message: str, retryable: bool = False) -> None:
         self.status = status
         self.retryable = retryable
-        super().__init__(f"HTTP {status}: {message}")
+        # Forward the raw arguments so pickle and copy.copy can reconstruct the
+        # exception via ``cls(*exc.args)``; a keyword-only parameter or a
+        # pre-formatted message would make that reconstruction lossy.
+        super().__init__(status, message, retryable)
+
+    def __str__(self) -> str:
+        """Return the formatted HTTP error message."""
+        status, message = self.args[0], self.args[1]
+        return f"HTTP {status}: {message}"
 
     # ------------------------------------------------------------------
     # Named factories — callers never hard-code status codes or strings

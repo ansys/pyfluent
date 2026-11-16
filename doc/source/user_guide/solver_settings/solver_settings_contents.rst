@@ -437,7 +437,7 @@ The following list summarizes common wildcards:
   only items starting with "in" such as in1 and in2, whereas *in* lists only items that have
   the string "in" within the name.
 
-- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list "grey" and "gray".
+- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list ``grey`` and ``gray``.
 
 - ``[]`` indicates a range of numbers or characters at the beginning of a string. For example,
   ``'[to]'`` would match anything starting with "t" and anything starting with "o" in the name. Using
@@ -445,14 +445,14 @@ The following list summarizes common wildcards:
   using ``'[0-9]'`` would match the initial character with any number between "0" and "9" inclusively.
 
 - ``^`` indicates a Boolean NOT function, or negation. For example, ``'^*in*'`` would list anything
-  not containing "in".
+  not containing ``in``.
 
 - ``|`` indicates a Boolean OR function. For example, ``'*part*|*solid*'`` would list anything
-  containing either "part" or "solid" such as "part2-solid-1", "part2-solid-2", "part-3",
-  "solid", and "solid-1".
+  containing either ``part`` or ``solid`` such as ``part2-solid-1``, ``part2-solid-2``, ``part-3``,
+  ``solid``, and ``solid-1``.
 
 - ``&`` indicates a Boolean AND function. For example, ``'*part*&*solid*'`` would list anything
-  containing both "part" and "solid" such as "part2-solid-1" and "part2-solid-2".
+  containing both ``part`` and ``solid`` such as ``part2-solid-1`` and ``part2-solid-2``.
 
 
 .. toctree::

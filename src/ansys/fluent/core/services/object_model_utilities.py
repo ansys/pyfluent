@@ -97,11 +97,16 @@ class DisallowedFilePurpose(ValueError):
         allowed_values: Any | None = None,
     ):
         """Initialize DisallowedFilePurpose."""
-        super().__init__(
-            allowed_name_error_message(
-                context=context, trial_name=name, allowed_values=allowed_values
-            )
+        self._message = allowed_name_error_message(
+            context=context, trial_name=name, allowed_values=allowed_values
         )
+        # Forward the original arguments so pickle and copy.copy can
+        # reconstruct the exception via ``cls(*exc.args)``.
+        super().__init__(context, name, allowed_values)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        return self._message
 
 
 def convert_path_to_se_path(path: Path) -> str:

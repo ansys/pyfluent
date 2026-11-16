@@ -31,8 +31,8 @@ def reset_examples_path():
     """Reset both deprecated var and config after each test."""
     yield
     try:
-        delattr(pyfluent, "EXAMPLES_PATH")
-        delattr(pyfluent.config, "_examples_path")
+        delattr(pyfluent, "EXAMPLES_PATH")  # noqa: B043
+        delattr(pyfluent.config, "_examples_path")  # noqa: B043
     except AttributeError:
         pass
 

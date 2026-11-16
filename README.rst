@@ -66,7 +66,7 @@ To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@a
 
 Installation
 ------------
-The ``ansys-fluent-core`` package supports Python 3.10 through Python
+The ``ansys-fluent-core`` package supports Python 3.12 through Python
 3.14 on Windows and Linux.
 
 Install the latest release from `PyPI
