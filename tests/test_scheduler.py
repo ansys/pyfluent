@@ -57,6 +57,20 @@ class TestMachine(unittest.TestCase):
         self.assertEqual(machine.queue_name, None)
         self.assertEqual(machine.core_list, None)
 
+    def test_repr_without_queue(self):
+        machine = Machine("machine", 20)
+        expected = "Hostname:machine, Cores: 20, Queue: None"
+        self.assertEqual(repr(machine), expected)
+        self.assertEqual(str(machine), expected)
+
+    def test_repr_with_queue(self):
+        machine = Machine("machine", 20, "allq")
+        self.assertEqual(repr(machine), "Hostname:machine, Cores: 20, Queue: allq")
+
+    def test_repr_with_empty_queue(self):
+        machine = Machine("machine", 20, "")
+        self.assertEqual(repr(machine), "Hostname:machine, Cores: 20, Queue: ")
+
     def test_modify_host(self):
         """Test that a Machine can be modified."""
         machine = Machine("machine", 20, "allq", "0:0")
@@ -178,6 +192,14 @@ class TestLoadMachines(unittest.TestCase):
 
     def tearDown(self):
         self._machineList.reset()
+
+    def test_loaded_machines_repr(self):
+        machine_list = load_machines(host_info="M0:2,M1:3")
+        self.assertEqual(
+            repr(machine_list.machines),
+            "[Hostname:M0, Cores: 2, Queue: None, "
+            "Hostname:M1, Cores: 3, Queue: None]",
+        )
 
     def test_machine_info(self):
         info = [

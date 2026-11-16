@@ -71,7 +71,7 @@ class Machine:
             + ", Cores: "
             + str(self._numberOfCores)
             + ", Queue: "
-            + self._queueName
+            + str(self._queueName)
         )
 
     @property
