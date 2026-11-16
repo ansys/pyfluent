@@ -573,15 +573,15 @@ def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
 
     assert solver.fields.reduction.area(locations=["inlet1"])
 
-    with pytest.raises(ValueError, match=r"^No locations specified\.$"):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.area(locations=[], ctxt=solver)
 
-    with pytest.raises(ValueError, match=r"^No locations specified\.$"):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.area_average(
             expression="AbsolutePressure", locations=[], ctxt=solver
         )
 
-    with pytest.raises(ValueError, match=r"^No locations specified\.$"):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.centroid(locations=[], ctxt=solver)
 
     with pytest.raises(ValueError, match=r"^No locations specified\.$"):
