@@ -24,12 +24,15 @@ def pull_fluent_image():  # pylint: disable=missing-raises-doc
 
     for attempt in range(MAX_RETRIES):
         try:
-            subprocess.run(
+            result = subprocess.run(
                 ["docker", "pull", full_image_name],
                 check=True,
-                stderr=subprocess.PIPE,
+                capture_output=True,
                 text=True,
             )
+            if result.stdout:
+                print(result.stdout, end="")
+            print(f"Successfully pulled Docker image: {full_image_name}")
             print(f"Successfully pulled Docker image: {full_image_name}")
             break  # Success, exit retry loop
         except subprocess.CalledProcessError as e:
