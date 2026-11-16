@@ -712,6 +712,59 @@ class TaskObject:
         if state and "Forced-up-to-date" in state.allowed_values():
             state.set_state("Forced-up-to-date")
 
+    def get_state(self):
+        """Get task state with arguments flattened into the top-level dictionary.
+
+        Argument values take precedence over task properties with the same name.
+        Other state values are returned unchanged.
+        """
+        state = self._task_object.get_state()
+        if isinstance(state, dict) and "arguments" in state:
+            return {
+                **{key: value for key, value in state.items() if key != "arguments"},
+                **state["arguments"],
+            }
+        return state
+
+    def set_state(self, state=None, **kwargs):
+        """Set task properties and arguments from a task-level state dictionary.
+
+        Argument names take precedence over task properties with the same name.
+        Flat arguments are merged into any nested ``arguments`` dictionary,
+        overriding nested values with the same name. Keyword arguments retain
+        their usual precedence over the positional state.
+
+        Raises
+        ------
+        TypeError
+            If flat arguments are provided and the nested ``arguments`` value
+            is not a dictionary.
+        """
+        values = kwargs or state
+        if isinstance(values, dict) and any(key != "arguments" for key in values):
+            arguments = getattr(self._task_object, "arguments", None)
+            if arguments is not None:
+                argument_names = arguments()
+                flat_arguments = {
+                    key: value
+                    for key, value in values.items()
+                    if key != "arguments" and key in argument_names
+                }
+                if flat_arguments:
+                    nested_arguments = values.get("arguments", {})
+                    if not isinstance(nested_arguments, dict):
+                        raise TypeError("Task arguments must be a dictionary.")
+                    values = {
+                        key: value
+                        for key, value in values.items()
+                        if key not in flat_arguments and key != "arguments"
+                    }
+                    values["arguments"] = {**nested_arguments, **flat_arguments}
+                    if kwargs:
+                        return self._task_object.set_state(state, **values)
+                    return self._task_object.set_state(values)
+        return self._task_object.set_state(state, **kwargs)
+
     def _get_next_possible_tasks(self):
         """Get display names of tasks that can be inserted after this task."""
         task_obj = self._task_object
@@ -1246,7 +1299,9 @@ def build_specific_interface(task_object):
     public_members = {
         name
         for name in dir(task_object)
-        if not name.startswith("_") and callable(getattr(task_object, name))
+        if not name.startswith("_")
+        and name not in {"get_state", "set_state"}
+        and callable(getattr(task_object, name))
     }
 
     # Build the namespace (class dictionary) for a new dynamic interface class where
