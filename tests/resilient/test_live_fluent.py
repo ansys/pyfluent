@@ -119,6 +119,7 @@ def test_checkpoint_rollback_and_automatic_checkpoint(resilient_elbow):
     assert [c.name for c in resilient.checkpoints] == ["initialized"]
 
 
+@pytest.mark.fluent_version(">=24.2")
 def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_path):
     solver = new_solver_session
     # As resilient_mode=True does at launch. The standby is launched with the
