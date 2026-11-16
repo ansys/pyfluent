@@ -909,6 +909,22 @@ def test_insert_delete_and_rename_task(new_meshing_session):
 ############################################################################################
 
 
+@pytest.mark.fluent_version(">=26.1")
+def test_task_set_state_with_flat_arguments(new_meshing_session):
+    task = WatertightMeshing(session=new_meshing_session).import_geometry
+
+    task.set_state({"length_unit": "in", "check_point": "default-off"})
+    assert task.arguments.length_unit() == "in"
+    assert task.check_point() == "default-off"
+
+    task.set_state(arguments={"length_unit": "mm"}, length_unit="cm")
+    assert task.arguments.length_unit() == "cm"
+    assert task.get_state()["length_unit"] == "cm"
+
+    task.set_state({"arguments": {"length_unit": "ft"}})
+    assert task.arguments.length_unit() == "ft"
+
+
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=26.1")
 def test_new_watertight_workflow_enhanced_meshing(new_meshing_session_wo_exit):
