@@ -9,6 +9,22 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.43.1 <https://github.com/ansys/pyfluent/releases/tag/v0.43.1>`_ - November 16, 2026
+======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version to v0.43.1
+          - `#5606 <https://github.com/ansys/pyfluent/pull/5606>`_
+
+
 `0.43.0 <https://github.com/ansys/pyfluent/releases/tag/v0.43.0>`_ - October 15, 2026
 =====================================================================================
 
