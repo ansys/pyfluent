@@ -62,9 +62,11 @@ def pull_fluent_image():  # pylint: disable=missing-raises-doc
                     print(
                         "Max retries reached. Failed to pull image due to rate limiting."
                     )
+                    print("docker pull stderr output:\n" + (e.stderr or ""))
                     raise
             else:
                 # Not a rate limit error, re-raise immediately
+                print("docker pull stderr output:\n" + (e.stderr or ""))
                 raise
 
     subprocess.run(["docker", "image", "prune", "-f"], check=True)
