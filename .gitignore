@@ -147,3 +147,6 @@ src/ansys/fluent/core/generated/
 *.trn
 cleanup-fluent-*-*.*
 serverinfo-*.txt
+
+# Resilient-mode runtime checkpoint output
+resilient_checkpoints/
