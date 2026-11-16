@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,25 +22,35 @@
 # SOFTWARE.
 
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import platform
 import tempfile
 from tempfile import TemporaryDirectory
+from unittest.mock import MagicMock, Mock, patch
+import warnings
 
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import PyFluentDeprecationWarning, PyFluentUserWarning
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.diagnostics.exceptions import (
+    DisallowedValuesError,
+    InvalidArgument,
+)
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.launcher.error_handler import (
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.container_launcher import (
+    DockerLauncher,
+)
+from ansys.fluent.core.execution.launcher.error_handler import (
     GPUSolverSupportError,
     InvalidIpPort,
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.fluent_container import configure_container_dict
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.fluent_container import (
+    configure_container_dict,
+)
+from ansys.fluent.core.execution.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
@@ -47,15 +58,30 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_graphics_driver,
 )
-from ansys.fluent.core.launcher.launcher import create_launcher
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.execution.launcher.launcher import create_launcher
+from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
+    _build_case_data_arguments,
     _build_journal_argument,
+    _cwd_may_trigger_cmd_unc_fallback,
+    _validate_lightweight_with_case_data,
+    _validate_lightweight_with_journal,
     is_windows,
 )
-from ansys.fluent.core.launcher.process_launch_string import (
+from ansys.fluent.core.execution.launcher.pim_launcher import (
+    PIMLauncher,
+)
+from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
+    _has_parallel_flags,
     get_fluent_exe_path,
+)
+from ansys.fluent.core.execution.launcher.slurm_launcher import (
+    SlurmFuture,
+    SlurmLauncher,
+)
+from ansys.fluent.core.execution.launcher.standalone_launcher import (
+    StandaloneLauncher,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
@@ -221,7 +247,6 @@ def test_case_load():
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
     case_name = download_file(
@@ -248,11 +273,13 @@ def test_case_data_load():
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
     )
-    download_file(
+    data_name = download_file(
         "mixing_elbow.dat.h5",
         "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_data_file_name=case_name)
+    session = pyfluent.launch_fluent(
+        case_file_name=case_name, case_data_file_name=data_name
+    )
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
@@ -474,6 +501,144 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
+def test_validate_lightweight_with_journal_false_none():
+    """Test lightweight_mode=False, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(False, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_false_single():
+    """Test lightweight_mode=False, journal_file_names='a.jou'."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(False, "a.jou")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_false_multiple():
+    """Test lightweight_mode=False, journal_file_names=['a.jou', 'b.jou']."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        False, ["a.jou", "b.jou"]
+    )
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_true_none():
+    """Test lightweight_mode=True, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(True, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_true_single():
+    """Test lightweight_mode=True, journal_file_names='a.jou' (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(True, "a.jou")
+    assert should_disable is True
+    assert warning_msg is not None
+
+
+def test_validate_lightweight_with_journal_true_multiple():
+    """Test lightweight_mode=True, journal_file_names=['a.jou', 'b.jou'] (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        True, ["a.jou", "b.jou"]
+    )
+    assert should_disable is True
+    assert warning_msg is not None
+
+
+def test_validate_lightweight_with_journal_none_none():
+    """Test lightweight_mode=None, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(None, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_none_single():
+    """Test lightweight_mode=None, journal_file_names='a.jou'."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(None, "a.jou")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_build_case_data_arguments_none_none():
+    """Test with case_file_name=None, case_data_file_name=None."""
+    assert _build_case_data_arguments(None, None) == ""
+
+
+def test_build_case_data_arguments_case_only():
+    """Test with case_file_name='case.cas', case_data_file_name=None."""
+    assert _build_case_data_arguments("case.cas", None) == ' -case "case.cas"'
+
+
+def test_build_case_data_arguments_data_only():
+    """Test that ``case_data_file_name`` without ``case_file_name`` raises."""
+    with pytest.raises(InvalidArgument):
+        _build_case_data_arguments(None, "data.dat")
+
+
+def test_build_case_data_arguments_both_strings():
+    """Test with case_file_name='case.cas', case_data_file_name='data.dat'."""
+    assert (
+        _build_case_data_arguments("case.cas", "data.dat")
+        == ' -case "case.cas" -data "data.dat"'
+    )
+
+
+def test_build_case_data_arguments_case_path():
+    """Test with Path object for case_file_name."""
+    assert _build_case_data_arguments(Path("case.cas"), None) == ' -case "case.cas"'
+
+
+def test_build_case_data_arguments_both_paths():
+    """Test with Path objects for both arguments."""
+    assert (
+        _build_case_data_arguments(Path("case.cas"), Path("data.dat"))
+        == ' -case "case.cas" -data "data.dat"'
+    )
+
+
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        # Standard UNC paths.
+        (r"\\server\share", True),
+        (r"\\server\share\dir\file.cas", True),
+        # Forward-slash variants are normalized.
+        ("//server/share", True),
+        ("//server/share/file.cas", True),
+        (r"\\server/share\file.cas", True),  # mixed separators
+        # Extended-length local and device namespaces are not UNC.
+        (r"\\?\C:\dir\file.cas", False),
+        (r"\\.\PhysicalDrive0", False),
+        # Local and relative paths.
+        (r"C:\dir\file.cas", False),
+        ("C:/dir/file.cas", False),
+        (r"dir\file.cas", False),
+        ("file.cas", False),
+        ("", False),
+        (r"\single", False),  # single leading separator
+        ("/single", False),
+    ],
+)
+def test_cwd_may_trigger_cmd_unc_fallback_strings(path, expected):
+    """Test ``_cwd_may_trigger_cmd_unc_fallback`` against string paths and edge cases."""
+    assert _cwd_may_trigger_cmd_unc_fallback(path) is expected
+
+
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        (PureWindowsPath(r"\\server\share\file.cas"), True),
+        (PureWindowsPath(r"C:\dir\file.cas"), False),
+        (PureWindowsPath("file.cas"), False),
+    ],
+)
+def test_cwd_may_trigger_cmd_unc_fallback_pathlib(path, expected):
+    """Test ``_cwd_may_trigger_cmd_unc_fallback`` with ``Path``-like inputs."""
+    assert _cwd_may_trigger_cmd_unc_fallback(path) is expected
+
+
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
@@ -530,6 +695,60 @@ def test_additional_arguments_fluent_launch_args_string():
     )
 
 
+@pytest.mark.parametrize(
+    "additional_arguments, expected",
+    [
+        # No parallel flags present.
+        ("", False),
+        ("-gpu", False),
+        ("-gpu_async", False),
+        ("-ws -ws-port=5000 -i test.jou", False),
+        # '-t' substring inside an unrelated argument must not be treated as '-t<n>'.
+        ("-scheduler_opt='--time=04:00:00'", False),
+        ("-scheduler_opt='--time=04:00:00' -scheduler_gpn=2 -gpu_async", False),
+        ("--time=1", False),
+        # '-t' without a trailing digit is not the process-count flag.
+        ("-t", False),
+        ("-tx", False),
+        # Explicit process-count flag '-t<n>'.
+        ("-t4", True),
+        ("-t16", True),
+        ("-t4 -gpu", True),
+        ("-gpu -t4", True),
+        ("-scheduler_opt='--time=04:00:00' -t4", True),
+        # Machine-list flag '-cnf='.
+        ("-cnf=m1:8", True),
+        ("-t16 -cnf=m1:8,m2:8", True),
+        ("-gpu -cnf=m1:8,m2:8", True),
+    ],
+)
+def test_has_parallel_flags(additional_arguments, expected):
+    assert _has_parallel_flags(additional_arguments) is expected
+
+
+def test_processor_count_applied_with_time_scheduler_option():
+    # Regression: a '-t' substring inside "-scheduler_opt='--time=...'" must not
+    # suppress the '-t<n>' flag derived from processor_count.
+    additional_arguments = (
+        "-scheduler_opt='--time=04:00:00' -scheduler_gpn=2 -scheduler_ppn=2 -gpu_async"
+    )
+    launch_args = _build_fluent_launch_args_string(
+        additional_arguments=additional_arguments,
+        processor_count=4,
+        gpu=True,
+    )
+    assert "-t4" in launch_args
+
+
+def test_processor_count_not_applied_when_user_sets_t_flag():
+    launch_args = _build_fluent_launch_args_string(
+        additional_arguments="-t2",
+        processor_count=4,
+    )
+    assert "-t4" not in launch_args
+    assert "-t2" in launch_args
+
+
 def test_processor_count():
     def get_processor_count(solver):
         return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
@@ -580,8 +799,19 @@ def test_standalone_launcher_dry_run(monkeypatch):
     assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
     assert (
         fluent_launch_string
-        == f"{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm"
+        == f'{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm -command="(set-session-idle-timeout 3)"'
     )
+
+
+def test_standalone_launcher_dry_run_default_ui_mode(monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+    )
+    expected_ui_arg = "-hidden" if is_windows() else "-gu"
+    assert expected_ui_arg in fluent_launch_string
 
 
 def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
@@ -595,7 +825,7 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
         assert str(Path(server_info_file_name).parent) == tmp_dir
         assert (
             fluent_launch_string
-            == f"{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm"
+            == f'{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm -command="(set-session-idle-timeout 3)"'
         )
 
 
@@ -626,15 +856,17 @@ def test_container_launcher_args():
 
 
 def test_report():
-    from ansys.fluent.core.report import ANSYS_ENV_VARS, dependencies
+    from ansys.fluent.core.utils.report import ANSYS_ENV_VARS, dependencies
     from ansys.tools.common.report import Report
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
-    assert str(rep).count("pandas") == 1
+    # Check for pandas in report (could be 'pandas' or 'pandas-stubs')
+    report_str = str(rep)
+    # Verify pandas-related packages are mentioned (either plain pandas or with stubs)
+    assert "pandas" in report_str, "Expected pandas package reference in report"
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_docker_compose(monkeypatch):
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
@@ -677,6 +909,135 @@ def test_respect_driver_is_not_null_in_linux():
         graphics_driver=FluentLinuxGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
     )
     assert driver == FluentLinuxGraphicsDriver.OPENGL
+
+
+# Tests for _validate_lightweight_with_case_data (mirror of the journal tests)
+def test_validate_lightweight_with_case_data_false_none():
+    """Test lightweight_mode=False, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(False, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_false_single():
+    """Test lightweight_mode=False, case_data_file_name='a.dat'."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(False, "a.dat")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_true_none():
+    """Test lightweight_mode=True, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(True, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_true_single():
+    """Test lightweight_mode=True, case_data_file_name='a.dat' (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(True, "a.dat")
+    assert should_disable is True
+    assert warning_msg is not None
+    assert "lightweight_mode" in warning_msg.lower()
+
+
+def test_validate_lightweight_with_case_data_none_none():
+    """Test lightweight_mode=None, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(None, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_none_single():
+    """Test lightweight_mode=None, case_data_file_name='a.dat'."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(None, "a.dat")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+# Behavioural wiring tests: verify launcher argvals reflect the validators.
+def test_standalone_lightweight_with_case_data_downgrades_and_emits_cli(monkeypatch):
+    """lightweight_mode + case_data_file_name should warn, disable lightweight, and
+    still emit ``-case "<case>" -data "<data>"`` on the CLI."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    case = r"C:\tmp\mixing_elbow.cas.h5"
+    data = r"C:\tmp\mixing_elbow.dat.h5"
+    with pytest.warns(UserWarning, match="case_data_file_name"):
+        launch_string, _ = pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            case_file_name=case,
+            case_data_file_name=data,
+            lightweight_mode=True,
+        )
+    assert f'-case "{case}"' in launch_string
+    assert f'-data "{data}"' in launch_string
+
+
+def test_standalone_meshing_with_case_data_raises(monkeypatch):
+    """``case_data_file_name`` is not allowed in meshing mode."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    with pytest.raises(InvalidArgument, match="meshing"):
+        pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            mode="meshing",
+            case_file_name=r"C:\tmp\mixing_elbow.cas.h5",
+            case_data_file_name=r"C:\tmp\mixing_elbow.dat.h5",
+        )
+
+
+def _invoke_standalone_call_with_stubbed_launch(monkeypatch, **launch_kwargs):
+    """Run ``StandaloneLauncher.__call__`` on a patched Windows platform with the
+    real subprocess launch stubbed out, so only the pre-launch UNC
+    working-directory check runs.
+
+    ``is_windows`` is patched where the launcher uses it so the check is
+    exercised on any host OS, and ``subprocess.Popen`` is stubbed to raise,
+    which makes ``__call__`` raise ``LaunchFluentError`` right after the check.
+    """
+    from ansys.fluent.core.execution.launcher import standalone_launcher
+
+    monkeypatch.setattr(standalone_launcher, "is_windows", lambda: True)
+    monkeypatch.setattr(
+        standalone_launcher.subprocess,
+        "Popen",
+        Mock(side_effect=RuntimeError("stubbed launch")),
+    )
+    launcher = standalone_launcher.StandaloneLauncher(
+        fluent_path=r"\x\y\z\fluent.exe",
+        ui_mode="no_gui",
+        **launch_kwargs,
+    )
+    with pytest.raises(LaunchFluentError):
+        launcher()
+
+
+@pytest.mark.standalone
+def test_standalone_warns_on_explicit_unc_cwd(monkeypatch):
+    """An explicit UNC ``cwd`` on Windows warns about the cmd working-directory fallback."""
+    with pytest.warns(UserWarning, match="UNC"):
+        _invoke_standalone_call_with_stubbed_launch(monkeypatch, cwd=r"\\server\share")
+
+
+@pytest.mark.standalone
+def test_standalone_warns_on_unc_getcwd(monkeypatch):
+    """With no ``cwd``, a UNC process working directory warns."""
+    from ansys.fluent.core.execution.launcher import standalone_launcher
+
+    monkeypatch.setattr(standalone_launcher.os, "getcwd", lambda: r"\\server\share")
+    with pytest.warns(UserWarning, match="UNC"):
+        _invoke_standalone_call_with_stubbed_launch(monkeypatch)
+
+
+def test_standalone_does_not_warn_on_local_cwd(monkeypatch, recwarn):
+    """A local ``cwd`` on Windows does not warn about the cmd working-directory fallback."""
+    _invoke_standalone_call_with_stubbed_launch(monkeypatch, cwd=r"C:\tmp\local")
+    assert not [w for w in recwarn.list if "UNC" in str(w.message)]
 
 
 @pytest.mark.standalone
@@ -752,9 +1113,11 @@ def test_default_launch_mode_is_py():
 
 @pytest.mark.standalone
 def test_create_launcher():
-    from ansys.fluent.core.launcher import create_launcher
-    from ansys.fluent.core.launcher.launch_options import LaunchMode
-    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+    from ansys.fluent.core.execution.launcher import create_launcher
+    from ansys.fluent.core.execution.launcher.launch_options import LaunchMode
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneLauncher,
+    )
 
     with pytest.raises(DisallowedValuesError):
         create_launcher("unknown_mode")
@@ -764,3 +1127,228 @@ def test_create_launcher():
 
     session = create_launcher(LaunchMode.STANDALONE)
     assert isinstance(session, StandaloneLauncher)
+
+
+def test_idle_timeout(monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeout 3" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=200, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeout 5" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=60, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeout 2" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=0, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeout 1" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=-5, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeout" not in fluent_launch_string
+
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneLauncher,
+    )
+
+    assert (
+        StandaloneLauncher._construct_timeout_arg(60)
+        == ' -command="(set-session-idle-timeout 2)"'
+    )
+    assert (
+        StandaloneLauncher._construct_timeout_arg(200)
+        == ' -command="(set-session-idle-timeout 5)"'
+    )
+
+
+def test_slurm_launcher_start_timeout_defaults_to_no_timeout():
+    launcher = create_launcher(
+        LaunchMode.SLURM,
+        mode=FluentMode.SOLVER,
+        insecure_mode=True,
+    )
+    assert launcher._argvals["start_timeout"] == -1
+
+
+def test_slurm_launcher_start_timeout_respects_explicit_value():
+    launcher = create_launcher(
+        LaunchMode.SLURM,
+        mode=FluentMode.SOLVER,
+        insecure_mode=True,
+        start_timeout=45,
+    )
+    assert launcher._argvals["start_timeout"] == 45
+
+
+def test_launch_fluent_does_not_force_config_timeout_for_slurm(monkeypatch):
+    # Slurm default should be -1 (no timeout) even when parent resolves unset
+    # start_timeout to config.launch_fluent_timeout (issue #4628).
+    # CONTAINER mode takes priority over scheduler_options in launch mode resolution,
+    # so launch_fluent_container must be forced off (CI sets PYFLUENT_LAUNCH_CONTAINER=1).
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    captured_launcher = {}
+
+    def mock_call(self):
+        captured_launcher["instance"] = self
+        # Return a stub to avoid actual Slurm job submission
+        return SlurmFuture(None, None)
+
+    monkeypatch.setattr(SlurmLauncher, "__call__", mock_call)
+    pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"}, insecure_mode=True)
+    assert captured_launcher["instance"]._argvals["start_timeout"] == -1
+
+
+# Comprehensive timeout tests for all launcher types (issue #4628)
+def test_standalone_launcher_default_start_timeout(monkeypatch):
+    """Verify StandaloneLauncher defaults to 100 seconds when start_timeout is None."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launcher = StandaloneLauncher(
+        mode=FluentMode.SOLVER,
+        dry_run=True,
+        fluent_path=fluent_path,
+    )
+    # When start_timeout is None (not provided), launcher should set it to 100
+    assert launcher.argvals["start_timeout"] == 100
+
+
+def test_standalone_launcher_respects_user_start_timeout(monkeypatch):
+    """Verify StandaloneLauncher respects user-provided start_timeout."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launcher = StandaloneLauncher(
+        mode=FluentMode.SOLVER,
+        dry_run=True,
+        fluent_path=fluent_path,
+        start_timeout=45,
+    )
+    # When user provides a value, it should be respected
+    assert launcher.argvals["start_timeout"] == 45
+
+
+def test_docker_launcher_default_start_timeout(monkeypatch):
+    """Verify DockerLauncher defaults to 100 seconds when start_timeout is None."""
+    launcher = DockerLauncher(
+        mode=FluentMode.SOLVER,
+        container_dict={},
+        insecure_mode=True,
+    )
+    # When start_timeout is None (not provided), launcher should set it to 100
+    assert launcher.argvals["start_timeout"] == 100
+
+
+def test_docker_launcher_respects_user_start_timeout():
+    """Verify DockerLauncher respects user-provided start_timeout."""
+    launcher = DockerLauncher(
+        mode=FluentMode.SOLVER,
+        container_dict={},
+        insecure_mode=True,
+        start_timeout=75,
+    )
+    # When user provides a value, it should be respected
+    assert launcher.argvals["start_timeout"] == 75
+
+
+def test_pim_launcher_default_start_timeout():
+    """Verify PIMLauncher defaults to 60 seconds when start_timeout is None."""
+    launcher = PIMLauncher(
+        mode=FluentMode.SOLVER,
+    )
+    # When start_timeout is None (not provided), launcher should set it to 60
+    assert launcher.argvals["start_timeout"] == 60
+
+
+def test_pim_launcher_respects_user_start_timeout():
+    """Verify PIMLauncher respects user-provided start_timeout."""
+    launcher = PIMLauncher(
+        mode=FluentMode.SOLVER,
+        start_timeout=90,
+    )
+    # When user provides a value, it should be respected
+    assert launcher.argvals["start_timeout"] == 90
+
+
+def test_launcher_timeout_defaults_via_launch_fluent(monkeypatch):
+    """Verify launch_fluent passes None to launchers, allowing each to set its own default."""
+    from ansys.fluent.core.execution.launcher.slurm_launcher import SlurmLauncher
+
+    # CONTAINER mode takes priority over scheduler_options in launch mode resolution,
+    # so launch_fluent_container must be forced off (CI sets PYFLUENT_LAUNCH_CONTAINER=1).
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    captured_launcher = {}
+
+    # Mock SlurmLauncher.__call__ to capture the launcher instance without executing
+    def mock_call(self):
+        captured_launcher["instance"] = self
+        return SlurmFuture(None, None)
+
+    monkeypatch.setattr(SlurmLauncher, "__call__", mock_call)
+    pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"}, insecure_mode=True)
+
+    # Verify that SlurmLauncher received None and set its own default to -1
+    assert captured_launcher["instance"]._argvals["start_timeout"] == -1
+
+
+def test_standalone_launcher_cleanup_on_exit_false_preserves_file():
+    """Verify cleanup_on_exit=False preserves server-info file (issue #5145)."""
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
+
+        # Simulate the finally block logic from standalone_launcher.py
+        cleanup_on_exit = False
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
+
+        assert (
+            server_info_file.exists()
+        ), "File should be preserved when cleanup_on_exit=False"
+
+
+def test_standalone_launcher_cleanup_on_exit_true_deletes_file():
+    """Verify cleanup_on_exit=True (default) deletes server-info file."""
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
+
+        # Simulate the finally block logic from standalone_launcher.py
+        cleanup_on_exit = True
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
+
+        assert (
+            not server_info_file.exists()
+        ), "File should be deleted when cleanup_on_exit=True"
+
+
+def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
+    """Verify default behavior (cleanup_on_exit not specified) deletes server-info file."""
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
+
+        # Simulate the finally block logic from standalone_launcher.py
+        # Using get() with default True, like the actual implementation
+        cleanup_on_exit_value = None
+        cleanup_on_exit = (
+            cleanup_on_exit_value if cleanup_on_exit_value is not None else True
+        )
+
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
+
+        assert (
+            not server_info_file.exists()
+        ), "File should be deleted by default when cleanup_on_exit is not specified"

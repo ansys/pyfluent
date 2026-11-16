@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,20 +29,19 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core.codegen import walk_api
-    >>> from ansys.fluent.core.generated.solver import settings_252
-    >>> walk_api.walk_api(settings_252.root, lambda p: print(p), current_path=[])
-    >>> walk_api.walk_api(settings_252.root, lambda p, api_item_type: print(p, api_item_type), current_path=[])
+    >>> from ansys.fluent.core.generated.v261.solver import settings
+    >>> walk_api.walk_api(settings.root, lambda p: print(p), current_path=[])
+    >>> walk_api.walk_api(settings.root, lambda p, api_item_type: print(p, api_item_type), current_path=[])
 
 """
 
 from inspect import signature
-from typing import List
 
 import ansys.fluent.core.solver.flobject as flobject
 
 
 def walk_api(
-    api_cls, on_each_path, current_path: str | List[str] = "", api_item_type: str = ""
+    api_cls, on_each_path, current_path: str | list[str] = "", api_item_type: str = ""
 ):
     """
     Recursively traverse the API hierarchy, calling `on_each_path` for each item.

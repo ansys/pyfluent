@@ -7,7 +7,7 @@ Usability features
 API search
 ----------
 
-The :ref:`API search <ref_search>` allows you to search for a word throughout Fluent's object hierarchy. It provides results
+The :ref:`API search <ref_ansys_fluent_core_diagnostics_search>` allows you to search for a word throughout Fluent's object hierarchy. It provides results
 based on supported features, including semantic matching, wildcard pattern matching, whole word matching, and misspelled
 word correction. Semantic search is the default, with English (``eng``) as the default language. For
 a list of supported languages, see `OMW Version 1 <https://omwn.org/omw1.html>`_.
@@ -21,31 +21,10 @@ Examples
    >>>
    >>> # Semantic search
    >>> pyfluent.search("speed")
-   ...
    <solver_session>.setup.boundary_conditions.wall["<name>"].turbulence.free_stream_velocity (Parameter) (similarity: 98.31%)
    <solver_session>.setup.boundary_conditions.wall["<name>"].wall_film.relative_initial_film_velocity (Parameter) (similarity: 98.31%)
-   <solver_session>.setup.boundary_conditions.wall["<name>"].wall_film.upper_deposition_limit_offset (Parameter) (similarity: 98.31%)
    <solver_session>.setup.cell_zone_conditions.fluid["<name>"].disabled.solid_motion_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.fluid["<name>"].mesh_motion.moving_mesh_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.fluid["<name>"].phase["<name>"].disabled.solid_motion_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.fluid["<name>"].phase["<name>"].mesh_motion.moving_mesh_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.fluid["<name>"].phase["<name>"].reference_frame.reference_frame_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.fluid["<name>"].reference_frame.reference_frame_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.solid["<name>"].mesh_motion.moving_mesh_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.solid["<name>"].phase["<name>"].mesh_motion.moving_mesh_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.solid["<name>"].phase["<name>"].reference_frame.reference_frame_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.solid["<name>"].phase["<name>"].solid_motion.solid_motion_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.solid["<name>"].reference_frame.reference_frame_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.cell_zone_conditions.solid["<name>"].solid_motion.solid_motion_velocity[<index>] (Object) (similarity: 98.31%)
-   <solver_session>.setup.dynamic_mesh.dynamic_zones["<name>"].motion.rigid_body_properties.angular_velocity (Parameter) (similarity: 98.31%)
-   <solver_session>.setup.dynamic_mesh.dynamic_zones["<name>"].motion.rigid_body_properties.cg_velocity (Parameter) (similarity: 98.31%)
-   <solver_session>.setup.dynamic_mesh.options.in_cylinder.crank_shaft_speed (Parameter) (similarity: 98.31%)
-   <solver_session>.setup.general.solver.velocity_formulation (Parameter) (similarity: 98.31%)
-   <solver_session>.setup.materials.fluid["<name>"].premix_laminar_speed (Object) (similarity: 98.31%)
-   <solver_session>.setup.materials.fluid["<name>"].speed_of_sound (Object) (similarity: 98.31%)
-   <solver_session>.setup.materials.fluid["<name>"].velocity_accom_coefficient (Object) (similarity: 98.31%)
-   <solver_session>.setup.materials.mixture["<name>"].premix_laminar_speed (Object) (similarity: 98.31%)
-   ...
+   ...  # 20+ more matches, ranked by similarity
    >>>
    >>> # Semantic search within a specific API object
    >>> pyfluent.search("load", api_path="<solver_session>.parallel.partition.set")

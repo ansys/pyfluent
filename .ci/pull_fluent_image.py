@@ -7,7 +7,7 @@ import subprocess
 import time
 
 from ansys.fluent.core import config
-from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
+from ansys.fluent.core.execution.docker.utils import get_ghcr_fluent_image_name
 
 MAX_RETRIES = 5
 BASE_DELAY = 1.0  # seconds

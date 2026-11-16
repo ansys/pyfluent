@@ -9,6 +9,7 @@ PyFluent documentation |version|
    user_guide/user_guide_contents
    api/api_contents
    examples/index
+   deprecated_apis
    contributing/contributing_contents
    changelog
 
@@ -18,6 +19,13 @@ Welcome to PyFluent
 PyFluent is your gateway to harnessing the power of Ansys Fluent through
 Python. It enables engineers and developers to automate, customize, and
 streamline CFD workflows using the flexibility of Python.
+
+
+.. important::
+   `fluent.docs.pyansys.com <https://fluent.docs.pyansys.com/version/stable/>`_ is the only
+   maintained and up-to-date source for PyFluent documentation.
+   Other resources, including cheat sheets, handouts, and pages on other websites,
+   may be outdated or incorrect, so disregard them where they conflict with it.
 
 
 Why use PyFluent?
@@ -39,11 +47,15 @@ extraction.
 
 Compatibility
 -------------
-PyFluent is compatible with the full set of Fluent versions officially supported at its release date.
+Each PyFluent release supports the Fluent versions that Ansys officially
+supports at the time of that release.
+
+.. warning::
+   PyFluent does not support Fluent Pro licenses.
 
 .. note::
-   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
-   These versions are no longer supported in the current PyFluent releases.
+   PyFluent 0.37 is the last release that supports Fluent versions earlier
+   than 2024 R2. Later PyFluent releases do not support those versions.
 
 
 Getting started

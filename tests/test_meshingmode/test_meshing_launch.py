@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,7 +31,6 @@ from ansys.fluent.core.examples.downloads import download_file
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
     assert pure_meshing_session.is_active()
@@ -101,7 +101,6 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
 
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     meshing = new_meshing_session_wo_exit
     assert meshing._is_server_healthy()
@@ -109,7 +108,9 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     capsys.readouterr()
     help(meshing)
     captured = capsys.readouterr()
-    assert "Encapsulates a Fluent meshing session." in captured.out
+    assert (
+        "Fluent meshing session with the ability to switch to a solver." in captured.out
+    )
     solver = meshing.switch_to_solver()
     assert meshing.is_active() is False
     for attr in ("tui", "meshing", "workflow", "watertight"):
@@ -126,7 +127,6 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
 
 
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
 
     def on_case_loaded(session, event_info):
@@ -161,7 +161,6 @@ def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
 
 
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_meshing_no_foreign_objects(new_meshing_session):
     meshing = new_meshing_session
     with pytest.raises(AttributeError):
@@ -182,12 +181,12 @@ def test_fake_session():
 
         def __getattribute__(self, item: str):
             if item == "_switched":
-                return super(fake_session, self).__getattribute__(item)
+                return super().__getattribute__(item)
 
             if self._switched:
                 return None
 
-            return super(fake_session, self).__getattribute__(item)
+            return super().__getattribute__(item)
 
         def foo(self):
             return 42

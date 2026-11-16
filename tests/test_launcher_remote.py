@@ -1,5 +1,7 @@
 ﻿# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
 # SPDX-License-Identifier: MIT
 #
 #
@@ -39,15 +41,15 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import config, examples
-from ansys.fluent.core.fluent_connection import (
+from ansys.fluent.core.connectivity.file_transfer_service import PimFileTransferService
+from ansys.fluent.core.connectivity.fluent_connection import (
     FluentConnection,
     UnsupportedRemoteFluentInstance,
 )
-from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
+from ansys.fluent.core.execution.launcher import launcher
+from ansys.fluent.core.execution.session.session import BaseSession
+from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+from ansys.fluent.core.solver.session.solver import Solver
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
@@ -134,9 +136,9 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
             remote_instance=mock_instance,
             cleanup_on_exit=False,
         )
-        session = BaseSession(
+        session = BaseSession._create_instance(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
         )
 
         file_transfer_service = PimFileTransferService(pim_instance=mock_instance)
@@ -245,8 +247,6 @@ def test_rename_downloaded_file(ext, a, b, c, d):
         shutil.rmtree(dir_path, ignore_errors=True)
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_file_purpose_on_remote_instance(
     monkeypatch, new_solver_session, new_meshing_session
 ):
@@ -256,7 +256,7 @@ def test_file_purpose_on_remote_instance(
 
     solver_session = Solver(
         fluent_connection=solver._fluent_connection,
-        scheme_eval=solver._fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=solver._fluent_connection.scheme_eval,
         file_transfer_service=file_service,
     )
 
@@ -283,7 +283,7 @@ def test_file_purpose_on_remote_instance(
 
     meshing_session = PureMeshing(
         fluent_connection=meshing._fluent_connection,
-        scheme_eval=meshing._fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=meshing._fluent_connection.scheme_eval,
         file_transfer_service=file_service,
     )
 

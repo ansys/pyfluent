@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,11 +25,24 @@ from pathlib import Path
 
 import pytest
 
+from ansys.api.fluent.v0 import events_pb2 as events_pb2_v0
+from ansys.api.fluent.v1 import events_pb2 as events_pb2_v1
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import MeshingEvent, SolverEvent, examples
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core import (
+    MeshingEvent,
+    ProgressUpdatedEventInfo,
+    SolverEvent,
+    examples,
+)
+from ansys.fluent.core._grpc_services.events_service import (
+    EventsService as EventsServiceV1,
+)
+from ansys.fluent.core._grpc_services.events_service_v0 import (
+    EventsService as EventsServiceV0,
+)
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:
@@ -124,7 +138,6 @@ def test_receive_meshing_events_on_case_loaded(new_meshing_session) -> None:
     # assert on_case_loaded.loaded
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_iteration_ended_sync_event(static_mixer_case_session):
     solver = static_mixer_case_session
     solver.settings.solution.initialization.hybrid_initialize()
@@ -143,7 +156,6 @@ def test_iteration_ended_sync_event(static_mixer_case_session):
     assert count == 10
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_multiple_register_callback_event(static_mixer_case_session, caplog):
     solver = static_mixer_case_session
     solver.settings.solution.initialization.hybrid_initialize()
@@ -151,7 +163,7 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
     iteration_index = set()
 
     def cb(session, event_info):
-        nonlocal event_index, iteration_index
+        nonlocal event_index, iteration_index  # noqa: F824
         event_index.update(event_info.index)
         iteration_index.update(session.scheme.eval("(get-current-iteration)"))
 
@@ -206,7 +218,6 @@ def test_iteration_ended_sync_event_multiple_connections():
     assert solver2_count == 3
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_timestep_ended_sync_event(static_mixer_case_session):
     solver = static_mixer_case_session
     solver.settings.setup.general.solver.time = "unsteady-2nd-order"
@@ -230,7 +241,6 @@ def test_timestep_ended_sync_event(static_mixer_case_session):
     assert count == 10
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_sync_event_exception_in_callback(static_mixer_case_session, caplog):
     solver = static_mixer_case_session
     solver.settings.solution.initialization.hybrid_initialize()
@@ -265,3 +275,37 @@ def test_sync_event_exception_in_callback(static_mixer_case_session, caplog):
         )
         == 0
     )
+
+
+@pytest.mark.parametrize(
+    ("response_cls", "service_cls", "event_field", "percentage_field"),
+    [
+        (
+            events_pb2_v0.BeginStreamingResponse,
+            EventsServiceV0,
+            "progressevent",
+            "percentComplete",
+        ),
+        pytest.param(
+            events_pb2_v1.BeginStreamingResponse,
+            EventsServiceV1,
+            "progress_event",
+            "percent_complete",
+            marks=pytest.mark.fluent_version(">=27.1"),
+        ),
+    ],
+    ids=("v0", "v1"),
+)
+def test_progress_event_preserves_proto_field_order_when_message_is_empty(
+    response_cls, service_cls, event_field, percentage_field
+):
+    response = response_cls()
+    setattr(getattr(response, event_field), percentage_field, 9)
+
+    service = object.__new__(service_cls)
+    event_info = service._construct_event_info(
+        response, SolverEvent.PROGRESS_UPDATED, ProgressUpdatedEventInfo
+    )
+
+    assert event_info.message == ""
+    assert event_info.percentage == 9

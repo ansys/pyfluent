@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,9 +31,7 @@ from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 from util.solver import get_name_info
 
 
-@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.settings_only
-@pytest.mark.codegen_required
 def test_boundaries_elbow(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
     solver_session.setup.models.energy.enabled = True

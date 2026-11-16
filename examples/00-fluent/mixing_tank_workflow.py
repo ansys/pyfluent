@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,6 +26,7 @@
 Mixing Tank Workflow
 -------------------------------------------
 """
+
 #############################################################################################################
 # Overview
 # ===========================================================================================================
@@ -192,7 +188,7 @@ geom_view.front_faces_transparent = "disable"
 #    :align: center
 #    :scale: 60%
 #    :alt: Mixing Tank Mesh
-#############################################################################################################
+#
 # Define Constants
 # ===========================================================================================================
 g = 9.81  # m/s^2
@@ -451,7 +447,7 @@ solver_session.settings.file.write(
 #############################################################################################################
 # Close the session
 # ===========================================================================================================
-session.exit()
+solver_session.exit()
 
 
 # sphinx_gallery_thumbnail_path = '_static/mixing_tank_velocity_contour.png'

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +34,7 @@ from ansys.fluent.core import (
     VectorFieldDataRequest,
     examples,
 )
-from ansys.fluent.core.file_session import (
+from ansys.fluent.core.execution.session.file import (
     FileSession,
     InvalidFieldName,
     InvalidMultiPhaseFieldName,
@@ -323,7 +324,7 @@ def test_batch_request_single_phase_merges_multiple_fields_per_surface():
 
     scalar_field_tag = (
         ("type", "scalar-field"),
-        ("dataLocation", 1),
+        ("dataLocation", 0),
         ("boundaryValues", False),
     )
     assert set(data()[scalar_field_tag][5]) == {"SV_T", "SV_P"}
@@ -456,7 +457,9 @@ def test_error_handling_multi_phase():
 
     batch_1 = field_data.new_batch()
     with pytest.raises(InvalidMultiPhaseFieldName):
-        batch_1.add_requests(ScalarFieldDataRequest("SV_WALL_YPLUS", surfaces=[29, 30]))
+        batch_1.add_requests(
+            ScalarFieldDataRequest(field_name="SV_WALL_YPLUS", surfaces=[29, 30])
+        )
 
     with pytest.raises(InvalidMultiPhaseFieldName):
         field_data.get_field_data(
@@ -710,7 +713,7 @@ def test_batch_request_single_phase_deprecated():
     # Scalar Field Data
     scalar_field_tag = (
         ("type", "scalar-field"),
-        ("dataLocation", 1),
+        ("dataLocation", 0),
         ("boundaryValues", False),
     )
     scalar_data = data()[scalar_field_tag]
@@ -760,7 +763,7 @@ def test_batch_request_multi_phase_deprecated():
     # Scalar Field Data
     scalar_field_tag = (
         ("type", "scalar-field"),
-        ("dataLocation", 1),
+        ("dataLocation", 0),
         ("boundaryValues", False),
     )
 

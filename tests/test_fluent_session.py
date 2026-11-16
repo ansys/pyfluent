@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,14 +29,14 @@ import time
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import (
+from ansys.fluent.core.connectivity.fluent_connection import (
     WaitTypeError,
     _pid_exists,
     get_container,
 )
-from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
+from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 from docker.models.containers import Container
 
@@ -175,7 +176,7 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.is_active(),
+        session1.is_active,
         5.0,
         expected="truthy",
     )
@@ -201,7 +202,7 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.is_active(),
+        session1.is_active,
         5.0,
         expected="falsy",
     )
@@ -248,7 +249,6 @@ def test_fluent_freeze_kill(
     assert session.wait_process_finished(wait=5)
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_interrupt(static_mixer_case_session):
     solver = static_mixer_case_session
     solver.setup.general.solver.time = "unsteady-2nd-order"
@@ -320,7 +320,7 @@ def test_wait_process_finished():
     assert not meshing_session.is_active()
     with pytest.raises(AttributeError):
         meshing_session.tui
-    assert meshing_session.wait_process_finished(wait=5)
+    assert meshing_session.wait_process_finished(wait=20)
 
     solver_session = pyfluent.launch_fluent(**grpc_kwds)
     assert len(dir(solver_session)) > 2
@@ -336,4 +336,20 @@ def test_wait_process_finished():
     assert not solver_session.is_active()
     with pytest.raises(AttributeError):
         solver_session.settings
-    assert solver_session.wait_process_finished(wait=5)
+    assert solver_session.wait_process_finished(wait=20)
+
+
+@pytest.mark.standalone
+def test_wait_process_finished_from_standalone_launcher():
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    session = pyfluent.launch_fluent(**grpc_kwds)
+    assert session.is_active()
+    session.exit()
+    assert session.wait_process_finished(wait=120)
+    assert not session.is_active()
+
+    session_1 = pyfluent.Solver.from_install(**grpc_kwds)
+    assert session_1.is_active()
+    session_1.exit()
+    assert session_1.wait_process_finished(wait=120)
+    assert not session_1.is_active()

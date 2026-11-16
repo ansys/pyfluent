@@ -1,5 +1,5 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
+requires = ["flit_core >=3.2,<5"]
 build-backend = "flit_core.buildapi"
 
 [project]
@@ -7,7 +7,7 @@ build-backend = "flit_core.buildapi"
 name = "ansys-fluent-core"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.12,<3.15"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
@@ -18,11 +18,11 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "ansys-api-fluent>=0.3.37",
+    "ansys-api-fluent>=0.7.0",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
-    "ansys-units~=0.11.0",
+    "ansys-units>=0.16,<0.17",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",
@@ -30,10 +30,11 @@ dependencies = [
     "grpcio-health-checking>=1.30.0",
     "grpcio-status>=1.26.0",
     "grpcio-reflection>=1.30.0",
-    "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
-    "pyyaml>=6.0"
+    "pandas-stubs>=1.1.0,<3.0.0",
+    "pyyaml>=6.0",
+    "typing-extensions>=4.12",
 ]
 dynamic = ["version"]
 
@@ -44,38 +45,73 @@ include = ["src/ansys/fluent/core/generated/"]
 reader = ["h5py>=3.15.1"]
 ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
+search = ["nltk>=3.10.3"]
+# gRPC transport. Componentization (#4618) is making gRPC optional so that the
+# generic ``ansys.framework`` platform layer imports without it. These
+# packages are still part of the core requirements for backward compatibility;
+# the ``grpc`` extra pins the target install form (``ansys-fluent-core[grpc]``)
+# ahead of their removal from the core dependencies in a later phase.
+grpc = [
+    "ansys-api-fluent>=0.7.0",
+    "grpcio>=1.30.0",
+    "grpcio-health-checking>=1.30.0",
+    "grpcio-status>=1.26.0",
+    "grpcio-reflection>=1.30.0",
+]
 tests = [
-    "pytest==9.0.2",
+    "pytest==9.2.0",
     "pytest-cov==7.1.0",
-    "pytest-mock==3.15.1",
+    "pytest-mock==3.17.0",
     "pytest-xdist==3.8.0",
-    "pyfakefs==6.1.6"
+    "pyfakefs==6.2.0",
+    "docker==7.1.0",
+    "numpy==2.5.0",
 ]
 docs = [
     "Sphinx==8.1.3",
     "jupyter_sphinx==0.5.3",
-    "numpydoc==1.10.0",
-    "matplotlib==3.10.8",
-    "ansys-sphinx-theme==1.7.2",
+    "numpydoc==1.11.0",
+    "matplotlib==3.10.9",
+    "ansys-sphinx-theme==1.9.0",
     "pypandoc==1.17",
     "pytest-sphinx==0.7.1",
     "sphinx-autobuild==2024.10.3",
     "sphinx-autodoc-typehints==3.0.1",
     "sphinx-copybutton==0.5.2",
-    "sphinx-gallery==0.20.0",
+    "sphinx-gallery==0.22.1",
     "sphinx-notfound-page==1.1.0",
     "sphinxcontrib-websupport==2.0.0",
     "sphinx_design==0.6.1",
     "sphinxemoji==0.3.2",
     "sphinx-toggleprompt==0.6.0",
-    "autodocsumm==0.2.14",
-    "beautifulsoup4==4.14.3",
+    "autodocsumm==0.2.15",
+    "beautifulsoup4==4.15.0",
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.9.36",
+    "quarto-cli==1.10.19",
     "pdf2image==1.17.0",
-    "seaborn>=0.13.2"
+    "seaborn>=0.13.2",
+    "docker==7.1.0",
+    "numpy==2.5.0",
+]
+ci_types = [
+    "basedpyright==1.40.2",
+    "ansys-fluent-visualization",
+    "h5py",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pyfakefs",
+    "tensorflow",
+    "matplotlib",
+    "plotly",
+    "scikit-learn",
+    "seaborn",
+    "xgboost",
+    "imageio",
+    "tomli",
 ]
 
 [tool.flit.module]
@@ -98,15 +134,13 @@ addopts = """
 markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",
     "nightly: Tests that run under nightly CI",
-    "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
-    "standalone: Tests that cannot be run within container"
+    "standalone: Tests that cannot be run within container",
+    "rest_server: Tests that require a live Fluent web server"
 ]
-
 
 [tool.black]
 extend-exclude = "/(src/ansys/fluent/core/meshing/tui*|src/ansys/fluent/core/solver/tui*|src/ansys/fluent/core/solver/settings*|src/ansys/fluent/core/datamodel*)/"
-
 
 [tool.isort]
 profile = "black"
@@ -119,7 +153,6 @@ skip_glob = [
 filter_files = "true"
 known_first_party = ["ansys"]
 
-
 [tool.codespell]
 skip = """
     *.xml,
@@ -130,7 +163,6 @@ skip = """
     devel/field_level_help/field_level_help.csv
     """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
-
 
 [tool.docformatter]
 in-place = "true"
@@ -149,12 +181,10 @@ non-cap = [
     "executeCommand",
     "createCommandArguments",
     "deleteCommandArguments",
-    "getSpecs",
     "getStaticInfo",
     "subscribeEvents",
     "unsubscribeEvents"
 ]
-
 
 [tool.coverage.run]
 source = ["ansys/fluent"]
@@ -175,13 +205,13 @@ title_format = "`{version} <https://github.com/ansys/pyfluent/releases/tag/v{ver
 issue_format = "`#{issue} <https://github.com/ansys/pyfluent/pull/{issue}>`_"
 
 [[tool.towncrier.type]]
-directory = "added"
-name = "Added"
+directory = "breaking"
+name = "Breaking"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "changed"
-name = "Changed"
+directory = "added"
+name = "Added"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -190,17 +220,13 @@ name = "Fixed"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "dependencies"
-name = "Dependencies"
+directory = "documentation"
+name = "Documentation"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "miscellaneous"
-name = "Miscellaneous"
-showcontent = true
-[[tool.towncrier.type]]
-directory = "documentation"
-name = "Documentation"
+directory = "dependencies"
+name = "Dependencies"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -209,8 +235,18 @@ name = "Maintenance"
 showcontent = true
 
 [[tool.towncrier.type]]
+directory = "miscellaneous"
+name = "Miscellaneous"
+showcontent = true
+
+[[tool.towncrier.type]]
 directory = "test"
 name = "Test"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
 showcontent = true
 
 [tool.bandit]
@@ -222,5 +258,35 @@ skips = [
     "B602",
     "B603",
     "B604",
-    "B607"
-]
+    "B607",
+    ]
+
+[tool.basedpyright]
+reportAny = false
+reportUnknownMemberType = false
+reportExplicitAny = false
+reportPrivateUsage = false
+reportUnusedCallResult = false
+reportUnannotatedClassAttribute = false
+ignore = ["doc", "src/ansys/fluent/core/generated"]
+baselineFile = ".ci/basedpyright.json"
+
+# Componentization architecture rules (EPIC #4618). Run locally with
+# ``pip install import-linter`` then ``lint-imports``. These contracts run in
+# report-only mode in CI during Phase 0 and become blocking in the hardening
+# phase. See doc/source/contributing/componentization.rst.
+[tool.importlinter]
+root_packages = ["ansys.fluent.core", "ansys.framework"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Platform layer is backend-agnostic (ansys.framework must not import grpc / ansys.api / ansys.fluent)"
+type = "forbidden"
+source_modules = ["ansys.framework"]
+forbidden_modules = ["grpc", "ansys.api", "ansys.fluent"]
+
+[[tool.importlinter.contracts]]
+name = "Service contracts must not depend on the object framework (flobject)"
+type = "forbidden"
+source_modules = ["ansys.fluent.core.services"]
+forbidden_modules = ["ansys.fluent.core.solver.flobject"]

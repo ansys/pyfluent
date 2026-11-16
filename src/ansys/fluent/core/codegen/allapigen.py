@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,8 +33,8 @@ from ansys.fluent.core.codegen import (  # noqa: F401
     settingsgen,
     tuigen,
 )
+from ansys.fluent.core.codegen.api_tree import get_api_tree_file_name
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.search import get_api_tree_file_name
 
 
 def _update_first_level(d, u):

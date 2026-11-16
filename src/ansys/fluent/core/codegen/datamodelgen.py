@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,15 +29,15 @@ import os
 from pathlib import Path
 import shutil
 import string
-from typing import Any, Dict
+from typing import Any
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen import StaticInfoType, get_codegen_datamodel_dir
 from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyArgumentsSingletonSubItem,
     arg_class_by_type,
 )
@@ -130,14 +131,14 @@ def _write_command_query_stub(name: str, info: Any, f: FileIO):
 
 
 def _build_singleton_docstring(name: str):
-    return f"Singleton {name}."
+    return f"{name} group."
 
 
 def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _get_api_help_text(info: Dict[str, Any], default: str) -> str:
+def _get_api_help_text(info: dict[str, Any], default: str) -> str:
     """Prefer attrs.api_help_text, else helpstring, else default."""
     # Newer servers (Ansys Fluent 2026 R1 and later) may attach a richer help payload under 'attrs' -> 'api_help_text'.
     # Older entries may only have a plain 'helpstring'. If neither exists, use 'default'.
@@ -173,9 +174,9 @@ def _build_command_query_docstring(
                 doc.write(f"{indent}{line.lstrip(' ')}.\n")
     else:
         doc.write(
-            f"{indent}Command {name}.\n\n"
+            f"{indent}{name} command.\n\n"
             if is_command
-            else f"{indent}Query {name}.\n\n"
+            else f"{indent}{name} query.\n\n"
         )
     if info.get("args"):
         doc.write(f"\n{indent}Parameters\n")
@@ -232,10 +233,13 @@ class DataModelStaticInfo:
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (
-            pyfluent.config.codegen_outdir / f"datamodel_{version}"
+        datamodel_dir = get_codegen_datamodel_dir(
+            pyfluent.codegen.get_codegen_version_dir(
+                version, pyfluent.config.codegen_outdir
+            ),
+            datamodel_file_name_map[rules_save_name],
         ).resolve()
-        datamodel_dir.mkdir(exist_ok=True)
+        datamodel_dir.mkdir(parents=True, exist_ok=True)
         self.file_name = (
             datamodel_dir / f"{datamodel_file_name_map[rules_save_name]}.py"
         ).resolve()
@@ -252,7 +256,7 @@ class DataModelGenerator:
     def __init__(self, version, static_infos: dict, verbose: bool = False):
         self.version = version
         self._server_static_infos = static_infos
-        self._static_info: Dict[str, DataModelStaticInfo] = {}
+        self._static_info: dict[str, DataModelStaticInfo] = {}
         self._verbose = verbose
         if StaticInfoType.DATAMODEL_WORKFLOW in static_infos:
             self._static_info["workflow"] = DataModelStaticInfo(
@@ -400,26 +404,27 @@ class DataModelGenerator:
                         f, parameter_info | {"name": name}, f"{indent}    "
                     )
 
-    def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
-        api_tree = {}
-        # preferences contains a deprecated object Meshing Workflow (with a space)
-        # which migrates to MeshingWorkflow automatically. Simplest thing to do is
-        # filter out invalid names.
-        if not name.isidentifier():
-            return api_tree
-        indent = " " * level * 4
+    def _write_class_header(
+        self, f: FileIO, name: str, indent: str, info: Any, base_class: str = "PyMenu"
+    ):
         singleton_doc = _get_api_help_text(info, _build_singleton_docstring(name))
-        f.write(f"{indent}class {name}(PyMenu):\n")
+        f.write(f"{indent}class {name}({base_class}):\n")
         f.write(f'{indent}    """\n')
         for line in singleton_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n')
+
+    def _write_init_body(
+        self,
+        f: FileIO,
+        indent: str,
+        named_objects: list,
+        singletons: list,
+        parameters: list,
+        commands: list,
+        queries: list,
+    ):
         f.write(f"{indent}    def __init__(self, service, rules, path):\n")
-        named_objects = sorted(info.get("namedobjects", []))
-        singletons = sorted(info.get("singletons", []))
-        parameters = sorted(info.get("parameters", []))
-        commands = sorted(info.get("commands", []))
-        queries = sorted(info.get("queries", []))
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
@@ -448,17 +453,37 @@ class DataModelGenerator:
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
             )
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
+
+    def _write_named_object_classes(
+        self,
+        f: FileIO,
+        indent: str,
+        info: Any,
+        named_objects: list,
+        api_tree: dict,
+        level: int,
+    ):
         for k in named_objects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        .\n")
             f.write(f'{indent}        """\n')
             api_tree[f"{k}:<name>"] = self._write_static_info(
-                f"_{k}", info["namedobjects"][k], f, level + 2
+                f"_{k}", info["namedobjects"][k], f, level + 2, is_named_object=True
             )
             # Specify the concrete named object type for __getitem__
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
+
+    def _write_singleton_classes(
+        self,
+        f: FileIO,
+        indent: str,
+        info: Any,
+        singletons: list,
+        api_tree: dict,
+        level: int,
+    ):
         for k in singletons:
             if k.isidentifier():
                 # print("included", k)
@@ -468,6 +493,10 @@ class DataModelGenerator:
             else:
                 # print("\t\texcluded", k)
                 pass
+
+    def _write_parameter_classes(
+        self, f: FileIO, indent: str, info: Any, parameters: list, api_tree: dict
+    ):
         for parameter_name in parameters:
             parameter_info = info["parameters"][parameter_name]
             parameter_type = parameter_info["type"]
@@ -489,34 +518,46 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[parameter_name] = "Parameter"
-        if "meshing_utilities" in f.name:
-            stub_file = self._static_info["MeshingUtilities"].stub_file
-            stub_file.unlink(missing_ok=True)
-            with open(stub_file, "w", encoding="utf8") as file:
-                file.write("#\n")
-                file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-                file.write("#\n")
-                file.write("# pylint: disable=line-too-long\n\n")
-                file.write(
-                    "from ansys.fluent.core.services.datamodel_se import PyMenu\n"
-                )
-                file.write("from typing import Any\n")
-                file.write("\n\n")
-                file.write("class Root(PyMenu):\n")
-                for k in commands:
-                    _write_command_query_stub(
-                        k,
-                        info["commands"][k]["commandinfo"],
-                        file,
-                    )
-                for k in queries:
-                    _write_command_query_stub(
-                        k,
-                        info["queries"][k]["queryinfo"],
-                        file,
-                    )
 
-        def _write_static_command_and_query_info(
+    def _write_meshing_utilities_stub(
+        self, f: FileIO, info: Any, commands: list, queries: list
+    ):
+        if "meshing_utilities" not in f.name:
+            return
+        stub_file = self._static_info["MeshingUtilities"].stub_file
+        stub_file.unlink(missing_ok=True)
+        with open(stub_file, "w", encoding="utf8") as file:
+            file.write("#\n")
+            file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+            file.write("#\n")
+            file.write("# pylint: disable=line-too-long\n\n")
+            file.write("from ansys.fluent.core.services.object_model import PyMenu\n")
+            file.write("from typing import Any\n")
+            file.write("\n\n")
+            file.write("class Root(PyMenu):\n")
+            for k in commands:
+                _write_command_query_stub(
+                    k,
+                    info["commands"][k]["commandinfo"],
+                    file,
+                )
+            for k in queries:
+                _write_command_query_stub(
+                    k,
+                    info["queries"][k]["queryinfo"],
+                    file,
+                )
+
+    def _write_command_query_classes(
+        self,
+        f: FileIO,
+        indent: str,
+        info: Any,
+        commands: list,
+        queries: list,
+        api_tree: dict,
+    ):
+        def _write_action_classes(
             actions, class_name: str, st_info_key: tuple[str], is_command: bool
         ):
             for k in actions:
@@ -557,13 +598,45 @@ class DataModelGenerator:
                 f.write(f"{indent}                return self._{k}Arguments(*args)\n\n")
                 api_tree[k] = st_info_key[2]
 
-        _write_static_command_and_query_info(
+        _write_action_classes(
             commands, "PyCommand", ("commands", "commandinfo", "Command"), True
         )
-        _write_static_command_and_query_info(
+        _write_action_classes(
             queries, "PyQuery", ("queries", "queryinfo", "Query"), False
         )
 
+    def _write_static_info(
+        self,
+        name: str,
+        info: Any,
+        f: FileIO,
+        level: int = 0,
+        is_named_object: bool = False,
+    ):
+        api_tree = {}
+        # preferences contains a deprecated object Meshing Workflow (with a space)
+        # which migrates to MeshingWorkflow automatically. Simplest thing to do is
+        # filter out invalid names.
+        if not name.isidentifier():
+            return api_tree
+        indent = " " * level * 4
+        named_objects = sorted(info.get("namedobjects", []))
+        singletons = sorted(info.get("singletons", []))
+        parameters = sorted(info.get("parameters", []))
+        commands = sorted(info.get("commands", []))
+        queries = sorted(info.get("queries", []))
+        base_class = "PyNamedObject" if is_named_object else "PyMenu"
+        self._write_class_header(f, name, indent, info, base_class)
+        self._write_init_body(
+            f, indent, named_objects, singletons, parameters, commands, queries
+        )
+        self._write_named_object_classes(
+            f, indent, info, named_objects, api_tree, level
+        )
+        self._write_singleton_classes(f, indent, info, singletons, api_tree, level)
+        self._write_parameter_classes(f, indent, info, parameters, api_tree)
+        self._write_meshing_utilities_stub(f, info, commands, queries)
+        self._write_command_query_classes(f, indent, info, commands, queries, api_tree)
         return api_tree
 
     def write_static_info(self) -> None:
@@ -579,8 +652,9 @@ class DataModelGenerator:
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
                 f.write("#\n")
                 f.write("# pylint: disable=line-too-long\n\n")
-                f.write("from ansys.fluent.core.services.datamodel_se import (\n")
+                f.write("from ansys.fluent.core.services.object_model import (\n")
                 f.write("    PyMenu,\n")
+                f.write("    PyNamedObject,\n")
                 f.write("    PyParameter,\n")
                 f.write("    PyTextual,\n")
                 f.write("    PyNumerical,\n")
@@ -617,6 +691,118 @@ class DataModelGenerator:
 def generate(version, static_infos: dict, verbose: bool = False):
     """Generate datamodel API classes."""
     return DataModelGenerator(version, static_infos, verbose).write_static_info()
+
+
+# PyFluent-native meshing workflow interface wrappers used to enumerate tasks per template.
+# The workflow wrappers are imported lazily inside the codegen entry point so
+# importing this module does not pull in a session dependency.
+_ENHANCED_MESHING_WORKFLOWS = (
+    ("WatertightMeshing", "WatertightGeometry"),
+    ("FaultTolerantMeshing", "FaultTolerantMeshing"),
+    ("TwoDimensionalMeshing", "TwoDMeshing"),
+    ("TopologyBasedMeshing", "TopologyBasedMeshing"),
+)
+
+
+def _write_workflow_task_stub(
+    stub_file: Path,
+    module_docstring: str,
+    tasks_by_workflow: dict[str, list[str]],
+    task_help: dict[str, str] | None = None,
+) -> None:
+    """Write a ``.py`` stub with one task-mixin class per workflow wrapper."""
+    task_help = task_help or {}
+    stub_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(stub_file, "w", encoding="utf8") as f:
+        f.write("#\n")
+        f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+        f.write("#\n")
+        f.write(f'"""{module_docstring}"""\n\n')
+        f.write("from __future__ import annotations\n\n")
+        f.write("from ansys.fluent.core.workflow import TaskObject\n\n\n")
+        # Mixin classes exposing each task as a typed attribute. These are
+        # meant to be inherited under ``TYPE_CHECKING`` only; they have no
+        # runtime behavior.
+        for alias_prefix, tasks in tasks_by_workflow.items():
+            mixin = f"{alias_prefix}Tasks"
+            f.write(f"class {mixin}:\n")
+            f.write(
+                f'    """Static typed accessors for tasks in the '
+                f'{alias_prefix} workflow."""\n'
+            )
+            if tasks:
+                for name in tasks:
+                    if not name.isidentifier():
+                        continue
+                    f.write(f"    {name}: TaskObject\n")
+                    help_text = task_help.get(name)
+                    if help_text:
+                        f.write(f'    """{help_text.strip()}"""\n')
+            else:
+                f.write("    pass\n")
+            f.write("\n\n")
+
+
+def _generate_workflow_task_stubs(
+    meshing,
+    version: str,
+    meshing_workflow_static_info: dict | None = None,
+) -> None:
+    """Emit a ``.pyi`` stub enumerating TaskObject types per workflow.
+
+    Only the PyFluent-native meshing workflow interface (Fluent 27R1+) is covered.
+    This stub is supplementary and does not modify any generated ``.py`` files.
+    """
+    if FluentVersion(version) < FluentVersion.v271:
+        return
+
+    from ansys.fluent.core import meshing as meshing_module
+
+    # Enables the 'TopologyBasedMeshing' workflow.
+    meshing.enable_beta_features()
+
+    # Look up api_help_text per task once from the meshing_workflow static info.
+    task_help: dict[str, str] = {}
+    namedobjects = (
+        (meshing_workflow_static_info or {})
+        .get("singletons", {})
+        .get("application", {})
+        .get("commands", {})
+    )
+    for task_name, task_info in namedobjects.items():
+        help_text = _get_api_help_text(task_info, "")
+        if help_text:
+            task_help[task_name] = help_text
+
+    # Pre-seed every workflow so the stub is always written, even if some
+    # (or all) workflows below fail to enumerate tasks.
+    tasks_by_workflow: dict[str, list[str]] = {
+        alias_prefix: [] for _, alias_prefix in _ENHANCED_MESHING_WORKFLOWS
+    }
+    for cls_name, alias_prefix in _ENHANCED_MESHING_WORKFLOWS:
+        wf_cls = getattr(meshing_module, cls_name, None)
+        if wf_cls is None:
+            print(f"Warning: {cls_name} not available; skipping stub entry.")
+            continue
+        try:
+            workflow = wf_cls(session=meshing)
+            tasks_by_workflow[alias_prefix] = sorted(set(workflow.task_names()))
+        except Exception as exc:
+            print(f"Warning: could not enumerate tasks for {cls_name}: {exc}")
+
+    datamodel_dir = get_codegen_datamodel_dir(
+        pyfluent.codegen.get_codegen_version_dir(
+            version, pyfluent.config.codegen_outdir
+        ),
+        "meshing_workflow",
+    ).resolve()
+    _write_workflow_task_stub(
+        datamodel_dir / "meshing_workflow_tasks.pyi",
+        "TaskObject-type inventory per PyFluent-native meshing workflow interface (Fluent 27R1+).\n"
+        "Generated by codegen for IDE IntelliSense assistance only.\n",
+        tasks_by_workflow,
+        task_help,
+    )
 
 
 if __name__ == "__main__":
@@ -665,3 +851,8 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     generate(version, static_infos, args.verbose)
+    _generate_workflow_task_stubs(
+        meshing,
+        version,
+        static_infos.get(StaticInfoType.DATAMODEL_MESHING_WORKFLOW),
+    )

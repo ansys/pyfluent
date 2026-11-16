@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -148,7 +149,7 @@ workflow.TaskObject["Describe Geometry"].Execute()
 
 # %%
 # Update boundaries and region
-# ---------------------------
+# ----------------------------
 
 boundary_condition = {
     "BoundaryLabelList": ["inlet"],
@@ -298,7 +299,7 @@ report_plots["mass_flow_rate_out_rplot"] = {
 
 # %%
 # Steady-State Initialization and Mesh Adaptation
-# --------------
+# -----------------------------------------------
 
 solver.settings.file.write_case(file_name="nozzle_steady.cas.h5")
 

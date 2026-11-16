@@ -27,10 +27,10 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
 
 .. code-block:: python
 
-    from ansys.fluent.core import launch_fluent, examples
+    from ansys.fluent.core import Solver, examples, ScalarFieldDataRequest
     from ansys.units.variable_descriptor import VariableCatalog
 
-    solver_session = launch_fluent()
+    solver_session = Solver.from_install()
     case_path = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     solver_session.settings.file.read(file_type="case", file_name=case_path)
 
@@ -40,8 +40,8 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
     locations = ["hot-inlet"]
 
     # Access scalar field data
-    temp_data = solver_session.fields.field_data.get_scalar_field_data(
-        field_name=temperature, surfaces=locations
+    temp_data = solver_session.fields.field_data.get_field_data(
+        ScalarFieldDataRequest(field_name=temperature, surfaces=locations)
     )
     print(temp_data[locations[0]][0])  # value at hot-inlet
 
@@ -62,6 +62,7 @@ You can also use physical quantities in report definitions to improve clarity an
 
 .. code-block:: python
 
+    solver_session.settings.solution.report_definitions.surface["avg_temp"] = {}
     surface_report = solver_session.settings.solution.report_definitions.surface["avg_temp"]
     surface_report.report_type = "surface-areaavg"
     surface_report.field = temperature  # Note: using VariableCatalog, not a string

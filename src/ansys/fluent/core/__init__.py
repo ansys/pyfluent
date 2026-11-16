@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,68 +23,45 @@
 
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
-import os
-import pydoc
-import warnings
+
+def using(session):
+    """Make a session active for top-level settings within a ``with`` block.
+
+    This top-level function is retained for backward compatibility. The
+    implementation lives with the session base implementation.
+    """
+    from ansys.fluent.core.execution.session.session import using as _using
+
+    return _using(session)
+
 
 # isort: off
 
 # config must be initialized before logging setup.
-from ansys.fluent.core.module_config import config
+from ansys.fluent.core.module_config import *
 
 # Logging has to be imported before importing other PyFluent modules
-from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
+from ansys.fluent.core.diagnostics.logger import *
 
 # isort: on
 
-from ansys.fluent.core.field_data_interfaces import (  # noqa: F401
-    PathlinesFieldDataRequest,
-    ScalarFieldDataRequest,
-    SurfaceDataType,
-    SurfaceFieldDataRequest,
-    VectorFieldDataRequest,
-)
-from ansys.fluent.core.get_build_details import (  # noqa: F401
-    get_build_version,
-    get_build_version_string,
-)
-from ansys.fluent.core.launcher.launch_options import (  # noqa: F401
-    Dimension,
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
-    UIMode,
-)
-from ansys.fluent.core.launcher.launcher import (  # noqa: F401
-    connect_to_fluent,
-    launch_fluent,
-)
-from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
-from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
-    PyFluentDeprecationWarning,
-    PyFluentUserWarning,
-    warning,
-)
-from ansys.fluent.core.search import search  # noqa: F401
-from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
-from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
-from ansys.fluent.core.session_utilities import (  # noqa: F401
-    Meshing,
-    PrePost,
-    PureMeshing,
-    Solver,
-    SolverAero,
-    SolverIcing,
-)
-from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
-from ansys.fluent.core.streaming_services.events_streaming_v1 import *  # noqa: F401, F403
-from ansys.fluent.core.utils import fldoc
-from ansys.fluent.core.utils.context_managers import using  # noqa: F401
-from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
-from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
+from ansys.fluent.core.diagnostics.exceptions import *
+from ansys.fluent.core.diagnostics.search import *
+from ansys.fluent.core.execution.launcher.launch_options import *
+from ansys.fluent.core.execution.launcher.launcher import *
+from ansys.fluent.core.execution.session import *
+from ansys.fluent.core.execution.session.session import BaseSession
+from ansys.fluent.core.fields.field_data import *
+from ansys.fluent.core.meshing import *
+from ansys.fluent.core.offline.parametric_study import *
+from ansys.fluent.core.services.batch_ops import *
+from ansys.fluent.core.services.streaming_services.events_streaming import *
+from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
+from ansys.fluent.core.utils import *
+from ansys.fluent.core.utils.fluent_version import *
+from ansys.fluent.core.utils.setup_for_fluent import *
 
-__version__ = "0.39.dev0"
+__version__ = "0.45.dev0"
 
 _VERSION_INFO = None
 """
@@ -91,12 +69,49 @@ Global variable indicating the version info of the PyFluent package.
 Build timestamp and commit hash are added to this variable during packaging.
 """
 
-_THIS_DIRNAME = os.path.dirname(__file__)
-_README_FILE = os.path.normpath(os.path.join(_THIS_DIRNAME, "docs", "README.rst"))
+import os as _os  # noqa: E402
+import sys as _sys  # noqa: E402
+import warnings as _warnings  # noqa: E402
 
-if os.path.exists(_README_FILE):
+_THIS_DIRNAME = _os.path.dirname(__file__)
+_README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rst"))
+
+if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
+
+from ansys.fluent.core import offline as _file_reader
+from ansys.fluent.core.connectivity import fluent_connection as _fluent_connection
+from ansys.fluent.core.diagnostics import exceptions as _exceptions
+from ansys.fluent.core.diagnostics import journaling as _journaling
+from ansys.fluent.core.diagnostics import logger as _logger
+from ansys.fluent.core.diagnostics.search import search as _search
+from ansys.fluent.core.execution.session import file as _session_file
+from ansys.fluent.core.offline import parametric_study as _local_parametric_study
+
+_sys.modules["ansys.fluent.core.file_session"] = _session_file
+_sys.modules["ansys.fluent.core.fluent_connection"] = _fluent_connection
+_sys.modules["ansys.fluent.core.parametric"] = _local_parametric_study
+_sys.modules["ansys.fluent.core.pyfluent_warnings"] = _exceptions
+_sys.modules["ansys.fluent.core.filereader"] = _file_reader
+
+_sys.modules["ansys.fluent.core.logger"] = _logger
+_sys.modules["ansys.fluent.core.journaling"] = _journaling
+_sys.modules["ansys.fluent.core.exceptions"] = _exceptions
+_sys.modules["ansys.fluent.core.search"] = _search
+
+
+class Fluent(BaseSession):
+    """Fluent session management.
+
+    This class serves as the primary base class for both meshing and solver
+    sessions within PyFluent. It extends the core functionality
+    provided by the base session instance.
+
+    Attributes
+    ----------
+    Inherits all attributes from :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
+    """
 
 
 def version_info() -> str:
@@ -114,7 +129,11 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
+import pydoc as _pydoc  # noqa: E402
+
+from ansys.fluent.core.utils import fldoc as _fldoc  # noqa: E402
+
+_pydoc.text.docother = _fldoc.docother.__get__(_pydoc.text, _pydoc.TextDoc)
 
 
 _config_by_deprecated_name = {
@@ -146,14 +165,17 @@ _config_by_deprecated_name = {
     "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",  # nosec B105: Not a password
 }
 
+from typing import TYPE_CHECKING as _TYPE_CHECKING  # noqa: E402
 
-def __getattr__(name: str) -> str:
-    """Get the value of a deprecated configuration variable."""
-    if name in _config_by_deprecated_name:
-        config_name = _config_by_deprecated_name[name]
-        warnings.warn(
-            f"'{name}' is deprecated, use 'config.{config_name}' instead.",
-            category=PyFluentDeprecationWarning,
-        )
-        return getattr(config, config_name)
-    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+if not _TYPE_CHECKING:
+
+    def __getattr__(name: str) -> str:
+        """Get the value of a deprecated configuration variable."""
+        if name in _config_by_deprecated_name:
+            config_name = _config_by_deprecated_name[name]
+            _warnings.warn(
+                f"'{name}' is deprecated, use 'config.{config_name}' instead.",
+                category=PyFluentDeprecationWarning,
+            )
+            return getattr(config, config_name)
+        raise AttributeError(f"module '{__name__}' has no attribute '{name}'")

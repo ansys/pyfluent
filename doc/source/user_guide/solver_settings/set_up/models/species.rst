@@ -7,7 +7,7 @@ Setting up and querying the model
 .. code:: python
 
     >>> import ansys.fluent.core as pyfluent
-    >>> solver_session = pyfluent.launch_fluent()
+    >>> solver_session = pyfluent.Solver.from_install()
     >>> solver_session.settings.file.read_case(file_name=file_name)
     >>> species = pyfluent.solver.Species(settings_source=solver_session)
     >>> species.get_state()
@@ -38,12 +38,4 @@ Setting up and querying the model
     >>> species.model.material.get_state()
     'mixture-template'
     >>> species.model.material.allowed_values()
-    ['mixture-template', 'air-2species-nitrogen', 'air-5species-park93', 'air-11species-park93', 'mars-5species-mckenzie',
-     'mars-8species-park', 'mars-venus-16species-johnston', 'air-11species-gupta', 'acetylene-air', 'anthracite-volatiles-air',
-     'battery-venting-gas-mixture', 'benzene-air', 'calcium-carbonate-decomposition', 'carbon-monoxide-air', 'inert-mixture',
-     'coal-hv-volatiles-air', 'coal-lv-volatiles-air', 'coal-mv-volatiles-air', 'diesel-air', 'ethane-air', 'ethylene-air',
-     'ethyl-alcohol-air', 'fuel-oil-air', 'gasoil-air', 'titan-13species-gokcen', 'titan-21species-gokcen', 'hydrogen-air',
-     'hydrogen-peroxide-water-air', 'kerosene-air', 'lignite-volatiles-air', 'methane-air', 'methane-air-2step', 'methyl-alcohol-air',
-     'n-butane-air', 'n-heptane-air', 'n-hexane-air', 'n-octane-air', 'n-pentane-air', 'peat-volatiles-air', 'pem-mixture',
-     'propane-air', 'propane-air-2step', 'propylene-air', 'silane-hydrogen', 'silane-hydrogen-3-step', 'toluene-air', 'urea-water-air',
-     'urea-water-deposits-air-brack', 'wood-volatiles-air']
+    ['mixture-template', 'air-2species-nitrogen', 'air-5species-park93', ...]  # plus 40+ more predefined mixtures

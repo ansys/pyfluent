@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,13 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import string
 import time
 
 import pytest
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.parametrize(
     "error_code,raises",
     [
@@ -53,10 +52,3 @@ def test_custom_python_error_via_grpc(datamodel_api_version_new, new_solver_sess
     # This may need to be updated if the error type changes in the server
     with pytest.raises(RuntimeError, match="prefereces not found!"):
         solver._se_service.get_state("prefereces", "General")
-    translator = str.maketrans("", "", string.punctuation)
-    with pytest.raises(ValueError) as ex:
-        solver._se_service.get_specs("prefereces", "General")
-    assert (
-        ex.value.args[0].translate(translator)
-        == "Datamodel rules for prefereces not found"
-    )

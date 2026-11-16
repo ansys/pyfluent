@@ -1,14 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "ansys-fluent-visualization",
-#   "matplotlib",
-#   "pyvista",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -50,12 +42,19 @@ Conjugate Heat Transfer
 # * Use a convective thermal boundary condition to represent heat transfer.
 # * Examine and understand the relationship between flow and temperature.
 
-# sphinx_gallery_thumbnail_path = '_static/cht_xy_pressure.png'
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# ansys-fluent-visualization
+# matplotlib
+# pyvista
 
 ###################################
 # Import required libraries/modules
 # =================================
 
+# sphinx_gallery_thumbnail_path = '_static/cht_xy_pressure.png'
 import csv
 import os
 from pathlib import Path

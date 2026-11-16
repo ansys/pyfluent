@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -84,7 +85,7 @@ def test_datamodel_api_on_child_created(solver):
 
     def cb(path):
         nonlocal called
-        nonlocal created
+        nonlocal created  # noqa: F824
         called += 1
         created.append(path)
 
