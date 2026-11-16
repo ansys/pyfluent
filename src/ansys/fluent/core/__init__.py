@@ -61,7 +61,7 @@ from ansys.fluent.core.utils import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
-__version__ = "0.43.0"
+__version__ = "0.43.1"
 
 _VERSION_INFO = None
 """
