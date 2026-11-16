@@ -65,6 +65,8 @@ def test_error_classes_are_fluent_settings_errors():
         ("solution/run-calculation/iterate", True),
         ("solution/run-calculation/dual-time-iterate", True),
         ("file/read-case-data", True),
+        ("file/replace-mesh", True),
+        ("mesh/replace", True),
         ("file/write-case-data", False),
         ("solution/initialization/hybrid-initialize", False),
     ],
