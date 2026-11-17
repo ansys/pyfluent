@@ -44,14 +44,24 @@ Example
 """
 
 from collections.abc import Sequence
-from typing import Any
+from typing import Any, Union
 
 from deprecated.sphinx import deprecated
 
+from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as scheme_eval_pb2_grpc_v0
+from ansys.api.fluent.v1 import (
+    scheme_interpreter_pb2_grpc,
+)
 from ansys.fluent.core.services.abstract_scheme_interpreter import (
     AbstractSchemeInterpreter,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+# Type aliases for multi-version support
+SchemeInterpreterStub = Union[
+    scheme_eval_pb2_grpc_v0.SchemeEvalStub,
+    scheme_interpreter_pb2_grpc.SchemeInterpreterStub,
+]
 
 
 class SchemeInterpreter(AbstractSchemeInterpreter):
@@ -66,13 +76,15 @@ class SchemeInterpreter(AbstractSchemeInterpreter):
         except Exception:  # for pypim launch
             self.version = FluentVersion.v252.value
 
-    def _eval(self, val: Any, suppress_prompts: bool = True) -> Any:
+    def _eval(
+        self, val: Any, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict
         """Evaluates a scheme expression.
 
         Parameters
         ----------
         val : Any
-            Input scheme expression represented as Python datatype
+            Input scheme expression represented as Python datatype (int, float, str, Symbol, tuple, list, dict)
 
         suppress_prompts : bool, optional
             Whether to suppress prompts in Fluent, by default True
@@ -80,7 +92,7 @@ class SchemeInterpreter(AbstractSchemeInterpreter):
         Returns
         -------
         Any
-            Output scheme value represented as Python datatype
+            Output scheme value represented as Python datatype (int, float, str, Symbol, tuple, list, dict)
         """
         return self.service.scheme_eval(val=val, suppress_prompts=suppress_prompts)
 
@@ -146,7 +158,9 @@ class SchemeInterpreter(AbstractSchemeInterpreter):
             f"(lexical-unreferenceable? user-initial-environment '{symbol})"
         )
 
-    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+    def eval(
+        self, scm_input: str, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict
         """Evaluates a scheme expression in string format.
 
         Parameters
@@ -160,6 +174,6 @@ class SchemeInterpreter(AbstractSchemeInterpreter):
         Returns
         -------
         Any
-            Output scheme value represented as Python datatype
+            Output scheme value represented as Python datatype (int, float, str, Symbol, tuple, list, dict)
         """
         return self.service.eval(scm_input, suppress_prompts)
