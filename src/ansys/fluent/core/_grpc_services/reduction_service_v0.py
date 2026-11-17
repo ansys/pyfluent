@@ -32,14 +32,14 @@ from ansys.fluent.core._grpc_services.reduction_service import (
     BadReductionRequest,
     _locns,
 )
-
-# Type alias for reduction results
-ReductionResult = Union[float, list[float], tuple[float, float, float]]
 from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
 from ansys.fluent.core.fields.reduction.functional import Weight
 from ansys.fluent.core.services._protocols import ServiceProtocol
+
+# Type alias for reduction results
+ReductionResult = Union[float, list[float], tuple[float, float, float]]
 
 Path = list[tuple[str, str]]
 
@@ -75,7 +75,9 @@ class ReductionService(ServiceProtocol):
         expression=None,
         weight=None,
         condition=None,
-    ) -> Any:
+    ) -> (
+        Any
+    ):  # Returns dynamically created protobuf request object (AreaRequest, CountRequest, etc.)
         request = getattr(reduction_pb2, requestName)()
         if expression is not None:
             if hasattr(expression, "definition"):

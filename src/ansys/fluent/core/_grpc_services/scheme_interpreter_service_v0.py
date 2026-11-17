@@ -101,13 +101,16 @@ class SchemeInterpreterService(ServiceProtocol):
         response = self._stub.StringEval(request, metadata=self._metadata)
         return response.output
 
-    def scheme_eval(self, val: Any, suppress_prompts: bool = True) -> Any:
+    def scheme_eval(
+        self, val: Any, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict
         """Evaluates a scheme expression.
 
         Parameters
         ----------
         val : Any
             Input scheme expression represented as Python datatype
+            (int, float, str, Symbol, bool, tuple, list, dict)
 
         suppress_prompts : bool, optional
             Whether to suppress prompts in Fluent, by default True
@@ -116,6 +119,7 @@ class SchemeInterpreterService(ServiceProtocol):
         -------
         Any
             Output scheme value represented as Python datatype
+            (int, float, str, Symbol, bool, tuple, list, dict, None)
         """
         request = scheme_eval_pb2.SchemeEvalRequest()
         _convert_py_value_to_scheme_pointer(val, request.input)
@@ -128,7 +132,9 @@ class SchemeInterpreterService(ServiceProtocol):
         response = self._stub.SchemeEval(request, metadata=new_metadata)
         return _convert_scheme_pointer_to_py_value(response.output)
 
-    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+    def eval(
+        self, scm_input: str, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict
         """Evaluates a scheme expression in string format.
 
         Parameters
@@ -143,6 +149,7 @@ class SchemeInterpreterService(ServiceProtocol):
         -------
         Any
             Output scheme value represented as Python datatype
+            (int, float, str, Symbol, bool, tuple, list, dict, None)
         """
         S = Symbol  # noqa N806
         val = (
@@ -183,7 +190,9 @@ def _convert_list_of_pairs_to_scheme_pointer(
         _convert_list_of_pairs_to_scheme_pointer(val[1:], p.pair.cdr)
 
 
-def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer) -> None:
+def _convert_py_value_to_scheme_pointer(
+    val: Any, p: SchemePointer
+) -> None:  # val: int, float, str, Symbol, bool, tuple, list, dict
     """Convert Python datatype to Scheme pointer."""
     if isinstance(val, bool):
         p.b = val
@@ -233,7 +242,9 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer) -> dict | list:
     return val
 
 
-def _convert_scheme_pointer_to_py_value(p: SchemePointer) -> Any:
+def _convert_scheme_pointer_to_py_value(
+    p: SchemePointer,
+) -> Any:  # Returns: int, float, str, Symbol, bool, tuple, list, dict, None
     """Convert Scheme pointer to Python datatype."""
     if p.HasField("b"):
         return p.b

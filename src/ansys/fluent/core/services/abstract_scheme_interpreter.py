@@ -31,7 +31,9 @@ class AbstractSchemeInterpreter(ABC):
     """Abstract base class for the scheme interpreter."""
 
     @abstractmethod
-    def _eval(self, val: Any, suppress_prompts: bool = True) -> Any:
+    def _eval(
+        self, val: Any, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict, etc.
         """Evaluates a scheme expression."""
         pass
 
@@ -51,6 +53,8 @@ class AbstractSchemeInterpreter(ABC):
         pass
 
     @abstractmethod
-    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+    def eval(
+        self, scm_input: str, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict, etc.
         """Evaluates a scheme expression in string format."""
         pass
