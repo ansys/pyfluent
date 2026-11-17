@@ -77,6 +77,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 if TYPE_CHECKING:
     from ansys.fluent.core.meshing.session.meshing import Meshing
     from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.resilient import ResilientConfig
     from ansys.fluent.core.solver.session.solver import Solver
     from ansys.fluent.core.solver.session.solver_aero import SolverAero
     from ansys.fluent.core.solver.session.solver_icing import SolverIcing
@@ -367,6 +368,8 @@ def launch_fluent(
     use_podman_compose: bool = False,
     certificates_folder: str | None = None,
     insecure_mode: bool = False,
+    resilient_mode: bool = False,
+    resilient_config: ResilientConfig | None = None,
 ) -> (
     Meshing
     | PureMeshing
@@ -507,6 +510,14 @@ def launch_fluent(
         If True, Fluent's gRPC server will be started in insecure mode without TLS.
         This mode is not recommended. For more details on the implications
         and usage of insecure mode, refer to the Fluent documentation.
+    resilient_mode : bool, optional
+        Whether to enable resilient mode on the launched solver session. The
+        default is ``False``. Ignored when ``dry_run`` is ``True``. See
+        :ref:`ref_resilient_guide`.
+    resilient_config : ResilientConfig, optional
+        Resilient-mode configuration. Only used when ``resilient_mode`` is
+        ``True``. The default is ``None``, in which case the default configuration
+        is used.
 
     Returns
     -------
@@ -675,7 +686,12 @@ def launch_fluent(
         case _:
             assert_never(fluent_launch_mode)
 
-    return launcher()
+    session = launcher()
+    if resilient_mode and not dry_run:
+        from ansys.fluent.core.resilient import _enable_on_new_session
+
+        session = _enable_on_new_session(session, resilient_config, launched=True)
+    return session
 
 
 def connect_to_fluent(
@@ -810,9 +826,10 @@ def connect_to_fluent(
                 inside_container=fluent_connection.connection_properties.inside_container,
             )
 
-    return new_session(
+    session = new_session(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection.scheme_eval,
         start_transcript=start_transcript,
         file_transfer_service=file_transfer_service,
     )
+    return session

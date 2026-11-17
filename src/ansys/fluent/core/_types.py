@@ -42,6 +42,7 @@ if TYPE_CHECKING:
         Precision,
         UIMode,
     )
+    from ansys.fluent.core.resilient import ResilientConfig
     from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 PathType: TypeAlias = "os.PathLike[str] | str"
@@ -120,3 +121,11 @@ class LauncherArgsBase(TypedDict, total=False):
     """
     file_transfer_service: "FileTransferStrategy | None"
     """File transfer service. Uploads/downloads files to/from the server."""
+    resilient_mode: bool
+    """Whether to enable resilient mode on the launched solver session. The default
+    is ``False``. See :ref:`ref_resilient_guide`.
+    """
+    resilient_config: "ResilientConfig | None"
+    """Resilient-mode configuration. Only used when ``resilient_mode`` is ``True``.
+    The default is ``None``, in which case the default configuration is used.
+    """
