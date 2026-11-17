@@ -24,11 +24,21 @@
 """Wrapper over the scheme interpreter gRPC service of Fluent (v0 proto API)."""
 
 
-from typing import Any, Sequence
+from collections.abc import Sequence
+from typing import Any, Union
 
 from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.api.fluent.v1 import (
+    scheme_interpreter_pb2_grpc,
+)
 from ansys.fluent.core.services._protocols import ServiceProtocol
+
+# Type aliases for multi-version support
+SchemeInterpreterStub = Union[
+    scheme_eval_pb2_grpc.SchemeEvalStub,
+    scheme_interpreter_pb2_grpc.SchemeInterpreterStub,
+]
 
 
 class SchemeInterpreterService(ServiceProtocol):

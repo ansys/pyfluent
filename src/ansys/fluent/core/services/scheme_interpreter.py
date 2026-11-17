@@ -44,14 +44,24 @@ Example
 """
 
 from collections.abc import Sequence
-from typing import Any
+from typing import Any, Union
 
 from deprecated.sphinx import deprecated
 
+from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as scheme_eval_pb2_grpc_v0
+from ansys.api.fluent.v1 import (
+    scheme_interpreter_pb2_grpc,
+)
 from ansys.fluent.core.services.abstract_scheme_interpreter import (
     AbstractSchemeInterpreter,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+# Type aliases for multi-version support
+SchemeInterpreterStub = Union[
+    scheme_eval_pb2_grpc_v0.SchemeEvalStub,
+    scheme_interpreter_pb2_grpc.SchemeInterpreterStub,
+]
 
 
 class SchemeInterpreter(AbstractSchemeInterpreter):
