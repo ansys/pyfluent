@@ -1,2 +1,1 @@
-build>=1.2
-hatchling>=1.26
+flit>=4.2.0
