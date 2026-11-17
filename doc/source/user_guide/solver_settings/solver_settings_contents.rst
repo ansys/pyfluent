@@ -421,6 +421,14 @@ Also, when you have one or more velocity inlets with "inlet" in their names::
   {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
   'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
 
+Wildcards can also be used in the arguments of commands. For instance, you can
+change the type of every cell zone whose name starts with "solid" by passing a
+wildcard pattern to the ``zone_list`` argument of the ``set_zone_type`` command::
+
+  >>> from ansys.fluent.core.solver import CellZoneConditions
+  >>> cell_zone_conditions = CellZoneConditions(settings_source=solver_session)
+  >>> cell_zone_conditions.set_zone_type(zone_list="solid*", new_type=cell_zone_conditions.set_zone_type.new_type.SOLID)
+
 For string lists with allowed values, for instance::
 
   >>> solver_session.settings.results.graphics.contour['contour-1'].surfaces_list = 'in*'
