@@ -167,15 +167,9 @@ jobs:
           python -m pip install -U pip
           pip install . import-linter
 
-      # - name: Make the platform namespace importable
-      #   shell: bash
-      #   run: |
-      #     ANSYS_DIR=$(python -c "import os, ansys.fluent.core as m; print(os.path.dirname(os.path.dirname(os.path.dirname(m.__file__))))")
-      #     cp -r src/ansys/solver "$ANSYS_DIR"/
-
-      # - name: Run import-linter (report-only)
-      #   continue-on-error: true
-      #   run: lint-imports --verbose
+      - name: Run import-linter (report-only)
+        continue-on-error: true
+        run: lint-imports --verbose
 
   test-import:
     name: Build and Smoke tests

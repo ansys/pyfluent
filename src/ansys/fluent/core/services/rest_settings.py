@@ -28,8 +28,8 @@ from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.services.settings import BaseSettings, _trace
 
 # The server returns data with hyphenated and question-mark-suffixed keys (e.g., "object-type",
-# "user-creatable?"), but flobject expects snake_case keys (e.g., "object_type",
-# "user_creatable") for proper parsing. This mapping converts server format to flobject format.
+# "user-creatable?"), but the settings schema uses snake_case keys (e.g., "object_type",
+# "user_creatable") for proper parsing. This mapping converts server format to schema format.
 _REST_STATIC_INFO_KEY_MAP: dict[str, str] = {
     "object-type": "object_type",
     "include-child-named-objects?": "include_child_named_objects",
@@ -106,7 +106,7 @@ class RestSettings(BaseSettings):
         omits nested details (e.g. ``momentum``/``range`` children, a
         NamedObject's ``object_type``) needed to build the settings class
         tree. Keys are normalized from REST's hyphenated/``?``-suffixed form
-        to the underscore form ``flobject.get_cls()`` expects (matching gRPC).
+        to the underscore form the settings schema expects (matching gRPC).
 
         Raises
         ------
