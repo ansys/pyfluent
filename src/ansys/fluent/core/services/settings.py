@@ -56,8 +56,8 @@ Class hierarchy
 from functools import wraps
 from typing import Any
 
+from ansys.fluent.core._framework.state_types import StateType
 from ansys.fluent.core.services.abstract_settings import AbstractSettings
-from ansys.framework.state_types import StateType
 
 trace: bool = False
 _indent: int = 0

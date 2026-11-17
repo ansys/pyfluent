@@ -21,33 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Solver-agnostic value types for the settings/object state tree.
+"""Generic, sharable, solver agnostic layer.
 
-These aliases describe the values that flow in and out of a settings backend
-(scalars, lists, vectors, and nested group/list states). They live in the
-platform layer so the transport and service contracts can reference them
-without depending on Fluent's object framework (``flobject``). ``flobject``
-re-exports these names for backward compatibility.
+Dependency rule:
+
+    ``ansys.fluent.core._framework`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
+    ``ansys.api.*``.
+
+Solver-specific layers (such as ``ansys.fluent.core``) may depend on this, never the reverse.
 """
-
-from typing import NewType, Union
-
-RealType = NewType("real", float | str)  # constant or expression
-RealListType = list[RealType]
-RealVectorType = tuple[RealType, RealType, RealType]
-IntListType = list[int]
-StringListType = list[str]
-BoolListType = list[bool]
-PrimitiveStateType = Union[
-    str,
-    RealType,
-    int,
-    bool,
-    RealListType,
-    IntListType,
-    StringListType,
-    BoolListType,
-]
-DictStateType = dict[str, "StateType"]
-ListStateType = list["StateType"]
-StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
