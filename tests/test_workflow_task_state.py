@@ -25,7 +25,7 @@ from copy import deepcopy
 
 import pytest
 
-from ansys.fluent.core.workflow import make_task_wrapper
+from ansys.fluent.core.workflow import Workflow, make_task_wrapper
 
 
 class FakeTask:
@@ -152,3 +152,83 @@ def test_task_set_state_rejects_non_dictionary_nested_arguments():
     with pytest.raises(TypeError, match="Task arguments must be a dictionary"):
         task.set_state({"arguments": None, "length_unit": "in"})
     assert task_object.set_calls == []
+
+
+def test_workflow_dir_tracks_accessible_task_names():
+    class WorkflowTasks:
+        def __init__(self):
+            self.import_geometry = {
+                "Import Geometry": FakeTask({}),
+                "Import Geometry 2": FakeTask({}),
+            }
+            for name, task in self.import_geometry.items():
+                task.name = lambda name=name: name
+                task.task_type = lambda: "Simple"
+            child = FakeTask({})
+            child.name = lambda: "Boundary Layer 1"
+            child._name_ = child.name
+            child.task_type = lambda: "Compound Child"
+            self.add_boundary_layers = {"Boundary Layer 1": child}
+
+        def __call__(self):
+            return [
+                f"{task_type}:{name}"
+                for task_type in ("import_geometry", "add_boundary_layers")
+                for name in getattr(self, task_type)
+            ]
+
+    class WorkflowRoot:
+        task_object = WorkflowTasks()
+
+    workflow = Workflow(WorkflowRoot(), None, None)
+
+    assert {
+        "tasks",
+        "task_names",
+        "import_geometry",
+        "import_geometry_2",
+        "add_boundary_layers_child_1",
+    } <= set(dir(workflow))
+    assert (
+        workflow.import_geometry._task_object
+        is WorkflowRoot.task_object.import_geometry["Import Geometry"]
+    )
+    assert (
+        workflow.import_geometry_2._task_object
+        is WorkflowRoot.task_object.import_geometry["Import Geometry 2"]
+    )
+    assert workflow.add_boundary_layers_child_1._task_object is (
+        WorkflowRoot.task_object.add_boundary_layers["Boundary Layer 1"]
+    )
+
+    del WorkflowRoot.task_object.import_geometry["Import Geometry 2"]
+    assert "import_geometry_2" not in dir(workflow)
+    added_task = FakeTask({})
+    added_task.name = lambda: "Import Geometry 3"
+    added_task.task_type = lambda: "Simple"
+    WorkflowRoot.task_object.import_geometry["Import Geometry 3"] = added_task
+    assert "import_geometry_3" in dir(workflow)
+    assert workflow.import_geometry_3._task_object is added_task
+
+
+def test_task_dir_tracks_arguments_and_preserves_task_members():
+    class Arguments:
+        def __init__(self):
+            self.values = {"length_unit": "mm"}
+            self.length_unit = object()
+
+        def __call__(self):
+            return self.values
+
+    task_object = FakeTask({})
+    task_object.arguments = Arguments()
+    task = make_task_wrapper(task_object, "example", None, None, None)
+
+    assert {"length_unit", "get_state", "execute", "state"} <= set(dir(task))
+    assert task.length_unit is task_object.arguments.length_unit
+    task_object.arguments.values["file_name"] = ""
+    task_object.arguments.file_name = object()
+    assert "file_name" in dir(task)
+    assert task.file_name is task_object.arguments.file_name
+    del task_object.arguments.values["length_unit"]
+    assert "length_unit" not in dir(task)

@@ -605,6 +605,11 @@ class Workflow:
             def __repr__(self) -> str:
                 return f"<Insertable '{self._task_map[self._name]}' task>"
 
+    def __dir__(self):
+        """Include dynamically accessible task names in interactive discovery."""
+        self.tasks()
+        return sorted(set(super().__dir__()) | self._task_dict.keys())
+
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""
         if item in ["parts", "parts_files"]:
@@ -895,6 +900,14 @@ class TaskObject:
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
+
+    def __dir__(self):
+        """Include task arguments and delegated task members in interactive discovery."""
+        return sorted(
+            set(super().__dir__())
+            | set(dir(self._task_object))
+            | set(self._task_object.arguments())
+        )
 
     def __getattr__(self, item):
         """Enable attribute access to task properties and arguments.
