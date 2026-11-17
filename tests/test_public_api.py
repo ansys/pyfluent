@@ -52,6 +52,7 @@ def test_ansys_fluent_core_public_api():
         "CalculationsResumedEventInfo",
         "CalculationsStartedEventInfo",
         "CaseLoadedEventInfo",
+        "CaseSnapshot",
         "DataLoadedEventInfo",
         "Dimension",
         "Event",
@@ -308,6 +309,8 @@ _EXPECTED_LAUNCH_FLUENT_PARAMS = [
     "use_podman_compose",
     "certificates_folder",
     "insecure_mode",
+    "resilient_mode",
+    "resilient_config",
 ]
 
 

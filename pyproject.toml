@@ -136,7 +136,8 @@ markers = [
     "nightly: Tests that run under nightly CI",
     "fluent_version(version): Tests that runs with specified Fluent version",
     "standalone: Tests that cannot be run within container",
-    "rest_server: Tests that require a live Fluent web server"
+    "rest_server: Tests that require a live Fluent web server",
+    "resilient: Tests for the resilient execution runtime (checkpoint, recovery, failover)"
 ]
 
 [tool.black]
