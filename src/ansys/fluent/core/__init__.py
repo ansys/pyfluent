@@ -56,12 +56,13 @@ from ansys.fluent.core.meshing import *
 from ansys.fluent.core.offline.parametric_study import *
 from ansys.fluent.core.services.batch_ops import *
 from ansys.fluent.core.services.streaming_services.events_streaming import *
+from ansys.fluent.core.solver.case_snapshot import CaseSnapshot
 from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
 from ansys.fluent.core.utils import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
-__version__ = "0.44.dev0"
+__version__ = "0.45.dev0"
 
 _VERSION_INFO = None
 """

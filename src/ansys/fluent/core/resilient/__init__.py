@@ -1,0 +1,150 @@
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Resilient mode for Fluent solver sessions.
+
+Enable it with ``resilient_mode=True`` on any function that launches a solver
+session. Ordinary
+PyFluent code then gains:
+
+* a journal of settings writes with undo and redo;
+* checkpoints (case and data files), written automatically before irreversible
+  commands, with automatic rollback when such a command fails; and
+* optional failover to warm standby sessions.
+
+The behavior is implemented by the product-agnostic engine in
+:mod:`ansys.fluent.core.resilient.engine`; :class:`FluentAdapter` supplies the
+Fluent-specific parts.
+
+Examples
+--------
+>>> import ansys.fluent.core as pyfluent
+>>> solver = pyfluent.Solver.from_install(resilient_mode=True)
+>>> solver.settings.file.read_case(file_name="mixing_elbow.cas.h5")
+>>> solver.resilient.checkpoint("configured")
+>>> solver.settings.solution.run_calculation.iterate(iter_count=100)
+>>> solver.resilient.rollback("configured")
+"""
+
+from __future__ import annotations
+
+from typing import Any
+import warnings
+
+from ansys.fluent.core.resilient.engine import (
+    Checkpoint,
+    CheckpointConfig,
+    CheckpointError,
+    Classification,
+    CommandOp,
+    ErrorCategory,
+    ErrorClasses,
+    EventKind,
+    FailoverError,
+    Journal,
+    ObjectOp,
+    PoolConfig,
+    ResilientAdapter,
+    ResilientConfig,
+    ResilientController,
+    ResilientError,
+    ResilientEvent,
+    ResilientFailoverWarning,
+    ResilientSession,
+    ResilientWarning,
+    SetOp,
+    Severity,
+    StepOutcome,
+    WarmSessionPool,
+    disable_resilient_mode,
+)
+from ansys.fluent.core.resilient.engine import (
+    enable_resilient_mode as _enable_resilient_mode,
+)
+from ansys.fluent.core.resilient.engine import is_resilient
+from ansys.fluent.core.resilient.fluent_adapter import FluentAdapter
+
+
+def _unsupported_session_message(session: Any) -> str | None:
+    """Return why resilient mode cannot apply to ``session``, or ``None``."""
+    from ansys.fluent.core.solver.session.solver import Solver
+
+    if isinstance(session, Solver):
+        return None
+    return (
+        "resilient mode applies to gRPC solver sessions only, not to "
+        f"{type(session).__name__}."
+    )
+
+
+def _enable_on_new_session(
+    session: Any, config: ResilientConfig | None, *, launched: bool
+) -> Any:
+    """Apply ``resilient_mode=True`` passed to a launch function.
+
+    ``launched`` is ``True`` for a session started by the call, whose journal then
+    covers its whole history.
+    """
+    from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
+
+    reason = _unsupported_session_message(session)
+    if reason is not None:
+        warnings.warn(
+            f"resilient_mode=True was ignored: {reason}",
+            PyFluentUserWarning,
+            stacklevel=3,
+        )
+        return session
+    return _enable_resilient_mode(
+        session, config, adapter=FluentAdapter(), journal_complete=launched
+    )
+
+
+__all__ = [
+    "Checkpoint",
+    "CheckpointConfig",
+    "CheckpointError",
+    "Classification",
+    "CommandOp",
+    "ErrorCategory",
+    "ErrorClasses",
+    "EventKind",
+    "FailoverError",
+    "FluentAdapter",
+    "Journal",
+    "ObjectOp",
+    "PoolConfig",
+    "ResilientAdapter",
+    "ResilientConfig",
+    "ResilientController",
+    "ResilientError",
+    "ResilientEvent",
+    "ResilientFailoverWarning",
+    "ResilientSession",
+    "ResilientWarning",
+    "SetOp",
+    "Severity",
+    "StepOutcome",
+    "WarmSessionPool",
+    "disable_resilient_mode",
+    "is_resilient",
+]
