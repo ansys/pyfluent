@@ -105,6 +105,7 @@ class FluentVersion(Enum):
     FluentVersion.v252.awp_var == 'AWP_ROOT252'
     """
 
+    v272 = "27.2.0"
     v271 = "27.1.0"
     v261 = "26.1.0"
     v252 = "25.2.0"
@@ -131,14 +132,14 @@ class FluentVersion(Enum):
             if version_as_int is None:
                 warnings.warn(
                     f"Fluent version '{requested_version}' is unrecognized; using the "
-                    f"highest supported version '{latest.value}' instead.",
+                    f"latest supported version '{latest.value}' instead.",
                     PyFluentUserWarning,
                     stacklevel=2,
                 )
                 return latest
             if version_as_int > latest.number:
                 warnings.warn(
-                    f"Fluent version '{requested_version}' is newer than the highest "
+                    f"Fluent version '{requested_version}' is newer than the latest "
                     f"supported version '{latest.value}'; using '{latest.value}' instead.",
                     PyFluentUserWarning,
                     stacklevel=2,

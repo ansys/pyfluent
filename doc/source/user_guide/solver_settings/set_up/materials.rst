@@ -1,6 +1,6 @@
 Define materials
 ==================
-PyFluent allows you to use :ref:`ref_settings` to interact with materials settings.
+PyFluent allows you to use :ref:`ref_root` to interact with materials settings.
 
 Copy material from database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

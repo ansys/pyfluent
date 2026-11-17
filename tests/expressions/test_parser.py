@@ -5,14 +5,14 @@
 
 import pytest
 
-from ansys.fluent.core.expressions import (
+from ansys.fluent.core.offline.expressions import (
     ExpressionBuilder,
     ExpressionBuildError,
     Kind,
     Weight,
     parse,
 )
-from ansys.fluent.core.expressions._ast import (
+from ansys.fluent.core.offline.expressions._ast import (
     BinOp,
     Call,
     Compare,

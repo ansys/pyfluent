@@ -67,15 +67,13 @@ reference [2_]. Validation data for the regolith temperatures are taken from
 measurements conducted by the Apollo 17 mission to the Moon [3_].
 """
 
-# sphinx_gallery_thumbnail_path = '_static/lunar_lander_thermal_thumbnail.png'
-
 ###############################################################################
 # .. image:: ../../_static/lunar_lander_thermal_setup.png
 #   :align: center
 
 #######################################################################################
 # Dependencies
-# =====================================================================================
+# -------------------------------------------------------------------------------------
 # ansys-fluent-core
 # matplotlib
 # numpy
@@ -94,13 +92,14 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 
 # flake8: noqa: E402
 
+# sphinx_gallery_thumbnail_path = '_static/lunar_lander_thermal_thumbnail.png'
 from itertools import chain
 import os
 
 import numpy as np
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import examples
+from ansys.fluent.core import ScalarFieldDataRequest, examples
 
 lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
     examples.download_file(
@@ -235,24 +234,18 @@ def sun_vec_to_beam_dir(
 
 def get_surf_mean_temp(
     surf_names: list[str],
-    solver: pyfluent.session.solver.Solver,
+    solver: pyfluent.Solver,
 ) -> float:
     """Calculate mean surface temperature."""
-    # Get surface IDs
-    surfs = solver.field_info.get_surfaces_info()
-    surf_ids_ = [surfs[surf_name]["surface_id"] for surf_name in surf_names]
-
-    # Flatten surf_ids nested list
-    surf_ids = list(chain(*surf_ids_))
-
-    # Get temperature data
-    temp_data = solver.field_data.get_scalar_field_data(
+    # Get temperature data on the requested surfaces
+    temp_request = ScalarFieldDataRequest(
         field_name="temperature",
-        surfaces=surf_ids,
+        surfaces=surf_names,
     )
+    temp_data = solver.fields.field_data.get_field_data(temp_request)
 
-    # Calculate mean temperature across surfaces
-    return float(np.mean(list(temp_data.values())))
+    # Calculate mean temperature across all surfaces
+    return float(np.mean(np.concatenate(list(temp_data.values()))))
 
 
 ###############################################################################

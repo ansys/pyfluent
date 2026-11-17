@@ -50,6 +50,9 @@ from ansys.fluent.core.services.object_model import (
     PyArgumentsSingletonSubItem,
     PyArgumentsTextualSubItem,
     PyCommand,
+    PyMenu,
+    PyNamedObject,
+    PyNamedObjectContainer,
     PyNumerical,
     PyQuery,
     ReadOnlyObjectError,
@@ -939,3 +942,42 @@ def test_get_completer_info(new_meshing_session):
             ].arguments.file_name.get_completer_info()
         ]
     )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_py_named_object_methods_in_meshing_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    watertight = meshing.watertight()
+
+    assert isinstance(
+        meshing.meshing_workflow.task_object.import_geometry["Import Geometry"],
+        PyNamedObject,
+    )
+    assert isinstance(
+        meshing.meshing_workflow.task_object.import_geometry, PyNamedObjectContainer
+    )
+    assert isinstance(meshing.meshing_workflow.task_object, PyMenu)
+    assert isinstance(meshing.meshing_workflow, PyMenu)
+
+    assert "rename" in dir(
+        meshing.meshing_workflow.task_object.import_geometry["Import Geometry"]
+    )
+    assert "rename" not in dir(meshing.meshing_workflow)
+    assert "rename" not in dir(meshing.meshing_workflow.task_object.import_geometry)
+
+    assert "rename" in dir(watertight.import_geometry)
+    assert "rename" not in dir(watertight)
+
+
+def test_py_named_object_methods_in_workflow(new_meshing_session):
+    meshing = new_meshing_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert "rename" not in dir(meshing.workflow)
+    assert "rename" not in dir(meshing.workflow.TaskObject)
+    assert "rename" in dir(meshing.workflow.TaskObject["Import Geometry"])
+
+    assert isinstance(meshing.workflow, PyMenu)
+    assert isinstance(meshing.workflow.TaskObject, PyNamedObjectContainer)
+    assert isinstance(meshing.workflow.TaskObject["Import Geometry"], PyNamedObject)

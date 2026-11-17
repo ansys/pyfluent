@@ -135,9 +135,9 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 
 - The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
   can be accessed as attributes. For example, using the expression ``solver_session.settings.setup.models.energy``,
-  which resolves to :obj:`~ansys.fluent.core.generated.solver.settings_232.energy.energy`,
-  which is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.models_1.models`,
-  which itself is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`, and each of those
+  which resolves to :obj:`~ansys.fluent.core.generated.v261.solver.settings.energy`,
+  which is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.models_1`,
+  which itself is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.setup`, and each of those
   three objects is a ``Group``.
   The names of the child objects of a group can be accessed
   via ``<Group>.child_names``.
@@ -437,7 +437,7 @@ The following list summarizes common wildcards:
   only items starting with "in" such as in1 and in2, whereas *in* lists only items that have
   the string "in" within the name.
 
-- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list "grey" and "gray".
+- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list ``grey`` and ``gray``.
 
 - ``[]`` indicates a range of numbers or characters at the beginning of a string. For example,
   ``'[to]'`` would match anything starting with "t" and anything starting with "o" in the name. Using
@@ -445,19 +445,19 @@ The following list summarizes common wildcards:
   using ``'[0-9]'`` would match the initial character with any number between "0" and "9" inclusively.
 
 - ``^`` indicates a Boolean NOT function, or negation. For example, ``'^*in*'`` would list anything
-  not containing "in".
+  not containing ``in``.
 
 - ``|`` indicates a Boolean OR function. For example, ``'*part*|*solid*'`` would list anything
-  containing either "part" or "solid" such as "part2-solid-1", "part2-solid-2", "part-3",
-  "solid", and "solid-1".
+  containing either ``part`` or ``solid`` such as ``part2-solid-1``, ``part2-solid-2``, ``part-3``,
+  ``solid``, and ``solid-1``.
 
 - ``&`` indicates a Boolean AND function. For example, ``'*part*&*solid*'`` would list anything
-  containing both "part" and "solid" such as "part2-solid-1" and "part2-solid-2".
+  containing both ``part`` and ``solid`` such as ``part2-solid-1`` and ``part2-solid-2``.
 
 
 .. toctree::
    :maxdepth: 1
    :hidden:
 
-   set_up/set_up_contents
+   set_up/setup_contents
    solution

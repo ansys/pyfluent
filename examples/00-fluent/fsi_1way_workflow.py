@@ -257,6 +257,7 @@ solver.exit()
 # References:
 # =====================================================================================
 # .. _Reference:
+#
 # [1] Modeling One-Way Fluid-Structure Interaction (FSI) Within Fluent, `Ansys Fluent documentation​ <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_fsi_1way.html>`_.
 
 # sphinx_gallery_thumbnail_path = '_static/fsi_1way_2.png'

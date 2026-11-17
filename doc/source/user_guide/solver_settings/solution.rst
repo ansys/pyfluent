@@ -1,7 +1,7 @@
 Applying solution settings
 ==========================
 
-PyFluent allows you to use :ref:`ref_settings` to interact with solution settings, and initialize and solve.
+PyFluent allows you to use :ref:`ref_root` to interact with solution settings, and initialize and solve.
 
 
 Steady or transient solution model

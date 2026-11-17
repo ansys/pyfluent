@@ -24,6 +24,7 @@
 """Provides a module for launching utilities."""
 
 import logging
+import ntpath
 import os
 from pathlib import Path
 import platform
@@ -99,6 +100,85 @@ class ComposeConfig:
 def is_windows():
     """Check if the current operating system is Windows."""
     return platform.system() == "Windows"
+
+
+def _cwd_may_trigger_cmd_unc_fallback(path: str | Path) -> bool:
+    r"""Check whether a Windows path looks like a UNC (Universal Naming Convention) path.
+
+    A UNC path addresses a network resource and begins with two leading
+    separators followed by a host name, for example ``\\server\share\dir``.
+    Both backslash and forward-slash separators are accepted, and the
+    extended-length UNC prefix ``\\?\UNC\server\share`` is recognized.
+
+    Parameters
+    ----------
+    path : str | Path
+        The Windows path to inspect. Forward slashes are treated as
+        equivalent to backslashes.
+
+    Returns
+    -------
+    bool
+        ``True`` if ``path`` looks like a UNC path, ``False`` otherwise.
+
+    Notes
+    -----
+    This is a purely syntactic check. The following edge cases are not
+    handled:
+
+    - Existence or reachability of the host/share is not verified.
+    - The presence of a share component is not required; a path with only a
+      host (for example ``\\server``) is reported as UNC.
+    - Win32 device-namespace paths (``\\?\C:\...`` and ``\\.\device``) are
+      reported as non-UNC, with the sole exception of the ``\\?\UNC\``
+      extended UNC prefix.
+    - The check is Windows-oriented; a POSIX path with two leading slashes
+      (for example ``//mnt/data``) is reported as UNC even though it is not a
+      network path on that platform.
+    - Environment variables and ``~`` are not expanded before the check.
+    """
+    # ntpath.splitdrive returns the \\server\share (or device namespace)
+    # component as the drive, defining what a UNC drive is.
+    drive = ntpath.splitdrive(os.fspath(path))[0].replace("/", "\\")
+    if drive.upper().startswith("\\\\?\\"):
+        return drive.upper().startswith("\\\\?\\UNC\\")
+    return drive.startswith("\\\\") and not drive.startswith("\\\\.\\")
+
+
+def _warn_if_cwd_may_trigger_cmd_unc_fallback(
+    cwd: str | Path | None, stacklevel: int = 4
+) -> None:
+    r"""Warn when the effective Windows working directory looks like a UNC path.
+
+    Fluent inherits the process working directory when ``cwd`` is not set. A relative
+    ``cwd`` is resolved to an absolute path first, so a UNC share is detected even when
+    the Python process itself runs from one.
+
+    Parameters
+    ----------
+    cwd : str | Path | None
+        The requested working directory, or ``None`` to use the process directory.
+    stacklevel : int, optional
+        Stack level forwarded to :func:`warnings.warn` so the warning points at the
+        user's ``launch_fluent()`` call (warn -> helper -> __call__ -> launch_fluent
+        -> caller). Defaults to ``4``.
+    """
+    try:
+        effective_cwd = os.path.abspath(cwd) if cwd else os.getcwd()
+    except FileNotFoundError:
+        # The current directory was deleted; skip the advisory warning.
+        return
+    if is_windows() and _cwd_may_trigger_cmd_unc_fallback(effective_cwd):
+        warnings.warn(
+            "On Windows, the working directory looks like a UNC path (for "
+            r"example '\\server\share'), which Fluent cannot use. Pass a "
+            "local directory as 'cwd'. See the 'Working directory' section "
+            "of the PyFluent launch guide for details: "
+            "https://fluent.docs.pyansys.com/version/stable/user_guide/"
+            "session/launching_ansys_fluent.html#working-directory",
+            UserWarning,
+            stacklevel=stacklevel,
+        )
 
 
 def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:

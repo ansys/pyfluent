@@ -11,7 +11,7 @@ User guide
    config_variables
    session/session_contents
    solver_settings/solver_settings_contents
-   meshing/meshing_contents
+   meshing
    fields/fields_contents
    events
    monitors
@@ -24,6 +24,7 @@ User guide
    journal
    log
    usability
+   resilient_mode
    make_container_image
    legacy/legacy_contents
    beta_feature_access
@@ -74,7 +75,7 @@ Leverage intuitive, :ref:`guided workflows <ref_meshing_guide>` to create high-q
 
 Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
+Utilize :ref:`settings objects <ref_root>` to configure and control your simulation. Get familiar
 with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction
@@ -96,4 +97,12 @@ Fluent data efficiently offline. The :obj:`~ansys.fluent.core.execution.session.
 :ref:`live session objects <ref_session_guide>`, allowing you to access field data and other relevant information without a live Fluent session.
 
 .. vale Google.Spacing = YES
+
+Resilient mode
+~~~~~~~~~~~~~~
+
+Make an automated setup-and-solve run survivable with
+:ref:`resilient mode <ref_resilient_guide>`. Checkpoint automatically before
+irreversible commands and roll back when they fail, undo and redo settings
+changes, and keep running on a warm standby session when the active solver dies.
 

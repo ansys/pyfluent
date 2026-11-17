@@ -8,7 +8,7 @@ Installation
 PyFluent Installation
 ---------------------
 
-PyFluent supports Python 3.10 through Python 3.14 on Windows, Mac OS and Linux.
+PyFluent supports Python 3.12 through Python 3.14 on Windows, Mac OS and Linux.
 
 PyFluent can be installed, along with all its optional dependencies, using:
 
@@ -91,7 +91,7 @@ current user in the current shell session as follows:
 For this variable to persist between different shell sessions for the current user, the same
 export command can instead be added to the user's ``~/.profile`` file.
 
-For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
+For information on other ways of specifying the Fluent location for PyFluent, see :ref:`ref_launch_guide`.
 
 .. note::
    Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.

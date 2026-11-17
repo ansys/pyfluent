@@ -31,9 +31,9 @@ PYFLUENT_DEPRECATED_DATA = [
         ":py:meth:`ansys.fluent.core.services.scheme_eval.SchemeEval.eval <ansys.fluent.core.services.scheme_eval.SchemeEval.eval>`",
     ),
     (
-        ":py:meth:`ansys.fluent.core.session.BaseSession.scheme_eval <ansys.fluent.core.session.BaseSession.scheme_eval>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.scheme_eval <ansys.fluent.core.execution.session.session.BaseSession.scheme_eval>`",
         "0.32",
-        ":py:meth:`ansys.fluent.core.session.BaseSession.scheme <ansys.fluent.core.session.BaseSession.scheme>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.scheme <ansys.fluent.core.execution.session.session.BaseSession.scheme>`",
     ),
     (
         ":py:meth:`ansys.fluent.core.fluent_connection.FluentConnection.health_check <ansys.fluent.core.fluent_connection.FluentConnection.health_check>`",
@@ -41,14 +41,14 @@ PYFLUENT_DEPRECATED_DATA = [
         "N/A",
     ),
     (
-        ":py:meth:`ansys.fluent.core.session.BaseSession.health_check <ansys.fluent.core.session.BaseSession.health_check>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.health_check <ansys.fluent.core.execution.session.session.BaseSession.health_check>`",
         "0.32",
-        ":py:meth:`ansys.fluent.core.session.BaseSession.is_active <ansys.fluent.core.session.BaseSession.is_active>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.is_active <ansys.fluent.core.execution.session.session.BaseSession.is_active>`",
     ),
     (
-        ":py:meth:`ansys.fluent.core.session.BaseSession.is_server_healthy <ansys.fluent.core.session.BaseSession.is_server_healthy>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.is_server_healthy <ansys.fluent.core.execution.session.session.BaseSession.is_server_healthy>`",
         "0.38",
-        ":py:meth:`ansys.fluent.core.session.BaseSession.is_active <ansys.fluent.core.session.BaseSession.is_active>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.is_active <ansys.fluent.core.execution.session.session.BaseSession.is_active>`",
     ),
     (
         ":py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`",
@@ -88,17 +88,17 @@ PYFLUENT_DEPRECATED_DATA = [
     ),
     # properties
     (
-        ":py:meth:`ansys.fluent.core.session.BaseSession.field_info <ansys.fluent.core.session.BaseSession.field_info>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.field_info <ansys.fluent.core.execution.session.session.BaseSession.field_info>`",
         "0.20.dev9",
         "`session.fields.field_info`",
     ),
     (
-        ":py:meth:`ansys.fluent.core.session.BaseSession.field_data <ansys.fluent.core.session.BaseSession.field_data>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.field_data <ansys.fluent.core.execution.session.session.BaseSession.field_data>`",
         "0.20.dev9",
         "`session.fields.field_data`",
     ),
     (
-        ":py:meth:`ansys.fluent.core.session.BaseSession.field_data_streaming <ansys.fluent.core.session.BaseSession.field_data_streaming>`",
+        ":py:meth:`ansys.fluent.core.execution.session.session.BaseSession.field_data_streaming <ansys.fluent.core.execution.session.session.BaseSession.field_data_streaming>`",
         "0.20.dev9",
         "`session.fields.field_data_streaming`",
     ),
@@ -124,9 +124,9 @@ PYFLUENT_DEPRECATED_DATA = [
     ),
     # arguments
     (
-        "``timeout`` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`",
+        "``timeout`` argument of :py:func:`ansys.fluent.core.execution.launcher.fluent_container.configure_container_dict <ansys.fluent.core.execution.launcher.fluent_container.configure_container_dict>`",
         "0.34.dev0",
-        "``start_timeout`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+        "``start_timeout`` argument of :py:func:`ansys.fluent.core.execution.launcher.launcher.launch_fluent <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`",
     ),
     (
         "The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`",
@@ -209,32 +209,32 @@ PYFLUENT_DEPRECATED_DATA = [
         "`surfaces`",
     ),
     (
-        "The `container_mount_path` argument of :py:meth:`ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy>`",
+        "The `container_mount_path` argument of :py:meth:`ansys.fluent.core.connectivity.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.connectivity.file_transfer_service.ContainerFileTransferStrategy>`",
         "0.23.dev1",
         "`mount_target`",
     ),
     (
-        "The `host_mount_path` argument of :py:meth:`ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy>`",
+        "The `host_mount_path` argument of :py:meth:`ansys.fluent.core.connectivity.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.connectivity.file_transfer_service.ContainerFileTransferStrategy>`",
         "0.23.dev1",
         "`mount_source`",
     ),
     (
-        "The `container_mount_path` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`",
+        "The `container_mount_path` argument of :py:func:`ansys.fluent.core.execution.launcher.fluent_container.configure_container_dict <ansys.fluent.core.execution.launcher.fluent_container.configure_container_dict>`",
         "0.23.dev1",
         "`mount_target`",
     ),
     (
-        "The `host_mount_path` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`",
+        "The `host_mount_path` argument of :py:func:`ansys.fluent.core.execution.launcher.fluent_container.configure_container_dict <ansys.fluent.core.execution.launcher.fluent_container.configure_container_dict>`",
         "0.23.dev1",
         "`mount_source`",
     ),
     (
-        "The `show_gui` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+        "The `show_gui` argument of :py:func:`ansys.fluent.core.execution.launcher.launcher.launch_fluent <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`",
         "0.22.dev0",
         "`ui_mode`",
     ),
     (
-        "The `version` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+        "The `version` argument of :py:func:`ansys.fluent.core.execution.launcher.launcher.launch_fluent <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`",
         "0.22.dev0",
         "`dimension`",
     ),
@@ -244,7 +244,7 @@ PYFLUENT_DEPRECATED_DATA = [
         "`surfaces`",
     ),
     (
-        "The `surface_names` argument of :py:meth:`nsys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`",
+        "The `surface_names` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`",
         "0.23.dev0",
         "`surfaces`",
     ),
@@ -282,11 +282,11 @@ PYFLUENT_DEPRECATED_DATA = [
     (
         "The `PYFLUENT_USE_DOCKER_COMPOSE` environment variable",
         "0.34.0",
-        "``use_docker_compose`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+        "``use_docker_compose`` argument of :py:func:`ansys.fluent.core.execution.launcher.launcher.launch_fluent <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`",
     ),
     (
         "The `PYFLUENT_USE_PODMAN_COMPOSE` environment variable",
         "0.34.0",
-        "``use_podman_compose`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+        "``use_podman_compose`` argument of :py:func:`ansys.fluent.core.execution.launcher.launcher.launch_fluent <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`",
     ),
 ]

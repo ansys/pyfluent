@@ -65,6 +65,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _get_subprocess_kwargs_for_fluent,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
+    _warn_if_cwd_may_trigger_cmd_unc_fallback,
     is_windows,
 )
 from ansys.fluent.core.execution.launcher.process_launch_string import (
@@ -106,7 +107,7 @@ class StandaloneArgsWithoutDryRunMode(
     """Working directory for the Fluent client."""
     fluent_path: str | None
     """User-specified path for Fluent installation."""
-    topy: str | list[Any] | None
+    topy: bool | str | None
     """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
     a filename for the new Python journal.
     """
@@ -152,11 +153,11 @@ class StandaloneLauncher:
         mode : FluentMode
             Specifies the launch mode of Fluent to target a specific session type.
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
             or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+            Specifies the graphics driver for Fluent. Options are from the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum
+            (for Windows) or the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum (for Linux).
         product_version : FluentVersion or str or float or int, optional
             Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
             ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
@@ -227,11 +228,10 @@ class StandaloneLauncher:
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = kwargs.get("file_transfer_service")
+        self.argvals = self._update_default_argvals(self.argvals)
         if pyfluent.config.show_fluent_gui:
             kwargs["ui_mode"] = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-        if self.argvals.get("lightweight_mode") is None:
-            self.argvals["lightweight_mode"] = False
 
         # case_data_file_name is not supported in meshing mode.
         if FluentMode.is_meshing(self.argvals.get("mode")) and self.argvals.get(
@@ -277,8 +277,6 @@ class StandaloneLauncher:
             self.argvals,
             server_info_file_name_for_server,
         )
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 100
         # Negative start_timeout values are treated as "no timeout".
         start_timeout = self.argvals.get("start_timeout")
         if start_timeout >= 0:
@@ -302,7 +300,7 @@ class StandaloneLauncher:
             )
 
         self._launch_string += _build_journal_argument(
-            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
+            self.argvals.get("topy"), self.argvals.get("journal_file_names")
         )
 
         if is_windows():
@@ -315,10 +313,22 @@ class StandaloneLauncher:
                 self._launch_cmd = self._launch_string
 
     @staticmethod
+    def _update_default_argvals(argvals: dict) -> dict:
+        if argvals.get("cleanup_on_exit") is None:
+            argvals["cleanup_on_exit"] = True
+        if argvals.get("start_transcript") is None:
+            argvals["start_transcript"] = True
+        if argvals.get("lightweight_mode") is None:
+            argvals["lightweight_mode"] = False
+        if argvals.get("start_timeout") is None:
+            argvals["start_timeout"] = 100
+        return argvals
+
+    @staticmethod
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
         # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
         _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
-        return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+        return f' -command="(set-session-idle-timeout {_idle_timeout_minutes})"'
 
     @staticmethod
     def _disable_idle_timeout_guard(session):
@@ -338,6 +348,8 @@ class StandaloneLauncher:
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
+        # Point at the caller's launch_fluent() line (warn -> helper -> __call__ -> launch_fluent -> caller).
+        _warn_if_cwd_may_trigger_cmd_unc_fallback(self.argvals.get("cwd"), stacklevel=4)
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
@@ -408,5 +420,5 @@ class StandaloneLauncher:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(self._launch_cmd) from ex
         finally:
-            if self.argvals.get("cleanup_on_exit", True):
+            if self.argvals.get("cleanup_on_exit"):
                 Path(self._server_info_file_name).unlink(missing_ok=True)

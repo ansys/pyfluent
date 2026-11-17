@@ -1,0 +1,8 @@
+ARG BID
+ARG baseImage=ghcr.io/ansys/fluent-fluidsone:v27.1.${BID}
+
+FROM ${baseImage} as  gpusolverbuilder
+COPY gpusolver.tgz /ansys_inc/
+RUN tar -xzf /ansys_inc/gpusolver.tgz --directory /ansys_inc/ && rm -f /ansys_inc/gpusolver.tgz
+
+ENTRYPOINT [ "/entrypoint_xvfb.sh" ]

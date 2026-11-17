@@ -28,19 +28,21 @@ SKIP_FILES = {
     "settings_builtin_data",
     "settings_external",
     "meshing_workflow_old",
+    "rpvars",
     "workflow_old",
     "workflow",
 }
-ADDITIONAL_DOCUMENTATION = {
-    "ansys.fluent.core.meshing": (
-        "Meshing workflows use the underlying meshing workflow object. See the "
-        ":ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` "
-        "for details.\n"
-    ),
-    "ansys.fluent.core.solver": (
-        "Solver expose an underlying hierarchical settings object. See "
-        "the :ref:`settings API <ref_root>` for details.\n"
-    ),
+
+# Modules documented on standalone pages that are reachable through
+# cross-references from docstrings but kept out of the API reference toctree.
+HIDDEN_MODULES = {
+    "ansys.fluent.core.workflow": "Workflow",
+    "ansys.fluent.core.services.events": "Events",
+    "ansys.fluent.core.services.monitors": "Monitor",
+    "ansys.fluent.core.services.health_check": "Health check",
+    "ansys.fluent.core.services.application_runtime": "Application runtime",
+    "ansys.fluent.core.services.scheme_interpreter": "Scheme interpreter",
+    "ansys.fluent.core.rpvars": "RP Vars",
 }
 
 
@@ -61,12 +63,6 @@ def _write_api_page(rst_file, title, directive, module_name):
     rst_file.write(f"{'=' * len(title)}\n\n")
     rst_file.write(f".. {directive}:: {module_name}\n")
     _write_common_options(rst_file)
-
-
-def _write_additional_documentation(rst_file, module_name):
-    additional_documentation = ADDITIONAL_DOCUMENTATION.get(module_name)
-    if additional_documentation:
-        rst_file.write(f"\n{additional_documentation}\n")
 
 
 def _module_name(source_path):
@@ -103,6 +99,22 @@ def _write_module_page(source_path):
         _write_api_page(rst_file, source_path.stem, "automodule", module_name)
 
 
+def _write_hidden_pages():
+    """Write orphan API pages reachable via cross-reference but not via the toctree.
+
+    Each page carries the standard ``ref_<dotted_module>`` label so docstrings can
+    link to it with ``:ref:``, while the ``:orphan:`` marker keeps it out of the
+    API reference toctree.
+    """
+    output_directory = API_DIR / "hidden"
+    output_directory.mkdir(parents=True, exist_ok=True)
+    for module_name, title in HIDDEN_MODULES.items():
+        output_path = output_directory / f"{module_name.replace('.', '_')}.rst"
+        with output_path.open("w", encoding="utf8") as rst_file:
+            rst_file.write(":orphan:\n\n")
+            _write_api_page(rst_file, title, "automodule", module_name)
+
+
 def _write_package_index(source_path):
     package_name = _package_name(source_path)
     relative_path = source_path.relative_to(SOURCE_PACKAGE)
@@ -118,7 +130,6 @@ def _write_package_index(source_path):
 
     with output_path.open("w", encoding="utf8") as rst_file:
         _write_api_page(rst_file, title, "automodule", package_name)
-        _write_additional_documentation(rst_file, package_name)
         rst_file.write("\n.. toctree::\n")
         rst_file.write("    :maxdepth: 2\n")
         rst_file.write("    :hidden:\n\n")
@@ -155,7 +166,18 @@ def _write_api_index():
             "versions are expected to work without modification.\n\n"
             "This is PyFluent's class and function reference. Please refer to the "
             ":ref:`ref_user_guide` for full guidelines on their use.\n\n"
-            "All public APIs for PyFluent are listed below.\n\n"
+            "All the public APIs for PyFluent are listed in the left hand margin. "
+            "Some key APIs are mentioned below:\n\n"
+            "Meshing mode\n"
+            "------------\n\n"
+            "The :ref:`meshing workflow <ref_ansys_fluent_core_meshing_meshing_workflow>` and "
+            ":ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` "
+            "provide the primary interface for creating, editing, managing, and "
+            "querying mesh data.\n\n"
+            "Solution mode\n"
+            "-------------\n\n"
+            "The solver :ref:`settings API <ref_root>` is the main interface for "
+            "controlling and running the solver.\n\n"
             ".. toctree::\n"
             "    :maxdepth: 2\n"
             "    :hidden:\n\n"
@@ -181,6 +203,7 @@ def generate():
     API_DIR.mkdir(parents=True)
     _write_api_index()
     _generate_package_tree(SOURCE_PACKAGE)
+    _write_hidden_pages()
 
 
 if __name__ == "__main__":

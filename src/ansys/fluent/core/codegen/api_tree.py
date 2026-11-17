@@ -22,6 +22,7 @@
 # SOFTWARE.
 
 """Api tree hierarchy."""
+
 from collections.abc import Mapping
 import json
 import os

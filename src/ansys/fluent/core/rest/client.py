@@ -252,7 +252,7 @@ class FluentRestClient:
         name : str
             Name of the object to delete (e.g., ``"inlet_1"``).
         ignore_not_found : bool, optional
-            If ``True``, suppress ``FluentRestError`` when object not found (404).
+            If ``True``, suppress :class:`~ansys.fluent.core.rest.errors.FluentRestError` when object not found (404).
             Defaults to ``False``.
 
         Raises

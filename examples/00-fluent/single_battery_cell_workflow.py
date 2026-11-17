@@ -459,6 +459,7 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_6.png")
 # .. image:: ../../_static/Single_Battery_Cell_6.png
 #    :align: center
 #    :alt: Current Magnitude (1C)
+#
 # Vector current density for ROM model (faster with identical results).
 
 #######################################################################################
@@ -531,6 +532,7 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_9.png")
 # .. image:: ../../_static/Single_Battery_Cell_9.png
 #    :align: center
 #    :alt: Negative Current Vector Plot
+#
 # Negative current vector plot after short circuit.
 
 vector_positive = vector.create("vector_positive_current")
@@ -552,6 +554,7 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_10.png")
 # .. image:: ../../_static/Single_Battery_Cell_10.png
 #    :align: center
 #    :alt: Positive Current Vector Plot
+#
 # Positive current vector plot after short circuit.
 
 temp_contour = solver.settings.results.graphics.contour.create("temperature-contour")
@@ -567,6 +570,7 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_11.png")
 # .. image:: ../../_static/Single_Battery_Cell_11.png
 #    :align: center
 #    :alt: Temperature Contour
+#
 # Temperature contour plot after short circuit.
 
 #######################################################################################
@@ -584,6 +588,7 @@ solver.exit()
 # on the Environmental Temperature", J. of Electrochemical Soc., Volume 158 (5), pages A611-A618, 2011.
 #
 # .. _Reference:
+#
 # [3] Simulating a Single Battery Cell Using the MSMD Battery Model, `Ansys Fluent documentation​ <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_bat_tutorial_cell.html>`_.
 
 # sphinx_gallery_thumbnail_path = '_static/Single_Battery_Cell_4.png'

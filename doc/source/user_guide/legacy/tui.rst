@@ -16,7 +16,7 @@ in PyFluent. The PyFluent TUI commands are Python versions of the commands
 that are used in the Fluent console.
 
 The Python TUI is superseded by purpose-built PyFluent interfaces that are more powerful
-and user-friendly. See :ref:`settings objects <ref_settings>` for solution mode, and
+and user-friendly. See :ref:`settings objects <ref_root>` for solution mode, and
 :ref:`guided workflows <ref_meshing_guide>` for meshing mode.
 
 The PyFluent TUI commands do not support TUI features such as aliases or
