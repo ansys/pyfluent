@@ -37,6 +37,7 @@ from functools import cached_property
 import json
 import logging
 import os
+from types import TracebackType
 from typing import TYPE_CHECKING, Any, Literal, overload
 import warnings
 import weakref
@@ -94,7 +95,9 @@ if TYPE_CHECKING:
         ContainerArgsWithoutDryRunMode,
     )
     from ansys.fluent.core.execution.launcher.pim_launcher import PIMArgsWithoutMode
+    from ansys.fluent.core.resilient import ResilientConfig
 
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
@@ -194,7 +197,7 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
         event_type: Enum | None = None,
@@ -245,7 +248,7 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
         launcher_args: dict[str, Any] | None = None,
@@ -258,7 +261,7 @@ class BaseSession:
         self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
-        self.rp_vars = RPVars(self.scheme.string_eval)
+        self._rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
         self.transcript = fluent_connection._service_factory.transcript_streaming
@@ -350,6 +353,14 @@ class BaseSession:
         return self._application_runtime
 
     @property
+    def rp_vars(self):
+        """Provides access and modification of rpvars.
+
+        See the :ref:`rpvars API <ref_ansys_fluent_core_rpvars>` for details.
+        """
+        return self._rp_vars
+
+    @property
     def id(self) -> str:
         """Return the session ID."""
         return self._fluent_connection._id
@@ -368,7 +379,7 @@ class BaseSession:
     def _create_from_server_info_file(
         cls,
         server_info_file_name: str,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
         **connection_kwargs,
@@ -455,7 +466,7 @@ class BaseSession:
         WaitTypeError
             If ``wait`` is specified improperly.
         """
-        return self._fluent_connection_backup.wait_process_finished()
+        return self._fluent_connection_backup.wait_process_finished(wait=wait)
 
     def exit(self, **kwargs) -> None:
         """Exit session.
@@ -548,7 +559,12 @@ class BaseSession:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ):
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self._exit()
@@ -668,6 +684,13 @@ class BaseSession:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any
             Service for uploading/downloading files to/from the server.
+        resilient_mode : bool, optional
+            Whether to enable resilient mode on the launched solver session. The
+            default is ``False``. See :ref:`ref_resilient_guide`.
+        resilient_config : ResilientConfig, optional
+            Resilient-mode configuration. Only used when ``resilient_mode`` is
+            ``True``. The default is ``None``, in which case the default
+            configuration is used.
 
         Raises
         ------
@@ -687,10 +710,14 @@ class BaseSession:
             StandaloneLauncher,
         )
 
+        resilient_mode = kwargs.pop("resilient_mode", False)
+        resilient_config = kwargs.pop("resilient_config", None)
         launcher = StandaloneLauncher(
             **kwargs, dry_run=dry_run, mode=FluentMode.from_session_class(cls)
         )
-        return launcher()
+        return _apply_resilient_mode(
+            launcher(), resilient_mode and not dry_run, resilient_config, launched=True
+        )
 
     @overload
     @classmethod
@@ -778,6 +805,13 @@ class BaseSession:
             If True, Fluent's gRPC server will be started in insecure mode without TLS.
             This mode is not recommended. For more details on the implications
             and usage of insecure mode, refer to the Fluent documentation.
+        resilient_mode : bool, optional
+            Whether to enable resilient mode on the launched solver session. The
+            default is ``False``. See :ref:`ref_resilient_guide`.
+        resilient_config : ResilientConfig, optional
+            Resilient-mode configuration. Only used when ``resilient_mode`` is
+            ``True``. The default is ``None``, in which case the default
+            configuration is used.
 
         Returns
         -------
@@ -802,10 +836,14 @@ class BaseSession:
             DockerLauncher,
         )
 
+        resilient_mode = kwargs.pop("resilient_mode", False)
+        resilient_config = kwargs.pop("resilient_config", None)
         launcher = DockerLauncher(
             **kwargs, dry_run=dry_run, mode=FluentMode.from_session_class(cls)
         )
-        return launcher()
+        return _apply_resilient_mode(
+            launcher(), resilient_mode and not dry_run, resilient_config, launched=True
+        )
 
     @classmethod
     def from_pim(  # pylint: disable=missing-param-doc
@@ -858,6 +896,13 @@ class BaseSession:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
+        resilient_mode : bool, optional
+            Whether to enable resilient mode on the launched solver session. The
+            default is ``False``. See :ref:`ref_resilient_guide`.
+        resilient_config : ResilientConfig, optional
+            Resilient-mode configuration. Only used when ``resilient_mode`` is
+            ``True``. The default is ``None``, in which case the default
+            configuration is used.
 
         Returns
         -------
@@ -876,8 +921,13 @@ class BaseSession:
         """
         from ansys.fluent.core.execution.launcher.pim_launcher import PIMLauncher
 
+        resilient_mode = kwargs.pop("resilient_mode", False)
+        resilient_config = kwargs.pop("resilient_config", None)
+        dry_run = kwargs.get("dry_run", False)
         launcher = PIMLauncher(**kwargs, mode=FluentMode.from_session_class(cls))
-        return launcher()
+        return _apply_resilient_mode(
+            launcher(), resilient_mode and not dry_run, resilient_config, launched=True
+        )
 
     @classmethod
     def from_connection(
@@ -945,6 +995,21 @@ class BaseSession:
             )
 
         return session
+
+
+def _apply_resilient_mode(
+    session: Any,
+    resilient_mode: bool,
+    resilient_config: "ResilientConfig | None",
+    *,
+    launched: bool,
+) -> Any:
+    """Enable resilient mode on a new session when ``resilient_mode`` is set."""
+    if not resilient_mode:
+        return session
+    from ansys.fluent.core.resilient import _enable_on_new_session
+
+    return _enable_on_new_session(session, resilient_config, launched=launched)
 
 
 class Fields:

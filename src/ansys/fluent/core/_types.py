@@ -29,9 +29,12 @@ This module centralizes reusable typing constructs
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Any, Literal, TypeAlias, TypedDict
+from typing import TYPE_CHECKING, Literal, TypeAlias, TypedDict
 
 if TYPE_CHECKING:
+    from ansys.fluent.core.connectivity.file_transfer_service import (
+        FileTransferStrategy,
+    )
     from ansys.fluent.core.execution.launcher.launch_options import (
         Dimension,
         FluentLinuxGraphicsDriver,
@@ -39,6 +42,7 @@ if TYPE_CHECKING:
         Precision,
         UIMode,
     )
+    from ansys.fluent.core.resilient import ResilientConfig
     from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 PathType: TypeAlias = "os.PathLike[str] | str"
@@ -115,5 +119,13 @@ class LauncherArgsBase(TypedDict, total=False):
     that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
     when the current Python process ends.
     """
-    file_transfer_service: Any | None
+    file_transfer_service: "FileTransferStrategy | None"
     """File transfer service. Uploads/downloads files to/from the server."""
+    resilient_mode: bool
+    """Whether to enable resilient mode on the launched solver session. The default
+    is ``False``. See :ref:`ref_resilient_guide`.
+    """
+    resilient_config: "ResilientConfig | None"
+    """Resilient-mode configuration. Only used when ``resilient_mode`` is ``True``.
+    The default is ``None``, in which case the default configuration is used.
+    """

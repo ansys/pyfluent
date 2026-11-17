@@ -1,0 +1,466 @@
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+"""Layer 2: typed, immutable AST for Fluent expressions.
+
+Every node knows how to render itself to a Fluent expression string via
+:meth:`Expr.__fluent_expr__` (also exposed through ``__str__``).
+
+Kinds
+-----
+Expression nodes carry a :class:`Kind` describing what they *produce*.
+That kind is what parameter slots in Layer 1 validate against, so slot
+mismatches (e.g. handing a :class:`VectorExpr` to a slot that wants a
+:class:`ScalarExpr`) are caught at build time -- not by Fluent complaining
+downstream.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Sequence
+
+from ansys.fluent.core._variable_strategies import FluentExprNamingStrategy
+from ansys.units.variable_descriptor import (
+    VariableDescriptor,
+    VectorVariableDescriptor,
+)
+
+from .errors import ExpressionBuildError
+
+_NAMING = FluentExprNamingStrategy()
+
+
+class Kind(Enum):
+    """Return kind of an expression node."""
+
+    SCALAR = "scalar"
+    VECTOR = "vector"
+    BOOLEAN = "boolean"
+    LOCATION_LIST = "location_list"
+    QUANTITY = "quantity"  # scalar with units, e.g. 5 [m/s]
+
+
+# --------------------------------------------------------------------------- #
+# Base class                                                                  #
+# --------------------------------------------------------------------------- #
+
+
+class Expr:
+    """Abstract base for every expression tree node.
+
+    Subclasses must set the class attribute :attr:`kind` and implement
+    :meth:`__fluent_expr__`.
+    """
+
+    kind: Kind
+
+    # -- rendering --------------------------------------------------------- #
+    def __fluent_expr__(self) -> str:  # pragma: no cover - abstract
+        raise NotImplementedError
+
+    def __str__(self) -> str:
+        return self.__fluent_expr__()
+
+    def __repr__(self) -> str:
+        return f"<{type(self).__name__} {self.__fluent_expr__()!r}>"
+
+    # -- settings-layer protocol ------------------------------------------- #
+    #   The generic PyFluent settings layer (``flobject``) consumes expression
+    #   objects through these domain-neutral dunder methods and never
+    #   references anything Fluent-specific.  ``__fluent_expr__`` remains the
+    #   package-internal renderer; ``__settings_str__`` simply forwards to it.
+    def __settings_str__(self) -> str:
+        """Render this node to the string a settings leaf stores."""
+        return self.__fluent_expr__()
+
+    def __settings_kind__(self) -> str | None:
+        """Return the neutral structural-kind tag (e.g. ``"scalar"``).
+
+        The value mirrors :class:`Kind` (``scalar``, ``vector``, ``boolean``,
+        ``quantity``, ``location_list``) so the settings layer can reject
+        structurally incompatible assignments without importing this package.
+        Returns ``None`` when the kind is unknown.
+        """
+        kind = getattr(self, "kind", None)
+        return kind.value if isinstance(kind, Kind) else None
+
+    def __settings_dimensions__(self) -> dict[str, float] | None:
+        """Return physical dimensions as ``{base_dimension_name: exponent}``.
+
+        Dimensions are only known for leaf nodes that carry units or a
+        :class:`~ansys.units.VariableDescriptor` (see :class:`Quantity` and
+        :class:`Variable`).  Composite nodes return ``None`` so the settings
+        layer skips the dimensional check for them.
+        """
+        return None
+
+    # -- operator overloading (scalar arithmetic) -------------------------- #
+    #   These live on the base so that any subclass whose kind is compatible
+    #   with arithmetic just works.  A kind-check happens inside _binop.
+    def __add__(self, other):
+        return _binop(self, other, "+")
+
+    def __radd__(self, other):
+        return _binop(other, self, "+")
+
+    def __sub__(self, other):
+        return _binop(self, other, "-")
+
+    def __rsub__(self, other):
+        return _binop(other, self, "-")
+
+    def __mul__(self, other):
+        return _binop(self, other, "*")
+
+    def __rmul__(self, other):
+        return _binop(other, self, "*")
+
+    def __truediv__(self, other):
+        return _binop(self, other, "/")
+
+    def __rtruediv__(self, other):
+        return _binop(other, self, "/")
+
+    def __pow__(self, other):
+        return _binop(self, other, "**")
+
+    def __neg__(self):
+        return UnaryOp("-", _coerce(self))
+
+    # -- comparisons produce BooleanExpr ----------------------------------- #
+    def __lt__(self, other):
+        return _cmp(self, other, "<")
+
+    def __le__(self, other):
+        return _cmp(self, other, "<=")
+
+    def __gt__(self, other):
+        return _cmp(self, other, ">")
+
+    def __ge__(self, other):
+        return _cmp(self, other, ">=")
+
+    def __eq__(self, other):
+        return _cmp(self, other, "==")
+
+    def __ne__(self, other):
+        return _cmp(self, other, "!=")
+
+    # dataclasses set __hash__ to None when __eq__ is defined; we need nodes
+    # hashable by identity so users can put them into sets during traversal.
+    __hash__ = object.__hash__
+
+
+# --------------------------------------------------------------------------- #
+# Marker mixins -- useful for type hints in Layer 1 param declarations        #
+# --------------------------------------------------------------------------- #
+
+
+class ScalarExpr(Expr):
+    """Marker mixin for expression nodes that produce a scalar result."""
+
+    kind = Kind.SCALAR
+
+
+class VectorExpr(Expr):
+    """Marker mixin for expression nodes that produce a vector result."""
+
+    kind = Kind.VECTOR
+
+
+class BooleanExpr(Expr):
+    """Marker mixin for expression nodes that produce a boolean result."""
+
+    kind = Kind.BOOLEAN
+
+
+# --------------------------------------------------------------------------- #
+# Leaf nodes                                                                  #
+# --------------------------------------------------------------------------- #
+
+
+@dataclass(frozen=True, eq=False)
+class Literal(ScalarExpr):
+    """A numeric literal (dimensionless)."""
+
+    value: float | int
+
+    def __fluent_expr__(self) -> str:
+        return repr(self.value)
+
+
+@dataclass(frozen=True, eq=False)
+class Quantity(Expr):
+    """A value with units, rendered as ``<value> [<units>]``."""
+
+    kind = Kind.QUANTITY
+    value: float
+    units: str
+
+    def __fluent_expr__(self) -> str:
+        return f"{self.value} [{self.units}]"
+
+    def __settings_dimensions__(self) -> dict[str, float] | None:
+        """Derive physical dimensions from the literal units string.
+
+        Uses ``ansys.units`` to turn the units into base-dimension exponents.
+        Any failure (e.g. an unconfigured unit) yields ``None`` so the settings
+        layer simply skips the dimensional check rather than blocking the user.
+        """
+        try:
+            import ansys.units
+
+            dims = ansys.units.Quantity(self.value, self.units).dimensions
+            return {
+                getattr(k, "name", str(k)): float(v) for k, v in dict(dims).items() if v
+            }
+        except Exception:
+            return None
+
+
+@dataclass(frozen=True, eq=False)
+class Variable(ScalarExpr):
+    """A Fluent field variable.
+
+    Constructed from a :class:`VariableDescriptor` (from the shared
+    ``ansys.units`` catalog) and mapped via :class:`FluentExprNamingStrategy`
+    so we use exactly the same source of truth as the reduction API.
+    """
+
+    descriptor: VariableDescriptor
+
+    def __post_init__(self):
+        # Fail fast if the descriptor isn't in the naming map. The strategy
+        # raises ValueError for unsupported descriptors; anything else (e.g.
+        # a completely bogus object) surfaces as AttributeError/TypeError.
+        try:
+            name = _NAMING.to_string(self.descriptor)
+        except (ValueError, AttributeError, TypeError) as exc:
+            raise ExpressionBuildError(
+                f"VariableCatalog entry {self.descriptor!r} has no Fluent "
+                f"expression name in FluentExprNamingStrategy."
+            ) from exc
+        if not isinstance(name, str):
+            raise ExpressionBuildError(
+                f"VariableCatalog entry {self.descriptor!r} has no Fluent "
+                f"expression name in FluentExprNamingStrategy."
+            )
+        object.__setattr__(self, "_fluent_name", name)
+
+    def __fluent_expr__(self) -> str:
+        return self._fluent_name  # type: ignore[attr-defined]
+
+    def __settings_kind__(self) -> str | None:
+        """Report the structural kind, distinguishing vector descriptors.
+
+        :class:`Variable` inherits ``kind = Kind.SCALAR`` from
+        :class:`ScalarExpr` so the builder treats every catalog entry as a
+        scalar operand. Vector catalog entries (e.g. ``V.VELOCITY``) are backed
+        by a :class:`VectorVariableDescriptor`, so override the neutral
+        settings-layer tag to ``"vector"`` for them; this lets the settings
+        layer reject vector-to-scalar assignments without altering the
+        builder's ``kind`` behavior.
+        """
+        if isinstance(self.descriptor, VectorVariableDescriptor):
+            return Kind.VECTOR.value
+        return super().__settings_kind__()
+
+    def __settings_dimensions__(self) -> dict[str, float] | None:
+        """Expose the descriptor's physical dimensions, when available.
+
+        ``VariableDescriptor.dimension`` maps :class:`~ansys.units.BaseDimensions`
+        enum members to exponents (e.g. ``{BaseDimensions.MASS: 1.0,
+        BaseDimensions.LENGTH: -1.0, BaseDimensions.TIME: -2.0}`` for a
+        pressure). Keys are normalized to their ``.name`` (``"MASS"``,
+        ``"LENGTH"``, ``"TIME"``) so they match ``Quantity.__settings_dimensions__``
+        and the settings layer's own normalization. Returns ``None`` when the
+        descriptor carries no usable dimension so the settings layer skips the
+        dimensional check.
+        """
+        try:
+            dimension = getattr(self.descriptor, "dimension", None)
+            if not dimension:
+                return None
+            return {
+                getattr(k, "name", str(k)): float(v)
+                for k, v in dict(dimension).items()
+                if v
+            }
+        except Exception:
+            return None
+
+
+@dataclass(frozen=True, eq=False)
+class RawName(ScalarExpr):
+    """Escape hatch: a raw identifier (e.g. a named expression).
+
+    Prefer :class:`Variable` for catalog-backed field names.
+    """
+
+    name: str
+
+    def __fluent_expr__(self) -> str:
+        return self.name
+
+
+@dataclass(frozen=True, eq=False)
+class LocationList(Expr):
+    """A list of Fluent surface / zone names, rendered as a Python-style list."""
+
+    kind = Kind.LOCATION_LIST
+    names: tuple[str, ...] = field(default_factory=tuple)
+
+    def __post_init__(self):
+        if not all(isinstance(n, str) and n for n in self.names):
+            raise ExpressionBuildError(
+                f"LocationList entries must be non-empty strings; got {self.names!r}"
+            )
+
+    def __fluent_expr__(self) -> str:
+        # Matches Fluent's expected form, e.g. ['inlet1', 'inlet2']
+        return "[" + ", ".join(f"'{n}'" for n in self.names) + "]"
+
+
+# --------------------------------------------------------------------------- #
+# Composite nodes                                                             #
+# --------------------------------------------------------------------------- #
+
+
+@dataclass(frozen=True, eq=False)
+class UnaryOp(ScalarExpr):
+    """A unary prefix operation, e.g. ``(-expr)``."""
+
+    op: str
+    operand: Expr
+
+    def __fluent_expr__(self) -> str:
+        return f"({self.op}{self.operand})"
+
+
+@dataclass(frozen=True, eq=False)
+class BinOp(ScalarExpr):
+    """A binary infix operation, e.g. ``(left + right)``."""
+
+    op: str
+    left: Expr
+    right: Expr
+
+    def __fluent_expr__(self) -> str:
+        return f"({self.left} {self.op} {self.right})"
+
+
+@dataclass(frozen=True, eq=False)
+class Compare(BooleanExpr):
+    """A comparison expression that produces a boolean result, e.g. ``(a < b)``."""
+
+    op: str
+    left: Expr
+    right: Expr
+
+    def __fluent_expr__(self) -> str:
+        return f"({self.left} {self.op} {self.right})"
+
+
+@dataclass(frozen=True, eq=False)
+class Call(Expr):
+    """Generic call node: ``name(arg1, arg2, ...)``.
+
+    Used to render any Layer 1 registered function (reductions, math funcs).
+    """
+
+    name: str
+    args: tuple[Expr, ...]
+    return_kind: Kind = Kind.SCALAR
+
+    # dataclass-safe kind override
+    @property  # type: ignore[override]
+    def kind(self) -> Kind:  # noqa: D401
+        """Return kind of the call's return value."""
+        return self.return_kind
+
+    def __fluent_expr__(self) -> str:
+        """Render the call as ``name(arg1,arg2,...)``."""
+        return f"{self.name}(" + ",".join(str(a) for a in self.args) + ")"
+
+
+@dataclass(frozen=True, eq=False)
+class KeywordArg(Expr):
+    """A ``Keyword=value`` fragment inside a :class:`Call` argument list.
+
+    Used for Fluent-side named arguments such as ``Sum(expr, [...], Weight=Area)``.
+    """
+
+    kind = Kind.SCALAR  # nominal; never used as an operand
+    keyword: str
+    value: Expr
+
+    def __fluent_expr__(self) -> str:
+        return f"{self.keyword}={self.value}"
+
+
+# --------------------------------------------------------------------------- #
+# Coercion helpers                                                            #
+# --------------------------------------------------------------------------- #
+
+
+_SCALAR_KINDS = {Kind.SCALAR, Kind.QUANTITY}
+
+
+def _coerce(value) -> Expr:
+    """Coerce a Python value into an :class:`Expr` if possible."""
+    if isinstance(value, Expr):
+        return value
+    if isinstance(value, (int, float)):
+        return Literal(value)
+    if isinstance(value, VariableDescriptor):
+        return Variable(value)
+    raise ExpressionBuildError(
+        f"Cannot use {value!r} (type {type(value).__name__}) as an expression."
+    )
+
+
+def _binop(a, b, op: str) -> BinOp:
+    """Build a :class:`BinOp` node, coercing operands and checking kinds.
+
+    Raises
+    ------
+    ExpressionBuildError
+        If either operand is not a scalar-compatible kind.
+    """
+    ea, eb = _coerce(a), _coerce(b)
+    for side, e in (("left", ea), ("right", eb)):
+        if e.kind not in _SCALAR_KINDS:
+            raise ExpressionBuildError(
+                f"Operator {op!r} requires scalar operands; "
+                f"{side} operand is a {e.kind.value}.",
+                node=e,
+                slot=side,
+            )
+    return BinOp(op, ea, eb)
+
+
+def _cmp(a, b, op: str) -> Compare:
+    ea, eb = _coerce(a), _coerce(b)
+    return Compare(op, ea, eb)
+
+
+def coerce_location_list(value) -> LocationList:
+    """Coerce a list/tuple of strings (or an existing LocationList) into one.
+
+    Raises
+    ------
+    ExpressionBuildError
+        If ``value`` is a bare string or cannot be interpreted as a sequence of
+        location names.
+    """
+    if isinstance(value, LocationList):
+        return value
+    if isinstance(value, str):
+        raise ExpressionBuildError(
+            "locations must be a sequence of strings, not a single string."
+        )
+    if isinstance(value, Sequence):
+        return LocationList(tuple(value))
+    raise ExpressionBuildError(f"Cannot use {value!r} as a LocationList.")

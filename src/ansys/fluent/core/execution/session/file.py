@@ -51,8 +51,8 @@ from ansys.fluent.core.fields.field_data.requests import (
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
 )
-from ansys.fluent.core.file_reader.case_file import CaseFile
-from ansys.fluent.core.file_reader.data_file import (
+from ansys.fluent.core.offline.case_file import CaseFile
+from ansys.fluent.core.offline.data_file import (
     DataFile,
     _to_scalar_field_name,
     _to_vector_field_name,

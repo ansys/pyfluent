@@ -34,6 +34,7 @@ Inheritance
 
 from typing import Any
 
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.services.object_model import PySimpleMenuGeneric
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
@@ -58,7 +59,7 @@ class SolverAero(Solver):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
     ):

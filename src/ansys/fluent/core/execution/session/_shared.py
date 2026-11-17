@@ -27,7 +27,6 @@ import logging
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import get_codegen_datamodel_dir, get_codegen_tui_dir
-from ansys.fluent.core.diagnostics.exceptions import warning_for_fluent_dev_version
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.text_interface import TUIMenu
 from ansys.fluent.core.utils import load_module
@@ -51,7 +50,6 @@ def _make_tui_module(session, module_name):
             f"{module_name}_tui_{session._version}",
             get_codegen_tui_dir(version_dir, module_name) / "tui.py",
         )
-        warning_for_fluent_dev_version(session._version)
         return tui_module.main_menu(
             session._tui_service, session._version, module_name, []
         )
@@ -73,7 +71,6 @@ def _make_datamodel_module(session, module_name):
             f"{module_name}_{session._version}",
             get_codegen_datamodel_dir(version_dir, file_name) / f"{file_name}.py",
         )
-        warning_for_fluent_dev_version(session._version)
         return module.Root(session._se_service, module_name, [])
     except (ImportError, FileNotFoundError) as ex:
         msg = "Please run `python codegen/allapigen.py` from the top-level pyfluent directory to generate the local datamodel API classes."

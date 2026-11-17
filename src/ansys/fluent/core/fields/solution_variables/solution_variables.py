@@ -175,13 +175,18 @@ class InvalidSolutionVariableNameError(ValueError):
 
     def __init__(self, variable_name: str, allowed_values: list[str]):
         """Initialize InvalidSolutionVariableNameError."""
-        super().__init__(
-            allowed_name_error_message(
-                context="solution variable",
-                trial_name=variable_name,
-                allowed_values=allowed_values,
-            )
+        self._message = allowed_name_error_message(
+            context="solution variable",
+            trial_name=variable_name,
+            allowed_values=allowed_values,
         )
+        # Forward the original arguments so pickle and copy.copy can
+        # reconstruct the exception via ``cls(*exc.args)``.
+        super().__init__(variable_name, allowed_values)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        return self._message
 
 
 class ZoneError(ValueError):
@@ -190,11 +195,16 @@ class ZoneError(ValueError):
     def __init__(self, zone_name: str, allowed_values: list[str]):
         """Initialize ZoneError."""
         self.zone_name = zone_name
-        super().__init__(
-            allowed_name_error_message(
-                context="zone", trial_name=zone_name, allowed_values=allowed_values
-            )
+        self._message = allowed_name_error_message(
+            context="zone", trial_name=zone_name, allowed_values=allowed_values
         )
+        # Forward the original arguments so pickle and copy.copy can
+        # reconstruct the exception via ``cls(*exc.args)``.
+        super().__init__(zone_name, allowed_values)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        return self._message
 
 
 class DomainError(ValueError):
@@ -203,11 +213,16 @@ class DomainError(ValueError):
     def __init__(self, domain_name: str, allowed_values: list[str]):
         """Initialize DomainError."""
         self.domain_name = domain_name
-        super().__init__(
-            allowed_name_error_message(
-                context="domain", trial_name=domain_name, allowed_values=allowed_values
-            )
+        self._message = allowed_name_error_message(
+            context="domain", trial_name=domain_name, allowed_values=allowed_values
         )
+        # Forward the original arguments so pickle and copy.copy can
+        # reconstruct the exception via ``cls(*exc.args)``.
+        super().__init__(domain_name, allowed_values)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        return self._message
 
 
 class _AllowedNames:

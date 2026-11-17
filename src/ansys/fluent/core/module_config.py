@@ -29,6 +29,7 @@ and other runtime settings. Prefer setting the corresponding configuration
 attributes in Python; environment variables are primarily intended for
 initializing configuration in deployment environments.
 """
+
 from collections.abc import Callable
 import inspect
 import os
@@ -285,11 +286,6 @@ class Config:
     #: Whether to use Podman Compose for launching Fluent in a container, defaults to the value of ``PYFLUENT_USE_PODMAN_COMPOSE`` environment variable.
     use_podman_compose = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
-    )
-
-    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 100 seconds.
-    launch_fluent_timeout = _ConfigDescriptor["Config"](
-        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 100))
     )
 
     #: Whether to show the Fluent GUI when launching the server, defaults to the value of ``PYFLUENT_SHOW_SERVER_GUI`` environment variable.

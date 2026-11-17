@@ -707,16 +707,16 @@ class P4(String):
     fluent_name = 'P4'
     _python_name = 'P4'
 
-class N1_child(Group):
+class N1_item(Group):
     """
     'child_object_type' of N1.
     """
     _version = '251'
     exposure_level = ExposureLevel.ALPHA
     fluent_name = 'child-object-type'
-    _python_name = 'N1_child'
+    _python_name = 'N1_item'
 
-class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
+class N1(NamedObject[N1_item], _NonCreatableNamedObjectMixin[N1_item]):
     """
     N1 help.
     """
@@ -728,7 +728,7 @@ class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     _child_classes = dict(
         P4=P4,
     )
-    child_object_type = N1_child
+    child_object_type = N1_item
 
 class A1(String):
     """
