@@ -23,7 +23,12 @@
 
 """Wrapper over the monitor gRPC service of Fluent (v0 proto API)."""
 
+from collections.abc import Generator
+import threading
+from typing import Any
+
 from google.protobuf.json_format import MessageToDict
+import grpc
 
 from ansys.api.fluent.v0 import monitor_pb2, monitor_pb2_grpc
 from ansys.fluent.core._grpc_services._streaming import StreamingService
@@ -37,7 +42,7 @@ class MonitorService(
 
     def __init__(
         self,
-        intercept_channel,
+        intercept_channel: grpc.Channel,
         metadata: list[tuple[str, str]],
     ) -> None:
         """__init__ method of MonitorService class."""
@@ -68,14 +73,23 @@ class MonitorService(
             monitors_info[monitor_set.name] = monitor_info
         return monitors_info
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Generator[monitor_pb2.StreamingResponse, None, None]:
         """Processes events streaming."""
         request = monitor_pb2.StreamingRequest(*args, **kwargs)
         return self.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
 
-    def parse_streaming_response(self, response):
+    def parse_streaming_response(
+        self, response: monitor_pb2.StreamingResponse
+    ) -> tuple[int, dict[str, Any]]:
         """Parse v0 streaming response into canonical (x_index, y_data) form."""
         x_axis_index = response.xaxisdata.xaxisindex
         y_data = {y.name: y.value for y in response.yaxisvalues}

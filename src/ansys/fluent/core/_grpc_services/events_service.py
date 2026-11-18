@@ -23,7 +23,12 @@
 
 """Wrapper over the events gRPC service of Fluent (v1 proto API)."""
 
+from collections.abc import Generator
+import threading
+from typing import Any
+
 from google.protobuf.json_format import MessageToDict
+import grpc
 
 from ansys.api.fluent.v1 import events_pb2, events_pb2_grpc
 from ansys.fluent.core._grpc_services._streaming import StreamingService
@@ -36,9 +41,9 @@ class EventsService(StreamingService, ServiceProtocol):
 
     def __init__(
         self,
-        channel,
+        channel: grpc.Channel,
         metadata: list[tuple[str, str]],
-    ):
+    ) -> None:
         """__init__ method of EventsService class."""
         super().__init__(
             stub=events_pb2_grpc.EventsStub(channel),
@@ -76,9 +81,9 @@ class EventsService(StreamingService, ServiceProtocol):
     def _construct_event_info(
         self,
         response: events_pb2.BeginStreamingResponse,
-        event,
-        event_info_cls,
-    ):
+        event: SolverEvent,
+        event_info_cls: type[Any],
+    ) -> Any:
         proto_field = _v1_all_events_map.get(event.value, event.value)
         event_info_msg = getattr(response, proto_field)
         # Note: MessageToDict's parameter names are different in different protobuf versions
@@ -99,7 +104,14 @@ class EventsService(StreamingService, ServiceProtocol):
         ]
         return event_info_cls(*ordered_values)
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Generator[events_pb2.BeginStreamingResponse, None, None]:
         """Processes events streaming."""
         request = events_pb2.BeginStreamingRequest(*args, **kwargs)
         return self.begin_streaming(

@@ -25,6 +25,8 @@
 
 import os
 from pathlib import Path
+import threading
+from typing import Any
 
 from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
@@ -32,30 +34,30 @@ from ansys.fluent.core.services.streaming_services.streaming import StreamingSer
 class AppendToFile:
     """Class representing append to file action."""
 
-    def __init__(self, file_name: str):
+    def __init__(self, file_name: str) -> None:
         """__init__ method of AppendToFile class."""
         self.f = open(file_name, "a")
 
-    def __call__(self, transcript):
+    def __call__(self, transcript: str) -> None:
         self.f.write(transcript)
         self.f.flush()
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.f.close()
 
 
 class Transcript(StreamingService):
     """Encapsulates a Fluent Transcript streaming service."""
 
-    def __init__(self, transcript_service):
+    def __init__(self, transcript_service: object) -> None:
         """__init__ method of Transcript class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=type(self)._process_streaming,
             streaming_service=transcript_service,
         )
-        self.callback_ids = []
-        self._writing_transcript_to_interpreter = False
+        self.callback_ids: list[str] = []
+        self._writing_transcript_to_interpreter: bool = False
 
     def start(
         self, file_name: str | None = None, write_to_stdout: bool = False
@@ -82,7 +84,7 @@ class Transcript(StreamingService):
             self._write_to_stdout()
         super().start()
 
-    def _write_to_stdout(self):
+    def _write_to_stdout(self) -> None:
         """Write transcript to stdout."""
         if not self._writing_transcript_to_interpreter:
             self.callback_ids.append(self.register_callback(print))
@@ -94,7 +96,14 @@ class Transcript(StreamingService):
             self.unregister_callback(callback_id)
         super().stop()
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Performs processes on transcript depending on the callback functions."""
         responses = self._streaming_service._process_streaming(
             *args,

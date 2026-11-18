@@ -30,6 +30,9 @@ service. The grpc service implementation lives in:
 * ``ansys.fluent.core._grpc_services.monitor_service_v0`` (v0 proto API)
 """
 
+from collections.abc import Generator
+import threading
+from typing import Any
 
 from ansys.fluent.core.services.abstract_monitors import AbstractMonitor
 
@@ -37,11 +40,11 @@ from ansys.fluent.core.services.abstract_monitors import AbstractMonitor
 class Monitor(AbstractMonitor):
     """Monitor backed by the Monitor gRPC service."""
 
-    def __init__(self, service):
+    def __init__(self, service: object) -> None:
         """Initialize Monitor."""
         self.service = service
 
-    def get_monitors_info(self) -> dict:
+    def get_monitors_info(self) -> dict[str, Any]:
         """Get monitors information.
 
         Parameters
@@ -55,12 +58,18 @@ class Monitor(AbstractMonitor):
         """
         return self.service.get_monitors_info()
 
-    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+    def begin_streaming(
+        self,
+        request: object,
+        started_evt: threading.Event,
+        id: str,
+        stream_begin_method: str,
+    ) -> Generator[object, None, None] | None:
         """Begin streaming from Fluent."""
         return self.service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
 
-    def end_streaming(self, id, stream_begin_method) -> None:
+    def end_streaming(self, id: str, stream_begin_method: str) -> None:
         """End streaming from Fluent."""
         self.service.end_streaming(id, stream_begin_method)

@@ -23,6 +23,11 @@
 
 """Wrapper over the transcript gRPC service of Fluent (v1 proto API)."""
 
+from collections.abc import Generator
+import threading
+from typing import Any
+
+import grpc
 
 from ansys.api.fluent.v1 import transcript_pb2, transcript_pb2_grpc
 from ansys.fluent.core._grpc_services._streaming import StreamingService
@@ -36,7 +41,7 @@ class TranscriptService(
 
     def __init__(
         self,
-        channel,
+        channel: grpc.Channel,
         metadata: list[tuple[str, str]],
     ) -> None:
         """__init__ method of TranscriptService class."""
@@ -45,7 +50,14 @@ class TranscriptService(
             metadata=metadata,
         )
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Generator[transcript_pb2.TranscriptResponse, None, None]:
         """Processes events streaming."""
         request = transcript_pb2.TranscriptRequest(*args, **kwargs)
         return self.begin_streaming(

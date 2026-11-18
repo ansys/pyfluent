@@ -24,6 +24,8 @@
 
 import os
 
+import grpc
+
 from ansys.api.fluent.v0 import app_utilities_pb2, app_utilities_pb2_grpc
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services._protocols import ServiceProtocol
@@ -35,9 +37,9 @@ class ApplicationRuntimeService(ServiceProtocol):
 
     def __init__(  # pyright: ignore[reportMissingSuperCall]
         self,
-        intercept_channel,
+        intercept_channel: grpc.Channel,
         metadata: list[tuple[str, str]],
-    ):
+    ) -> None:
         """Initialize ApplicationRuntimeService."""
         self._stub = app_utilities_pb2_grpc.AppUtilitiesStub(intercept_channel)
         self._metadata = metadata

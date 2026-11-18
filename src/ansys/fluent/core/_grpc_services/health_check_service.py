@@ -44,13 +44,15 @@ class HealthCheckService(ServiceProtocol):
         SERVING: int = 1
         NOT_SERVING: int = 2
 
-    def __init__(self, intercept_channel, metadata: list[tuple[str, str]]) -> None:
+    def __init__(
+        self, intercept_channel: grpc.Channel, metadata: list[tuple[str, str]]
+    ) -> None:
         """Initialize HealthCheckService."""
         self._stub = health_pb2_grpc.HealthStub(intercept_channel)
         self._metadata = metadata
         self._channel = intercept_channel
 
-    def _create_health_check_request(self):
+    def _create_health_check_request(self) -> health_pb2.HealthCheckRequest:
         """Create a health-check request. Override in subclasses for different proto modules."""
         return health_pb2.HealthCheckRequest()
 

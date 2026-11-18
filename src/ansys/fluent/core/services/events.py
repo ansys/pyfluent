@@ -43,6 +43,10 @@ Class hierarchy
     pause/resume registration delegated to Scheme.
 """
 
+from collections.abc import Generator
+import threading
+from typing import Any
+
 from ansys.fluent.core.services.abstract_events import AbstractEvents
 from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
 
@@ -50,7 +54,7 @@ from ansys.fluent.core.services.streaming_services.events_streaming import Solve
 class Events(AbstractEvents):
     """Events backed by the Events gRPC service."""
 
-    def __init__(self, service):
+    def __init__(self, service: object) -> None:
         """Initialize Events."""
         self.service = service
 
@@ -70,10 +74,19 @@ class Events(AbstractEvents):
         """Convert a proto oneof field name to canonical event enum value."""
         return self.service.event_from_proto_field(field_name)
 
-    def _construct_event_info(self, response, event, event_info_cls):
+    def _construct_event_info(
+        self, response: Any, event: Any, event_info_cls: type[Any]
+    ) -> Any:
         return self.service._construct_event_info(response, event, event_info_cls)
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Generator[Any, None, None]:
         """Delegate streaming request creation to the gRPC service."""
         return self.service._process_streaming(
             *args,
@@ -83,13 +96,19 @@ class Events(AbstractEvents):
             **kwargs,
         )
 
-    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+    def begin_streaming(
+        self,
+        request: object,
+        started_evt: threading.Event,
+        id: str,
+        stream_begin_method: str,
+    ) -> Generator[object, None, None] | None:
         """Begin streaming from Fluent."""
         return self.service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
 
-    def end_streaming(self, id, stream_begin_method) -> None:
+    def end_streaming(self, id: str, stream_begin_method: str) -> None:
         """End streaming from Fluent."""
         self.service.end_streaming(id, stream_begin_method)
 
@@ -97,7 +116,7 @@ class Events(AbstractEvents):
 class EventsV261(AbstractEvents):
     """Events backed by the Events gRPC service."""
 
-    def __init__(self, service, application_runtime_service):
+    def __init__(self, service: object, application_runtime_service: object) -> None:
         """Initialize ApplicationRuntime."""
         self.service = service
         self.application_runtime_service = application_runtime_service
@@ -118,14 +137,23 @@ class EventsV261(AbstractEvents):
             registration_id
         )
 
-    def _construct_event_info(self, response, event, event_info_cls):
+    def _construct_event_info(
+        self, response: Any, event: Any, event_info_cls: type[Any]
+    ) -> Any:
         return self.service._construct_event_info(response, event, event_info_cls)
 
     def event_from_proto_field(self, field_name: str) -> str:
         """Convert a proto oneof field name to canonical event enum value."""
         return self.service.event_from_proto_field(field_name)
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Generator[Any, None, None]:
         """Delegate streaming request creation to the gRPC service."""
         return self.service._process_streaming(
             *args,
@@ -135,13 +163,19 @@ class EventsV261(AbstractEvents):
             **kwargs,
         )
 
-    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+    def begin_streaming(
+        self,
+        request: object,
+        started_evt: threading.Event,
+        id: str,
+        stream_begin_method: str,
+    ) -> Generator[object, None, None] | None:
         """Begin streaming from Fluent."""
         return self.service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
 
-    def end_streaming(self, id, stream_begin_method) -> None:
+    def end_streaming(self, id: str, stream_begin_method: str) -> None:
         """End streaming from Fluent."""
         self.service.end_streaming(id, stream_begin_method)
 
@@ -149,7 +183,7 @@ class EventsV261(AbstractEvents):
 class EventsV251(AbstractEvents):
     """Events backed by the Events gRPC service."""
 
-    def __init__(self, service, scheme_interpreter_service):
+    def __init__(self, service: object, scheme_interpreter_service: object) -> None:
         """Initialize ApplicationRuntime."""
         self.service = service
         self.scheme_interpreter_service = scheme_interpreter_service
@@ -199,14 +233,23 @@ class EventsV251(AbstractEvents):
             f"(cancel-solution-monitor 'pyfluent-{registration_id})"
         )
 
-    def _construct_event_info(self, response, event, event_info_cls):
+    def _construct_event_info(
+        self, response: Any, event: Any, event_info_cls: type[Any]
+    ) -> Any:
         return self.service._construct_event_info(response, event, event_info_cls)
 
     def event_from_proto_field(self, field_name: str) -> str:
         """Convert a proto oneof field name to canonical event enum value."""
         return self.service.event_from_proto_field(field_name)
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Generator[Any, None, None]:
         """Delegate streaming request creation to the gRPC service."""
         return self.service._process_streaming(
             *args,
@@ -216,7 +259,13 @@ class EventsV251(AbstractEvents):
             **kwargs,
         )
 
-    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+    def begin_streaming(
+        self,
+        request: object,
+        started_evt: threading.Event,
+        id: str,
+        stream_begin_method: str,
+    ) -> Generator[object, None, None] | None:
         """Begin streaming from Fluent."""
         return self.service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
