@@ -9,7 +9,8 @@ Steady or transient solution model
 
 .. code:: python
 
-  >>> setup = pyfluent.solver.Setup(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Setup
+  >>> setup = Setup(settings_source=solver_session)
   >>> solver_time = setup.general.solver.time
   >>> solver_time.get_state()
   'steady'
@@ -23,7 +24,7 @@ Pressure-based or density-based solver
 
 .. code:: python
 
-  >>> setup = pyfluent.solver.Setup(settings_source=solver_session)
+  >>> setup = Setup(settings_source=solver_session)
   >>> solver_type = setup.general.solver.type
   >>> solver_type.get_state()
   'pressure-based'
@@ -39,7 +40,8 @@ Velocity coupling scheme and gradient options
     
 .. code:: python
 
-  >>> methods = pyfluent.solver.Methods(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Methods
+  >>> methods = Methods(settings_source=solver_session)
   >>> flow_scheme = methods.p_v_coupling.flow_scheme
   >>> flow_scheme.allowed_values()
   ['SIMPLE', 'SIMPLEC', 'PISO', 'Coupled']
@@ -55,7 +57,8 @@ Solution controls
 
 .. code:: python
 
-  >>> controls = pyfluent.solver.Controls(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Controls
+  >>> controls = Controls(settings_source=solver_session)
   >>> p_v_controls = controls.p_v_controls
   >>> explicit_momentum_under_relaxation = p_v_controls.explicit_momentum_under_relaxation
   >>> explicit_momentum_under_relaxation.min()
@@ -75,7 +78,8 @@ Create a report definition
 
 .. code:: python
 
-  >>> rep_defs = pyfluent.solver.ReportDefinitions(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import ReportDefinitions
+  >>> rep_defs = ReportDefinitions(settings_source=solver_session)
   >>> surface_report_definitions = rep_defs.surface
   >>> defn_name = "outlet-temp-avg"
   >>> surface_report_definitions[defn_name] = {}

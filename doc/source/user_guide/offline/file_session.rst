@@ -204,7 +204,6 @@ post-processing objects.
 
   >>> from ansys.fluent.visualization import set_config
   >>> set_config(blocking=True, set_view_on_display="isometric")
-  >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.visualization.matplotlib import Plots
   >>> from ansys.fluent.visualization.pyvista import Graphics
