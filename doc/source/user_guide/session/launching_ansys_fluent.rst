@@ -211,9 +211,14 @@ For more information, see :func:`launch_fluent() <ansys.fluent.core.execution.la
 
 Fluent version
 ~~~~~~~~~~~~~~
-This example uses :class:`FluentVersion <ansys.fluent.core.utils.fluent_version.FluentVersion>`
+
+.. vale Google.Spacing = NO
+
+This example uses :class:`~ansys.fluent.core.utils.fluent_version.FluentVersion`
 to select a Fluent release. If omitted for a local launch, the newest installed
 version is used:
+
+.. vale Google.Spacing = YES
 
 .. code:: python
 
@@ -224,9 +229,14 @@ version is used:
 
 Solution mode
 ~~~~~~~~~~~~~
+
+.. vale Google.Spacing = NO
+
 These two examples show equivalent ways to launch Fluent in solution mode.
-See :class:`FluentMode <ansys.fluent.core.execution.launcher.launch_options.FluentMode>`
+See :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentMode`
 for the available session modes:
+
+.. vale Google.Spacing = YES
 
 .. code:: python
 
@@ -265,9 +275,14 @@ This example shows how to launch Fluent in Pre/Post mode:
 
 Precision
 ~~~~~~~~~
+
+.. vale Google.Spacing = NO
+
 This example shows how to launch Fluent in solution mode
 and set the floating point precision using
-:class:`Precision <ansys.fluent.core.execution.launcher.launch_options.Precision>`:
+:class:`~ansys.fluent.core.execution.launcher.launch_options.Precision`:
+
+.. vale Google.Spacing = YES
 
 .. code:: python
 
@@ -281,9 +296,14 @@ and set the floating point precision using
 
 Dimension
 ~~~~~~~~~
+
+.. vale Google.Spacing = NO
+
 This example shows how to launch Fluent in solution mode and set the
 modeling dimension to two using
-:class:`Dimension <ansys.fluent.core.execution.launcher.launch_options.Dimension>`:
+:class:`~ansys.fluent.core.execution.launcher.launch_options.Dimension`:
+
+.. vale Google.Spacing = YES
 
 .. code:: python
 
@@ -298,9 +318,14 @@ modeling dimension to two using
 
 User interface mode
 ~~~~~~~~~~~~~~~~~~~
-Use :class:`UIMode <ansys.fluent.core.execution.launcher.launch_options.UIMode>`
+
+.. vale Google.Spacing = NO
+
+Use :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode`
 with the ``ui_mode`` argument to control the Fluent user interface. This example
 launches Fluent without the GUI or graphics for an automated workflow:
+
+.. vale Google.Spacing = YES
 
 .. code:: python
 
@@ -548,8 +573,12 @@ using :func:`create_launcher() <ansys.fluent.core.execution.launcher.launcher.cr
   >>> pim_solver_session = pim_solver_launcher()
 
 
-See :class:`LaunchMode <ansys.fluent.core.execution.launcher.launch_options.LaunchMode>`
+.. vale Google.Spacing = NO
+
+See :class:`~ansys.fluent.core.execution.launcher.launch_options.LaunchMode`
 for the available launch backends.
+
+.. vale Google.Spacing = YES
 
 
 Launching Fluent in container mode with Docker Compose or Podman Compose
