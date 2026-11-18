@@ -49,12 +49,15 @@ from __future__ import annotations
 from collections import OrderedDict
 from functools import wraps
 import inspect
+import logging
 import re
 from typing import ValuesView
 
 from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _get_task_type_name(task_obj: PyMenu) -> str:
@@ -222,6 +225,11 @@ class Workflow:
         The method rebuilds its internal task cache on each call to ensure
         freshness, though this can be expensive for large workflows.
         """
+        self._build_current_task_list()
+        return self._task_dict.values()
+
+    def _build_current_task_list(self) -> None:
+        """Refresh the internal mapping of currently available tasks."""
         self._task_dict = {}
         _state = self._workflow.task_object()
         for task in sorted(_state):
@@ -306,8 +314,6 @@ class Workflow:
         # Merge all compound child tasks into main dictionary
         for child_tasks in self._compound_child_dict.values():
             self._task_dict.update(child_tasks)
-
-        return self._task_dict.values()
 
     def _workflow_state(self):
         """Get the complete state dictionary of the workflow."""
@@ -607,8 +613,14 @@ class Workflow:
 
     def __dir__(self):
         """Include dynamically accessible task names in interactive discovery."""
-        self.tasks()
-        return sorted(set(super().__dir__()) | self._task_dict.keys())
+        members = set(super().__dir__())
+        try:
+            self._build_current_task_list()
+        except Exception:
+            logger.debug("Unable to refresh workflow task completions.", exc_info=True)
+        else:
+            members.update(self._task_dict)
+        return sorted(members)
 
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""
@@ -616,7 +628,7 @@ class Workflow:
             raise AttributeError(
                 f"'{item}' is only supported in Fault-tolerant Meshing workflows."
             )
-        self.tasks()
+        self._build_current_task_list()
         if item in self._task_dict:
             return make_task_wrapper(
                 self._task_dict[item], item, self._workflow, self, self._command_source
@@ -903,11 +915,13 @@ class TaskObject:
 
     def __dir__(self):
         """Include task arguments and delegated task members in interactive discovery."""
-        return sorted(
-            set(super().__dir__())
-            | set(dir(self._task_object))
-            | set(self._task_object.arguments())
-        )
+        members = set(super().__dir__())
+        try:
+            members.update(dir(self._task_object))
+            members.update(self._task_object.arguments())
+        except Exception:
+            logger.debug("Unable to refresh task argument completions.", exc_info=True)
+        return sorted(members)
 
     def __getattr__(self, item):
         """Enable attribute access to task properties and arguments.

@@ -232,3 +232,56 @@ def test_task_dir_tracks_arguments_and_preserves_task_members():
     assert task.file_name is task_object.arguments.file_name
     del task_object.arguments.values["length_unit"]
     assert "length_unit" not in dir(task)
+
+
+def test_workflow_discovery_does_not_call_public_tasks():
+    class WorkflowTasks:
+        example = {"Example": FakeTask({})}
+
+        def __call__(self):
+            return ["example:Example"]
+
+    class WorkflowRoot:
+        task_object = WorkflowTasks()
+
+    class CustomWorkflow(Workflow):
+        def tasks(self):
+            raise AssertionError("Public tasks() must not be used for discovery.")
+
+    WorkflowRoot.task_object.example["Example"].task_type = lambda: "Simple"
+    workflow = CustomWorkflow(WorkflowRoot(), None, None)
+
+    assert "example" in dir(workflow)
+    assert workflow.example._task_object is WorkflowRoot.task_object.example["Example"]
+    assert list(Workflow.tasks(workflow)) == [
+        WorkflowRoot.task_object.example["Example"]
+    ]
+
+
+def test_workflow_dir_preserves_static_members_when_refresh_fails(mocker, caplog):
+    root = mocker.Mock()
+    root.task_object.side_effect = RuntimeError("Server unavailable")
+    workflow = Workflow(root, None, None)
+
+    with caplog.at_level("DEBUG", logger="pyfluent.datamodel"):
+        members = dir(workflow)
+
+    assert {"tasks", "task_names", "save_workflow"} <= set(members)
+    assert "Server unavailable" in caplog.text
+    with pytest.raises(RuntimeError, match="Server unavailable"):
+        workflow.tasks()
+
+
+def test_task_dir_preserves_static_members_when_arguments_fail(mocker, caplog):
+    task_object = FakeTask({})
+    task = make_task_wrapper(task_object, "example", None, None, None)
+    task_object.arguments = mocker.Mock(
+        side_effect=RuntimeError("Arguments unavailable")
+    )
+
+    with caplog.at_level("DEBUG", logger="pyfluent.datamodel"):
+        members = dir(task)
+
+    assert {"get_state", "set_state", "execute", "state"} <= set(members)
+    assert "length_unit" not in members
+    assert "Arguments unavailable" in caplog.text
