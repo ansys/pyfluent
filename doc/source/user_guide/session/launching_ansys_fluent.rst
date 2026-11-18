@@ -8,7 +8,8 @@ This guide explains how to start and connect to Ansys Fluent sessions using PyFl
 or :ref:`Connect to an existing session <connect_to_existing_session>`. Examples are provided for initializing Fluent in
 meshing, solution, and post-processing modes.
 
-Advanced launch options, such as :ref:`selecting precision <select_precision>`, :ref:`dimensionality <select_dimension>`, and
+Advanced launch options, such as :ref:`selecting the user interface <select_ui_mode>`,
+:ref:`precision <select_precision>`, :ref:`dimensionality <select_dimension>`, and
 :ref:`parallel settings <parallel_settings>`, are also described. The document includes guidance for :ref:`running Fluent under job
 schedulers like Slurm <scheduler_support>`, :ref:`using PyFluent in PIM environments <pypim_guide>`, and configuring remote connections
 across Windows, Linux, and WSL systems.
@@ -182,9 +183,26 @@ Launcher options
 The following examples show different ways that you can launch Fluent locally.
 For more information, see :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`.
 
+.. _select_product_version:
+
+Fluent version
+~~~~~~~~~~~~~~
+This example uses :class:`~ansys.fluent.core.utils.fluent_version.FluentVersion`
+to select a Fluent release. If omitted for a local launch, the newest installed
+version is used:
+
+.. code:: python
+
+  >>> solver_session = pyfluent.launch_fluent(
+  >>>     product_version=pyfluent.FluentVersion.v252
+  >>> )
+
+
 Solution mode
 ~~~~~~~~~~~~~
-These two examples show equivalent ways to launch Fluent in solution mode:
+These two examples show equivalent ways to launch Fluent in solution mode.
+See :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentMode`
+for the available session modes:
 
 .. code:: python
 
@@ -223,7 +241,8 @@ This example shows how to launch Fluent in Pre/Post mode:
 Precision
 ~~~~~~~~~
 This example shows how to launch Fluent in solution mode
-and set the floating point precision:
+and set the floating point precision using
+:class:`~ansys.fluent.core.execution.launcher.launch_options.Precision`:
 
 .. code:: python
 
@@ -237,7 +256,8 @@ and set the floating point precision:
 Dimension
 ~~~~~~~~~
 This example shows how to launch Fluent in solution mode and set the
-modeling dimension to two:
+modeling dimension to two using
+:class:`~ansys.fluent.core.execution.launcher.launch_options.Dimension`:
 
 .. code:: python
 
@@ -245,6 +265,32 @@ modeling dimension to two:
   >>>      precision=pyfluent.Precision.DOUBLE,
   >>>      dimension=pyfluent.Dimension.TWO
   >>> )
+
+
+.. _select_ui_mode:
+
+User interface mode
+~~~~~~~~~~~~~~~~~~~
+Use :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode`
+with the ``ui_mode`` argument to control the Fluent user interface. This example
+launches Fluent without the GUI or graphics for an automated workflow:
+
+.. code:: python
+
+  >>> solver_session = pyfluent.launch_fluent(
+  >>>     ui_mode=pyfluent.UIMode.NO_GUI_OR_GRAPHICS,
+  >>> )
+
+To display the Fluent GUI while controlling the session from Python:
+
+.. code:: python
+
+  >>> solver_session = pyfluent.launch_fluent(
+  >>>     ui_mode=pyfluent.UIMode.GUI,
+  >>> )
+
+For local launches, the default is ``UIMode.HIDDEN_GUI`` on Windows and
+``UIMode.NO_GUI`` on Linux, unless overridden by configuration.
 
 
 .. _parallel_settings:
@@ -471,6 +517,10 @@ using :func:`create_launcher() <ansys.fluent.core.execution.launcher.launcher.cr
 
   >>> pim_solver_launcher = create_launcher(LaunchMode.PIM)
   >>> pim_solver_session = pim_solver_launcher()
+
+
+See :class:`~ansys.fluent.core.execution.launcher.launch_options.LaunchMode`
+for the available launch backends.
 
 
 Launching Fluent in container mode with Docker Compose or Podman Compose

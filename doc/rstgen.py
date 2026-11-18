@@ -294,6 +294,12 @@ def _get_reference(menu: type, menu_path: str, mode: str, is_datamodel: bool):
     return reference
 
 
+def _get_datamodel_display_name(menu: type):
+    """Display ``_<container>`` member classes as ``<container>_item``."""
+    name = menu.__name__
+    return f"{name[1:]}_item" if name.startswith("_") else name
+
+
 def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
     """Get title for RST.
 
@@ -312,10 +318,7 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
         if menu["name"].__name__ == "Root":
             title = menu_path
         else:
-            # Named-object member classes are named ``_<container>``; show the
-            # friendly name (without the leading underscore) in the heading.
-            name = menu["name"].__name__
-            title = name[1:] if name.startswith("_") else name
+            title = _get_datamodel_display_name(menu["name"])
     else:
         title = "tui" if menu["name"].__name__ == "main_menu" else menu["name"].__name__
     return title
@@ -354,6 +357,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     index_file = folder / f"{folder.name}_contents.rst"
     title = _get_title(mode, menu_path, menu, is_datamodel)
     with open(index_file, "w", encoding="utf8") as f:
+        if is_datamodel and menu["name"].__name__.startswith("_"):
+            f.write(":html_theme.sidebar_secondary.remove:\n\n")
         f.write(_get_reference(menu, menu_path, mode, is_datamodel))
         f.write(f"{title}\n")
         f.write(f"{'=' * len(title)}\n\n")
@@ -375,7 +380,7 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             named_object_member is not None
             and named_object_member in menu["with_members"]
         ):
-            member_label = named_object_member.__name__.lstrip("_")
+            member_label = _get_datamodel_display_name(named_object_member)
             _, member_path = _get_menu_name_path(named_object_member, True)
             member_ref = (
                 f"ref_{mode}_datamodel_{member_path.rstrip('/').replace('/', '_')}"
