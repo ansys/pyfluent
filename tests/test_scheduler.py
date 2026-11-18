@@ -29,6 +29,8 @@ import socket
 import tempfile
 import unittest
 
+import pytest
+
 from ansys.fluent.core.execution.scheduler import build_parallel_options
 from ansys.fluent.core.execution.scheduler.load_machines import (
     _construct_machine_list_slurm,
@@ -480,6 +482,46 @@ class TestMachineListCmdLine(unittest.TestCase):
                 self.assertEqual(
                     machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
+
+
+@pytest.mark.parametrize(
+    "host_list, expected_hosts",
+    [
+        ("node[1,3]", ["node1", "node3"]),
+        ("node[10,12]", ["node10", "node12"]),
+        ("node[01,03]", ["node01", "node03"]),
+        ("node[001,003-004]", ["node001", "node003", "node004"]),
+        ("lx[15,18,32-33]", ["lx15", "lx18", "lx32", "lx33"]),
+        ("node[1]", ["node1"]),
+        ("node[010]", ["node010"]),
+        ("node[1-2,4]", ["node1", "node2", "node4"]),
+    ],
+)
+@pytest.mark.parametrize("per_node_cores", [False, True])
+def test_slurm_host_list_first_single_id(
+    host_list, expected_hosts, per_node_cores, monkeypatch
+):
+    monkeypatch.setattr(socket, "gethostname", lambda: "local-host")
+    monkeypatch.delenv("SLURM_NTASKS_PER_NODE", raising=False)
+    monkeypatch.delenv("SLURM_TASKS_PER_NODE", raising=False)
+    if per_node_cores:
+        expected_cores = list(range(1, len(expected_hosts) + 1))
+        monkeypatch.setenv("SLURM_TASKS_PER_NODE", ",".join(map(str, expected_cores)))
+    else:
+        expected_cores = [8] * len(expected_hosts)
+        monkeypatch.setenv("SLURM_NTASKS_PER_NODE", "8")
+
+    machines = _construct_machine_list_slurm(host_list)
+
+    assert [m.host_name for m in machines] == expected_hosts
+    assert [m.number_of_cores for m in machines] == expected_cores
+    expected_cnf = ",".join(
+        f"{host}:{cores}" for host, cores in zip(expected_hosts, expected_cores)
+    )
+    assert (
+        build_parallel_options(machines)
+        == f"-t{sum(expected_cores)} -cnf={expected_cnf}"
+    )
 
 
 suite1 = unittest.TestLoader().loadTestsFromTestCase(TestMachine)
