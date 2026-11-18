@@ -19,7 +19,7 @@ To assign the expression to a named expression in a live Fluent solver:
   >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.offline.expressions import ExpressionBuilder
-  >>> from ansys.units import VariableCatalog as V
+  >>> from ansys.variables import Catalog as V
 
   >>> solver_session = Solver.from_install()
   >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")

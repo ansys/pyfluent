@@ -35,7 +35,7 @@ from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 
 if TYPE_CHECKING:
 
-    from ansys.units.variable_descriptor import (
+    from ansys.variables import (
         ScalarVariableDescriptor,
         VariableDescriptor,
         VectorVariableDescriptor,
@@ -63,7 +63,7 @@ def _validate_scalar_variable_descriptor(
     field_name: "ScalarVariableDescriptor",
 ) -> None:
     """Validate that the provided field_name is a ScalarVariableDescriptor."""
-    from ansys.units.variable_descriptor import ScalarVariableDescriptor
+    from ansys.variables import ScalarVariableDescriptor
 
     if not isinstance(field_name, ScalarVariableDescriptor):
         raise TypeError("field_name must be a `ScalarVariableDescriptor`.")
@@ -73,7 +73,7 @@ def _validate_vector_variable_descriptor(
     field_name: "VectorVariableDescriptor",
 ) -> None:
     """Validate that the provided field_name is a VectorVariableDescriptor."""
-    from ansys.units.variable_descriptor import VectorVariableDescriptor
+    from ansys.variables import VectorVariableDescriptor
 
     if not isinstance(field_name, VectorVariableDescriptor):
         raise TypeError("field_name must be a `VectorVariableDescriptor`.")
@@ -326,7 +326,7 @@ class _ScalarFields(_Fields):
         ----------
         field: str | ScalarVariableDescriptor
             Field name as a string or a scalar ``VariableDescriptor``
-            (for example, ``VariableCatalog.TEMPERATURE``).
+            (for example, ``Catalog.TEMPERATURE``).
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
