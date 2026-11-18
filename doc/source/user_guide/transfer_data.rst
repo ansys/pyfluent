@@ -22,16 +22,16 @@ remotely through a file transfer service. Solution data is not included.
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import CaseSnapshot, Solver
   >>> from ansys.fluent.core.examples import download_file
 
   >>> case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-  >>> source = pyfluent.Solver.from_install()
+  >>> source = Solver.from_install()
   >>> source.settings.file.read_case(file_name=case_file_name)
   >>> source.settings.setup.models.viscous.model = "laminar"
 
-  >>> snapshot = pyfluent.CaseSnapshot.from_session(source)
-  >>> workers = [pyfluent.Solver.from_install() for _ in range(2)]
+  >>> snapshot = CaseSnapshot.from_session(source)
+  >>> workers = [Solver.from_install() for _ in range(2)]
   >>> snapshot.apply_to(*workers)
 
 ``from_session`` takes the snapshot immediately: later changes to the source
@@ -45,7 +45,7 @@ keep a copy of a snapshot:
 
 .. code:: python
 
-  >>> template = pyfluent.CaseSnapshot.from_file(case_file_name)
+  >>> template = CaseSnapshot.from_file(case_file_name)
   >>> template.apply_to(source)
   >>> snapshot.save("elbow_laminar.cas.h5")
 
@@ -55,7 +55,7 @@ earlier:
 
 .. code:: python
 
-  >>> with pyfluent.CaseSnapshot.from_session(source) as baseline:
+  >>> with CaseSnapshot.from_session(source) as baseline:
   ...     baseline.apply_to(*workers)
 
 Apply a snapshot without its mesh
@@ -69,7 +69,7 @@ case. This option uses Fluent's ``mesh.replace`` command.
 
 .. code:: python
 
-  >>> refined = pyfluent.Solver.from_install()
+  >>> refined = Solver.from_install()
   >>> refined.settings.file.read_case(file_name="elbow_refined.cas.h5")
   >>> snapshot.apply_to(refined, include_mesh=False)
 
@@ -94,16 +94,16 @@ Meshing to solver
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import PureMeshing, Solver
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.connectivity.data_transfer import transfer_case
 
   >>> mesh_file_name = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
-  >>> source = pyfluent.PureMeshing.from_install()
+  >>> source = PureMeshing.from_install()
   >>> source.meshing_workflow.application.file.read_mesh(file_name=mesh_file_name)
 
-  >>> solver = pyfluent.Solver.from_install()
+  >>> solver = Solver.from_install()
   >>> transfer_case(source_instance=source, solvers=[solver], file_type="mesh")
 
 Solver to solver
@@ -113,14 +113,14 @@ Solver to solver
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.connectivity.data_transfer import transfer_case
 
   >>> case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
-  >>> source = pyfluent.Solver.from_install()
+  >>> source = Solver.from_install()
   >>> source.settings.file.read_case(file_name=case_file_name)
 
-  >>> target = pyfluent.Solver.from_install()
+  >>> target = Solver.from_install()
   >>> transfer_case(source_instance=source, solvers=[target])

@@ -26,9 +26,9 @@ Example usage
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> solver_session = pyfluent.Solver.from_install()
+  >>> solver_session = Solver.from_install()
   >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
 
 
@@ -358,12 +358,11 @@ in a single solver session:
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver, examples
   >>> from ansys.fluent.core.solver import Viscous, VelocityInlet
-  >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver_session = pyfluent.Solver.from_install()
+  >>> solver_session = Solver.from_install()
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
