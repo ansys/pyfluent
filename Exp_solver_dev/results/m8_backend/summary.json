@@ -1,0 +1,54 @@
+{
+  "result_format_version": "1.0",
+  "backend": "independent-fvm-python",
+  "case_id": "lid_driven_cavity_re100",
+  "schema_version": "1.0",
+  "status": "not_converged",
+  "converged": false,
+  "termination_reason": "maximum_steps_reached",
+  "steps": 3,
+  "final_time_s": 0.003,
+  "mesh": {
+    "nx": 16,
+    "ny": 16,
+    "width_m": 1.0,
+    "height_m": 1.0
+  },
+  "reynolds_number": 100.0,
+  "velocity_extrema": {
+    "u_min_m_s": -0.0030868315586247146,
+    "u_min_location_m": [
+      0.125,
+      0.90625
+    ],
+    "u_max_m_s": 0.013229796256357014,
+    "u_max_location_m": [
+      0.5,
+      0.96875
+    ],
+    "v_min_m_s": -0.0074612221965012545,
+    "v_min_location_m": [
+      0.96875,
+      0.9375
+    ],
+    "v_max_m_s": 0.007460928431695745,
+    "v_max_location_m": [
+      0.03125,
+      0.9375
+    ],
+    "speed_max_m_s": 0.013211592337768531,
+    "speed_max_location_m": [
+      0.53125,
+      0.96875
+    ]
+  },
+  "conservation": {
+    "max_divergence_s_inv": 2.7755575615628914e-17,
+    "global_mass_imbalance_m2_s": -2.117582368135751e-22
+  },
+  "residuals": {
+    "u_momentum": 1.3561759141569657e-16,
+    "v_momentum": 1.5495672866738549e-16,
+    "pressure": 9.07449458743209e-16
+  }
+}

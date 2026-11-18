@@ -1,0 +1,57 @@
+{
+  "format_version": 1,
+  "mesh": {
+    "nx": 64,
+    "ny": 64,
+    "width": 1.0,
+    "height": 1.0
+  },
+  "settings": {
+    "density": 1.0,
+    "viscosity": 0.01,
+    "max_time_step": 0.001,
+    "max_steps": 3,
+    "cfl_limit": 0.5,
+    "velocity_tolerance": 1e-14,
+    "continuity_tolerance": 1e-08,
+    "mass_tolerance": 1e-10,
+    "momentum_residual_tolerance": 1e-10,
+    "pressure_residual_tolerance": 1e-10,
+    "minimum_time_step": 1e-12
+  },
+  "converged": false,
+  "termination_reason": "maximum_steps_reached",
+  "steps": 3,
+  "final_time": 0.003,
+  "velocity_extrema": {
+    "u": {
+      "minimum": -0.03097168669920698,
+      "minimum_location": [
+        0.015625,
+        0.9765625
+      ],
+      "maximum": 0.1907593715848903,
+      "maximum_location": [
+        0.5,
+        0.9921875
+      ]
+    },
+    "v": {
+      "minimum": -0.091762570642546,
+      "minimum_location": [
+        0.9921875,
+        0.984375
+      ],
+      "maximum": 0.09156949527213512,
+      "maximum_location": [
+        0.0078125,
+        0.984375
+      ]
+    },
+    "maximum_speed": 0.19075591744131407,
+    "maximum_speed_location": [
+      0.5078125,
+      0.9921875
+    ]
+  }
+}

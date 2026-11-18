@@ -1,0 +1,156 @@
+{
+  "benchmark": "Ghia et al. lid-driven cavity Re=100",
+  "simulation_converged": true,
+  "benchmark_valid": true,
+  "u_rms_error": 0.029193216523447252,
+  "v_rms_error": 0.018807187416998817,
+  "u_profile": [
+    {
+      "coordinate": 0.0625,
+      "reference": -0.04192,
+      "computed": -0.04081257246331629
+    },
+    {
+      "coordinate": 0.0703,
+      "reference": -0.04775,
+      "computed": -0.04518468670675824
+    },
+    {
+      "coordinate": 0.1016,
+      "reference": -0.06434,
+      "computed": -0.06187436099113686
+    },
+    {
+      "coordinate": 0.1719,
+      "reference": -0.1015,
+      "computed": -0.0926403919302605
+    },
+    {
+      "coordinate": 0.2813,
+      "reference": -0.15662,
+      "computed": -0.13244141868586962
+    },
+    {
+      "coordinate": 0.4531,
+      "reference": -0.2109,
+      "computed": -0.1689223650208163
+    },
+    {
+      "coordinate": 0.5,
+      "reference": -0.20581,
+      "computed": -0.1674535579595639
+    },
+    {
+      "coordinate": 0.6172,
+      "reference": -0.13641,
+      "computed": -0.1275559656634413
+    },
+    {
+      "coordinate": 0.7344,
+      "reference": 0.00332,
+      "computed": -0.01806870604474909
+    },
+    {
+      "coordinate": 0.8516,
+      "reference": 0.23151,
+      "computed": 0.20143411156931645
+    },
+    {
+      "coordinate": 0.9531,
+      "reference": 0.68717,
+      "computed": 0.6511045068897141
+    },
+    {
+      "coordinate": 0.9609,
+      "reference": 0.73722,
+      "computed": 0.6956464122330817
+    },
+    {
+      "coordinate": 0.9688,
+      "reference": 0.78871,
+      "computed": 0.7408890844625243
+    },
+    {
+      "coordinate": 0.9766,
+      "reference": 0.84123,
+      "computed": 0.8056668133468935
+    }
+  ],
+  "v_profile": [
+    {
+      "coordinate": 0.0625,
+      "reference": 0.09233,
+      "computed": 0.0843420844718851
+    },
+    {
+      "coordinate": 0.0703,
+      "reference": 0.10091,
+      "computed": 0.09217705297337032
+    },
+    {
+      "coordinate": 0.0781,
+      "reference": 0.1089,
+      "computed": 0.10001202147485555
+    },
+    {
+      "coordinate": 0.0938,
+      "reference": 0.12317,
+      "computed": 0.11575567636517538
+    },
+    {
+      "coordinate": 0.1563,
+      "reference": 0.16077,
+      "computed": 0.1451049418983601
+    },
+    {
+      "coordinate": 0.2266,
+      "reference": 0.17507,
+      "computed": 0.1511234598985161
+    },
+    {
+      "coordinate": 0.2344,
+      "reference": 0.17527,
+      "computed": 0.15015825806104585
+    },
+    {
+      "coordinate": 0.5,
+      "reference": 0.05454,
+      "computed": 0.040498844743480755
+    },
+    {
+      "coordinate": 0.8047,
+      "reference": -0.24533,
+      "computed": -0.19760153127549063
+    },
+    {
+      "coordinate": 0.8594,
+      "reference": -0.22445,
+      "computed": -0.20140652244427054
+    },
+    {
+      "coordinate": 0.9063,
+      "reference": -0.16914,
+      "computed": -0.17710955374193407
+    },
+    {
+      "coordinate": 0.9453,
+      "reference": -0.10313,
+      "computed": -0.11195706173427372
+    },
+    {
+      "coordinate": 0.9531,
+      "reference": -0.08864,
+      "computed": -0.0989265633327418
+    },
+    {
+      "coordinate": 0.9609,
+      "reference": -0.07391,
+      "computed": -0.0858960649312097
+    },
+    {
+      "coordinate": 0.9688,
+      "reference": -0.05906,
+      "computed": -0.07266558643346033
+    }
+  ]
+}
