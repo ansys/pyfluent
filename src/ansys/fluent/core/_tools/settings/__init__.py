@@ -21,12 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Generic, sharable, solver-agnostic layer.
+"""Solver-agnostic building blocks for settings trees.
 
-Dependency rule:
-
-    ``ansys.fluent.core._framework`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
-    ``ansys.api.*``.
-
-Solver-specific layers (such as ``ansys.fluent.core``) may depend on this, never the reverse.
+Import value and recursive state types from ``state_types``. This package
+does not implement a settings backend or depend on a particular solver.
 """
