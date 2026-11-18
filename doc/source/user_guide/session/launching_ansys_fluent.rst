@@ -211,7 +211,7 @@ For more information, see :func:`launch_fluent() <ansys.fluent.core.execution.la
 
 Fluent version
 ~~~~~~~~~~~~~~
-This example uses :class:`~ansys.fluent.core.utils.fluent_version.FluentVersion`
+This example uses :class:`FluentVersion <ansys.fluent.core.utils.fluent_version.FluentVersion>`
 to select a Fluent release. If omitted for a local launch, the newest installed
 version is used:
 
@@ -225,7 +225,7 @@ version is used:
 Solution mode
 ~~~~~~~~~~~~~
 These two examples show equivalent ways to launch Fluent in solution mode.
-See :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentMode`
+See :class:`FluentMode <ansys.fluent.core.execution.launcher.launch_options.FluentMode>`
 for the available session modes:
 
 .. code:: python
@@ -267,7 +267,7 @@ Precision
 ~~~~~~~~~
 This example shows how to launch Fluent in solution mode
 and set the floating point precision using
-:class:`~ansys.fluent.core.execution.launcher.launch_options.Precision`:
+:class:`Precision <ansys.fluent.core.execution.launcher.launch_options.Precision>`:
 
 .. code:: python
 
@@ -283,7 +283,7 @@ Dimension
 ~~~~~~~~~
 This example shows how to launch Fluent in solution mode and set the
 modeling dimension to two using
-:class:`~ansys.fluent.core.execution.launcher.launch_options.Dimension`:
+:class:`Dimension <ansys.fluent.core.execution.launcher.launch_options.Dimension>`:
 
 .. code:: python
 
@@ -298,7 +298,7 @@ modeling dimension to two using
 
 User interface mode
 ~~~~~~~~~~~~~~~~~~~
-Use :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode`
+Use :class:`UIMode <ansys.fluent.core.execution.launcher.launch_options.UIMode>`
 with the ``ui_mode`` argument to control the Fluent user interface. This example
 launches Fluent without the GUI or graphics for an automated workflow:
 
@@ -548,7 +548,7 @@ using :func:`create_launcher() <ansys.fluent.core.execution.launcher.launcher.cr
   >>> pim_solver_session = pim_solver_launcher()
 
 
-See :class:`~ansys.fluent.core.execution.launcher.launch_options.LaunchMode`
+See :class:`LaunchMode <ansys.fluent.core.execution.launcher.launch_options.LaunchMode>`
 for the available launch backends.
 
 
