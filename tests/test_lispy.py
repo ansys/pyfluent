@@ -21,7 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import pytest
+
 from ansys.fluent.core.offline import _lispy
+from ansys.fluent.core.offline.case_file import SettingsFile
 
 scm_pys = (
     ("()", []),
@@ -73,3 +76,31 @@ def test_py_to_scm():
     for scm_py in scm_pys:
         expected = scm_py[2] if len(scm_py) == 3 else scm_py[0]
         assert _lispy.to_string(scm_py[1]) == expected
+
+
+@pytest.mark.parametrize(
+    "backslashes, expected", [(0, 2), (1, 1), (2, 2), (3, 1), (4, 2), (5, 1)]
+)
+def test_count_quotes_after_backslashes(backslashes, expected):
+    text = '"value' + "\\" * backslashes + '"'
+    assert _lispy.count_unescaped_quotes(text) == expected
+
+
+@pytest.mark.parametrize("backslashes", [2, 4])
+def test_parse_escaped_backslash_before_closing_quote(backslashes):
+    path = r'"C:\\temp' + "\\" * backslashes + '"'
+    assert _lispy.parse(f'({path}\n "next")') == [path, '"next"']
+
+
+@pytest.mark.parametrize("backslashes", [2, 4])
+def test_settings_file_with_escaped_backslashes(tmp_path, backslashes):
+    path = r'"C:\\temp' + "\\" * backslashes + '"'
+    text = (
+        f"(rp (\n(case-config ())\n(working-directory {path})\n"
+        "(number-of-iterations 7)\n))"
+    )
+    filename = tmp_path / "sample.set"
+    filename.write_text(text, encoding="utf-8")
+    reader = SettingsFile(str(filename))
+    assert reader.rp_var("working-directory") == path
+    assert reader.iter_count() == 7
