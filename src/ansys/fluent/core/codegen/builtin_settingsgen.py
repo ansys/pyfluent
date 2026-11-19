@@ -324,5 +324,5 @@ def _generate_pyi_file(version) -> None:
 
 
 if __name__ == "__main__":
-    version = "271"  # for development
+    version = "272"  # for development
     generate(version)
