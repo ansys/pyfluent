@@ -25,6 +25,7 @@
 
 from typing import Any, ClassVar, Protocol, TypeGuard, runtime_checkable
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core.execution.session.session import _get_active_session
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
@@ -64,6 +65,7 @@ def _get_settings_root(
         )
 
 
+@no_runtime_type_check
 def _get_settings_obj(
     settings_root: SettingsBase[Any], builtin_settings_obj: _BuiltinSettingsObj
 ) -> Any:
