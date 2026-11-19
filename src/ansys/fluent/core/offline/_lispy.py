@@ -100,7 +100,7 @@ def count_unescaped_quotes(line):
     escaped = False
     for c in line:
         if c == "\\":
-            escaped = True
+            escaped = not escaped
         else:
             if c == '"' and not escaped:
                 count += 1

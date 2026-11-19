@@ -65,14 +65,7 @@ class Machine:
 
     def __repr__(self):
         """Returns a string representation for the machine."""
-        return (
-            "Hostname:"
-            + self._hostName
-            + ", Cores: "
-            + str(self._numberOfCores)
-            + ", Queue: "
-            + self._queueName
-        )
+        return f"Hostname:{self._hostName}, Cores: {self._numberOfCores}, Queue: {self._queueName}"
 
     @property
     def host_name(self):

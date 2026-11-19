@@ -40,8 +40,7 @@ case file is read into the solver.
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core import SolverEvent, examples
+  >>> from ansys.fluent.core import Solver, SolverEvent, examples
   >>> case_file_name = examples.download_file(
   >>>     "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
   >>> )
@@ -50,7 +49,7 @@ case file is read into the solver.
 
   >>> on_case_loaded.loaded = False
 
-  >>> solver_session = pyfluent.Solver.from_install()
+  >>> solver_session = Solver.from_install()
   >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
 
   >>> on_case_loaded.loaded
@@ -75,8 +74,7 @@ All three callbacks run, in order, whenever a case file is loaded.
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core import SolverEvent, examples
+  >>> from ansys.fluent.core import Solver, SolverEvent, examples
   >>> case_file_name = examples.download_file(
   >>>     "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
   >>> )
@@ -95,7 +93,7 @@ All three callbacks run, in order, whenever a case file is loaded.
 
   >>> on_case_loaded_with_args.state = None
 
-  >>> solver_session = pyfluent.Solver.from_install()
+  >>> solver_session = Solver.from_install()
 
   >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
   >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42)

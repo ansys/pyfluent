@@ -24,6 +24,7 @@ User guide
    journal
    log
    usability
+   resilient_mode
    make_container_image
    legacy/legacy_contents
    beta_feature_access
@@ -39,10 +40,10 @@ A simple example
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.Meshing.from_install(product_version=pyfluent.FluentVersion.v251)
+  >>> from ansys.fluent.core import FluentVersion, Meshing, examples
+  >>> meshing_session = Meshing.from_install(product_version=FluentVersion.v251)
   >>> watertight = meshing_session.watertight()
-  >>> watertight.import_geometry.file_name = pyfluent.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
+  >>> watertight.import_geometry.file_name = examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
   >>> watertight.import_geometry()
   >>> watertight.create_volume_mesh()
   >>> solver_session = meshing_session.switch_to_solver()
@@ -96,4 +97,12 @@ Fluent data efficiently offline. The :obj:`~ansys.fluent.core.execution.session.
 :ref:`live session objects <ref_session_guide>`, allowing you to access field data and other relevant information without a live Fluent session.
 
 .. vale Google.Spacing = YES
+
+Resilient mode
+~~~~~~~~~~~~~~
+
+Make an automated setup-and-solve run survivable with
+:ref:`resilient mode <ref_resilient_guide>`. Checkpoint automatically before
+irreversible commands and roll back when they fail, undo and redo settings
+changes, and keep running on a warm standby session when the active solver dies.
 
