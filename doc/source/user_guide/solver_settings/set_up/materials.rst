@@ -7,12 +7,12 @@ Copy material from database
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core import Solver, examples
+    >>> from ansys.fluent.core.solver import FluidCellZone, Materials
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    >>> solver_session = pyfluent.Solver.from_install()
+    >>> solver_session = Solver.from_install()
     >>> solver_session.settings.file.read_case(file_name=file_name)
-    >>> materials = pyfluent.Materials(settings_source=solver_session)
+    >>> materials = Materials(settings_source=solver_session)
     >>> fluids = materials.fluid
     >>> fluids.make_a_copy(from_="air",to="air-2")
     >>> air_copy = fluids["air-2"]
@@ -27,7 +27,7 @@ Copy material from database
     >>> air_copy.viscosity.option.allowed_values()
     ['constant', 'piecewise-linear', 'polynomial', ...]  # plus additional options
     >>> air_copy.viscosity.value.set_state(1.81e-05)
-    >>> elbow_fluid = pyfluent.solver.FluidCellZone(settings_source=solver_session, name="elbow-fluid")
+    >>> elbow_fluid = FluidCellZone(settings_source=solver_session, name="elbow-fluid")
     >>> elbow_fluid.material.set_state("air-2")
 
 

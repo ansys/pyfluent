@@ -49,12 +49,15 @@ from __future__ import annotations
 from collections import OrderedDict
 from functools import wraps
 import inspect
+import logging
 import re
 from typing import ValuesView
 
 from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _get_task_type_name(task_obj: PyMenu) -> str:
@@ -222,6 +225,11 @@ class Workflow:
         The method rebuilds its internal task cache on each call to ensure
         freshness, though this can be expensive for large workflows.
         """
+        self._build_current_task_list()
+        return self._task_dict.values()
+
+    def _build_current_task_list(self) -> None:
+        """Refresh the internal mapping of currently available tasks."""
         self._task_dict = {}
         _state = self._workflow.task_object()
         for task in sorted(_state):
@@ -306,8 +314,6 @@ class Workflow:
         # Merge all compound child tasks into main dictionary
         for child_tasks in self._compound_child_dict.values():
             self._task_dict.update(child_tasks)
-
-        return self._task_dict.values()
 
     def _workflow_state(self):
         """Get the complete state dictionary of the workflow."""
@@ -605,13 +611,24 @@ class Workflow:
             def __repr__(self) -> str:
                 return f"<Insertable '{self._task_map[self._name]}' task>"
 
+    def __dir__(self):
+        """Include dynamically accessible task names in interactive discovery."""
+        members = set(super().__dir__())
+        try:
+            self._build_current_task_list()
+        except Exception:
+            logger.debug("Unable to refresh workflow task completions.", exc_info=True)
+        else:
+            members.update(self._task_dict)
+        return sorted(members)
+
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""
         if item in ["parts", "parts_files"]:
             raise AttributeError(
                 f"'{item}' is only supported in Fault-tolerant Meshing workflows."
             )
-        self.tasks()
+        self._build_current_task_list()
         if item in self._task_dict:
             return make_task_wrapper(
                 self._task_dict[item], item, self._workflow, self, self._command_source
@@ -711,6 +728,59 @@ class TaskObject:
         state = getattr(self._task_object, "state", None)
         if state and "Forced-up-to-date" in state.allowed_values():
             state.set_state("Forced-up-to-date")
+
+    def get_state(self):
+        """Get task state with arguments flattened into the top-level dictionary.
+
+        Argument values take precedence over task properties with the same name.
+        Other state values are returned unchanged.
+        """
+        state = self._task_object.get_state()
+        if isinstance(state, dict) and "arguments" in state:
+            return {
+                **{key: value for key, value in state.items() if key != "arguments"},
+                **state["arguments"],
+            }
+        return state
+
+    def set_state(self, state=None, **kwargs):
+        """Set task properties and arguments from a task-level state dictionary.
+
+        Argument names take precedence over task properties with the same name.
+        Flat arguments are merged into any nested ``arguments`` dictionary,
+        overriding nested values with the same name. Keyword arguments retain
+        their usual precedence over the positional state.
+
+        Raises
+        ------
+        TypeError
+            If flat arguments are provided and the nested ``arguments`` value
+            is not a dictionary.
+        """
+        values = kwargs or state
+        if isinstance(values, dict) and any(key != "arguments" for key in values):
+            arguments = getattr(self._task_object, "arguments", None)
+            if arguments is not None:
+                argument_names = arguments()
+                flat_arguments = {
+                    key: value
+                    for key, value in values.items()
+                    if key != "arguments" and key in argument_names
+                }
+                if flat_arguments:
+                    nested_arguments = values.get("arguments", {})
+                    if not isinstance(nested_arguments, dict):
+                        raise TypeError("Task arguments must be a dictionary.")
+                    values = {
+                        key: value
+                        for key, value in values.items()
+                        if key not in flat_arguments and key != "arguments"
+                    }
+                    values["arguments"] = {**nested_arguments, **flat_arguments}
+                    if kwargs:
+                        return self._task_object.set_state(state, **values)
+                    return self._task_object.set_state(values)
+        return self._task_object.set_state(state, **kwargs)
 
     def _get_next_possible_tasks(self):
         """Get display names of tasks that can be inserted after this task."""
@@ -842,6 +912,16 @@ class TaskObject:
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
+
+    def __dir__(self):
+        """Include task arguments and delegated task members in interactive discovery."""
+        members = set(super().__dir__())
+        try:
+            members.update(dir(self._task_object))
+            members.update(self._task_object.arguments())
+        except Exception:
+            logger.debug("Unable to refresh task argument completions.", exc_info=True)
+        return sorted(members)
 
     def __getattr__(self, item):
         """Enable attribute access to task properties and arguments.
@@ -1246,7 +1326,9 @@ def build_specific_interface(task_object):
     public_members = {
         name
         for name in dir(task_object)
-        if not name.startswith("_") and callable(getattr(task_object, name))
+        if not name.startswith("_")
+        and name not in {"get_state", "set_state"}
+        and callable(getattr(task_object, name))
     }
 
     # Build the namespace (class dictionary) for a new dynamic interface class where
