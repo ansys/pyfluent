@@ -31,6 +31,7 @@ from ansys.fluent.core._grpc_services.object_model_service import (
 from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.diagnostics.exceptions import BadReductionRequest
 from ansys.fluent.core.fields.reduction.functional import Weight
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
@@ -214,14 +215,6 @@ class ReductionService(ServiceProtocol):
         )
         response = self._stub.SumIf(request, metadata=self._metadata)
         return _convert_variant_to_value(response.value)
-
-
-class BadReductionRequest(Exception):
-    """Raised on an attempt to make a bad reduction request."""
-
-    def __init__(self, err):
-        """Initialize BadReductionRequest."""
-        super().__init__(f"Could not complete reduction function request: {err}")
 
 
 def _validate_locn_list(locn_list, ctxt):

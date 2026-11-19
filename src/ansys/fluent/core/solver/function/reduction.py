@@ -22,8 +22,8 @@
 
 """Compatibility imports for :mod:`ansys.fluent.core.fields.reduction.functional`."""
 
+from ansys.fluent.core.diagnostics.exceptions import BadReductionRequest
 from ansys.fluent.core.fields.reduction.functional import (
-    BadReductionRequest,
     Weight,
     area,
     area_average,
