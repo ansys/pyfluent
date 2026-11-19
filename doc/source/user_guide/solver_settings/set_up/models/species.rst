@@ -6,10 +6,11 @@ Setting up and querying the model
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> solver_session = pyfluent.Solver.from_install()
+    >>> from ansys.fluent.core import Solver
+    >>> from ansys.fluent.core.solver import Species
+    >>> solver_session = Solver.from_install()
     >>> solver_session.settings.file.read_case(file_name=file_name)
-    >>> species = pyfluent.solver.Species(settings_source=solver_session)
+    >>> species = Species(settings_source=solver_session)
     >>> species.get_state()
     {'model': {'option': 'off', 'number_vol_spec': False}}
     >>> from pprint import pprint

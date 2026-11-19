@@ -34,14 +34,14 @@ Every function that launches a solver session accepts ``resilient_mode`` and
 
 .. code-block:: python
 
-    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import Solver
     from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
 
-    solver = pyfluent.Solver.from_install(resilient_mode=True)
+    solver = Solver.from_install(resilient_mode=True)
 
     # The same options apply to launch_fluent, Solver.from_container and
     # Solver.from_pim.
-    solver = pyfluent.Solver.from_install(
+    solver = Solver.from_install(
         resilient_mode=True,
         resilient_config=ResilientConfig(pool=PoolConfig(size=2)),
     )
@@ -116,7 +116,7 @@ Failover needs at least one warm standby session:
 
     from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
 
-    solver = pyfluent.Solver.from_install(
+    solver = Solver.from_install(
         resilient_mode=True,
         resilient_config=ResilientConfig(pool=PoolConfig(size=2)),
     )
@@ -174,18 +174,19 @@ Resilient mode works the same way when Fluent runs in a container:
 
 .. code-block:: python
 
-    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import Solver
     from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
 
-    solver = pyfluent.Solver.from_container(
+    solver = Solver.from_container(
         resilient_mode=True,
         resilient_config=ResilientConfig(pool=PoolConfig(size=2)),
     )
 
 Each standby is another container, started with the same arguments, so it
-mounts the same host folder: ``pyfluent.config.container_mount_source``, or the
-current working directory by default. Fluent's working directory in each
-container is that folder, mounted at ``pyfluent.config.container_mount_target``
+mounts the same host folder specified by the ``container_mount_source``
+configuration option, or the current working directory by default. Fluent's
+working directory in each container is that folder, mounted at the path
+specified by ``container_mount_target``
 (``/home/container/workdir`` by default).
 
 By default, checkpoints are written to that working directory. They appear on

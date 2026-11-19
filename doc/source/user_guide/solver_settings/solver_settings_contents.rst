@@ -26,9 +26,9 @@ Example usage
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> solver_session = pyfluent.Solver.from_install()
+  >>> solver_session = Solver.from_install()
   >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
 
 
@@ -133,14 +133,13 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 :obj:`~ansys.fluent.core.solver.flobject.NamedObject`, and
 :obj:`~ansys.fluent.core.solver.flobject.ListObject`.
 
-- The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
-  can be accessed as attributes. For example, using the expression ``solver_session.settings.setup.models.energy``,
-  which resolves to :obj:`~ansys.fluent.core.generated.v261.solver.settings.energy`,
-  which is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.models_1`,
-  which itself is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.setup`, and each of those
-  three objects is a ``Group``.
-  The names of the child objects of a group can be accessed
-  via ``<Group>.child_names``.
+- A :obj:`~ansys.fluent.core.solver.flobject.Group` is a static container with predefined child objects
+  accessed as attributes. For example, ``solver_session.settings.setup.models.energy``
+  accesses energy settings through three nested ``Group`` objects:
+  :obj:`~ansys.fluent.core.generated.v261.solver.settings.setup`,
+  :obj:`~ansys.fluent.core.generated.v261.solver.settings.models_1`, and
+  :obj:`~ansys.fluent.core.generated.v261.solver.settings.energy`.
+  Use ``<Group>.child_names`` to list the names of its child objects.
 
 - The :obj:`~ansys.fluent.core.solver.flobject.NamedObject` type is a container holding dynamically
   created named objects. For
@@ -359,12 +358,11 @@ in a single solver session:
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver, examples
   >>> from ansys.fluent.core.solver import Viscous, VelocityInlet
-  >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver_session = pyfluent.Solver.from_install()
+  >>> solver_session = Solver.from_install()
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
