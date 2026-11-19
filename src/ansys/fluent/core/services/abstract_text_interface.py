@@ -24,7 +24,10 @@
 """Abstract text interface wrapper."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Sequence
 from typing import Any
+
+ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 
 
 class AbstractTextInterface(ABC):
@@ -53,47 +56,47 @@ class AbstractTextInterface(ABC):
         pass
 
     @abstractmethod
-    def execute_command(self, path: str, *args, **kwargs) -> Any:
+    def execute_command(self, path: str, *args: ValueT, **kwargs: ValueT) -> ValueT:
         """Execute a command at a path with positional or keyword arguments.
 
         Parameters
         ----------
         path : str
             Path to the menu.
-        *args
+        *args : ValueT
             Positional arguments of the command.
-        **kwargs
+        **kwargs : ValueT
             Keyword arguments of the command.
 
         Returns
         -------
-        Any
+        ValueT
             Command result (any Python datatype)
         """
         pass
 
     @abstractmethod
-    def execute_query(self, path: str, *args, **kwargs) -> Any:
+    def execute_query(self, path: str, *args: ValueT, **kwargs: ValueT) -> ValueT:
         """Execute a query at a path with positional or keyword arguments.
 
         Parameters
         ----------
         path : str
             Path to the menu.
-        *args
+        *args : ValueT
             Positional arguments of the query.
-        **kwargs
+        **kwargs : ValueT
             Keyword arguments of the query.
 
         Returns
         -------
-        Any
+        ValueT
             Query result (any Python datatype)
         """
         pass
 
     @abstractmethod
-    def get_static_info(self, path: str):
+    def get_static_info(self, path: str) -> dict[str, Any]:
         """Get static info at a path.
 
         Parameters
