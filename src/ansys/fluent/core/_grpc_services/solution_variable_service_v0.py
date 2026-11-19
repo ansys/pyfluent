@@ -30,9 +30,7 @@ import numpy.typing as npt
 
 from ansys.api.fluent.v0 import field_data_pb2, svar_pb2, svar_pb2_grpc
 from ansys.fluent.core._grpc_services.field_data_service_v0 import _FieldDataConstants
-from ansys.fluent.core._grpc_services.solution_variable_service import (
-    IncompleteSolutionVariableDataError,
-)
+from ansys.fluent.core.diagnostics.exceptions import IncompleteSolutionVariableDataError
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 

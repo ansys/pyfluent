@@ -21,12 +21,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import copy
+import pickle
+
 import numpy as np
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.diagnostics.exceptions import IncompleteSolutionVariableDataError
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.units.variable_descriptor import VariableCatalog
+
+
+@pytest.mark.parametrize("item_size", [None, 8])
+def test_incomplete_solution_variable_error_copy_and_pickle(item_size):
+    error = IncompleteSolutionVariableDataError(12, 1000, item_size)
+    assert "received 12 of 1,000 expected elements" in str(error)
+    if item_size is not None:
+        assert "~7.81 KiB requested" in str(error)
+
+    for restored in (copy.copy(error), pickle.loads(pickle.dumps(error))):
+        assert str(restored) == str(error)
+        assert (restored.received, restored.expected, restored.item_size) == (
+            12,
+            1000,
+            item_size,
+        )
 
 
 def test_solution_variables(new_solver_session):

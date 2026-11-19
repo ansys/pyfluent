@@ -34,6 +34,7 @@ from ansys.api.fluent.v1 import (
     solution_variable_pb2_grpc,
 )
 from ansys.fluent.core._grpc_services.field_data_service import _FieldDataConstants
+from ansys.fluent.core.diagnostics.exceptions import IncompleteSolutionVariableDataError
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 
@@ -398,78 +399,6 @@ class SolutionVariableService(ServiceProtocol):
         request = solution_variable_pb2.GetZonesInfoRequest()
         response = self._stub.GetZonesInfo(request, metadata=self._metadata)
         return ZonesInfo(response.zones_info, response.domains_info)
-
-
-def _format_bytes(num_bytes: int) -> str:
-    """Return a human-readable binary size string for a byte count."""
-    size = float(num_bytes)
-    for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
-        if size < 1024.0 or unit == "TiB":
-            return f"{int(size)} B" if unit == "B" else f"{size:.2f} {unit}"
-        size /= 1024.0
-
-
-class IncompleteSolutionVariableDataError(RuntimeError):
-    """Raised when streamed solution variable data ends before all elements arrive.
-
-    The server first declares how many elements it will send for a zone
-    (``field_size``), and the client reconstructs the array from the streamed
-    chunks. If the stream ends before ``field_size`` elements have been
-    received, the data for that zone is incomplete and this error is raised.
-
-    The usual cause is that a *single* zone's data is too large for the server
-    to stream in one response, so the server stops sending before all elements
-    are delivered. This is common for large multi-component fields -- for
-    example ``SV_CENTROID`` (3 components) on a cell zone with hundreds of
-    millions of cells.
-
-    Note that the client ``chunk_size`` setting does not help here: it only
-    controls how a response is sliced into messages, not the total amount of
-    data requested for a zone.
-
-    To work around it:
-
-    * If several zones were requested in one call, request each zone separately
-      so no single response is oversized.
-    * If a single zone is itself too large, reduce the amount of data (for
-      example request a scalar field rather than a multi-component one), split
-      the zone into smaller cell zones, or read the values from the case/data
-      file offline instead of over gRPC.
-
-    Attributes
-    ----------
-    received : int
-        Number of elements actually received before the stream ended.
-    expected : int
-        Number of elements the server declared it would send for the zone.
-    item_size : int | None
-        Size in bytes of a single element, when known. Used to report the
-        approximate payload size in the error message.
-    """
-
-    def __init__(self, received: int, expected: int, item_size: int | None = None):
-        """Initialize IncompleteSolutionVariableDataError."""
-        self.received = received
-        self.expected = expected
-        self.item_size = item_size
-
-        if item_size:
-            size_note = f" (~{_format_bytes(expected * item_size)} requested)"
-        else:
-            size_note = ""
-
-        super().__init__(
-            f"Solution variable data stream ended prematurely: received "
-            f"{received:,} of {expected:,} expected elements{size_note}. "
-            f"This usually means a single zone's data is too large for the "
-            f"server to stream in one response. Note that changing the client "
-            f"chunk size does not help, because it does not reduce the per-zone "
-            f"total. To work around it: if you requested several zones in one "
-            f"call, request each zone separately; if a single zone is too large "
-            f"(common for multi-component fields such as 'SV_CENTROID' on very "
-            f"large cell zones), request a smaller field, or split the zone into "
-            f"smaller cell zones."
-        )
 
 
 def extract_svars(solution_variables_data):

@@ -47,12 +47,10 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from ansys.fluent.core._grpc_services.solution_variable_service import (
-    IncompleteSolutionVariableDataError,
-)
 from ansys.fluent.core._variable_strategies import (
     FluentSVarNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.diagnostics.exceptions import IncompleteSolutionVariableDataError
 from ansys.fluent.core.fields.solution_variables.abstract_solution_variables import (
     AbstractData,
     AbstractSolutionVariableData,
