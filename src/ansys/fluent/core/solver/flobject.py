@@ -1914,8 +1914,34 @@ class NamedObjectWildcardPath(WildcardPath):
 ChildTypeT = TypeVar("ChildTypeT")
 
 
+class _NamedObjectCommandMixin:
+    """Provide shared named-object command behavior."""
+
+    def list(self) -> Any:
+        """Print the object names."""
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list(object_path=self.path)
+        else:
+            return self.list_1()
+
+    def list_properties(self, object_name: str) -> Any:
+        """Print the properties of the given object name.
+
+        Parameters
+        ----------
+        object_name : str
+            Name of the object whose properties are to be listed.
+        """
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
+        else:
+            return self.list_properties_1(object_name=object_name)
+
+
 @no_runtime_type_check
-class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
+class NamedObject(
+    SettingsBase[DictStateType], _NamedObjectCommandMixin, Generic[ChildTypeT]
+):
     """A ``NamedObject`` container is a container object similar to a Python dictionary
     object. Generally, many such objects can be created with different names.
 
@@ -2128,25 +2154,35 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
         return CombinedNamedObject([self, other])
 
-    def list(self) -> Any:
-        """Print the object names."""
-        if FluentVersion(self._version) >= FluentVersion.v261:
-            return self._root.list(object_path=self.path)
-        else:
-            return self.list_1()
 
-    def list_properties(self, object_name: str) -> Any:
-        """Print the properties of the given object name.
+class _NamedObjectCommandBase(_NamedObjectCommandMixin):
+    """Keep generated named-object command metadata independent per container."""
 
-        Parameters
-        ----------
-        object_name : str
-            Name of the object whose properties are to be listed.
-        """
-        if FluentVersion(self._version) >= FluentVersion.v261:
-            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
-        else:
-            return self.list_properties_1(object_name=object_name)
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if NamedObject in cls.__bases__:
+            if "command_names" not in cls.__dict__:
+                cls.command_names = cls.command_names.copy()
+            if "_child_classes" not in cls.__dict__:
+                cls._child_classes = cls._child_classes.copy()
+
+
+def _merge_named_object_command_names(
+    shared: list[str], others: list[tuple[int, str]]
+) -> list[str]:
+    names = shared.copy()
+    for index, name in others:
+        names.insert(index, name)
+    return names
+
+
+def _merge_named_object_child_classes(
+    shared: dict[str, type], others: list[tuple[int, str, type]]
+) -> dict[str, type]:
+    children = list(shared.items())
+    for index, name, child in others:
+        children.insert(index, (name, child))
+    return dict(children)
 
 
 class CombinedNamedObject:
