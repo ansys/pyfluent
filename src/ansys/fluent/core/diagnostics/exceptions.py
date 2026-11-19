@@ -196,16 +196,16 @@ class IncompleteSolutionVariableDataError(RuntimeError):
             size_note = ""
 
         self._message = (
-            f"Solution variable data stream ended prematurely: received "
+            "Solution variable data stream ended prematurely: received "
             f"{received:,} of {expected:,} expected elements{size_note}. "
-            f"This usually means a single zone's data is too large for the "
-            f"server to stream in one response. Note that changing the client "
-            f"chunk size does not help, because it does not reduce the per-zone "
-            f"total. To work around it: if you requested several zones in one "
-            f"call, request each zone separately; if a single zone is too large "
-            f"(common for multi-component fields such as 'SV_CENTROID' on very "
-            f"large cell zones), request a smaller field, or split the zone into "
-            f"smaller cell zones."
+            "This usually means a single zone's data is too large for the "
+            "server to stream in one response. Note that changing the client "
+            "chunk size does not help, because it does not reduce the per-zone "
+            "total. To work around it: if you requested several zones in one "
+            "call, request each zone separately; if a single zone is too large "
+            "(common for multi-component fields such as 'SV_CENTROID' on very "
+            "large cell zones), request a smaller field, or split the zone into "
+            "smaller cell zones."
         )
         super().__init__(received, expected, item_size)
 
