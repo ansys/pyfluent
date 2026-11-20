@@ -46,12 +46,6 @@ and runs only the remaining iterations.
    finally:
        solver_session.events.unregister_callback(callback_id)
 
-``iter_count`` specifies additional iterations, not an absolute target.
-Convergence criteria can stop a run before this count is reached. For an
-exact-count demonstration, disable residual convergence stopping with
-``solution.monitor.residual.options.criterion_type = "none"`` before solving.
-Keep the appropriate convergence criteria enabled for production calculations.
-
 Callback holds and self-unregistration
 ------------------------------------------------------------
 
