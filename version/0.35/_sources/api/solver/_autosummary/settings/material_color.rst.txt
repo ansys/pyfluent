@@ -1,0 +1,21 @@
+:orphan:
+
+.. _material_color:
+
+material_color
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.material_color
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===================
+
+Parent                                   Summary
+
+==========================   ===================
+:ref:`manual_1 <manual_1>`       'manual' child.
+
+==========================   ===================
+

@@ -1,0 +1,48 @@
+:orphan:
+
+.. _create_multiple_iso_surfaces:
+
+create_multiple_iso_surfaces
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.create_multiple_iso_surfaces
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ===============================================================
+
+Argument                                                                                         Summary
+
+======================================   ===============================================================
+:ref:`field <field_1>`                                                               The field variable.
+
+:ref:`name <name_21>`                                                              The Iso-surface name.
+
+:ref:`surfaces <surfaces_6>`                 The surface(s) that will be used to define the iso-surface.
+
+:ref:`zones <zones_6>`                          The zone(s) that will be used to define the iso-surface.
+
+:ref:`min <min_3>`                                                                                  Min.
+
+:ref:`max <max_3>`                                                                                  Max.
+
+:ref:`iso_value <iso_value>`                                                              The iso-value.
+
+:ref:`no_of_surfaces <no_of_surfaces>`                             The number of surfaces to be created.
+
+:ref:`spacing <spacing>`                                                                    The spacing.
+
+======================================   ===============================================================
+
+.. rubric:: Included in:
+
+==============================   ===============================================================================================
+
+Parent                                                                                                                   Summary
+
+==============================   ===============================================================================================
+:ref:`surfaces_5 <surfaces_5>`       Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+==============================   ===============================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _impingement_model:
+
+impingement_model
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.impingement_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================
+
+Parent                                                            Summary
+
+======================================================   ================
+:ref:`user_defined_functions <user_defined_functions>`       Main object.
+
+======================================================   ================
+

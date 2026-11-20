@@ -1,0 +1,21 @@
+:orphan:
+
+.. _resolution:
+
+resolution
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.resolution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`parameters_1 <parameters_1>`       Iteration parameters.
+
+==================================   =========================
+

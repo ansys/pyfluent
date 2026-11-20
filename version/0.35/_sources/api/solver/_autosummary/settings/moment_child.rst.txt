@@ -1,0 +1,69 @@
+:orphan:
+
+.. _moment_child:
+
+moment_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.moment_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ==============================================================================
+
+Attribute                                                                                                                                 Summary
+
+================================================================   ==============================================================================
+:ref:`name <name_4>`                                                                                                          Name of the object.
+
+:ref:`report_type <report_type>`                                       The report type; the list may vary on the selected report definition type.
+
+:ref:`mom_center <mom_center>`                                                                                                'mom_center' child.
+
+:ref:`mom_axis <mom_axis>`                                                                                                      'mom_axis' child.
+
+:ref:`reference_frame <reference_frame_6>`                                                                               'reference_frame' child.
+
+:ref:`zones <zones_2>`                                                                                                             'zones' child.
+
+:ref:`locations <locations_5>`                                                                                                 'locations' child.
+
+:ref:`per_selection <per_selection>`                                                                                       'per_selection' child.
+
+:ref:`average_over <average_over>`                                                                                          'average_over' child.
+
+:ref:`retain_instantaneous_values <retain_instantaneous_values>`                                             'retain_instantaneous_values' child.
+
+:ref:`report_output_type <report_output_type>`                                                                        'report_output_type' child.
+
+:ref:`output_parameter <output_parameter_1>`                                   Option to make report definition available as an output parameter.
+
+:ref:`create_report_file <create_report_file>`                                                   Create a new file set for the report definition.
+
+:ref:`create_report_plot <create_report_plot>`                                                   Create a new plot set for the report definition.
+
+================================================================   ==============================================================================
+
+.. rubric:: Methods
+
+========================================================   ======================================================================
+
+Method                                                                                                                    Summary
+
+========================================================   ======================================================================
+:ref:`create_output_parameter <create_output_parameter>`       Option to make report definition available as an output parameter.
+
+========================================================   ======================================================================
+
+.. rubric:: Included in:
+
+======================   ===============================
+
+Parent                                           Summary
+
+======================   ===============================
+:ref:`moment <moment>`       The report definition type.
+
+======================   ===============================
+

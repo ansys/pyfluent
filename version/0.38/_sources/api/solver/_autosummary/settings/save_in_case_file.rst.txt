@@ -1,0 +1,21 @@
+:orphan:
+
+.. _save_in_case_file:
+
+save_in_case_file
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.save_in_case_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =============================
+
+Parent                                                           Summary
+
+========================================   =============================
+:ref:`read_table_file <read_table_file>`       Read material table file.
+
+========================================   =============================
+

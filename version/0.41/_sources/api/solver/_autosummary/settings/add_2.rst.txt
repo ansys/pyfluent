@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_2:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================================================
+
+Parent                                                                          Summary
+
+================================   ====================================================
+:ref:`nh3_species <nh3_species>`       Enable/disable additional nh3 species equations.
+
+================================   ====================================================
+

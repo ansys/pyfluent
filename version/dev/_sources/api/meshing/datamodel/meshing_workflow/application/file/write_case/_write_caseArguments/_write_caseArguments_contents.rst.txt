@@ -1,0 +1,16 @@
+:html_theme.sidebar_secondary.remove:
+
+.. _ref_meshing_datamodel_meshing_workflow_application_file_write_case__write_caseArguments:
+
+write_caseArguments_item
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v272.meshing.meshing_workflow.Root.application.file.write_case._write_caseArguments
+   :members: _file_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

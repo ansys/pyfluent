@@ -1,0 +1,21 @@
+:orphan:
+
+.. _replace_with_udf_rate:
+
+replace_with_udf_rate
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.replace_with_udf_rate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`thermal_parameters <thermal_parameters>`       Thermal NOx model.
+
+==============================================   ======================
+

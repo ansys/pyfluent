@@ -1,0 +1,23 @@
+:orphan:
+
+.. _observable_list:
+
+observable_list
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.observable_list
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`arithmetic_average_child <arithmetic_average_child>`       'child_object_type' of arithmetic_average.
+
+:ref:`mean_variance_child <mean_variance_child>`                      'child_object_type' of mean_variance.
+
+==========================================================   ==============================================
+

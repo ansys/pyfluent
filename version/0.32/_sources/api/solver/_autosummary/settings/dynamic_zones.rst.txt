@@ -1,0 +1,49 @@
+:orphan:
+
+.. _dynamic_zones:
+
+dynamic_zones
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.dynamic_zones
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================================   =====================================================
+
+Method                                                                                           Summary
+
+================================================   =====================================================
+:ref:`create <create>`                                 Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                          Delete selected objects.
+
+:ref:`rename <rename>`                                                                Rename the object.
+
+:ref:`list <list>`                                                        List the names of the objects.
+
+:ref:`list_properties <list_properties>`                           List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                            Create a copy of the object.
+
+:ref:`list_properties_all <list_properties_all>`                          'list_properties_all' command.
+
+================================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`dynamic_zones_child <dynamic_zones_child>`
+
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`dynamic_mesh <dynamic_mesh>`       'dynamic_mesh' child.
+
+==================================   =========================
+

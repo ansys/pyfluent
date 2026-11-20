@@ -1,0 +1,21 @@
+:orphan:
+
+.. _imp_of_sample_density:
+
+imp_of_sample_density
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.imp_of_sample_density
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

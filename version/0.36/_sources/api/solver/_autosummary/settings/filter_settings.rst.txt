@@ -1,0 +1,42 @@
+:orphan:
+
+.. _filter_settings:
+
+filter_settings
+===============
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.filter_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ==========================================
+
+Attribute                                                                   Summary
+
+======================================   ==========================================
+:ref:`field <field_9>`                                 How to filter the particles.
+
+:ref:`options <options_19>`                                        'options' child.
+
+:ref:`enabled <enabled_73>`                  Enable or disable the particle filter.
+
+:ref:`filter_minimum <filter_minimum>`            The minimum value for the filter.
+
+:ref:`filter_maximum <filter_maximum>`            The maximum value for the filter.
+
+======================================   ==========================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`particle_track_child <particle_track_child>`       'child_object_type' of particle_track.
+
+==================================================   ==========================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _unary_operation_child:
+
+unary_operation_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.unary_operation_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =======================
+
+Attribute                                          Summary
+
+================================   =======================
+:ref:`name <name_5>`                   Name of the object.
+
+:ref:`operator <operator>`                 Unary operator.
+
+:ref:`observable <observable_1>`          Observable name.
+
+================================   =======================
+
+.. rubric:: Included in:
+
+========================================   ===========================================
+
+Parent                                                                         Summary
+
+========================================   ===========================================
+:ref:`unary_operation <unary_operation>`       Unary operation observable definitions.
+
+========================================   ===========================================
+

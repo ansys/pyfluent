@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cs:
+
+cs
+==
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cs
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================
+
+Parent                                                   Summary
+
+======================================   =======================
+:ref:`coefficients_4 <coefficients_4>`       Coefficients group.
+
+======================================   =======================
+

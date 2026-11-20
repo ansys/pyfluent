@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mod_timesteps:
+
+mod_timesteps
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mod_timesteps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================================
+
+Parent                                                      Summary
+
+==========================   ======================================
+:ref:`add_edit <add_edit>`       Define a single case modification.
+
+==========================   ======================================
+

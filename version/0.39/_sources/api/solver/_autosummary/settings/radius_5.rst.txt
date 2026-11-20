@@ -1,0 +1,23 @@
+:orphan:
+
+.. _radius_5:
+
+radius
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.radius_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`sphere_1 <sphere_1>`             'sphere' child.
+
+:ref:`cylinder_1 <cylinder_1>`       'cylinder' child.
+
+==============================   =====================
+

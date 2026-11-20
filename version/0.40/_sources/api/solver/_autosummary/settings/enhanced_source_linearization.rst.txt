@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enhanced_source_linearization:
+
+enhanced_source_linearization
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enhanced_source_linearization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ============================================
+
+Parent                                                                                Summary
+
+==============================================   ============================================
+:ref:`wet_steam_settings <wet_steam_settings>`       Adjust settings for the wet steam model.
+
+==============================================   ============================================
+

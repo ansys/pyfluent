@@ -1,0 +1,21 @@
+:orphan:
+
+.. _geometry_4:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.geometry_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================
+
+Parent                                                   Summary
+
+====================================   =========================
+:ref:`from_location <from_location>`       Help  utl locations .
+
+====================================   =========================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_improve_volume_mesh__improve_volume_meshArguments__improve_volume_mesh_preferences:
+
+_improve_volume_mesh_preferences
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.improve_volume_mesh._improve_volume_meshArguments._improve_volume_mesh_preferences
+   :members: _iterations, _min_angle, _show_in_gui, _smooth_remaining_bad_cells
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

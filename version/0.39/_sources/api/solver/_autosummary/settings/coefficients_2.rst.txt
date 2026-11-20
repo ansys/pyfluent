@@ -1,0 +1,48 @@
+:orphan:
+
+.. _coefficients_2:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.coefficients_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ======================================
+
+Attribute                                                                       Summary
+
+==============================================   ======================================
+:ref:`a1 <a1>`                                                The model coefficient a1.
+
+:ref:`alpha_star_inf <alpha_star_inf>`               The model coefficient Alpha\*_inf.
+
+:ref:`alpha_inf <alpha_inf>`                           The model coefficient Alpha_inf.
+
+:ref:`beta_star_inf <beta_star_inf>`                  The model coefficient Beta\*_inf.
+
+:ref:`beta_i <beta_i>`                                    The model coefficient Beta_i.
+
+:ref:`tke_prandtl_number <tke_prandtl_number>`                  The TKE Prandtl number.
+
+:ref:`sdr_prandtl_number <sdr_prandtl_number>`                  The SDR Prandtl number.
+
+:ref:`k_omega_regime <k_omega_regime>`                     K-Omega regime coefficients.
+
+:ref:`k_epsilon_regime <k_epsilon_regime>`               K-Epsilon regime coefficients.
+
+==============================================   ======================================
+
+.. rubric:: Included in:
+
+========================   ==========================
+
+Parent                                        Summary
+
+========================   ==========================
+:ref:`k_omega <k_omega>`       K-omega model options.
+
+========================   ==========================
+

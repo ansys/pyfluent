@@ -1,0 +1,23 @@
+:orphan:
+
+.. _wall_zones_1:
+
+wall_zones
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.wall_zones_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ========================
+
+Parent                                                  Summary
+
+====================================   ========================
+:ref:`yplus_star <yplus_star>`              'yplus_star' child.
+
+:ref:`yplus_ystar_1 <yplus_ystar_1>`       'yplus_ystar' child.
+
+====================================   ========================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateTheVolumeMeshWTM__GenerateTheVolumeMeshWTMCommandArguments__VolumeMeshPreferences:
+
+_VolumeMeshPreferences
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.GenerateTheVolumeMeshWTM._GenerateTheVolumeMeshWTMCommandArguments._VolumeMeshPreferences
+   :members: _AddMultipleQualityMethods, _Avoid1_8Transition, _CheckSelfProximity, _MaxCellSizeChange, _MergeBodyLabels, _MinEdgeLength, _MinFaceArea, _MinPolySize, _PolyFeatureAngle, _PolyInSolids, _PrepareZoneNames, _QualityMethod, _QualityWarningLimit, _ShowVolumeMeshPreferences, _SolidGrowthRate, _TetInSolids, _UseSizeField, _UseSizeFieldInSolids, _WritePrismControlFile
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

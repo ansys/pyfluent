@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surface_cell_names_ids:
+
+surface_cell_names_ids
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surface_cell_names_ids
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =============================================
+
+Parent                                                                           Summary
+
+========================================   =============================================
+:ref:`surface_cells_1 <surface_cells_1>`       Draw the cells on the specified surfaces.
+
+========================================   =============================================
+

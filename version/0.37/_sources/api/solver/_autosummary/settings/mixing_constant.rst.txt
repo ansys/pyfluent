@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mixing_constant:
+
+mixing_constant
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mixing_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===========================
+
+Parent                                                   Summary
+
+==================================   ===========================
+:ref:`pasr_options <pasr_options>`       EDC PaSR model options.
+
+==================================   ===========================
+

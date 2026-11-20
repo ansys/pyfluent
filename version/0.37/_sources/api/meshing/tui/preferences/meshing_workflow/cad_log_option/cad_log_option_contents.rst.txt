@@ -1,0 +1,14 @@
+.. _ref_meshing_tui_preferences_meshing_workflow_cad_log_option:
+
+cad_log_option
+==============
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_252.main_menu.preferences.meshing_workflow.cad_log_option
+   :members: location, prefix, write
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

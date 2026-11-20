@@ -1,0 +1,34 @@
+:orphan:
+
+.. _geometry_1_child:
+
+geometry_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.geometry_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================   ===============================
+
+Attribute                                      Summary
+
+====================   ===============================
+:ref:`name <name_2>`       The name for this geometry.
+
+:ref:`type <type_2>`       The type for this geometry.
+
+====================   ===============================
+
+.. rubric:: Included in:
+
+==============================   ========================================
+
+Parent                                                            Summary
+
+==============================   ========================================
+:ref:`geometry_1 <geometry_1>`       The mesh geometry management object.
+
+==============================   ========================================
+

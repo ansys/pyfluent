@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ixy:
+
+ixy
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.ixy
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`inertia_tensor <inertia_tensor>`       'inertia_tensor' child.
+
+======================================   ===========================
+

@@ -1,0 +1,58 @@
+:orphan:
+
+.. _mt_cav_prop:
+
+mt_cav_prop
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_cav_prop
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================   =====================================================
+
+Attribute                                                                                                                        Summary
+
+================================================================================   =====================================================
+:ref:`mt_cav_p_vap <mt_cav_p_vap>`                                                                            Cavitation vapor pressure.
+
+:ref:`mt_cav_p_vap_constant <mt_cav_p_vap_constant>`                                                                     Constant p-vap.
+
+:ref:`mt_cav_p_vap_udf <mt_cav_p_vap_udf>`                                                                           User-defined p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_table_name <mt_cav_p_vap_ptl_tabular_table_name>`                          PTL tabular setting for p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_sat_temp <mt_cav_p_vap_ptl_tabular_sat_temp>`                            PTL TSAT name setting for p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_sat_press <mt_cav_p_vap_ptl_tabular_sat_press>`                          PTL PSAT name setting for p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_lat_heat <mt_cav_p_vap_ptl_tabular_lat_heat>`                            PTL LSAT name setting for p-vap.
+
+:ref:`mt_cav_p_vap_rgp_data_set <mt_cav_p_vap_rgp_data_set>`                                                         RGP table colummns.
+
+:ref:`mt_cav_p_vap_polynomial <mt_cav_p_vap_polynomial>`                                                               Polynomial p-vap.
+
+:ref:`mt_cav_p_vap_piecewise_polynomial <mt_cav_p_vap_piecewise_polynomial>`                                 Piecewise-polynomial p-vap.
+
+:ref:`mt_cav_p_vap_piecewise_linear <mt_cav_p_vap_piecewise_linear>`                                             Piecewise-linear p-vap.
+
+:ref:`mt_cav_p_vap_taylor_sat_press <mt_cav_p_vap_taylor_sat_press>`                       Saturation pressure for Taylor approximation.
+
+:ref:`mt_cav_p_vap_taylor_fs_temp <mt_cav_p_vap_taylor_fs_temp>`                       Free stream temperature for Taylor approximation.
+
+:ref:`mt_cav_p_vap_taylor_tcoeff <mt_cav_p_vap_taylor_tcoeff>`                                   Thermal coeff for Taylor approximation.
+
+================================================================================   =====================================================
+
+.. rubric:: Included in:
+
+==================================   ============================================
+
+Parent                                                                    Summary
+
+==================================   ============================================
+:ref:`mt_cav_group <mt_cav_group>`       Group all cavitation related parameters.
+
+==================================   ============================================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _cfl_based_time_stepping:
+
+cfl_based_time_stepping
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cfl_based_time_stepping
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ==================================================
+
+Attribute                                                                               Summary
+
+==========================================   ==================================================
+:ref:`advanced_options <advanced_options>`       Advanced settings for CFL-based time stepping.
+
+==========================================   ==================================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================
+
+Parent                                                                  Summary
+
+==============================================   ==============================
+:ref:`transient_controls <transient_controls>`       Transient controls object.
+
+==============================================   ==============================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _marker_2:
+
+marker
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.marker_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   =====================================================
+
+Attribute                                                                Summary
+
+========================   =====================================================
+:ref:`symbol <symbol_1>`                         The marker shape for the curve.
+
+:ref:`size <size_3>`           Define the size of the markers used in the curve.
+
+:ref:`color <color_9>`                   The color for the markers in the curve.
+
+========================   =====================================================
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`curves_1_child <curves_1_child>`       'child_object_type' of curves.
+
+======================================   ==================================
+

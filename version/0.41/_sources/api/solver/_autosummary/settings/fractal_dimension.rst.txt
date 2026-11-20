@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fractal_dimension:
+
+fractal_dimension
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fractal_dimension
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===========================
+
+Parent                                                   Summary
+
+==================================   ===========================
+:ref:`pasr_options <pasr_options>`       EDC PaSR model options.
+
+==================================   ===========================
+

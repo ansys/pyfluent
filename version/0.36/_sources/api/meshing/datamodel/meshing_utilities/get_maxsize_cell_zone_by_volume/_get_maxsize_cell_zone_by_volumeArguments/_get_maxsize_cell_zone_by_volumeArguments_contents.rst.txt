@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_maxsize_cell_zone_by_volume__get_maxsize_cell_zone_by_volumeArguments:
+
+_get_maxsize_cell_zone_by_volumeArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_maxsize_cell_zone_by_volume._get_maxsize_cell_zone_by_volumeArguments
+   :members: _zone_id_list, _zone_name_list, _zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

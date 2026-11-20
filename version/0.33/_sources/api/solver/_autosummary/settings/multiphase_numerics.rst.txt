@@ -1,0 +1,52 @@
+:orphan:
+
+.. _multiphase_numerics:
+
+multiphase_numerics
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.multiphase_numerics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   =========================================================================
+
+Attribute                                                                                                                            Summary
+
+================================================================   =========================================================================
+:ref:`porous_media <porous_media>`                                                    Multiphase miscellaneous porous media numerics object.
+
+:ref:`compressible_flow <compressible_flow>`                                                Multiphase compressible numerics options object.
+
+:ref:`boiling_parameters <boiling_parameters>`                                                         Multiphase boiling parameters object.
+
+:ref:`viscous_flow <viscous_flow>`                                                          Multiphase viscous flow numerics options object.
+
+:ref:`heat_mass_transfer <heat_mass_transfer>`                         Multiphase interphase heat and mass transfer numerics options object.
+
+:ref:`interphase_interactions <interphase_interactions>`                                          The interphase interaction options object.
+
+:ref:`advanced_stability_controls <advanced_stability_controls>`                                     Stability controls for multiphase flow.
+
+:ref:`default_controls <default_controls>`                                                               Multiphase default controls object.
+
+:ref:`face_pressure_controls <face_pressure_controls>`                                             The face pressure expert controls object.
+
+:ref:`solution_stabilization <solution_stabilization_1>`                                                  VOF solution stabilization object.
+
+:ref:`energy <energy_1>`                                                                                   Multiphase energy options object.
+
+================================================================   =========================================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

@@ -1,0 +1,25 @@
+:orphan:
+
+.. _expression_8:
+
+expression
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.expression_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`add_objective <add_objective>`                               Add Objective.
+
+:ref:`add_constraint <add_constraint>`                            Add Constraint.
+
+:ref:`criteria_1_child <criteria_1_child>`       'child_object_type' of criteria.
+
+==========================================   ====================================
+

@@ -1,0 +1,48 @@
+:orphan:
+
+.. _cad:
+
+cad
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cad
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================================   =====================================================================================================================
+
+Argument                                                                                                                                                             Summary
+
+====================================================   =====================================================================================================================
+:ref:`base_cad <base_cad>`                                                                                                                Base CAD file that will be warped.
+
+:ref:`base_stl <base_stl>`                                                                                                     Base STL file matching the base CAD surfaces.
+
+:ref:`new_stl <new_stl>`                                                                                                        New STL file containing the warped surfaces.
+
+:ref:`new_cad <new_cad>`                                                                                                        New CAD file containing the warped surfaces.
+
+:ref:`cad_feature_tolerance <cad_feature_tolerance>`                                                      CAD Feature Tolerance. Recommended 1/10 of minimum feature length.
+
+:ref:`units <units_3>`                                                                                                                                Units of the base CAD.
+
+:ref:`detach_bodies <detach_bodies>`                                                              Detach original bodies before warp, which takes longer but is more robust.
+
+:ref:`remove_inputs <remove_inputs>`                       Remove inputs after warp. Keep the inputs to visualize and compare the resulting CAD from the input CAD and STLs.
+
+:ref:`new_body_suffix <new_body_suffix>`                                                                                          Suffix for the new bodies in the CAD file.
+
+====================================================   =====================================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`export_2 <export_2>`       Design tool export object.
+
+==========================   ==============================
+

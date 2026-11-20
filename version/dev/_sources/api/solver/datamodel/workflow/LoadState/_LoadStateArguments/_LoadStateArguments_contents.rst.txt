@@ -1,0 +1,16 @@
+:html_theme.sidebar_secondary.remove:
+
+.. _ref_solver_datamodel_workflow_LoadState__LoadStateArguments:
+
+LoadStateArguments_item
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v272.object_model.workflow.Root.LoadState._LoadStateArguments
+   :members: _ListOfRoots
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

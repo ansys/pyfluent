@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cfl_update_frequency:
+
+cfl_update_frequency
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cfl_update_frequency
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============================
+
+Parent                                                   Summary
+
+==============================   ===============================
+:ref:`settings_4 <settings_4>`       Solution Steering Settings.
+
+==============================   ===============================
+

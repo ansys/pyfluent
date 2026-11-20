@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scale_8:
+
+scale
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scale_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================
+
+Parent                                               Summary
+
+========================================   =================
+:ref:`vector_settings <vector_settings>`       Vector style.
+
+========================================   =================
+

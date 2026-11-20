@@ -1,0 +1,36 @@
+:orphan:
+
+.. _product_child:
+
+product_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.product_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   =======================
+
+Attribute                                    Summary
+
+==========================   =======================
+:ref:`name <name_5>`             Name of the object.
+
+:ref:`factor_1 <factor_1>`          Observable name.
+
+:ref:`factor_2 <factor_2>`          Observable name.
+
+==========================   =======================
+
+.. rubric:: Included in:
+
+========================   ===================================
+
+Parent                                                 Summary
+
+========================   ===================================
+:ref:`product <product>`       Product observable definitions.
+
+========================   ===================================
+

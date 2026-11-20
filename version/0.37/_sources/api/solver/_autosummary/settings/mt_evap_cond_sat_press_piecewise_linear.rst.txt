@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mt_evap_cond_sat_press_piecewise_linear:
+
+mt_evap_cond_sat_press_piecewise_linear
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_evap_cond_sat_press_piecewise_linear
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ====================================================
+
+Attribute                                                                         Summary
+
+==================================   ====================================================
+:ref:`function_of <function_of_1>`            What variable this object is a function of.
+
+:ref:`data_points <data_points>`         Ranges and values for piecewise-linear property.
+
+==================================   ====================================================
+
+.. rubric:: Included in:
+
+====================================================   ========================
+
+Parent                                                                  Summary
+
+====================================================   ========================
+:ref:`mt_evap_cond_sat_prop <mt_evap_cond_sat_prop>`       Evap cond sat props.
+
+====================================================   ========================
+

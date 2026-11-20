@@ -1,0 +1,47 @@
+:orphan:
+
+.. _network_2_child:
+
+network_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.network_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=======================   =======================
+
+Attribute                                 Summary
+
+=======================   =======================
+:ref:`name <name_4>`          Name of the object.
+
+:ref:`phase <phase_37>`            'phase' child.
+
+=======================   =======================
+
+.. rubric:: Methods
+
+======================================   ========================================================================================================================
+
+Method                                                                                                                                                    Summary
+
+======================================   ========================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone's surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                          Create surface for selected zone.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+============================   ===========================================
+
+Parent                                                             Summary
+
+============================   ===========================================
+:ref:`network_2 <network_2>`       Settings for boundary-condition object.
+
+============================   ===========================================
+

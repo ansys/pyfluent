@@ -1,0 +1,40 @@
+:orphan:
+
+.. _heat_mass_transfer:
+
+heat_mass_transfer
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.heat_mass_transfer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ============================================================================================
+
+Attribute                                                                                                                                                 Summary
+
+==================================================================   ============================================================================================
+:ref:`cavitation <cavitation>`                                           Enable/disable turbulent diffusion treatment between phases participating in cavitation.
+
+:ref:`evaporation_condensation <evaporation_condensation>`                                                      Evaporation-condensation advanced options object.
+
+:ref:`boiling <boiling>`                                                                                                         Boiling advanced options object.
+
+:ref:`area_density <area_density_1>`                                                                                             Interfacial area density object.
+
+:ref:`alternative_energy_treatment <alternative_energy_treatment>`                              Alternative treatment of latent heat source due to mass transfer.
+
+==================================================================   ============================================================================================
+
+.. rubric:: Included in:
+
+================================================   ===========================================
+
+Parent                                                                                 Summary
+
+================================================   ===========================================
+:ref:`multiphase_numerics <multiphase_numerics>`       The multiphase numerics options object.
+
+================================================   ===========================================
+

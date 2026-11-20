@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_delete_empty_cell_zones__delete_empty_cell_zonesCommandArguments:
+
+_delete_empty_cell_zonesCommandArguments
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.delete_empty_cell_zones._delete_empty_cell_zonesCommandArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _cell_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_crank_angle_step:
+
+max_crank_angle_step
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.max_crank_angle_step
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`in_cylinder <in_cylinder>`       'in_cylinder' child.
+
+================================   ========================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _dynamic_zones_child:
+
+dynamic_zones_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.dynamic_zones_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=============================   ====================================================
+
+Attribute                                                                    Summary
+
+=============================   ====================================================
+:ref:`name <name_4>`                                             Name of the object.
+
+:ref:`zone <zone_1>`                                                  The zone name.
+
+:ref:`type <type_11>`               The zone associated with this dynamic mesh zone.
+
+:ref:`motion <motion>`                                               'motion' child.
+
+:ref:`meshing <meshing>`                                            'meshing' child.
+
+:ref:`geometry <geometry_10>`                                      'geometry' child.
+
+:ref:`solver <solver_1>`                                             'solver' child.
+
+=============================   ====================================================
+
+.. rubric:: Included in:
+
+====================================   ==================
+
+Parent                                            Summary
+
+====================================   ==================
+:ref:`dynamic_zones <dynamic_zones>`       Dynamic Zones.
+
+====================================   ==================
+

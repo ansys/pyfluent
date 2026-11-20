@@ -1,0 +1,32 @@
+:orphan:
+
+.. _translate:
+
+translate
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.translate
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ===============================================
+
+Argument                                                           Summary
+
+========================   ===============================================
+:ref:`offset <offset_4>`       The translation offset vector for the mesh.
+
+========================   ===============================================
+
+.. rubric:: Included in:
+
+==================   ==========================================================================================================
+
+Parent                                                                                                                  Summary
+
+==================   ==========================================================================================================
+:ref:`mesh <mesh>`       Provides access to mesh operations such as generation, transformation, repair, import/export and more.
+
+==================   ==========================================================================================================
+

@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_zones_with_multi_faces_for_given_face_zones:
+
+get_zones_with_multi_faces_for_given_face_zones
+===============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.get_zones_with_multi_faces_for_given_face_zones
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _get_zones_with_multi_faces_for_given_face_zonesArguments/_get_zones_with_multi_faces_for_given_face_zonesArguments_contents

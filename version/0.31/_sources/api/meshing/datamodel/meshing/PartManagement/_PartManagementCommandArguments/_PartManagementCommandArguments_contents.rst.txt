@@ -1,0 +1,20 @@
+.. _ref_meshing_datamodel_meshing_PartManagement__PartManagementCommandArguments:
+
+_PartManagementCommandArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.PartManagement._PartManagementCommandArguments
+   :members: _Append, _AppendFileName, _Context, _CreateObjectPer, _EdgeExtraction, _FMDFileName, _FeatureAngle, _FileLengthUnit, _FileLengthUnitAppend, _FileLoaded, _IgnoreSolidNames, _IgnoreSolidNamesAppend, _JtLOD, _JtLODAppend, _LengthUnit, _ObjectSetting, _OneZonePer, _PartPerBody, _PrefixParentName, _RemoveEmptyParts, _Route, _RouteAppend
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _Options/_Options_contents
+   _RefacetOptions/_RefacetOptions_contents
+   _Refaceting/_Refaceting_contents

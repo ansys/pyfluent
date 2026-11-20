@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_part_replacement_options__part_replacement_options_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_options._part_replacement_options.arguments
+   :members: add_boundary_layer, add_local_sizing, add_part_management, add_part_replacement, add_update_the_volume_mesh
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
