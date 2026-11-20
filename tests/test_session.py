@@ -1040,11 +1040,6 @@ def test_beta_solver_session(new_solver_session_wo_exit):
     assert solver.is_active() is True
     assert "switch_to_meshing" in dir(solver)
     assert hasattr(solver, "switch_to_meshing")
-    with pytest.raises(BetaFeaturesNotEnabled):
-        meshing = solver.switch_to_meshing()
-    solver.enable_beta_features()
-    assert "switch_to_meshing" in dir(solver)
-    assert hasattr(solver, "switch_to_meshing")
     meshing = solver.switch_to_meshing()
 
     assert solver.is_active() is False
@@ -1066,11 +1061,11 @@ def test_error_raised_for_beta_feature_access_for_older_versions(
             meshing.enable_beta_features()
 
     if solver.get_fluent_version() >= FluentVersion.v252:
-        solver.enable_beta_features()
+        # switch_to_meshing is now a stable feature (no beta check required)
         assert "switch_to_meshing" in dir(solver)
     else:
-        with pytest.raises(RuntimeError):
-            solver.enable_beta_features()
+        # Feature not available on older Fluent versions
+        assert "switch_to_meshing" not in dir(solver)
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -1121,7 +1116,6 @@ def test_dir_for_session(new_meshing_session_wo_exit):
             assert getattr(solver, attr)
         assert attr not in dir(solver)
 
-    solver.enable_beta_features()
     meshing_new = solver.switch_to_meshing()
 
     non_dunder_solver_attrs = [

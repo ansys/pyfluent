@@ -45,30 +45,12 @@ Example usage:
 Solver Session
 --------------
 
-In solver mode, the ability to **switch to meshing mode** is available as a beta feature.
-Similar to the meshing session, the method is present on the session object but raises
-``BetaFeaturesNotEnabled`` until beta features are enabled.
+.. note::
 
-Example usage:
+   The ability to **switch to meshing mode** (via ``switch_to_meshing()``) is now a stable feature
+   and no longer requires beta enablement. It is available on Fluent 25.2 and later.
 
-.. code-block:: python
-
-  >>> from ansys.fluent.core import Solver
-  >>> solver_session = Solver.from_install()
-
-  >>> # Method available before enabling beta features, but unusable and raises 'BetaFeaturesNotEnabled'
-  >>> assert hasattr(solver_session, "switch_to_meshing")
-
-  >>> switched_meshing_session = solver_session.switch_to_meshing()
-  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: The feature 'switch_to_meshing' requires 'enable_beta_features' flag to be enabled.
-
-  >>> # Enable beta features
-  >>> solver_session.enable_beta_features()
-
-  >>> # Method is now usable
-  >>> switched_meshing_session = solver_session.switch_to_meshing()
-  >>> assert switched_meshing_session.is_active()
-  >>> assert not solver_session.is_active()
+For information on using the ``switch_to_meshing()`` method, see the :ref:`ref_switching_between_solver_and_meshing_sessions` section in the session documentation.
 
 
 .. note::
