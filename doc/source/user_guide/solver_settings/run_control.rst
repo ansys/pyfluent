@@ -5,7 +5,7 @@ Interrupting and resuming a solver run
 
 Use ``solver_session.settings.solution.run_calculation.interrupt()`` to stop
 a running calculation cleanly. Call ``iterate()`` again to continue from the
-current solution, without reinitializing or reloading the case. These commands
+current solution, without initializing it again or reloading the case. These commands
 are part of the :ref:`solver settings API <ref_solver_settings_guide>`.
 
 Interrupt and resume outside a callback
@@ -46,17 +46,17 @@ and runs only the remaining iterations.
    finally:
        solver_session.events.unregister_callback(callback_id)
 
-Callback holds and self-unregistration
---------------------------------------
+Callback holds and registration removal
+---------------------------------------
 
 ``ITERATION_ENDED`` and ``TIMESTEP_ENDED`` callbacks execute on the event-stream
 thread while Fluent holds the solver. Normally, PyFluent releases that hold
 after the callback returns, including when the callback raises an exception.
 
-A callback can unregister itself using
-:meth:`~ansys.fluent.core.services.streaming_services.events_streaming.EventsManager.unregister_callback`.
+A callback can remove its own registration by calling
+``session.events.unregister_callback(callback_id)``.
 This disables future invocations and explicitly releases that callback's
-current hold before unregistration returns. Other callbacks or connected
+current hold before that call returns. Other callbacks or connected
 clients retain their own holds.
 
 An interrupted calculation can be restarted inside a callback after releasing
