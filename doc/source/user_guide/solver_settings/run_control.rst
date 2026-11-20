@@ -78,15 +78,6 @@ calculation:
            iter_count=total_iterations - completed_iterations
        )
 
-Use the outside-callback workflow when other solution callbacks are registered.
-Nested calls block event processing until they return. The original
-``iterate()`` can return before the nested calculation finishes, so callers
-that need its result must explicitly synchronize with callback completion.
-Do not restart while the solver is still held: ``iterate()`` can be inactive.
-This nested restart pattern has been verified with Fluent 2027 R1.
-See :ref:`Observing events <ref_events_guide>` for callback registration and
-monitoring.
-
 Interrupt, pause, and reload
 ------------------------------------------------------------
 
