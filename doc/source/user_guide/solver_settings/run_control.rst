@@ -1,7 +1,7 @@
 .. _ref_run_control:
 
 Interrupting and resuming a solver run
-============================================================
+======================================
 
 Use ``solver_session.settings.solution.run_calculation.interrupt()`` to stop
 a running calculation cleanly. Call ``iterate()`` again to continue from the
@@ -9,7 +9,7 @@ current solution, without reinitializing or reloading the case. These commands
 are part of the :ref:`solver settings API <ref_solver_settings_guide>`.
 
 Interrupt and resume outside a callback
-------------------------------------------------------------
+---------------------------------------
 
 The following example assumes that ``solver_session`` has a loaded case.
 It interrupts after ten iterations, checks how many iterations were completed,
@@ -47,7 +47,7 @@ and runs only the remaining iterations.
        solver_session.events.unregister_callback(callback_id)
 
 Callback holds and self-unregistration
-------------------------------------------------------------
+--------------------------------------
 
 ``ITERATION_ENDED`` and ``TIMESTEP_ENDED`` callbacks execute on the event-stream
 thread while Fluent holds the solver. Normally, PyFluent releases that hold
@@ -78,8 +78,8 @@ calculation:
            iter_count=total_iterations - completed_iterations
        )
 
-Interrupt, pause, and reload
-------------------------------------------------------------
+Interrupt and pause
+-------------------
 
 An interrupt ends the current solve command while preserving the in-memory
 solution. A new solve command continues from that solution. It does not suspend
@@ -88,7 +88,3 @@ and later resume the same command.
 An event hold temporarily pauses the current command while a callback examines
 or changes the model. Releasing the hold normally lets that command continue;
 releasing it after ``interrupt()`` lets the command stop.
-
-Saving case and data files provides a persistent checkpoint that can be
-reloaded in a later session. Saving and reloading is not required to continue
-an interrupted calculation in the same session.
