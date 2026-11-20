@@ -14,6 +14,9 @@ of graphics.
 
 Supported events are enumerated by the PyFluent :obj:`~ansys.fluent.core.services.streaming_services.events_streaming.SolverEvent` and :obj:`~ansys.fluent.core.services.streaming_services.events_streaming.MeshingEvent` classes.
 
+For interrupting and resuming calculations, including callback holds and
+self-unregistration, see :ref:`ref_run_control`.
+
 The following code triggers a callback at the end of every iteration.
 
 .. code-block:: python

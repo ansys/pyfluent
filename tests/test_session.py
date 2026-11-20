@@ -1197,15 +1197,18 @@ def test_context_manager_with_session_switch(new_meshing_session_wo_exit):
 
 def test_iterate_with_interrupt(new_solver_session):
     case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
 
     solver = new_solver_session
     solver.settings.file.read_case(file_name=case_file)
+    solver.settings.solution.monitor.residual.options.criterion_type = "none"
     solver.settings.solution.initialization.hybrid_initialize()
+    initial_iteration = solver.scheme.eval("(get-current-iteration)")
+    total_iterations = 30
+    interrupt_requested = []
 
     def on_iteration_ended(session, event_info: IterationEndedEventInfo) -> None:
-        if event_info.index >= 10:
-            # Signal Fluent to stop — Fluent stops cleanly
+        if event_info.index >= initial_iteration + 10 and not interrupt_requested:
+            interrupt_requested.append(event_info.index)
             session.settings.solution.run_calculation.interrupt()
 
     solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
@@ -1214,7 +1217,21 @@ def test_iterate_with_interrupt(new_solver_session):
     # cleanly via interrupt().  The RuntimeError is suppressed by the
     # interruptible command guard in flobject.py, so workflow code
     # following iterate()/calculate() continues normally.
-    solver.settings.solution.run_calculation.iterate(iter_count=100)
+    solver.settings.solution.run_calculation.iterate(iter_count=total_iterations)
+
+    completed_iterations = (
+        solver.scheme.eval("(get-current-iteration)") - initial_iteration
+    )
+    assert interrupt_requested
+    assert 10 <= completed_iterations < total_iterations
+
+    solver.settings.solution.run_calculation.iterate(
+        iter_count=total_iterations - completed_iterations
+    )
+    assert (
+        solver.scheme.eval("(get-current-iteration)")
+        == initial_iteration + total_iterations
+    )
 
     solver.settings.results.graphics.contour.create(name="dummy-contour")
 
