@@ -738,6 +738,33 @@ def test_get_cls_argument_docstring_uses_real_newlines():
     assert "\\n" not in cls.__doc__
 
 
+@pytest.mark.parametrize("action_type", ["command", "query"])
+def test_get_cls_argument_docstring_uses_callable_names(monkeypatch, action_type):
+    monkeypatch.setattr(flobject, "_bases_by_class", {})
+    flobject.get_cls(
+        "file-name", {"type": "file", "file_purpose": "output"}, version="271"
+    )
+    cls, _ = flobject.get_cls(
+        "read-case",
+        {
+            "type": action_type,
+            "arguments": {
+                "file-name": {"type": "file", "file_purpose": "input"},
+                "part-2": {"type": "string"},
+                "path": {"type": "string"},
+            },
+        },
+        version="271",
+    )
+
+    assert cls._child_classes["file_name"].__name__ == "file_name_1"
+    assert cls.argument_names == ["file_name", "part_2", "path_1"]
+    assert "    file_name : str\n" in cls.__doc__
+    assert "    file_name_1 : str\n" not in cls.__doc__
+    assert "    part_2 : str\n" in cls.__doc__
+    assert "    path_1 : str\n" in cls.__doc__
+
+
 def test_create_generated_class_returns_context():
     cls, parent_attr_name, taboo, user_creatable = flobject._create_generated_class(
         "",
