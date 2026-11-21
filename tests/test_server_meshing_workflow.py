@@ -54,9 +54,9 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
         WorkflowType="Watertight Geometry"
     )
     watertight = new_meshing_session_wo_exit.meshing_workflow
-    watertight.task_object.import_geometry["Import Geometry"].arguments.file_name = (
-        import_file_name
-    )
+    watertight.task_object.import_geometry[
+        "Import Geometry"
+    ].arguments.file_name.set_state((import_file_name))
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
@@ -81,7 +81,7 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
     # Generate surface mesh
     watertight.task_object.create_surface_mesh[
         "Generate the Surface Mesh"
-    ].arguments.cfd_surface_mesh_controls.max_size = 0.3
+    ].arguments.cfd_surface_mesh_controls.max_size.set_state(0.3)
     assert (
         watertight.task_object.create_surface_mesh[
             "Generate the Surface Mesh"
@@ -140,7 +140,7 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
     ].arguments.volume_fill.set_state("poly-hexcore")
     watertight.task_object.create_volume_mesh_wtm[
         "Generate the Volume Mesh"
-    ].arguments.volume_fill_controls.hex_max_cell_length = 0.3
+    ].arguments.volume_fill_controls.hex_max_cell_length.set_state(0.3)
     watertight.task_object.create_volume_mesh_wtm["Generate the Volume Mesh"].execute()
 
     # Switch to solution mode
@@ -187,16 +187,16 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     ].arguments.context.set_state(0)
     fault_tolerant.task_object.import_cad_and_part_management[
         "Import CAD and Part Management"
-    ].arguments.create_object_per = "Custom"
+    ].arguments.create_object_per.set_state("Custom")
     fault_tolerant.task_object.import_cad_and_part_management[
         "Import CAD and Part Management"
     ].arguments.fmd_file_name.set_state(import_file_name)
     fault_tolerant.task_object.import_cad_and_part_management[
         "Import CAD and Part Management"
-    ].arguments.file_loaded = True
+    ].arguments.file_loaded.set_state(True)
     fault_tolerant.task_object.import_cad_and_part_management[
         "Import CAD and Part Management"
-    ].arguments.object_setting = "DefaultObjectSetting"
+    ].arguments.object_setting.set_state("DefaultObjectSetting")
     fault_tolerant.task_object.import_cad_and_part_management[
         "Import CAD and Part Management"
     ].execute()
@@ -207,16 +207,16 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     ].arguments.add_enclosure.set_state(False)
     fault_tolerant.task_object.describe_geometry_and_flow[
         "Describe Geometry and Flow"
-    ].arguments.close_caps = True
+    ].arguments.close_caps.set_state(True)
     fault_tolerant.task_object.describe_geometry_and_flow[
         "Describe Geometry and Flow"
-    ].arguments.describe_geometry_and_flow_options.advanced_options = True
+    ].arguments.describe_geometry_and_flow_options.advanced_options.set_state(True)
     fault_tolerant.task_object.describe_geometry_and_flow[
         "Describe Geometry and Flow"
-    ].arguments.describe_geometry_and_flow_options.extract_edge_features = True
+    ].arguments.describe_geometry_and_flow_options.extract_edge_features.set_state(True)
     fault_tolerant.task_object.describe_geometry_and_flow[
         "Describe Geometry and Flow"
-    ].arguments.flow_type = "Internal flow through the object"
+    ].arguments.flow_type.set_state("Internal flow through the object")
     fault_tolerant.task_object.describe_geometry_and_flow[
         "Describe Geometry and Flow"
     ].update_child_tasks(setup_type_changed=False)
@@ -302,7 +302,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     # Identify regions
     fault_tolerant.task_object.identify_regions[
         "Identify Regions"
-    ].arguments.show_coordinates = True
+    ].arguments.show_coordinates.set_state(True)
     fault_tolerant.task_object.identify_regions[
         "Identify Regions"
     ].arguments.material_points_name.set_state("fluid-region-1")
@@ -328,7 +328,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
 
     fault_tolerant.task_object.identify_regions[
         "Identify Regions"
-    ].arguments.show_coordinates = True
+    ].arguments.show_coordinates.set_state(True)
     fault_tolerant.task_object.identify_regions[
         "Identify Regions"
     ].arguments.material_points_name.set_state("void-region-1")
@@ -522,117 +522,117 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
 
     two_dim_mesh.task_object.load_cad_geometry[
         "Load CAD Geometry"
-    ].arguments.file_name = import_file_name
+    ].arguments.file_name.set_state(import_file_name)
     two_dim_mesh.task_object.load_cad_geometry[
         "Load CAD Geometry"
-    ].arguments.length_unit = "mm"
+    ].arguments.length_unit.set_state("mm")
     two_dim_mesh.task_object.load_cad_geometry[
         "Load CAD Geometry"
-    ].arguments.refaceting.refacet = False
+    ].arguments.refaceting.refacet.set_state(False)
     two_dim_mesh.task_object.load_cad_geometry["Load CAD Geometry"].execute()
 
     # Set regions and boundaries
     two_dim_mesh.task_object.update_boundaries[
         "Update Boundaries"
-    ].arguments.selection_type = "zone"
+    ].arguments.selection_type.set_state("zone")
     two_dim_mesh.task_object.update_boundaries["Update Boundaries"].execute()
 
     # Define global sizing
     two_dim_mesh.task_object.define_global_sizing[
         "Define Global Sizing"
-    ].arguments.curvature_normal_angle = 20
+    ].arguments.curvature_normal_angle.set_state(20)
     two_dim_mesh.task_object.define_global_sizing[
         "Define Global Sizing"
-    ].arguments.max_size = 2000.0
+    ].arguments.max_size.set_state(2000.0)
     two_dim_mesh.task_object.define_global_sizing[
         "Define Global Sizing"
-    ].arguments.min_size = 5.0
+    ].arguments.min_size.set_state(5.0)
     two_dim_mesh.task_object.define_global_sizing[
         "Define Global Sizing"
-    ].arguments.size_functions = "Curvature"
+    ].arguments.size_functions.set_state("Curvature")
     two_dim_mesh.task_object.define_global_sizing["Define Global Sizing"].execute()
 
     # Add local sizing
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.add_child = True
+    ].arguments.add_child.set_state(True)
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_control_name = "boi_1"
+    ].arguments.boi_control_name.set_state("boi_1")
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_execution = "Body Of Influence"
+    ].arguments.boi_execution.set_state("Body Of Influence")
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_face_label_list = ["boi"]
+    ].arguments.boi_face_label_list.set_state(["boi"])
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_size = 50.0
+    ].arguments.boi_size.set_state(50.0)
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_zoneor_label = "label"
+    ].arguments.boi_zoneor_label.set_state("label")
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.draw_size_control = True
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].add_child_and_update(defer_update=False)
-
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].arguments.add_child = True
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].arguments.boi_control_name = "edgesize_1"
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].arguments.boi_execution = "Edge Size"
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].arguments.boi_size = 5.0
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].arguments.boi_zoneor_label = "label"
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].arguments.draw_size_control = True
-    two_dim_mesh.task_object.add_local_sizing_wtm[
-        "Add Local Sizing"
-    ].arguments.edge_label_list = ["airfoil-te"]
+    ].arguments.draw_size_control.set_state(True)
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
     ].add_child_and_update(defer_update=False)
 
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.add_child = True
+    ].arguments.add_child.set_state(True)
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_control_name = "curvature_1"
+    ].arguments.boi_control_name.set_state("edgesize_1")
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_curvature_normal_angle = 10
+    ].arguments.boi_execution.set_state("Edge Size")
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_execution = "Curvature"
+    ].arguments.boi_size.set_state(5.0)
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_max_size = 2
+    ].arguments.boi_zoneor_label.set_state("label")
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_min_size = 1.5
+    ].arguments.draw_size_control.set_state(True)
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_scope_to = "edges"
+    ].arguments.edge_label_list.set_state(["airfoil-te"])
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.boi_zoneor_label = "label"
+    ].add_child_and_update(defer_update=False)
+
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.draw_size_control = True
+    ].arguments.add_child.set_state(True)
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.edge_label_list = ["airfoil"]
+    ].arguments.boi_control_name.set_state("curvature_1")
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_curvature_normal_angle.set_state(10)
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_execution.set_state("Curvature")
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_max_size.set_state(2)
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_min_size.set_state(1.5)
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_scope_to.set_state("edges")
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_zoneor_label.set_state("label")
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.draw_size_control.set_state(True)
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.edge_label_list.set_state(["airfoil"])
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
     ].add_child_and_update(defer_update=False)
@@ -640,16 +640,16 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Add boundary layer
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.add_child = True
+    ].arguments.add_child.set_state(True)
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.control_name = "aspect-ratio_1"
+    ].arguments.control_name.set_state("aspect-ratio_1")
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.number_of_layers = 4
+    ].arguments.number_of_layers.set_state(4)
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.offset_method_type = "aspect-ratio"
+    ].arguments.offset_method_type.set_state("aspect-ratio")
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
     ].add_child_and_update(defer_update=False)
@@ -658,13 +658,13 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # This dependency may be removed in a future release as the API evolves.
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
-    ].arguments.surface_2d_preferences.show_advanced_options = True
+    ].arguments.surface_2d_preferences.show_advanced_options.set_state(True)
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
-    ].arguments.surface_2d_preferences.merge_edge_zones_based_on_labels = False
+    ].arguments.surface_2d_preferences.merge_edge_zones_based_on_labels.set_state(False)
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
-    ].arguments.surface_2d_preferences.merge_face_zones_based_on_labels = False
+    ].arguments.surface_2d_preferences.merge_face_zones_based_on_labels.set_state(False)
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
     ].execute()
@@ -672,32 +672,32 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     two_dim_mesh.task_object.add_2d_boundary_layers["Add 2D Boundary Layers"].revert()
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.add_child = "yes"
+    ].arguments.add_child.set_state("yes")
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.control_name = "uniform_1"
+    ].arguments.control_name.set_state("uniform_1")
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.first_layer_height = 2
+    ].arguments.first_layer_height.set_state(2)
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.number_of_layers = 4
+    ].arguments.number_of_layers.set_state(4)
     two_dim_mesh.task_object.add_2d_boundary_layers[
         "Add 2D Boundary Layers"
-    ].arguments.offset_method_type = "uniform"
+    ].arguments.offset_method_type.set_state("uniform")
     two_dim_mesh.task_object.add_2d_boundary_layers["Add 2D Boundary Layers"].execute()
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
-    ].arguments.surface_2d_preferences.show_advanced_options = True
+    ].arguments.surface_2d_preferences.show_advanced_options.set_state(True)
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
-    ].arguments.surface_2d_preferences.merge_edge_zones_based_on_labels = False
+    ].arguments.surface_2d_preferences.merge_edge_zones_based_on_labels.set_state(False)
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
-    ].arguments.surface_2d_preferences.merge_face_zones_based_on_labels = False
+    ].arguments.surface_2d_preferences.merge_face_zones_based_on_labels.set_state(False)
     two_dim_mesh.task_object.generate_initial_surface_mesh[
         "Generate the Surface Mesh"
     ].execute()
@@ -733,9 +733,9 @@ def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
         "um",
         "nm",
     ]
-    watertight.task_object.import_geometry["Import Geometry"].arguments.length_unit = (
-        "m"
-    )
+    watertight.task_object.import_geometry[
+        "Import Geometry"
+    ].arguments.length_unit.set_state(("m"))
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
@@ -774,7 +774,9 @@ def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
         "Up-to-date",
         "Forced-up-to-date",
     ]
-    watertight.task_object.import_geometry["Import Geometry"].state = "Up-to-date"
+    watertight.task_object.import_geometry["Import Geometry"].state.set_state(
+        "Up-to-date"
+    )
     assert (
         watertight.task_object.import_geometry["Import Geometry"].state.get_state()
         == "Up-to-date"
@@ -1086,7 +1088,7 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
     fault_tolerant.extract_edge_features_child_1()
 
     # Identify regions
-    fault_tolerant.identify_regions.show_coordinates = True
+    fault_tolerant.identify_regions.show_coordinates.set_state(True)
     fault_tolerant.identify_regions.material_points_name.set_state("fluid-region-1")
     fault_tolerant.identify_regions.selection_type.set_state("zone")
     fault_tolerant.identify_regions.x.set_state(377.322045740589)
@@ -1096,10 +1098,10 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
     fault_tolerant.identify_regions.insert_compound_child_task()
     fault_tolerant.identify_regions_child_1()
 
-    fault_tolerant.identify_regions.show_coordinates = True
+    fault_tolerant.identify_regions.show_coordinates.set_state(True)
     fault_tolerant.identify_regions.material_points_name.set_state("void-region-1")
     fault_tolerant.identify_regions.new_region_type.set_state("void")
-    fault_tolerant.identify_regions.selection_type = "object"
+    fault_tolerant.identify_regions.selection_type.set_state("object")
     fault_tolerant.identify_regions.object_selection_list.set_state(
         ["inlet-1", "inlet-2", "inlet-3", "main"]
     )
@@ -1117,11 +1119,13 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
         "void-region-1"
     )
 
-    fault_tolerant.define_leakage_threshold.add_child = "yes"
-    fault_tolerant.define_leakage_threshold.flip_direction = True
-    fault_tolerant.define_leakage_threshold.leakage_name = "leakage-1"
-    fault_tolerant.define_leakage_threshold.plane_direction = "X"
-    fault_tolerant.define_leakage_threshold.region_selection_single = "void-region-1"
+    fault_tolerant.define_leakage_threshold.add_child.set_state("yes")
+    fault_tolerant.define_leakage_threshold.flip_direction.set_state(True)
+    fault_tolerant.define_leakage_threshold.leakage_name.set_state("leakage-1")
+    fault_tolerant.define_leakage_threshold.plane_direction.set_state("X")
+    fault_tolerant.define_leakage_threshold.region_selection_single.set_state(
+        "void-region-1"
+    )
     fault_tolerant.define_leakage_threshold.insert_compound_child_task()
     fault_tolerant.define_leakage_threshold_child_1()
 
@@ -1193,25 +1197,33 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
     fault_tolerant.update_region_settings()
 
     # Setup size controls
-    fault_tolerant.setup_size_controls.local_settings_name = "default-curvature"
-    fault_tolerant.setup_size_controls.local_size_control_parameters.sizing_type = (
-        "curvature"
+    fault_tolerant.setup_size_controls.local_settings_name.set_state(
+        "default-curvature"
     )
-    fault_tolerant.setup_size_controls.object_selection_list = [
-        "inlet-1",
-        "inlet-2",
-        "inlet-3",
-    ]
+    fault_tolerant.setup_size_controls.local_size_control_parameters.sizing_type.set_state(
+        ("curvature")
+    )
+    fault_tolerant.setup_size_controls.object_selection_list.set_state(
+        [
+            "inlet-1",
+            "inlet-2",
+            "inlet-3",
+        ]
+    )
     fault_tolerant.setup_size_controls.add_child_and_update(defer_update=False)
-    fault_tolerant.setup_size_controls.local_settings_name = "default-proximity"
-    fault_tolerant.setup_size_controls.local_size_control_parameters.sizing_type = (
-        "proximity"
+    fault_tolerant.setup_size_controls.local_settings_name.set_state(
+        "default-proximity"
     )
-    fault_tolerant.setup_size_controls.object_selection_list = [
-        "inlet-1",
-        "inlet-2",
-        "inlet-3",
-    ]
+    fault_tolerant.setup_size_controls.local_size_control_parameters.sizing_type.set_state(
+        ("proximity")
+    )
+    fault_tolerant.setup_size_controls.object_selection_list.set_state(
+        [
+            "inlet-1",
+            "inlet-2",
+            "inlet-3",
+        ]
+    )
     fault_tolerant.setup_size_controls.add_child_and_update(defer_update=False)
 
     # Choose mesh control options
@@ -1259,91 +1271,91 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
     two_dim_mesh = TwoDimensionalMeshing(session=new_meshing_session_wo_exit)
 
-    two_dim_mesh.load_cad_geometry.file_name = import_file_name
-    two_dim_mesh.load_cad_geometry.length_unit = "mm"
-    two_dim_mesh.load_cad_geometry.refaceting.refacet = False
+    two_dim_mesh.load_cad_geometry.file_name.set_state(import_file_name)
+    two_dim_mesh.load_cad_geometry.length_unit.set_state("mm")
+    two_dim_mesh.load_cad_geometry.refaceting.refacet.set_state(False)
     two_dim_mesh.load_cad_geometry()
 
     # Set regions and boundaries
-    two_dim_mesh.update_boundaries.selection_type = "zone"
+    two_dim_mesh.update_boundaries.selection_type.set_state("zone")
     two_dim_mesh.update_boundaries()
 
     # Define global sizing
-    two_dim_mesh.define_global_sizing.curvature_normal_angle = 20
-    two_dim_mesh.define_global_sizing.max_size = 2000.0
-    two_dim_mesh.define_global_sizing.min_size = 5.0
-    two_dim_mesh.define_global_sizing.size_functions = "Curvature"
+    two_dim_mesh.define_global_sizing.curvature_normal_angle.set_state(20)
+    two_dim_mesh.define_global_sizing.max_size.set_state(2000.0)
+    two_dim_mesh.define_global_sizing.min_size.set_state(5.0)
+    two_dim_mesh.define_global_sizing.size_functions.set_state("Curvature")
     two_dim_mesh.define_global_sizing()
 
     # Add local sizing
-    two_dim_mesh.add_local_sizing_wtm.add_child = "yes"
-    two_dim_mesh.add_local_sizing_wtm.boi_control_name = "boi_1"
-    two_dim_mesh.add_local_sizing_wtm.boi_execution = "Body Of Influence"
-    two_dim_mesh.add_local_sizing_wtm.boi_face_label_list = ["boi"]
-    two_dim_mesh.add_local_sizing_wtm.boi_size = 50.0
-    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_wtm.draw_size_control = True
+    two_dim_mesh.add_local_sizing_wtm.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_wtm.boi_control_name.set_state("boi_1")
+    two_dim_mesh.add_local_sizing_wtm.boi_execution.set_state("Body Of Influence")
+    two_dim_mesh.add_local_sizing_wtm.boi_face_label_list.set_state(["boi"])
+    two_dim_mesh.add_local_sizing_wtm.boi_size.set_state(50.0)
+    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_wtm.draw_size_control.set_state(True)
     two_dim_mesh.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.add_local_sizing_wtm.add_child = "yes"
-    two_dim_mesh.add_local_sizing_wtm.boi_control_name = "edgesize_1"
-    two_dim_mesh.add_local_sizing_wtm.boi_execution = "Edge Size"
-    two_dim_mesh.add_local_sizing_wtm.boi_size = 5.0
-    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_wtm.draw_size_control = True
-    two_dim_mesh.add_local_sizing_wtm.edge_label_list = ["airfoil-te"]
+    two_dim_mesh.add_local_sizing_wtm.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_wtm.boi_control_name.set_state("edgesize_1")
+    two_dim_mesh.add_local_sizing_wtm.boi_execution.set_state("Edge Size")
+    two_dim_mesh.add_local_sizing_wtm.boi_size.set_state(5.0)
+    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_wtm.draw_size_control.set_state(True)
+    two_dim_mesh.add_local_sizing_wtm.edge_label_list.set_state(["airfoil-te"])
     two_dim_mesh.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.add_local_sizing_wtm.add_child = "yes"
-    two_dim_mesh.add_local_sizing_wtm.boi_control_name = "curvature_1"
-    two_dim_mesh.add_local_sizing_wtm.boi_curvature_normal_angle = 10
-    two_dim_mesh.add_local_sizing_wtm.boi_execution = "Curvature"
-    two_dim_mesh.add_local_sizing_wtm.boi_max_size = 2
-    two_dim_mesh.add_local_sizing_wtm.boi_min_size = 1.5
-    two_dim_mesh.add_local_sizing_wtm.boi_scope_to = "edges"
-    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_wtm.draw_size_control = True
-    two_dim_mesh.add_local_sizing_wtm.edge_label_list = ["airfoil"]
+    two_dim_mesh.add_local_sizing_wtm.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_wtm.boi_control_name.set_state("curvature_1")
+    two_dim_mesh.add_local_sizing_wtm.boi_curvature_normal_angle.set_state(10)
+    two_dim_mesh.add_local_sizing_wtm.boi_execution.set_state("Curvature")
+    two_dim_mesh.add_local_sizing_wtm.boi_max_size.set_state(2)
+    two_dim_mesh.add_local_sizing_wtm.boi_min_size.set_state(1.5)
+    two_dim_mesh.add_local_sizing_wtm.boi_scope_to.set_state("edges")
+    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_wtm.draw_size_control.set_state(True)
+    two_dim_mesh.add_local_sizing_wtm.edge_label_list.set_state(["airfoil"])
     two_dim_mesh.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
     # Add boundary layer
-    two_dim_mesh.add_2d_boundary_layers.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers.control_name = "aspect-ratio_1"
-    two_dim_mesh.add_2d_boundary_layers.number_of_layers = 4
-    two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
+    two_dim_mesh.add_2d_boundary_layers.add_child.set_state("yes")
+    two_dim_mesh.add_2d_boundary_layers.control_name.set_state("aspect-ratio_1")
+    two_dim_mesh.add_2d_boundary_layers.number_of_layers.set_state(4)
+    two_dim_mesh.add_2d_boundary_layers.offset_method_type.set_state("aspect-ratio")
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options.set_state(
+        (True)
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels.set_state(
+        ("no")
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels.set_state(
+        ("no")
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
-    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers_child_1.control_name = "uniform_1"
-    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
-    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
-    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child.set_state("yes")
+    two_dim_mesh.add_2d_boundary_layers_child_1.control_name.set_state("uniform_1")
+    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height.set_state(2)
+    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers.set_state(4)
+    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type.set_state("uniform")
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options.set_state(
+        (True)
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels.set_state(
+        ("no")
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels.set_state(
+        ("no")
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
@@ -1421,12 +1433,12 @@ def test_duplicate_tasks(new_meshing_session):
 @pytest.mark.fluent_version(">=26.1")
 def test_watertight_workflow(mixing_elbow_geometry_filename, new_meshing_session):
     watertight = WatertightMeshing(session=new_meshing_session)
-    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
+    watertight.import_geometry.file_name.set_state(mixing_elbow_geometry_filename)
     watertight.import_geometry()
     add_local_sizing = watertight.add_local_sizing_wtm
     assert not add_local_sizing.task_list()
-    add_local_sizing.add_child = True
-    add_local_sizing.boi_face_label_list = ["cold-inlet", "hot-inlet"]
+    add_local_sizing.add_child.set_state(True)
+    add_local_sizing.boi_face_label_list.set_state(["cold-inlet", "hot-inlet"])
     add_local_sizing.add_child_and_update()
     assert len(add_local_sizing.task_list()) == 1
     assert add_local_sizing._task_names() == ["facesize_1"]
@@ -1606,7 +1618,7 @@ def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
     watertight = WatertightMeshing(session=new_meshing_session_wo_exit)
     wf_1 = watertight.first_child()
     wf_1.file_name.set_state(import_file_name)
-    wf_1.length_unit = "in"
+    wf_1.length_unit.set_state("in")
     wf_1()
 
     # Add local sizing
@@ -1626,7 +1638,7 @@ def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
     wf_4 = wf_3.next()
     wf_4.update_child_tasks(setup_type_changed=False)
     assert wf_4.setup_type.allowed_values() == ["fluid", "fluid_solid_voids", "solid"]
-    wf_4.setup_type = "fluid"
+    wf_4.setup_type.set_state("fluid")
     wf_4.update_child_tasks(setup_type_changed=True)
     wf_4()
 
@@ -1659,7 +1671,7 @@ def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
     wf_7 = wf_6.next()
 
     wf_7.volume_fill.set_state("poly-hexcore")
-    wf_7.volume_fill_controls.hex_max_cell_length = 0.3
+    wf_7.volume_fill_controls.hex_max_cell_length.set_state(0.3)
     wf_7()
 
     assert wf_7.has_next() is False
@@ -1739,7 +1751,7 @@ def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
             getattr(watertight, attr)
 
     watertight.import_geometry.file_name.set_state(import_file_name)
-    watertight.import_geometry.length_unit = "in"
+    watertight.import_geometry.length_unit.set_state("in")
     watertight.import_geometry()
 
     assert watertight.import_geometry.file_name()
@@ -1815,28 +1827,32 @@ def test_duplicate_children_of_compound_task(
     new_meshing_session, mixing_elbow_geometry_filename
 ):
     watertight = WatertightMeshing(session=new_meshing_session)
-    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
+    watertight.import_geometry.file_name.set_state(mixing_elbow_geometry_filename)
     watertight.import_geometry()
 
-    watertight.add_local_sizing_wtm.add_child = True
+    watertight.add_local_sizing_wtm.add_child.set_state(True)
 
-    watertight.add_local_sizing_wtm.boi_control_name = "wall"
-    watertight.add_local_sizing_wtm.boi_face_label_list = ["wall-elbow", "wall-inlet"]
-    watertight.add_local_sizing_wtm.boi_size = 10
+    watertight.add_local_sizing_wtm.boi_control_name.set_state("wall")
+    watertight.add_local_sizing_wtm.boi_face_label_list.set_state(
+        ["wall-elbow", "wall-inlet"]
+    )
+    watertight.add_local_sizing_wtm.boi_size.set_state(10)
     watertight.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
-    watertight.add_local_sizing_wtm.boi_control_name = "inlet"
-    watertight.add_local_sizing_wtm.boi_face_label_list = [
-        "wall-inlet",
-        "cold-inlet",
-        "hot-inlet",
-    ]
-    watertight.add_local_sizing_wtm.boi_size = 10
+    watertight.add_local_sizing_wtm.boi_control_name.set_state("inlet")
+    watertight.add_local_sizing_wtm.boi_face_label_list.set_state(
+        [
+            "wall-inlet",
+            "cold-inlet",
+            "hot-inlet",
+        ]
+    )
+    watertight.add_local_sizing_wtm.boi_size.set_state(10)
     watertight.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
-    watertight.add_local_sizing_wtm.boi_control_name = "outlet"
-    watertight.add_local_sizing_wtm.boi_face_label_list = ["outlet"]
-    watertight.add_local_sizing_wtm.boi_size = 10
+    watertight.add_local_sizing_wtm.boi_control_name.set_state("outlet")
+    watertight.add_local_sizing_wtm.boi_face_label_list.set_state(["outlet"])
+    watertight.add_local_sizing_wtm.boi_size.set_state(10)
     watertight.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
     assert len(watertight.add_local_sizing_wtm.children()) == 3
@@ -1949,7 +1965,7 @@ def test_return_state_changes(new_meshing_session):
         assert wt.add_multizone_controls
 
     # trigger creation of downstream task when this task is updated:
-    wt.describe_geometry.multizone = True
+    wt.describe_geometry.multizone.set_state(True)
     wt.describe_geometry()
 
     assert wt.add_multizone_controls
@@ -1964,22 +1980,22 @@ def test_recursive_update_dict(new_meshing_session):
     )
 
     import_cad = fault_tolerant.import_cad_and_part_management
-    import_cad.feature_angle = 35
-    import_cad.fmd_file_name = import_file_name
+    import_cad.feature_angle.set_state(35)
+    import_cad.fmd_file_name.set_state(import_file_name)
     import_cad()
 
     descr_geom = fault_tolerant.describe_geometry_and_flow
     descr_geom.arguments()
-    descr_geom.flow_type = "Internal flow through the object"
-    descr_geom.add_enclosure = True
-    descr_geom.close_caps = True
-    descr_geom.local_refinement_regions = True
-    descr_geom.describe_geometry_and_flow_options.moving_objects = True
-    descr_geom.describe_geometry_and_flow_options.advanced_options = True
-    descr_geom.describe_geometry_and_flow_options.porous_regions = True
-    descr_geom.describe_geometry_and_flow_options.enable_overset = True
-    descr_geom.describe_geometry_and_flow_options.extract_edge_features = True
-    descr_geom.describe_geometry_and_flow_options.zero_thickness = True
+    descr_geom.flow_type.set_state("Internal flow through the object")
+    descr_geom.add_enclosure.set_state(True)
+    descr_geom.close_caps.set_state(True)
+    descr_geom.local_refinement_regions.set_state(True)
+    descr_geom.describe_geometry_and_flow_options.moving_objects.set_state(True)
+    descr_geom.describe_geometry_and_flow_options.advanced_options.set_state(True)
+    descr_geom.describe_geometry_and_flow_options.porous_regions.set_state(True)
+    descr_geom.describe_geometry_and_flow_options.enable_overset.set_state(True)
+    descr_geom.describe_geometry_and_flow_options.extract_edge_features.set_state(True)
+    descr_geom.describe_geometry_and_flow_options.zero_thickness.set_state(True)
     descr_geom.arguments()
 
     assert meshing.meshing_workflow.task_object.describe_geometry_and_flow[

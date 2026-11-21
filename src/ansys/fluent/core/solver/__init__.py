@@ -38,7 +38,7 @@ Use :func:`using` to say which solver session these objects belong to:
 
    >>> with using(solver):
    >>>     viscous = Viscous()
-   >>>     viscous.model = viscous.model.K_EPSILON
+   >>>     viscous.model.set_state(viscous.model.K_EPSILON)
 
 Without :func:`using`, the object is created for the session passed explicitly
 as its ``settings_source`` argument.

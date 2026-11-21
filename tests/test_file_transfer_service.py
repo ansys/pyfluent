@@ -160,7 +160,7 @@ def test_datamodel_execute():
     )
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
-    import_geom.Arguments = {"FileName": "geom"}
+    import_geom.Arguments.set_state({"FileName": "geom"})
 
     with pytest.raises(RuntimeError):
         import_geom.Execute()

@@ -22,7 +22,9 @@
 # SOFTWARE.
 
 import gc
+import inspect
 from time import sleep
+import warnings
 
 from conftest import SKIP_INVESTIGATING
 from google.protobuf.json_format import MessageToDict
@@ -45,9 +47,11 @@ from ansys.fluent.core._grpc_services.object_model_service_v0 import (
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_variant_to_value as _convert_variant_to_value_v0,
 )
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.services.object_model import (
     PyArguments,
     PyArgumentsSingletonSubItem,
+    PyArgumentsSubItem,
     PyArgumentsTextualSubItem,
     PyCommand,
     PyMenu,
@@ -55,6 +59,7 @@ from ansys.fluent.core.services.object_model import (
     PyNamedObjectContainer,
     PyNumerical,
     PyQuery,
+    PyStateContainer,
     ReadOnlyObjectError,
     convert_path_to_se_path,
 )
@@ -112,6 +117,64 @@ def test_pyarguments_registers_and_releases_command_arguments():
     assert service.released == [
         ("workflow", "", "ImportGeometry", "cmd-id"),
     ]
+
+
+def test_state_assignment_deprecation(mocker):
+    service = mocker.Mock()
+    menu = PyMenu(service, "test")
+    child = PyStateContainer(service, "test")
+    object.__setattr__(menu, "child", child)
+    set_state = mocker.patch.object(PyStateContainer, "set_state", autospec=True)
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        line = inspect.currentframe().f_lineno + 1
+        menu.child = 3
+        assert len(captured) == 1
+        assert captured[0].lineno == line
+        assert captured[0].filename == __file__
+        assert "child.set_state(value)" in str(captured[0].message)
+        set_state.assert_called_once_with(child, 3)
+
+        menu.local_attribute = 4
+        assert len(captured) == 1
+        assert menu.local_attribute == 4
+
+
+def test_command_argument_assignment_deprecation(mocker):
+    service = mocker.Mock()
+    arguments = PyArguments(service, "test", "command", [], "id")
+    nested = PyArgumentsSingletonSubItem(arguments, "nested", service, "test", [])
+    leaf = PyArgumentsSubItem(nested, "leaf", service, "test", [])
+    set_state = mocker.patch.object(PyArgumentsSubItem, "set_state", autospec=True)
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        arguments.nested = nested
+        nested.leaf = leaf
+        assert not captured
+
+        arguments.nested = {"leaf": "first"}
+        nested.leaf = "second"
+        assert len(captured) == 2
+        assert all(w.category is PyFluentDeprecationWarning for w in captured)
+        assert set_state.call_args_list == [
+            mocker.call(nested, {"leaf": "first"}),
+            mocker.call(leaf, "second"),
+        ]
+
+
+def test_named_object_index_assignment_is_not_deprecated(mocker):
+    service = mocker.Mock()
+    container = PyNamedObjectContainer(service, "test", [("objects", "")])
+    set_state = mocker.patch.object(PyMenu, "set_state", autospec=True)
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        container["item"] = {}
+    assert not captured
+    assert set_state.call_args.args[1] == {
+        "PyNamedObjectContainer:item": {"_name_": "item"}
+    }
 
 
 def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
@@ -266,15 +329,15 @@ def test_add_on_affected(new_meshing_session):
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
     assert "FileName" not in import_geom.Arguments()
     assert wt.import_geometry.command_arguments()["FileName"] is None
-    import_geom.Arguments = {"FileName": geom}
+    import_geom.Arguments.set_state({"FileName": geom})
     assert import_geom.Arguments()["FileName"] == geom
     assert wt.import_geometry.command_arguments()["FileName"] == geom
     sleep(1)
     assert calls == [True]
-    import_geom.Arguments = {"FileName": "dummy"}
+    import_geom.Arguments.set_state({"FileName": "dummy"})
     sleep(1)
     assert calls == 2 * [True]
-    import_geom.Arguments = {"FileName": geom}
+    import_geom.Arguments.set_state({"FileName": geom})
     sleep(1)
     assert calls == 3 * [True]
     execute_state = [meshing.workflow()]

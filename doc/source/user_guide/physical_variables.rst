@@ -64,9 +64,9 @@ You can also use physical quantities in report definitions to improve clarity an
 
     solver_session.settings.solution.report_definitions.surface["avg_temp"] = {}
     surface_report = solver_session.settings.solution.report_definitions.surface["avg_temp"]
-    surface_report.report_type = "surface-areaavg"
-    surface_report.field = temperature  # Note: using VariableCatalog, not a string
-    surface_report.surface_names = locations
+    surface_report.report_type.set_state("surface-areaavg")
+    surface_report.field.set_state(temperature)  # Note: using VariableCatalog, not a string
+    surface_report.surface_names.set_state(locations)
 
     result = solver_session.settings.solution.report_definitions.compute(report_defs=["avg_temp"])
     print(result[0]["avg_temp"][0])

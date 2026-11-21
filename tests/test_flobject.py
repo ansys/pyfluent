@@ -24,13 +24,16 @@
 """Unit tests for flobject module."""
 
 from collections.abc import MutableMapping
+import inspect
 import io
+import warnings
 import weakref
 
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
 from ansys.fluent.core import ExposureLevel
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 from ansys.fluent.core.solver import flobject
@@ -466,31 +469,62 @@ class Proxy:
 
 def test_primitives():
     r = flobject.get_root(Proxy())
-    r.g_1.r_1 = 3.2
+    r.g_1.r_1.set_state(3.2)
     assert r.g_1.r_1() == 3.2
-    r.g_1.i_2 = -3
+    r.g_1.i_2.set_state(-3)
     assert r.g_1.i_2() == -3
-    r.g_1.b_3 = True
+    r.g_1.b_3.set_state(True)
     assert r.g_1.b_3() is True
-    r.g_1.b_3 = False
+    r.g_1.b_3.set_state(False)
     assert r.g_1.b_3() is False
-    r.g_1.s_4 = "foo"
+    r.g_1.s_4.set_state("foo")
     assert r.g_1.s_4() == "foo"
+
+
+def test_state_assignment_deprecation():
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        r = flobject.get_root(Proxy())
+        r.g_1.r_1.set_state(1.0)
+        r.n_1["n1"] = {}
+        assert not captured
+
+        line = inspect.currentframe().f_lineno + 1
+        r.g_1.r_1 = 3.2
+        assert len(captured) == 1
+        assert captured[0].category is PyFluentDeprecationWarning
+        assert "r_1.set_state(value)" in str(captured[0].message)
+        assert captured[0].filename == __file__
+        assert captured[0].lineno == line
+        assert r.g_1.r_1.get_state() == 3.2
+
+        r.g_1 = {"i_2": 4}
+        assert len(captured) == 2
+        assert r.g_1.i_2.get_state() == 4
+
+
+def test_command_argument_assignment_deprecation(mocker):
+    r = flobject.get_root(Proxy())
+    arg = r.c_1.a_1
+    set_state = mocker.patch.object(type(arg), "set_state", autospec=True)
+    with pytest.warns(PyFluentDeprecationWarning, match="a_1.set_state"):
+        r.c_1.a_1 = 2.0
+    set_state.assert_called_once_with(arg, 2.0)
 
 
 def test_group():
     r = flobject.get_root(Proxy())
-    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state({"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"})
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
-    r.g_1 = {"s_4": "bar"}
+    r.g_1.set_state({"s_4": "bar"})
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
-    r.g_1.i_2 = 4
+    r.g_1.i_2.set_state(4)
     assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
 
 
 def test_settings_input_set_state():
     r = flobject.get_root(Proxy())
-    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state({"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"})
     r.g_1.set_state(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1.set_state(s_4="bar")
@@ -501,7 +535,7 @@ def test_settings_input_set_state():
 
 def test_settings_input():
     r = flobject.get_root(Proxy())
-    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state({"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"})
     r.g_1(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1(s_4="bar")
@@ -522,7 +556,7 @@ def test_named_object():
     assert r.n_1.get_object_names() == ["n2", "n4"]
     r.n_1["n1"] = {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
     assert r.n_1["n1"]() == {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
-    r.n_1 = {"n5": {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}}
+    r.n_1.set_state({"n5": {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}})
     assert r.n_1.get_object_names() == ["n2", "n4", "n1", "n5"]
     assert r.n_1["n5"]() == {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}
 
@@ -530,16 +564,18 @@ def test_named_object():
 def test_list_object():
     r = flobject.get_root(Proxy())
     assert r.l_1.get_size() == 0
-    r.l_1 = [
-        {"il_1": None, "bl_1": None},
-        {"il_1": None, "bl_1": None},
-    ]
-    r.l_1[1].il_1 = [1, 2]
+    r.l_1.set_state(
+        [
+            {"il_1": None, "bl_1": None},
+            {"il_1": None, "bl_1": None},
+        ]
+    )
+    r.l_1[1].il_1.set_state([1, 2])
     assert r.l_1() == [
         {"il_1": None, "bl_1": None},
         {"il_1": [1, 2], "bl_1": None},
     ]
-    r.l_1 = [{"il_1": [3], "bl_1": [True, False]}]
+    r.l_1.set_state([{"il_1": [3], "bl_1": [True, False]}])
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
 
 
@@ -577,7 +613,7 @@ def test_list_object_set_state_with_quantity_values():
 
 def test_command():
     r = flobject.get_root(Proxy())
-    r.g_1.r_1 = 2.4
+    r.g_1.r_1.set_state(2.4)
     r.c_1._setattr("_version", FluentVersion.v261)
     r.c_1()
     assert r.g_1.r_1() == 2.4 + 2.3
@@ -602,7 +638,7 @@ def test_attrs():
     r._setattr("_version", "251")
     assert r.g_1.s_4.get_attr("active?")
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
-    r.g_1.b_3 = True
+    r.g_1.b_3.set_state(True)
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError):
         r.g_1.s_4.get_attr("allowed-values")
@@ -1644,8 +1680,9 @@ def test_settings_matching_names(new_solver_session) -> None:
 
     assert msg.value.args[0].startswith("'setup' object has no attribute 'mod'.")
 
-    with pytest.raises(ValueError) as msg:
-        solver.setup.models.viscous.model = "k_epsilon"
+    with pytest.warns(PyFluentDeprecationWarning):
+        with pytest.raises(ValueError) as msg:
+            solver.setup.models.viscous.model = "k_epsilon"
 
     assert (
         msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
@@ -1765,7 +1802,7 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     assert isinstance(solver.settings.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
-    turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    turbulence.turbulent_specification.set_state("Intensity and Hydraulic Diameter")
     hydraulic_diameter = turbulence.hydraulic_diameter
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
@@ -1790,13 +1827,13 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     velocity = ansys.units.Quantity(
         12.0, ansys.units.UnitRegistry().ft
     ) / ansys.units.Quantity(3.0, ansys.units.UnitRegistry().s)
-    hot_inlet.momentum.velocity.value = velocity
+    hot_inlet.momentum.velocity.value.set_state(velocity)
     assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
     velocity = (1.0, "m s^-1")
-    hot_inlet.momentum.velocity = velocity
+    hot_inlet.momentum.velocity.set_state(velocity)
     assert hot_inlet.momentum.velocity.value.state_with_units() == velocity
     velocity = ansys.units.Quantity(12.0, "m s^-1")
-    hot_inlet.momentum.velocity = velocity
+    hot_inlet.momentum.velocity.set_state(velocity)
     assert hot_inlet.momentum.velocity.value() == velocity.value
     assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
     assert hot_inlet.momentum.velocity.state_with_units() == {
@@ -1865,16 +1902,16 @@ def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].momentum.velocity.value = speed.value
+    ].momentum.velocity.value.set_state(speed.value)
     assert (
         solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ].momentum.velocity.value()
         == speed.value
     )
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = (
-        speed
-    )
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].momentum.velocity.set_state(speed)
     assert (
         solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"

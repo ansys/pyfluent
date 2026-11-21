@@ -95,49 +95,57 @@ geometry_filename = examples.download_file(
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
+workflow.TaskObject["Import Geometry"].Arguments.set_state(
+    dict(FileName=geometry_filename)
+)
 workflow.TaskObject["Import Geometry"].Execute()
 
 #######################################################################################
 # Add Local Face Sizing
 # =====================================================================================
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_front",
-        "BOIFaceLabelList": ["wall_ahmed_body_front"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 8,
-    }
+add_local_sizing.Arguments.set_state(
+    dict(
+        {
+            "AddChild": "yes",
+            "BOIControlName": "facesize_front",
+            "BOIFaceLabelList": ["wall_ahmed_body_front"],
+            "BOIGrowthRate": 1.15,
+            "BOISize": 8,
+        }
+    )
 )
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_rear",
-        "BOIFaceLabelList": ["wall_ahmed_body_rear"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 5,
-    }
+add_local_sizing.Arguments.set_state(
+    dict(
+        {
+            "AddChild": "yes",
+            "BOIControlName": "facesize_rear",
+            "BOIFaceLabelList": ["wall_ahmed_body_rear"],
+            "BOIGrowthRate": 1.15,
+            "BOISize": 5,
+        }
+    )
 )
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_main",
-        "BOIFaceLabelList": ["wall_ahmed_body_main"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 12,
-    }
+add_local_sizing.Arguments.set_state(
+    dict(
+        {
+            "AddChild": "yes",
+            "BOIControlName": "facesize_main",
+            "BOIFaceLabelList": ["wall_ahmed_body_main"],
+            "BOIGrowthRate": 1.15,
+            "BOISize": 12,
+        }
+    )
 )
 add_local_sizing.Execute()
 
@@ -146,14 +154,16 @@ add_local_sizing.Execute()
 # =====================================================================================
 add_boi_sizing = workflow.TaskObject["Add Local Sizing"]
 add_boi_sizing.InsertCompoundChildTask()
-add_boi_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "boi_1",
-        "BOIExecution": "Body Of Influence",
-        "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
-        "BOISize": 20,
-    }
+add_boi_sizing.Arguments.set_state(
+    dict(
+        {
+            "AddChild": "yes",
+            "BOIControlName": "boi_1",
+            "BOIExecution": "Body Of Influence",
+            "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
+            "BOISize": 20,
+        }
+    )
 )
 add_boi_sizing.Execute()
 add_boi_sizing.InsertCompoundChildTask()
@@ -163,16 +173,18 @@ add_boi_sizing.InsertCompoundChildTask()
 # Add Surface Mesh Sizing
 # =====================================================================================
 generate_surface_mesh = workflow.TaskObject["Generate the Surface Mesh"]
-generate_surface_mesh.Arguments = dict(
-    {
-        "CFDSurfaceMeshControls": {
-            "CurvatureNormalAngle": 12,
-            "GrowthRate": 1.15,
-            "MaxSize": 50,
-            "MinSize": 1,
-            "SizeFunctions": "Curvature",
+generate_surface_mesh.Arguments.set_state(
+    dict(
+        {
+            "CFDSurfaceMeshControls": {
+                "CurvatureNormalAngle": 12,
+                "GrowthRate": 1.15,
+                "MaxSize": 50,
+                "MinSize": 1,
+                "SizeFunctions": "Curvature",
+            }
         }
-    }
+    )
 )
 
 generate_surface_mesh.Execute()
@@ -184,9 +196,11 @@ improve_surface_mesh.Execute()
 #######################################################################################
 # Describe Geometry, Update Boundaries, Update Regions
 # =====================================================================================
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    CappingRequired="Yes",
-    SetupType="The geometry consists of only fluid regions with no voids",
+workflow.TaskObject["Describe Geometry"].Arguments.set_state(
+    dict(
+        CappingRequired="Yes",
+        SetupType="The geometry consists of only fluid regions with no voids",
+    )
 )
 workflow.TaskObject["Describe Geometry"].Execute()
 workflow.TaskObject["Update Boundaries"].Execute()
@@ -250,27 +264,27 @@ inlet_area = 0.11203202
 # Define Materials
 # =====================================================================================
 session.tui.define.materials.change_create("air", "air", "yes", "constant", density)
-session.settings.setup.models.viscous.model = "k-epsilon"
-session.settings.setup.models.viscous.k_epsilon_model = "realizable"
-session.settings.setup.models.viscous.options.curvature_correction = True
+session.settings.setup.models.viscous.model.set_state("k-epsilon")
+session.settings.setup.models.viscous.k_epsilon_model.set_state("realizable")
+session.settings.setup.models.viscous.options.curvature_correction.set_state(True)
 
 #######################################################################################
 # Define Boundary Conditions
 # =====================================================================================
 inlet = session.settings.setup.boundary_conditions.velocity_inlet["inlet"]
-inlet.turbulence.turb_intensity = 0.05
-inlet.momentum.velocity.value = inlet_velocity
-inlet.turbulence.turb_viscosity_ratio = 5
+inlet.turbulence.turb_intensity.set_state(0.05)
+inlet.momentum.velocity.value.set_state(inlet_velocity)
+inlet.turbulence.turb_viscosity_ratio.set_state(5)
 
 outlet = session.settings.setup.boundary_conditions.pressure_outlet["outlet"]
-outlet.turbulence.turb_intensity = 0.05
+outlet.turbulence.turb_intensity.set_state(0.05)
 
 #######################################################################################
 # Define Reference Values
 # =====================================================================================
-session.settings.setup.reference_values.area = inlet_area
-session.settings.setup.reference_values.density = density
-session.settings.setup.reference_values.velocity = inlet_velocity
+session.settings.setup.reference_values.area.set_state(inlet_area)
+session.settings.setup.reference_values.density.set_state(density)
+session.settings.setup.reference_values.velocity.set_state(inlet_velocity)
 
 #######################################################################################
 # Define Solver Settings
@@ -282,22 +296,24 @@ session.tui.solve.set.discretization_scheme("k", 1)
 session.tui.solve.set.discretization_scheme("epsilon", 1)
 session.tui.solve.initialize.set_defaults("k", 0.000001)
 
-session.settings.solution.monitor.residual.equations["continuity"].absolute_criteria = (
+session.settings.solution.monitor.residual.equations[
+    "continuity"
+].absolute_criteria.set_state((0.0001))
+session.settings.solution.monitor.residual.equations[
+    "x-velocity"
+].absolute_criteria.set_state((0.0001))
+session.settings.solution.monitor.residual.equations[
+    "y-velocity"
+].absolute_criteria.set_state((0.0001))
+session.settings.solution.monitor.residual.equations[
+    "z-velocity"
+].absolute_criteria.set_state((0.0001))
+session.settings.solution.monitor.residual.equations["k"].absolute_criteria.set_state(
     0.0001
 )
-session.settings.solution.monitor.residual.equations["x-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["y-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["z-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["k"].absolute_criteria = 0.0001
-session.settings.solution.monitor.residual.equations["epsilon"].absolute_criteria = (
-    0.0001
-)
+session.settings.solution.monitor.residual.equations[
+    "epsilon"
+].absolute_criteria.set_state((0.0001))
 
 #######################################################################################
 # Define Report Definitions
@@ -322,8 +338,8 @@ session.settings.solution.monitor.report_plots["cd-mon1"] = {"report_defs": ["cd
 # Initialize and Run Solver
 # =====================================================================================
 
-session.settings.solution.run_calculation.iter_count = 5
-session.settings.solution.initialization.initialization_type = "standard"
+session.settings.solution.run_calculation.iter_count.set_state(5)
+session.settings.solution.initialization.initialization_type.set_state("standard")
 session.settings.solution.initialization.standard_initialize()
 session.settings.solution.run_calculation.iterate(iter_count=5)
 
@@ -331,7 +347,7 @@ session.settings.solution.run_calculation.iterate(iter_count=5)
 # Post-Processing Workflow
 # =====================================================================================
 session.settings.results.surfaces.iso_surface.create(name="xmid")
-session.settings.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
+session.settings.results.surfaces.iso_surface["xmid"].field.set_state("x-coordinate")
 session.settings.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
 
 contour1 = Contour(solver=session, field="velocity-magnitude", surfaces=["xmid"])

@@ -64,6 +64,7 @@ from ansys.fluent.core.services.object_model_utilities import (
     false_if_none,
     true_if_none,
 )
+from ansys.fluent.core.utils.deprecate import _warn_state_assignment
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
@@ -629,6 +630,7 @@ class PyMenu(PyStateContainer):
             state
         """
         if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
+            _warn_state_assignment(name)
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
@@ -1414,7 +1416,10 @@ class PyArgumentsSubItem(PyCallableStateObject):
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
-            getattr(self, key).set_state(value)
+            attr = getattr(self, key)
+            set_state = attr.set_state
+            _warn_state_assignment(key)
+            set_state(value)
 
 
 class PyArguments(PyStateContainer):
@@ -1474,7 +1479,10 @@ class PyArguments(PyStateContainer):
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
-            getattr(self, key).set_state(value)
+            attr = getattr(self, key)
+            set_state = attr.set_state
+            _warn_state_assignment(key)
+            set_state(value)
 
 
 class PyArgumentsTextualSubItem(PyArgumentsSubItem, PyTextual):
