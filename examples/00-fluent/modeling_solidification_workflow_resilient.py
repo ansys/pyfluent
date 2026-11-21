@@ -73,8 +73,8 @@ general = pyfluent.solver.General(settings_source=solver_session)
 # Aliasing reused objects:
 general_solver = general.solver
 
-general_solver.two_dim_space = "swirl"
-general.operating_conditions.gravity = {"enable": True, "components": [-9.81]}
+general_solver.two_dim_space.set_state("swirl")
+general.operating_conditions.gravity.set_state({"enable": True, "components": [-9.81]})
 
 # %%
 # Enable the models
@@ -82,7 +82,7 @@ general.operating_conditions.gravity = {"enable": True, "components": [-9.81]}
 # The energy model is enabled together with solidification and melting.
 
 viscous = pyfluent.solver.Viscous(settings_source=solver_session)
-viscous.model = "laminar"
+viscous.model.set_state("laminar")
 solver_session.tui.define.models.solidification_melting(
     "yes", "constant", "100000", "yes", "no"
 )
@@ -106,71 +106,77 @@ materials.fluid["liquid-metal"] = {
     "tliqidus": {"value": 1150.0},
 }
 fluid = pyfluent.solver.FluidCellZone(settings_source=solver_session, name="fluid")
-fluid.general.material = "liquid-metal"
+fluid.general.material.set_state("liquid-metal")
 
 # %%
 # Set the boundary conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 inlet = pyfluent.solver.VelocityInlet(settings_source=solver_session, name="inlet")
-inlet.momentum.velocity_magnitude.value = 0.00101
-inlet.thermal.temperature.value = 1300
+inlet.momentum.velocity_magnitude.value.set_state(0.00101)
+inlet.thermal.temperature.value.set_state(1300)
 
 outlet = pyfluent.solver.VelocityInlet(settings_source=solver_session, name="outlet")
 outlet_momentum = outlet.momentum
-outlet_momentum.velocity_specification_method = "Components"
-outlet_momentum.swirl_angular_velocity = 1
-outlet_momentum.velocity_components = [0.001, 0, 0]
-outlet.thermal.temperature.value = 500
+outlet_momentum.velocity_specification_method.set_state("Components")
+outlet_momentum.swirl_angular_velocity.set_state(1)
+outlet_momentum.velocity_components.set_state([0.001, 0, 0])
+outlet.thermal.temperature.value.set_state(500)
 
 bottom_wall = pyfluent.solver.WallBoundary(
     settings_source=solver_session, name="bottom-wall"
 )
-bottom_wall.thermal = {"thermal_condition": "Temperature", "temperature": 1300}
+bottom_wall.thermal.set_state({"thermal_condition": "Temperature", "temperature": 1300})
 
 free_surface = pyfluent.solver.WallBoundary(
     settings_source=solver_session, name="free-surface"
 )
-free_surface.momentum = {
-    "shear_condition": "Marangoni Stress",
-    "surface_tension_gradient": -0.00036,
-}
-free_surface.thermal = {
-    "thermal_condition": "Convection",
-    "free_stream_temp": 1500,
-    "heat_transfer_coeff": 100,
-}
+free_surface.momentum.set_state(
+    {
+        "shear_condition": "Marangoni Stress",
+        "surface_tension_gradient": -0.00036,
+    }
+)
+free_surface.thermal.set_state(
+    {
+        "thermal_condition": "Convection",
+        "free_stream_temp": 1500,
+        "heat_transfer_coeff": 100,
+    }
+)
 
 side_wall = pyfluent.solver.WallBoundary(
     settings_source=solver_session, name="side-wall"
 )
-side_wall.thermal = {"thermal_condition": "Temperature", "temperature": 1400}
+side_wall.thermal.set_state({"thermal_condition": "Temperature", "temperature": 1400})
 
 solid_wall = pyfluent.solver.WallBoundary(
     settings_source=solver_session, name="solid-wall"
 )
-solid_wall.momentum = {
-    "wall_motion": "Moving Wall",
-    "velocity_spec": "Rotational",
-    "rotation_speed": 1,
-}
-solid_wall.thermal = {"thermal_condition": "Temperature", "temperature": 500}
+solid_wall.momentum.set_state(
+    {
+        "wall_motion": "Moving Wall",
+        "velocity_spec": "Rotational",
+        "rotation_speed": 1,
+    }
+)
+solid_wall.thermal.set_state({"thermal_condition": "Temperature", "temperature": 500})
 
 # %%
 # Set the solution methods
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 
 methods = pyfluent.solver.Methods(settings_source=solver_session)
-methods.p_v_coupling.flow_scheme = "Coupled"
-methods.spatial_discretization.discretization_scheme = {"pressure": "presto!"}
-methods.pseudo_time_method.formulation = {"coupled_solver": "global-time-step"}
+methods.p_v_coupling.flow_scheme.set_state("Coupled")
+methods.spatial_discretization.discretization_scheme.set_state({"pressure": "presto!"})
+methods.pseudo_time_method.formulation.set_state({"coupled_solver": "global-time-step"})
 
 # %%
 # Solve the steady conduction problem
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 controls = pyfluent.solver.Controls(settings_source=solver_session)
-controls.equations = {"flow": False, "w-swirl": False}
+controls.equations.set_state({"flow": False, "w-swirl": False})
 
 initialization = pyfluent.solver.Initialization(settings_source=solver_session)
 initialization.hybrid_initialize()
@@ -197,10 +203,12 @@ calculate_patch(
 )
 
 run_calculation = pyfluent.solver.RunCalculation(settings_source=solver_session)
-run_calculation.pseudo_time_settings.time_step_method = {
-    "time_step_method": "user-specified",
-    "auto_time_size_calc_solid_zone": False,
-}
+run_calculation.pseudo_time_settings.time_step_method.set_state(
+    {
+        "time_step_method": "user-specified",
+        "auto_time_size_calc_solid_zone": False,
+    }
+)
 run_calculation.iterate(iter_count=20)
 
 # %%
@@ -211,21 +219,21 @@ run_calculation.iterate(iter_count=20)
 # raises the original error. The script then reduces the time step, increases
 # the under-relaxation and solves again from the steady solution.
 
-general_solver.time = "unsteady-1st-order"
-controls.equations = {"flow": True, "w-swirl": True}
-controls.under_relaxation = {"delh": 0.1}
+general_solver.time.set_state("unsteady-1st-order")
+controls.equations.set_state({"flow": True, "w-swirl": True})
+controls.under_relaxation.set_state({"delh": 0.1})
 
 transient_controls = run_calculation.transient_controls
-transient_controls.time_step_size = 0.1
-transient_controls.time_step_count = 50
+transient_controls.time_step_size.set_state(0.1)
+transient_controls.time_step_count.set_state(50)
 try:
     run_calculation.calculate()
 except RuntimeError as error:
     print(f"Transient solve failed: {error}")
     print("Rolled back:", resilient.last_outcome.rolled_back)
-    controls.under_relaxation = {"delh": 0.02}
-    transient_controls.time_step_size = 0.001
-    transient_controls.time_step_count = 5
+    controls.under_relaxation.set_state({"delh": 0.02})
+    transient_controls.time_step_size.set_state(0.001)
+    transient_controls.time_step_count.set_state(5)
     run_calculation.calculate()
 
 # %%

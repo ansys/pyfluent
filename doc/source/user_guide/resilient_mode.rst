@@ -68,7 +68,7 @@ is ``False``.
         solver.settings.solution.run_calculation.calculate()
     except RuntimeError:
         # The session is back at the state before calculate().
-        solver.settings.solution.run_calculation.transient_controls.time_step_size = 1e-3
+        solver.settings.solution.run_calculation.transient_controls.time_step_size.set_state(1e-3)
         solver.settings.solution.run_calculation.calculate()
 
 Named checkpoints can also be written and restored explicitly:
@@ -96,7 +96,7 @@ Every settings write is journaled together with the previous value:
 
 .. code-block:: python
 
-    solver.settings.setup.models.viscous.model = "laminar"
+    solver.settings.setup.models.viscous.model.set_state("laminar")
     solver.resilient.undo()  # restores the previous viscous model
     solver.resilient.redo()  # applies "laminar" again
 

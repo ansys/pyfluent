@@ -65,9 +65,11 @@ def test_field_data_batches(new_solver_session) -> None:
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.mesh.check()
 
-    solver.setup.models.energy.enabled = True
+    solver.setup.models.energy.enabled.set_state(True)
     solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
-    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material.set_state(
+        "water-liquid"
+    )
 
     # Set up boundary conditions for CFD analysis
     cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
@@ -83,7 +85,7 @@ def test_field_data_batches(new_solver_session) -> None:
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
     hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
 
-    solver.solution.monitor.residual.options.plot = False
+    solver.solution.monitor.residual.options.plot.set_state(False)
 
     # Initialize flow field
     solver.solution.initialization.hybrid_initialize()
@@ -636,10 +638,12 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = {
-        "FileName": import_file_name,
-        "LengthUnit": "in",
-    }
+    meshing.workflow.TaskObject["Import Geometry"].Arguments.set_state(
+        {
+            "FileName": import_file_name,
+            "LengthUnit": "in",
+        }
+    )
     meshing.workflow.TaskObject["Import Geometry"].Execute()
 
     def has_expected_mesh_data():

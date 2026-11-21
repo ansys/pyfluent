@@ -47,9 +47,9 @@ Generate surface mesh
 .. code:: python
 
     >>> create_surface_mesh = tasks['Generate the Surface Mesh']
-    >>> create_surface_mesh.Arguments = {
+    >>> create_surface_mesh.Arguments.set_state({
     >>>     'CFDSurfaceMeshControls': {'MaxSize': 0.3}
-    >>> }
+    >>> })
     >>> create_surface_mesh.Execute()
 
 Describe geometry
@@ -61,9 +61,9 @@ Describe geometry
     >>> describe_geometry.UpdateChildTasks(
     >>>     SetupTypeChanged=False
     >>> )
-    >>> describe_geometry.Arguments = {
+    >>> describe_geometry.Arguments.set_state({
     >>>     SetupType: "The geometry consists of only fluid regions with no voids"
-    >>> }
+    >>> })
     >>> describe_geometry.UpdateChildTasks(SetupTypeChanged=True)
     >>> describe_geometry.Execute()
 
@@ -109,12 +109,12 @@ Generate volume mesh
 .. code:: python
 
     >>> create_volume_mesh = tasks["Generate the Volume Mesh"]
-    >>> create_volume_mesh.Arguments = {
+    >>> create_volume_mesh.Arguments.set_state({
     >>>     "VolumeFill": "poly-hexcore",
     >>>     "VolumeFillControls": {
     >>>         "HexMaxCellLength": 0.3,
     >>>     },
-    >>> }
+    >>> })
     >>> create_volume_mesh.Execute()
 
 Switch to solution mode

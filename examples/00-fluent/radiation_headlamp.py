@@ -286,8 +286,8 @@ solver_session = meshing_session.switch_to_solver()
 # Set up the energy and viscosity models.
 
 models = solver_session.settings.setup.models
-models.energy.enabled = True
-models.viscous.model = "laminar"
+models.energy.enabled.set_state(True)
+models.viscous.model.set_state("laminar")
 
 ###############################################################################
 # Set up radiation model
@@ -297,9 +297,9 @@ models.viscous.model = "laminar"
 # increased to obtain accurate results.
 
 radiation = models.radiation
-radiation.model = "monte-carlo"
-radiation.solve_frequency.number_of_histories = 10000000
-radiation.solve_frequency.iteration_interval = 20
+radiation.model.set_state("monte-carlo")
+radiation.solve_frequency.number_of_histories.set_state(10000000)
+radiation.solve_frequency.iteration_interval.set_state(20)
 
 ###############################################################################
 # Define materials
@@ -349,21 +349,21 @@ glass.set_state(
 # Thermal conductivity: 0.316 [W/(m K)]
 
 plastic = solver_session.settings.setup.materials.solid.create("plastic")
-plastic.chemical_formula = ""
-plastic.density.value = 1545.3
-plastic.specific_heat.value = 2302
-plastic.thermal_conductivity.value = 0.316
-plastic.absorption_coefficient.value = 0
-plastic.refractive_index.value = 1
+plastic.chemical_formula.set_state("")
+plastic.density.value.set_state(1545.3)
+plastic.specific_heat.value.set_state(2302)
+plastic.thermal_conductivity.value.set_state(0.316)
+plastic.absorption_coefficient.value.set_state(0)
+plastic.refractive_index.value.set_state(1)
 
 ###############################################################################
 # Cell Zone Conditions
 # ~~~~~~~~~~~~~~~~~~~~
 # Set the cell zone conditions for the bezel and the lens.
 
-solver_session.settings.setup.cell_zone_conditions.solid["bezel"].general.material = (
-    "plastic"
-)
+solver_session.settings.setup.cell_zone_conditions.solid[
+    "bezel"
+].general.material.set_state(("plastic"))
 solver_session.settings.setup.cell_zone_conditions.copy(
     from_="bezel",
     to=[
@@ -377,8 +377,8 @@ solver_session.settings.setup.cell_zone_conditions.copy(
 )
 
 lens_cellzone_conds = solver_session.settings.setup.cell_zone_conditions.solid["lens"]
-lens_cellzone_conds.general.material = "glass"
-lens_cellzone_conds.general.participates_in_radiation = True
+lens_cellzone_conds.general.material.set_state("glass")
+lens_cellzone_conds.general.participates_in_radiation.set_state(True)
 
 ###########################################################################################################
 # Boundary Conditions
@@ -392,10 +392,12 @@ lens_cellzone_conds.general.participates_in_radiation = True
 # Diffuse fraction: 1
 
 bezel_enc_bc = solver_session.settings.setup.boundary_conditions.wall["bezel-enclosure"]
-bezel_enc_bc.thermal.material = "plastic"
-bezel_enc_bc.radiation.bc_type = "Opaque"
-bezel_enc_bc.radiation.internal_emissivity = 1
-bezel_enc_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {"s-": 1}
+bezel_enc_bc.thermal.material.set_state("plastic")
+bezel_enc_bc.radiation.bc_type.set_state("Opaque")
+bezel_enc_bc.radiation.internal_emissivity.set_state(1)
+bezel_enc_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band.set_state(
+    {"s-": 1}
+)
 
 # Get list of wall zones
 bc_state = solver_session.settings.setup.boundary_conditions.get_state()
@@ -416,9 +418,11 @@ solver_session.settings.setup.boundary_conditions.copy(
 # Diffuse fraction: 0
 
 enc_lens_bc = solver_session.settings.setup.boundary_conditions.wall["enclosure-lens"]
-enc_lens_bc.thermal.material = "glass"
-enc_lens_bc.radiation.bc_type = "Semi Transparent"
-enc_lens_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {"s-": 0}
+enc_lens_bc.thermal.material.set_state("glass")
+enc_lens_bc.radiation.bc_type.set_state("Semi Transparent")
+enc_lens_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band.set_state(
+    {"s-": 0}
+)
 
 # Copy enclosure-lens BC to other lens boundary
 solver_session.settings.setup.boundary_conditions.copy(
@@ -435,12 +439,12 @@ solver_session.settings.setup.boundary_conditions.copy(
 enc_rim_bezel_bc = solver_session.settings.setup.boundary_conditions.wall[
     "enclosure-rim-bezel"
 ]
-enc_rim_bezel_bc.thermal.material = "plastic"
-enc_rim_bezel_bc.radiation.bc_type = "Opaque"
-enc_rim_bezel_bc.radiation.internal_emissivity = 0.16
-enc_rim_bezel_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {
-    "s-": 0.1
-}
+enc_rim_bezel_bc.thermal.material.set_state("plastic")
+enc_rim_bezel_bc.radiation.bc_type.set_state("Opaque")
+enc_rim_bezel_bc.radiation.internal_emissivity.set_state(0.16)
+enc_rim_bezel_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band.set_state(
+    {"s-": 0.1}
+)
 
 # Copy enclosure-rim-bezel BC to other rim bezel boundaries
 solver_session.settings.setup.boundary_conditions.copy(
@@ -459,8 +463,8 @@ solver_session.settings.setup.boundary_conditions.copy(
 # Temperature: 298.15 [K]
 
 enc1_bc = solver_session.settings.setup.boundary_conditions.wall["enclosure:1"]
-enc1_bc.thermal.thermal_condition = "Temperature"
-enc1_bc.thermal.temperature.value = 298.15
+enc1_bc.thermal.thermal_condition.set_state("Temperature")
+enc1_bc.thermal.temperature.value.set_state(298.15)
 
 # --- Set up radiation input BC ---
 # BC type: temperature
@@ -470,24 +474,28 @@ enc1_bc.thermal.temperature.value = 298.15
 # Radiation direction: (-0.848, 0, -0.53)
 
 rad_input_bc = solver_session.settings.setup.boundary_conditions.wall["rad-input"]
-rad_input_bc.thermal.thermal_condition = "Temperature"
-rad_input_bc.thermal.temperature.value = 298.15
-rad_input_bc.radiation.boundary_source = True
-rad_input_bc.radiation.direct_irradiation_settings.direct_irradiation = {
-    "Full-spectrum": {"option": "value", "value": 1200}
-}
-rad_input_bc.radiation.direct_irradiation_settings.beam_direction = [
-    -0.848,
-    0,
-    -0.53,
-]
+rad_input_bc.thermal.thermal_condition.set_state("Temperature")
+rad_input_bc.thermal.temperature.value.set_state(298.15)
+rad_input_bc.radiation.boundary_source.set_state(True)
+rad_input_bc.radiation.direct_irradiation_settings.direct_irradiation.set_state(
+    {"Full-spectrum": {"option": "value", "value": 1200}}
+)
+rad_input_bc.radiation.direct_irradiation_settings.beam_direction.set_state(
+    [
+        -0.848,
+        0,
+        -0.53,
+    ]
+)
 
 ###########################################################################################################
 # Set convergence criteria
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Enable residual plots and set the convergence criteria to 'none'.
 
-solver_session.settings.solution.monitor.residual.options.criterion_type = "none"
+solver_session.settings.solution.monitor.residual.options.criterion_type.set_state(
+    "none"
+)
 
 ###########################################################################################################
 # Define surface reports
@@ -499,16 +507,16 @@ solver_session.settings.solution.report_definitions.surface["max-temp"] = {}
 max_temp_surf_report = solver_session.settings.solution.report_definitions.surface[
     "max-temp"
 ]
-max_temp_surf_report.surface_names = ["enclosure-inner-bezel"]
-max_temp_surf_report.report_type = "surface-facetmax"
-max_temp_surf_report.field = "temperature"
+max_temp_surf_report.surface_names.set_state(["enclosure-inner-bezel"])
+max_temp_surf_report.report_type.set_state("surface-facetmax")
+max_temp_surf_report.field.set_state("temperature")
 
 solver_session.settings.solution.monitor.report_plots["max-temp-rplot"] = {}
 max_temp_surf_report_plot = solver_session.settings.solution.monitor.report_plots[
     "max-temp-rplot"
 ]
-max_temp_surf_report_plot.report_defs = "max-temp"
-max_temp_surf_report_plot.print = True
+max_temp_surf_report_plot.report_defs.set_state("max-temp")
+max_temp_surf_report_plot.print.set_state(True)
 
 ###########################################################################################################
 # Define report plots
@@ -517,8 +525,8 @@ max_temp_surf_report_plot.print = True
 
 solver_session.settings.solution.monitor.report_plots["max-temp-rplot"] = {}
 max_temp_rplot = solver_session.settings.solution.monitor.report_plots["max-temp-rplot"]
-max_temp_rplot.report_defs = "max-temp"
-max_temp_rplot.print = True
+max_temp_rplot.report_defs.set_state("max-temp")
+max_temp_rplot.print.set_state(True)
 
 ###############################################################################
 # Save case file
@@ -548,7 +556,7 @@ solver_session.settings.solution.run_calculation.iterate(iter_count=19)
 # Enable overwrite so that the original case file will be overwritten. Write
 # the final case file and the data.
 
-solver_session.settings.file.batch_options.confirm_overwrite = True
+solver_session.settings.file.batch_options.confirm_overwrite.set_state(True)
 solver_session.settings.file.write(file_name="headlamp.cas.h5", file_type="case-data")
 
 ###############################################################################

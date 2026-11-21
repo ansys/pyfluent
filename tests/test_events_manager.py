@@ -220,7 +220,7 @@ def test_iteration_ended_sync_event_multiple_connections():
 
 def test_timestep_ended_sync_event(static_mixer_case_session):
     solver = static_mixer_case_session
-    solver.settings.setup.general.solver.time = "unsteady-2nd-order"
+    solver.settings.setup.general.solver.time.set_state("unsteady-2nd-order")
     solver.settings.solution.initialization.hybrid_initialize()
     count = 0
 
