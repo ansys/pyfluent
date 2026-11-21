@@ -3138,7 +3138,7 @@ def _process_generated_children(info_dict, names, cls, taboo, version, doc_parts
         if doc_parts is not None:
             th = ccls._state_type
             th = th.__name__ if hasattr(th, "__name__") else str(th)
-            doc_parts.append(f"    {ccls.__name__} : {th}\n")
+            doc_parts.append(f"    {parent_attr_name} : {th}\n")
             doc_parts.append(f"        {ccls.__doc__}\n")
 
         names.append(parent_attr_name)
