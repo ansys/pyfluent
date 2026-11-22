@@ -1,0 +1,57 @@
+{
+  "result_format_version": "1.0",
+  "backend": "independent-fvm-python",
+  "case_id": "lid_driven_cavity_re100_steady",
+  "schema_version": "1.0",
+  "status": "converged",
+  "converged": true,
+  "termination_reason": "converged",
+  "temporal_mode": "steady",
+  "steps": 1378,
+  "final_time_s": null,
+  "final_pseudo_time_s": 10.765625,
+  "mesh": {
+    "nx": 16,
+    "ny": 16,
+    "width_m": 1.0,
+    "height_m": 1.0
+  },
+  "reynolds_number": 100.0,
+  "velocity_extrema": {
+    "u_min_m_s": -0.18490429249551432,
+    "u_min_location_m": [
+      0.625,
+      0.53125
+    ],
+    "u_max_m_s": 0.7643644033568606,
+    "u_max_location_m": [
+      0.625,
+      0.96875
+    ],
+    "v_min_m_s": -0.4021548522328694,
+    "v_min_location_m": [
+      0.90625,
+      0.8125
+    ],
+    "v_max_m_s": 0.22074004243014,
+    "v_max_location_m": [
+      0.15625,
+      0.75
+    ],
+    "speed_max_m_s": 0.7614668656187982,
+    "speed_max_location_m": [
+      0.59375,
+      0.96875
+    ]
+  },
+  "conservation": {
+    "max_divergence_s_inv": 1.3322676295501878e-15,
+    "global_mass_imbalance_m2_s": 1.4602848010664138e-18
+  },
+  "residuals": {
+    "u_momentum": 1.9675322523114613e-16,
+    "v_momentum": 2.2495985443815866e-16,
+    "pressure": 3.2392739921059034e-19
+  },
+  "restarted_from_step": 1200
+}

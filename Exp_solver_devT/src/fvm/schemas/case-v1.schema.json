@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://independent-fvm.local/schemas/case-v1.schema.json",
+  "title": "Independent FVM problem definition, version 1.0",
+  "description": "Framework-neutral SI input contract for the structured 2D incompressible solver.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "units",
+    "physics",
+    "domain",
+    "mesh",
+    "material",
+    "initial_conditions",
+    "boundary_conditions",
+    "solver"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "case_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$"},
+    "description": {"type": "string"},
+    "units": {"const": "SI"},
+    "physics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "transient"],
+      "properties": {
+        "model": {"const": "incompressible_laminar"},
+        "transient": {"type": "boolean"}
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "width_m", "height_m"],
+      "properties": {
+        "type": {"const": "rectangle"},
+        "width_m": {"type": "number", "exclusiveMinimum": 0},
+        "height_m": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "mesh": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "nx", "ny"],
+      "properties": {
+        "type": {"const": "uniform_cartesian"},
+        "nx": {"type": "integer", "minimum": 2},
+        "ny": {"type": "integer", "minimum": 2}
+      }
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "density_kg_m3", "dynamic_viscosity_pa_s"],
+      "properties": {
+        "type": {"const": "newtonian_fluid"},
+        "density_kg_m3": {"type": "number", "exclusiveMinimum": 0},
+        "dynamic_viscosity_pa_s": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "initial_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["u_m_s", "v_m_s", "pressure_pa"],
+      "properties": {
+        "u_m_s": {"type": "number"},
+        "v_m_s": {"type": "number"},
+        "pressure_pa": {"type": "number"}
+      }
+    },
+    "boundary_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["west", "east", "south", "north", "pressure_correction"],
+      "properties": {
+        "west": {"$ref": "#/$defs/velocity_wall"},
+        "east": {"$ref": "#/$defs/velocity_wall"},
+        "south": {"$ref": "#/$defs/velocity_wall"},
+        "north": {"$ref": "#/$defs/velocity_wall"},
+        "pressure_correction": {"const": "homogeneous_neumann"}
+      }
+    },
+    "solver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_steps"],
+      "properties": {
+        "max_time_step_s": {"type": "number", "exclusiveMinimum": 0},
+        "minimum_time_step_s": {"type": "number", "exclusiveMinimum": 0},
+        "max_steps": {"type": "integer", "minimum": 1},
+        "cfl_limit": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "velocity_tolerance_m_s": {"type": "number", "exclusiveMinimum": 0},
+        "continuity_tolerance_s_inv": {"type": "number", "exclusiveMinimum": 0},
+        "mass_tolerance_m2_s": {"type": "number", "exclusiveMinimum": 0},
+        "momentum_residual_tolerance": {"type": "number", "exclusiveMinimum": 0},
+        "pressure_residual_tolerance": {"type": "number", "exclusiveMinimum": 0},
+        "end_time_s": {"type": "number", "exclusiveMinimum": 0},
+        "max_inner_iterations_per_time_step": {"type": "integer", "minimum": 1}
+      }
+    }
+  },
+  "$defs": {
+    "velocity_wall": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {"type": {"const": "no_slip_wall"}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "velocity_m_s"],
+          "properties": {
+            "type": {"const": "moving_wall"},
+            "velocity_m_s": {
+              "type": "array",
+              "items": {"type": "number"},
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "velocity_profile"],
+          "properties": {
+            "type": {"const": "moving_wall"},
+            "velocity_profile": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["time_s", "velocity_m_s"],
+                "properties": {
+                  "time_s": {"type": "number", "minimum": 0},
+                  "velocity_m_s": {
+                    "type": "array",
+                    "items": {"type": "number"},
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
