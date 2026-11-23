@@ -104,10 +104,8 @@ volume_mesh()
 inlet = VelocityInlet(solver, name="cold-inlet")
 inlet.momentum.velocity_magnitude.set_state(0.4)
 
-turbulence = inlet.turbulence
-turbulence.turbulence_specification.set_state(
-  turbulence.turbulence_specification.
-  INTENSITY_AND_HYDRAULIC_DIAMETER)
+turb_spec = inlet.turbulence.turbulence_specification
+turb_spec.set_state(turb_spec.INTENSITY_AND_HYDRAULIC_DIAMETER)
 
 turbulence.turbulent_intensity.set_state(0.05)
 turbulence.hydraulic_diameter.set_state("4 [in]")
@@ -172,7 +170,8 @@ rep_defs = ReportDefinitions(solver)
 surf_rep = rep_defs.surface.create("outlet-temp-avg")
 
 soln_report_type = rep_defs.surface["outlet-temp-avg"].report_type
-rep_defs.surface["outlet-temp-avg"].report_type.set_state(soln_report_type.SURFACE_AREA)
+rep_defs.surface["outlet-temp-avg"].report_type.set_state(soln_report_type.SURFACE_AREAAVG)
+rep_defs.surface["outlet-temp-avg"].field.set_state(VC.TEMPERATURE)
 ```
 
 ### Initialize and solve
