@@ -105,7 +105,7 @@ inlet = VelocityInlet(solver, name="cold-inlet")
 inlet.momentum.velocity_magnitude.set_state(0.4)
 
 turbulence = inlet.turbulence
-turbulence.turbulence_specification.set_state(
+turbulence.set_state(
   turbulence.turbulence_specification.
   INTENSITY_AND_HYDRAULIC_DIAMETER)
 
