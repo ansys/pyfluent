@@ -1793,6 +1793,8 @@ class Group(SettingsBase[DictStateType]):
             )
             ex.args = (error_msg,)
             raise
+        # Invalid assignments to non-state attributes should raise without a
+        # misleading state-assignment deprecation warning.
         if hasattr(attr, "set_state"):
             _warn_state_assignment(name)
         try:
@@ -2513,6 +2515,8 @@ class Action(Base):
 
     def __setattr__(self, name: str, value: StateType) -> None:
         attr = getattr(self, name)
+        # Invalid assignments to non-state attributes should raise without a
+        # misleading state-assignment deprecation warning.
         if hasattr(attr, "set_state"):
             _warn_state_assignment(name)
         try:

@@ -1359,7 +1359,18 @@ class PyCommand(PyAction):
                 self.after_execute(value)
 
 
-class PyArgumentsSubItem(PyCallableStateObject):
+class _PyArgumentsSetattrMixin:
+    def __setattr__(self, key: str, value: ValueT) -> None:
+        if isinstance(value, PyArgumentsSubItem):
+            super().__setattr__(key, value)
+        else:
+            attr = getattr(self, key)
+            set_state = attr.set_state
+            _warn_state_assignment(key)
+            set_state(value)
+
+
+class PyArgumentsSubItem(_PyArgumentsSetattrMixin, PyCallableStateObject):
     """Class representing command argument in datamodel."""
 
     def __init__(
@@ -1412,17 +1423,8 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     getAttribValue = get_attr
 
-    def __setattr__(self, key: str, value: ValueT) -> None:
-        if isinstance(value, PyArgumentsSubItem):
-            super().__setattr__(key, value)
-        else:
-            attr = getattr(self, key)
-            set_state = attr.set_state
-            _warn_state_assignment(key)
-            set_state(value)
 
-
-class PyArguments(PyStateContainer):
+class PyArguments(_PyArgumentsSetattrMixin, PyStateContainer):
     """Class representing command arguments in datamodel."""
 
     def __init__(
@@ -1474,15 +1476,6 @@ class PyArguments(PyStateContainer):
             Value of the attribute.
         """
         return self._get_remote_attr(attrib)
-
-    def __setattr__(self, key: str, value: ValueT) -> None:
-        if isinstance(value, PyArgumentsSubItem):
-            super().__setattr__(key, value)
-        else:
-            attr = getattr(self, key)
-            set_state = attr.set_state
-            _warn_state_assignment(key)
-            set_state(value)
 
 
 class PyArgumentsTextualSubItem(PyArgumentsSubItem, PyTextual):

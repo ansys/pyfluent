@@ -141,11 +141,12 @@ def test_state_assignment_deprecation(mocker):
         assert menu.local_attribute == 4
 
 
-def test_command_argument_assignment_deprecation(mocker):
+@pytest.mark.parametrize("leaf_type", [PyArgumentsSubItem, PyArgumentsTextualSubItem])
+def test_command_argument_assignment_deprecation(mocker, leaf_type):
     service = mocker.Mock()
     arguments = PyArguments(service, "test", "command", [], "id")
     nested = PyArgumentsSingletonSubItem(arguments, "nested", service, "test", [])
-    leaf = PyArgumentsSubItem(nested, "leaf", service, "test", [])
+    leaf = leaf_type(nested, "leaf", service, "test", [])
     set_state = mocker.patch.object(PyArgumentsSubItem, "set_state", autospec=True)
 
     with warnings.catch_warnings(record=True) as captured:
@@ -154,10 +155,13 @@ def test_command_argument_assignment_deprecation(mocker):
         nested.leaf = leaf
         assert not captured
 
+        line = inspect.currentframe().f_lineno + 1
         arguments.nested = {"leaf": "first"}
         nested.leaf = "second"
         assert len(captured) == 2
         assert all(w.category is PyFluentDeprecationWarning for w in captured)
+        assert [w.filename for w in captured] == [__file__, __file__]
+        assert [w.lineno for w in captured] == [line, line + 1]
         assert set_state.call_args_list == [
             mocker.call(nested, {"leaf": "first"}),
             mocker.call(leaf, "second"),
