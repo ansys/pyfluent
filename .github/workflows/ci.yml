@@ -506,17 +506,33 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v27.1.latest
 
       - name: Run 27.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v27.1.latest
 
       - name: Print 27.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/v271/fluent_version.py
+      
+      - name: Pull 27.2 Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Run 27.2 API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Print 27.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/v272/fluent_version.py
 
       - name: Upload generated API files
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -568,9 +584,11 @@ jobs:
             version: 261
           - image-tag: v27.1.latest
             version: 271
+          - image-tag: v27.2.latest
+            version: 272
     timeout-minutes: 60
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 272 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -743,7 +761,7 @@ jobs:
           source .venv/bin/activate
           python -m pip install ansys-fluent-core[reader,tests]
           python -m pip install -q --force-reinstall dist/*.whl > /dev/null
-          python -m pytest --fluent-version=27.1 tests/test_pyconsole.py
+          python -m pytest --fluent-version=27.2 tests/test_pyconsole.py
 
   nightly-dev-test:
     name: Release Testing
@@ -800,7 +818,7 @@ jobs:
       - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-271
+          make unittest-all-272
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
           FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}

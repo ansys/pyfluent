@@ -29,12 +29,12 @@ from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_variant_to_value,
 )
 from ansys.fluent.core._grpc_services.reduction_service import (
-    BadReductionRequest,
     _locns,
 )
 from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.diagnostics.exceptions import BadReductionRequest
 from ansys.fluent.core.fields.reduction.functional import Weight
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
