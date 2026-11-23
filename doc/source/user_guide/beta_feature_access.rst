@@ -47,8 +47,7 @@ Solver Session
 
 .. note::
 
-   The ability to **switch to meshing mode** (via ``switch_to_meshing()``) is now a stable feature
-   and no longer requires beta enablement. It is available on Fluent 25.2 and later.
+   The ability to **switch to meshing mode** (via ``switch_to_meshing()``) is now a stable feature. It is available in Ansys Fluent 2025 R2 and later.
 
 For information on using the ``switch_to_meshing()`` method, see the :ref:`ref_switching_between_solver_and_meshing_sessions` section in the session documentation.
 
