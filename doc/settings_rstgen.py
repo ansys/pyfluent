@@ -28,7 +28,7 @@ from pathlib import Path
 from deprecated_apis import PYFLUENT_DEPRECATED_DATA
 
 from ansys.fluent.core import config
-from ansys.fluent.core.solver.flobject import ListObject
+from ansys.fluent.core.solver.flobject import ListObject, _NamedObjectCommandBase
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
@@ -104,10 +104,10 @@ def _populate_parents_list(cls):
         _populate_parents_list(getattr(cls, "child_object_type"))
 
 
-def _write_common(initial_param, r, cls, attr):
+def _write_common(initial_param, r, cls, attr, names=None):
     # TODO Add clarifying comments here
     data_dict = {initial_param: "Summary"}
-    for child in getattr(cls, attr):
+    for child in getattr(cls, attr) if names is None else names:
         child_cls = cls._child_classes[child]
         ref_string = f":ref:`{child} <{child_cls.__name__}>`"
         data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
@@ -165,14 +165,34 @@ def _write_rst_header(
 
 def _write_rst_body(r, cls, cls_name):
     has_children = hasattr(cls, "child_names") and len(cls.child_names) > 0
-    has_commands = hasattr(cls, "command_names") and len(cls.command_names) > 0
+    command_base = next(
+        (
+            base
+            for base in cls.__bases__
+            if base is not _NamedObjectCommandBase
+            and issubclass(base, _NamedObjectCommandBase)
+        ),
+        None,
+    )
+    shared_commands = set(command_base.command_names) if command_base else set()
+    commands = [
+        name
+        for name in getattr(cls, "command_names", [])
+        if name not in shared_commands
+    ]
     has_arguments = hasattr(cls, "argument_names") and len(cls.argument_names) > 0
     if has_children:
         r.write(".. rubric:: Attributes\n\n")
         _write_common("Attribute", r, cls, "child_names")
-    if has_commands:
+    if command_base:
+        r.write(".. rubric:: Base class\n\n")
+        r.write(
+            f"Common named-object methods are documented in the "
+            f":ref:`base class <named_object_commands_{command_base.__name__}>`.\n\n"
+        )
+    if commands:
         r.write(".. rubric:: Methods\n\n")
-        _write_common("Method", r, cls, "command_names")
+        _write_common("Method", r, cls, "command_names", commands)
     if has_arguments:
         r.write(".. rubric:: Arguments\n\n")
         _write_common("Argument", r, cls, "argument_names")
@@ -212,6 +232,26 @@ def _write_rst_body(r, cls, cls_name):
 
 
 def _recurse_rst_children(rst_dir, cls, version, current_path):
+    for base in cls.__bases__:
+        if base is not _NamedObjectCommandBase and issubclass(
+            base, _NamedObjectCommandBase
+        ):
+            rstpath = os.path.normpath(os.path.join(rst_dir, base.__name__ + ".rst"))
+            if rstpath not in rst_list:
+                with open(rstpath, "w") as r:
+                    r.write(
+                        f":orphan:\n\n.. _named_object_commands_{base.__name__}:\n\n"
+                    )
+                    r.write(
+                        "Common named-object methods\n===========================\n\n"
+                    )
+                    r.write(
+                        f".. autoclass:: ansys.fluent.core.generated.v{version}."
+                        f"solver.settings.{base.__name__}\n\n"
+                    )
+                    r.write(".. rubric:: Methods\n\n")
+                    _write_common("Method", r, base, "command_names")
+                rst_list.append(rstpath)
     for attr in _CHILD_LIST_ATTRS:
         if hasattr(cls, attr):
             for child in getattr(cls, attr):

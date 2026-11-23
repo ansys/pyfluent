@@ -25,10 +25,13 @@ import ast
 from copy import deepcopy
 import importlib
 import importlib.util
+from io import StringIO
 from pathlib import Path
 import pickle
 import shutil
+import sys
 import tempfile
+import types
 
 import pytest
 
@@ -956,6 +959,15 @@ def test_named_object_commands_share_generated_bases(
     assert first.__bases__[0] is second.__bases__[0]
     assert variant.__bases__[0] is not first.__bases__[0]
     assert fixed.__bases__[0] is not first.__bases__[0]
+    for root_cls in (dynamic_root, generated.root):
+        for container_name in ("first", "second", "fixed", "variant"):
+            container = root_cls._child_classes[container_name]
+            command_base = container.__bases__[0]
+            assert issubclass(command_base, flobject._NamedObjectCommandBase)
+            for name in command_base.command_names:
+                assert name not in vars(container)
+                assert vars(command_base)[name] is container._child_classes[name]
+        assert "create" not in vars(root_cls._child_classes["fixed"].__bases__[0])
     class_node = next(
         node
         for node in ast.parse(source).body
@@ -1032,6 +1044,120 @@ def test_named_object_commands_share_generated_bases(
         assert "make_a_copy" not in root.hidden.get_active_command_names()
         with pytest.raises(AttributeError):
             root.hidden.make_a_copy
+
+    if version == "251":
+        monkeypatch.syspath_prepend(str(Path(__file__).parents[1] / "doc"))
+        settings_rstgen = importlib.import_module("settings_rstgen")
+        monkeypatch.setattr(settings_rstgen, "rst_list", [])
+        monkeypatch.setattr(settings_rstgen, "parents_dict", {})
+        rst_dir = tmp_path / "rst"
+        rst_dir.mkdir()
+        settings_rstgen._populate_parents_list(generated.root)
+        settings_rstgen._populate_rst_from_settings(rst_dir, generated.root, version)
+        container_page = (rst_dir / f"{second.__name__}.rst").read_text()
+        base_page = (rst_dir / f"{second.__bases__[0].__name__}.rst").read_text()
+        assert (
+            f":ref:`base class <named_object_commands_{second.__bases__[0].__name__}>`"
+            in container_page
+        )
+        assert ":ref:`display <" in container_page
+        assert ":ref:`create <" not in container_page
+        assert ":ref:`delete <" not in container_page
+        assert ":ref:`create <" in base_page
+        assert ":ref:`delete <" in base_page
+        assert ":ref:`display <" not in base_page
+
+
+def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
+    sphinx = pytest.importorskip("sphinx.application")
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    monkeypatch.syspath_prepend(str(Path(__file__).parents[1] / "doc"))
+    settings_rstgen = importlib.import_module("settings_rstgen")
+    monkeypatch.setattr(settings_rstgen, "rst_list", [])
+    monkeypatch.setattr(settings_rstgen, "parents_dict", {})
+    commands = (
+        _get_command_settings_static_info("create", [("name", "string")])
+        | _get_command_settings_static_info("delete", [("name", "string")])
+        | _get_command_settings_static_info("display", [])
+    )
+    info = {
+        "type": "group",
+        "children": {
+            "container": {
+                "type": "named-object",
+                "user_creatable": True,
+                "object_type": {"type": "group"},
+                "commands": commands,
+            }
+        },
+    }
+    settingsgen.generate("271", {StaticInfoType.SETTINGS: info})
+    module_name = "ansys.fluent.core.generated.v271.solver.settings"
+    parent = pyfluent
+    for package_name in (
+        "ansys.fluent.core.generated",
+        "ansys.fluent.core.generated.v271",
+        "ansys.fluent.core.generated.v271.solver",
+    ):
+        package = types.ModuleType(package_name)
+        package.__path__ = []
+        monkeypatch.setitem(sys.modules, package_name, package)
+        monkeypatch.setattr(
+            parent, package_name.rsplit(".", 1)[-1], package, raising=False
+        )
+        parent = package
+    spec = importlib.util.spec_from_file_location(
+        module_name, tmp_path / "v271" / "solver" / "settings.py"
+    )
+    generated = importlib.util.module_from_spec(spec)
+    monkeypatch.setitem(sys.modules, module_name, generated)
+    monkeypatch.setattr(parent, "settings", generated, raising=False)
+    spec.loader.exec_module(generated)
+    source = tmp_path / "docs"
+    source.mkdir()
+    settings_rstgen._populate_parents_list(generated.root)
+    settings_rstgen._populate_rst_from_settings(source, generated.root, "271")
+    (source / "conf.py").write_text(
+        "extensions = ['sphinx.ext.autodoc']\nmaster_doc = 'index'\n",
+        encoding="utf-8",
+    )
+    pages = sorted(path.stem for path in source.glob("*.rst"))
+    (source / "index.rst").write_text(
+        "Test\n====\n\n.. toctree::\n\n" + "".join(f"   {page}\n" for page in pages),
+        encoding="utf-8",
+    )
+    warnings = StringIO()
+    app = sphinx.Sphinx(
+        str(source),
+        str(source),
+        str(tmp_path / "html"),
+        str(tmp_path / "doctrees"),
+        "html",
+        status=StringIO(),
+        warning=warnings,
+        warningiserror=True,
+        freshenv=True,
+    )
+    app.build()
+    assert app.statuscode == 0, warnings.getvalue()
+    container = generated.root._child_classes["container"]
+    base = container.__bases__[0]
+    container_html = (tmp_path / "html" / f"{container.__name__}.html").read_text(
+        encoding="utf-8"
+    )
+    base_html = (tmp_path / "html" / f"{base.__name__}.html").read_text(
+        encoding="utf-8"
+    )
+    container_html = container_html.split('role="main">', 1)[1].split("</section>", 1)[
+        0
+    ]
+    base_html = base_html.split('role="main">', 1)[1].split("</section>", 1)[0]
+    assert f"{base.__name__}.html" in container_html
+    assert "display.html" in container_html
+    assert "create.html" not in container_html
+    assert "delete.html" not in container_html
+    assert "create.html" in base_html
+    assert "delete.html" in base_html
 
 
 _settings_static_info_duplicate_parameters = {

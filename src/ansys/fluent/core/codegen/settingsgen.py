@@ -36,8 +36,10 @@ from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, walk_api
 from ansys.fluent.core.solver import _docstrings
 from ansys.fluent.core.solver.flobject import (
+    _NAMED_OBJECT_COMMANDS,
     ListObject,
     NamedObject,
+    _NamedObjectCommandBase,
     get_cls,
     to_constant_name,
     to_python_name,
@@ -112,7 +114,11 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data = {
         "version": version,
         "name": cls.__name__,
-        "bases": [base.__name__ for base in cls.__bases__],
+        "bases": [
+            base.__name__
+            for base in cls.__bases__
+            if not issubclass(base, _NamedObjectCommandBase)
+        ],
     }
     if "command" in cls.__doc__:
         data["doc"] = strip_parameters(cls.__doc__)
@@ -176,14 +182,6 @@ _CLASS_WRITTEN = set()
 _NAMED_OBJECT_MIXINS = {}
 _NAMED_OBJECT_MIXINS_WRITTEN = set()
 _NAMED_OBJECT_MIXIN_STUBS_WRITTEN = set()
-_NAMED_OBJECT_COMMANDS = {
-    "create",
-    "delete",
-    "rename",
-    "list",
-    "list-properties",
-    "make-a-copy",
-}
 
 
 def _get_unique_name(name):
@@ -459,7 +457,10 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         f.write("    _child_classes = dict(\n")
         for name, child_class in shared_children.items():
             f.write(f"        {name}={child_class},\n")
-        f.write("    )\n\n")
+        f.write("    )\n")
+        for name, child_class in shared_children.items():
+            f.write(f"    {name} = {child_class}\n")
+        f.write("\n")
         _NAMED_OBJECT_MIXINS_WRITTEN.add(command_mixin)
     if (
         f_stub

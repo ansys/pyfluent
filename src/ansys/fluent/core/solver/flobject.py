@@ -2162,6 +2162,11 @@ class _NamedObjectCommandBase(_NamedObjectCommandMixin):
                 cls._child_classes = cls._child_classes.copy()
 
 
+_NAMED_OBJECT_COMMANDS = frozenset(
+    {"create", "delete", "rename", "list", "list-properties", "make-a-copy"}
+)
+
+
 def _merge_named_object_command_names(
     shared: list[str], others: list[tuple[int, str]]
 ) -> list[str]:
@@ -3359,6 +3364,12 @@ def _create_generated_class(
         include_child_named_objects,
         user_creatable,
     )
+    if obj_type == "named-object" and any(
+        name in _NAMED_OBJECT_COMMANDS and (name != "create" or user_creatable)
+        for name in info.get("commands", {})
+    ):
+        command_base = type("_NamedObjectCommands", (_NamedObjectCommandBase,), {})
+        bases = (command_base,) + bases
 
     pname, parent_attr_name = _resolve_generated_names(
         pname,
@@ -3401,6 +3412,19 @@ def get_cls(
         _register_generated_commands_section(cls, info, taboo, version, user_creatable)
         _register_generated_queries_section(cls, info, taboo, version)
         _register_generated_arguments_section(cls, info, taboo, version)
+
+        if issubclass(cls.__bases__[0], _NamedObjectCommandBase):
+            command_base = cls.__bases__[0]
+            command_base.command_names = [
+                name
+                for name in cls.command_names
+                if cls._child_classes[name].fluent_name in _NAMED_OBJECT_COMMANDS
+            ]
+            command_base._child_classes = {
+                name: cls._child_classes[name] for name in command_base.command_names
+            }
+            for name, command in command_base._child_classes.items():
+                setattr(command_base, name, command)
 
         _set_generated_return_type(cls, info, version)
         _set_generated_child_object_type(cls, info, version)
