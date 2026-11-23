@@ -180,7 +180,7 @@ rep_defs.surface["outlet-temp-avg"].report_type.set_state(soln_report_type.SURFA
 ```{python}
 initialization = Initialization(solver)
 init_type = initialization.initialization_type
-initialization.initialization_type.set_state(init_type.HYBRID)
+init_type.set_state(init_type.HYBRID)
 
 Initialize(solver)()
 
