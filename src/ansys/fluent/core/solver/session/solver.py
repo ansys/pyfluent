@@ -474,7 +474,21 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         Returns
         -------
         Meshing
+
+        Raises
+        ------
+        RuntimeError
+            If Fluent version is less than 25.2.
         """
+        from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+        fluent_version = self.get_fluent_version()
+        if fluent_version < FluentVersion.v252:
+            raise RuntimeError(
+                f"switch_to_meshing() requires Fluent 25.2 or later. "
+                f"Current version: {fluent_version.value}"
+            )
+
         from ansys.fluent.core.meshing.session.meshing import Meshing
 
         self.settings.switch_to_meshing_mode()

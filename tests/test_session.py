@@ -1064,8 +1064,9 @@ def test_error_raised_for_beta_feature_access_for_older_versions(
         # switch_to_meshing is now a stable feature (no beta check required)
         assert "switch_to_meshing" in dir(solver)
     else:
-        # Feature not available on older Fluent versions
-        assert "switch_to_meshing" not in dir(solver)
+        # Feature not available on older Fluent versions - should raise RuntimeError
+        with pytest.raises(RuntimeError, match="requires Fluent 25.2 or later"):
+            solver.switch_to_meshing()
 
 
 @pytest.mark.fluent_version(">=25.2")
