@@ -90,7 +90,10 @@ from numpy import array
 from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
-from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
+from ansys.fluent.core.diagnostics.exceptions import (
+    BadReductionRequest,
+    DisallowedValuesError,
+)
 
 
 class Weight(Enum):
@@ -104,14 +107,6 @@ class Weight(Enum):
 
     def __str__(self):
         return self.value
-
-
-class BadReductionRequest(Exception):
-    """Raised on an attempt to make a bad reduction request."""
-
-    def __init__(self, err):
-        """__init__ method of BadReductionRequest class."""
-        super().__init__(f"Could not complete reduction function request: {err}")
 
 
 def _is_iterable(obj):

@@ -73,12 +73,13 @@ jobs:
       - name: Pull 24.2 Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v24.2.5
 
       - name: Run 24.2 API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v24.2.5
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.2 Fluent version info
         run: |
@@ -87,14 +88,46 @@ jobs:
       - name: Pull 25.1 Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: v25.1.4
 
-        # The version-independent built-in settings classes are generated only with Fluent 25.1
-        # which are required for the unit tests
       - name: Run 25.1 API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: v25.1.4
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
+
+      - name: Print 25.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/v251/fluent_version.py
+
+      - name: Pull 25.2 Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v25.2.3
+
+      - name: Run 25.2 API codegen
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v25.2.3
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
+
+      - name: Print 25.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/v252/fluent_version.py
+
+      - name: Pull 26.1 Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v26.1.latest
+
+      - name: Run 26.1 API codegen
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v26.1.latest
+
+      - name: Print 26.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/v261/fluent_version.py
 
       - name: Install again after codegen
         run: |
@@ -128,10 +161,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v24.2.0
+          - image-tag: v24.2.5
             version: 242
-          - image-tag: v25.1.0
+          - image-tag: v25.1.4
             version: 251
+          - image-tag: v25.2.3
+            version: 251
+          - image-tag: v26.1.latest
+            version: 261
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

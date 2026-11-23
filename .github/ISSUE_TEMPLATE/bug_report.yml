@@ -75,6 +75,7 @@ body:
     attributes:
       label: 🌀 Ansys Fluent version
       options:
+        - "2027 R2 (27.2)"
         - "2027 R1 (27.1)"
         - "2026 R1 (26.1)"
         - "2025 R2 (25.2)"
