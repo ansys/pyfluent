@@ -15,6 +15,7 @@
 * [alikasim72](https://github.com/alikasim72)
 * [Anurag Kulshrestha](https://github.com/akulshre-qa)
 * [Aseem Jain](https://github.com/ajain-work)
+* [Ben Widmann](https://github.com/ansbwidmann)
 * [Blanche Jérôme](https://github.com/jerome-blanche)
 * [Chris Hodgson](https://github.com/cj-hodgson)
 * [Dan Williams](https://github.com/dnwillia)
