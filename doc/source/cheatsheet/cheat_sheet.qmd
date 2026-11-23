@@ -79,21 +79,19 @@ WriteCaseData(settings_source=solver)(
 ```{python}
 watertight = meshing.watertight()
 import_geom = watertight.import_geometry
-import_geom.set_state({
-  "file_name": "<geometry_file>",
-  "length_unit": "mm"
-})
+import_geom.file_name.set_state("<geometry_file>")
+import_geom.length_unit.set_state("mm")
 import_geom()
 
 surf_mesh = watertight.create_surface_mesh
-surf_mesh.cfd_surface_mesh_controls.set_state({"max_size": 0.3})
+surf_mesh.cfd_surface_mesh_controls.max_size.set_state(0.3)
 surf_mesh()
 
-watertight.describe_geometry.set_state({"setup_type": "fluid"})
+watertight.describe_geometry.setup_type.set_state("fluid")
 watertight.describe_geometry()
 
 volume_mesh = watertight.create_volume_mesh_wtm
-volume_mesh.set_state({"volume_fill": "poly-hexcore"})
+volume_mesh.volume_fill.set_state("poly-hexcore")
 
 volume_mesh()
 ```
@@ -104,18 +102,17 @@ volume_mesh()
 
 ```{python}
 inlet = VelocityInlet(solver, name="cold-inlet")
-inlet.momentum.set_state({"velocity_magnitude": 0.4})
+inlet.momentum.velocity_magnitude.set_state(0.4)
 
 turbulence = inlet.turbulence
-turbulence.turbulence_specification = (
+turbulence.turbulence_specification.set_state(
   turbulence.turbulence_specification.
   INTENSITY_AND_HYDRAULIC_DIAMETER)
 
-turbulence.set_state({
-  "turbulent_intensity": 0.05,
-  "hydraulic_diameter": "4 [in]"
-})
-inlet.thermal.set_state({"temperature": 293.15})
+turbulence.turbulent_intensity.set_state(0.05)
+turbulence.hydraulic_diameter.set_state("4 [in]")
+
+inlet.thermal.temperature.set_state(293.15)
 ```
 
 ### Materials
@@ -123,50 +120,48 @@ inlet.thermal.set_state({"temperature": 293.15})
 ```{python}
 materials = Materials(solver)
 air_copy = materials.fluid.make_a_copy(from_="air", to="air-copied")
-materials.fluid["air-copied"].set_state({"viscosity": 1.81e-05})
+materials.fluid["air-copied"].viscosity.set_state(1.81e-05)
 
 # Create new material
 my_solid = materials.solid.create("my-solid")
-my_solid.density.set_state({"value": 2650})
-my_solid.thermal_conductivity.set_state({"value": 7.6})
+my_solid.density.value.set_state(2650)
+my_solid.thermal_conductivity.value.set_state(7.6)
 ```
 
 ### Cell zone conditions
 
 ```{python}
 cell_zones = CellZoneConditions(solver)
-cell_zones.fluid["elbow-fluid"].general.set_state({"material": "air-copied"})
+cell_zones.fluid["elbow-fluid"].general.material.set_state("air-copied")
 ```
 
 ### Models
 ```{python}
 models = Models(solver)
-models.energy.set_state({
-  "enabled": True,
-  "viscous_dissipation": True
-})
+models.energy.enabled.set_state(True)
+models.energy.viscous_dissipation.set_state(True)
 
 viscous = Viscous(solver)
-viscous.set_state({"model": viscous.model.K_EPSILON})
+viscous.model.set_state(viscous.model.K_EPSILON)
 k_epsilon_model = viscous.k_epsilon_model
-k_epsilon_model.set_state({"model": k_epsilon_model.REALIZABLE})
+k_epsilon_model.model.set_state(k_epsilon_model.REALIZABLE)
 
 rad = Radiation(solver)
-rad.set_state({"model": rad.model.MONTE_CARLO})
-rad.solve_frequency.set_state({"number_of_histories": 1e7})
+rad.model.set_state(rad.model.MONTE_CARLO)
+rad.solve_frequency.number_of_histories.set_state(1e7)
 
 species = Species(solver)
-species.model.set_state({"option": species.model.option.SPECIES_TRANSPORT})
+species.model.option.set_state(species.model.option.SPECIES_TRANSPORT)
 ```
 ## Solution
 ```{python}
 soln = Solution(solver)
 
 methods = soln.methods
-methods.p_v_coupling.set_state({"flow_scheme": "Coupled"})
+methods.p_v_coupling.flow_scheme.set_state("Coupled")
 
 grad_scheme = methods.spatial_discretization.gradient_scheme
-grad_scheme.set_state({"gradient_scheme": grad_scheme.GREEN_GAUSS_NODE_BASED})
+grad_scheme.gradient_scheme.set_state(grad_scheme.GREEN_GAUSS_NODE_BASED)
 
 ```
 
@@ -177,10 +172,8 @@ rep_defs = ReportDefinitions(solver)
 surf_rep = rep_defs.surface.create("outlet-temp-avg")
 
 soln_report_type = rep_defs.surface["outlet-temp-avg"].report_type
-rep_defs.surface["outlet-temp-avg"].set_state({
-  "report_type": soln_report_type.SURFACE_AREA,
-  "field": VC.TEMPERATURE
-})
+rep_defs.surface["outlet-temp-avg"].report_type.set_state(soln_report_type.SURFACE_AREA)
+rep_defs.surface["outlet-temp-avg"].field.set_state(VC.TEMPERATURE)
 ```
 
 ### Initialize and solve
@@ -188,12 +181,12 @@ rep_defs.surface["outlet-temp-avg"].set_state({
 ```{python}
 initialization = Initialization(solver)
 init_type = initialization.initialization_type
-initialization.set_state({"initialization_type": init_type.HYBRID})
+initialization.initialization_type.set_state(init_type.HYBRID)
 
 Initialize(solver)()
 
 run_calc = RunCalculation(solver)
-run_calc.parameters.set_state({"iter_count": 100})
+run_calc.parameters.iter_count.set_state(100)
 
 Iterate(solver)()
 
