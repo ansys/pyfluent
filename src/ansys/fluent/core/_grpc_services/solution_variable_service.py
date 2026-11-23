@@ -34,6 +34,7 @@ from ansys.api.fluent.v1 import (
     solution_variable_pb2_grpc,
 )
 from ansys.fluent.core._grpc_services.field_data_service import _FieldDataConstants
+from ansys.fluent.core.diagnostics.exceptions import IncompleteSolutionVariableDataError
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 
@@ -401,10 +402,21 @@ class SolutionVariableService(ServiceProtocol):
 
 
 def extract_svars(solution_variables_data):
-    """Extract SVAR data via a server call (v1 proto payload shape)."""
+    """Extract SVAR data via a server call (v1 proto payload shape).
+
+    Raises
+    ------
+    IncompleteSolutionVariableDataError
+        If the streamed data for a zone ends before all declared elements are
+        received. This typically means a single zone's data is too large for
+        the server to stream in one response; see the exception's
+        documentation for ways to work around it.
+    """
 
     def _extract_svar(field_datatype, field_size, solution_variables_data):
         field_arr = np.empty(field_size, dtype=field_datatype)
+        if field_size == 0:
+            return field_arr
         field_datatype_item_size = np.dtype(field_datatype).itemsize
         index = 0
         for solution_variable_data in solution_variables_data:
@@ -434,6 +446,9 @@ def extract_svars(solution_variables_data):
                 index += count
                 if index == field_size:
                     return field_arr
+        raise IncompleteSolutionVariableDataError(
+            index, field_size, field_datatype_item_size
+        )
 
     zones_svar_data = {}
     for array in solution_variables_data:

@@ -42,14 +42,13 @@ Import geometry
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples
+    from ansys.fluent.core import Meshing, Precision, WatertightMeshing, examples
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    meshing_session = pyfluent.Meshing.from_install(
-        precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = Meshing.from_install(
+        precision=Precision.DOUBLE, processor_count=2
     )
-    watertight = pyfluent.WatertightMeshing(session=meshing_session)
+    watertight = WatertightMeshing(session=meshing_session)
     import_geometry = watertight.import_geometry
     import_geometry.file_name = import_file_name
     import_geometry.length_unit = "in"
@@ -144,13 +143,12 @@ Import CAD and part management
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples, FaultTolerantMeshing
+    from ansys.fluent.core import FaultTolerantMeshing, Meshing, Precision, examples
 
     import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
-    meshing_session = pyfluent.Meshing.from_install(precision=pyfluent.Precision.DOUBLE, processor_count=2)
+    meshing_session = Meshing.from_install(precision=Precision.DOUBLE, processor_count=2)
 
     fault_tolerant = FaultTolerantMeshing(session=meshing_session)
     fault_tolerant.parts.input_file_changed(
@@ -268,7 +266,7 @@ Define leakage threshold
 .. code:: python
 
     leakage_threshold = fault_tolerant.define_leakage_threshold
-    leakage_threshold.add_child = "yes"
+    leakage_threshold.add_child = True
     leakage_threshold.flip_direction = True
     leakage_threshold.leakage_name = "leakage-1"
     leakage_threshold.plane_direction = "X"
@@ -399,12 +397,11 @@ Import geometry
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples, TwoDimensionalMeshing
+    from ansys.fluent.core import Meshing, Precision, TwoDimensionalMeshing, examples
 
     import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
-    meshing_session = pyfluent.Meshing.from_install(
-        precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = Meshing.from_install(
+        precision=Precision.DOUBLE, processor_count=2
     )
     two_dim_mesh = TwoDimensionalMeshing(session=meshing_session)
 
@@ -441,7 +438,7 @@ Adding BOI
 .. code:: python
 
     add_local_sizing = two_dim_mesh.add_local_sizing_wtm
-    add_local_sizing.add_child = "yes"
+    add_local_sizing.add_child = True
     add_local_sizing.boi_control_name = "boi_1"
     add_local_sizing.boi_execution = "Body Of Influence"
     add_local_sizing.boi_face_label_list = ["boi"]
@@ -455,7 +452,7 @@ Set edge sizing
 
 .. code:: python
 
-    add_local_sizing.add_child = "yes"
+    add_local_sizing.add_child = True
     add_local_sizing.boi_control_name = "edgesize_1"
     add_local_sizing.boi_execution = "Edge Size"
     add_local_sizing.boi_size = 5.0
@@ -469,7 +466,7 @@ Set curvature sizing
 
 .. code:: python
 
-    add_local_sizing.add_child = "yes"
+    add_local_sizing.add_child = True
     add_local_sizing.boi_control_name = "curvature_1"
     add_local_sizing.boi_curvature_normal_angle = 10
     add_local_sizing.boi_execution = "Curvature"
@@ -487,7 +484,7 @@ Add boundary layer
 .. code:: python
 
     add_boundary_layers = two_dim_mesh.add_2d_boundary_layers
-    add_boundary_layers.add_child = "yes"
+    add_boundary_layers.add_child = True
     add_boundary_layers.control_name = "aspect-ratio_1"
     add_boundary_layers.number_of_layers = 4
     add_boundary_layers.offset_method_type = "aspect-ratio"
@@ -498,29 +495,22 @@ Generate surface mesh
 
 .. code:: python
 
-    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
-    # This dependency may be removed in a future release as the API evolves.
     generate_surface_mesh = two_dim_mesh.generate_initial_surface_mesh
     mesh_preferences = two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences
-    mesh_preferences.show_advanced_options = True
-    mesh_preferences.merge_edge_zones_based_on_labels = "no"
-    mesh_preferences.merge_face_zones_based_on_labels = "no"
+    mesh_preferences.merge_edge_zones_based_on_labels = False
+    mesh_preferences.merge_face_zones_based_on_labels = False
     generate_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
-    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = True
     two_dim_mesh.add_2d_boundary_layers_child_1.control_name = "uniform_1"
     two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
-
-    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
-    # This dependency may be removed in a future release as the API evolves.
-    mesh_preferences.show_advanced_options = True
-    mesh_preferences.merge_edge_zones_based_on_labels = "no"
-    mesh_preferences.merge_face_zones_based_on_labels = "no"
+    mesh_preferences.merge_edge_zones_based_on_labels = False
+    mesh_preferences.merge_face_zones_based_on_labels = False
     generate_surface_mesh()
 
 Switch to solution mode
@@ -544,12 +534,11 @@ Create workflow
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples, CreateMeshingWorkflow
+    from ansys.fluent.core import CreateMeshingWorkflow, Meshing, Precision, examples
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    meshing_session = pyfluent.Meshing.from_install(
-        precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = Meshing.from_install(
+        precision=Precision.DOUBLE, processor_count=2
     )
     custom_workflow = CreateMeshingWorkflow(session=meshing_session)
 
@@ -589,14 +578,13 @@ Load workflow
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples, LoadMeshingWorkflow
+    from ansys.fluent.core import LoadMeshingWorkflow, Meshing, Precision, examples
 
     saved_workflow_path = examples.download_file(
         "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
     )
-    meshing_session = pyfluent.Meshing.from_install(
-        precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = Meshing.from_install(
+        precision=Precision.DOUBLE, processor_count=2
     )
     loaded_workflow = LoadMeshingWorkflow(session=meshing_session, file_path=saved_workflow_path)
 
@@ -607,10 +595,10 @@ You can insert tasks into a workflow using the workflow object.
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import Meshing, Precision
 
-    meshing_session = pyfluent.Meshing.from_install(
-        precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = Meshing.from_install(
+        precision=Precision.DOUBLE, processor_count=2
     )
     watertight = meshing_session.watertight()
     watertight.import_geometry.insertable_tasks()

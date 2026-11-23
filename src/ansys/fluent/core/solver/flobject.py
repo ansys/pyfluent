@@ -544,20 +544,19 @@ class _InlineConstants:
     file_purpose = "file-purpose"
 
 
-# Type hints
-RealType = NewType("real", float | str)  # constant or expression
-RealListType = list[RealType]
-RealVectorType = tuple[RealType, RealType, RealType]
-IntListType = list[int]
-StringListType = list[str]
-BoolListType = list[bool]
-PrimitiveStateType = Union[
-    str,
-    RealType,
-    int,
-    bool,
-    RealListType,
+# Type hints. These solver-agnostic value types live in the platform layer;
+# they are re-exported here so ``flobject.StateType`` (and the related names)
+# keep working for existing callers and ``from flobject import *``.
+from ansys.fluent.core._tools.settings.state_types import (  # noqa: E402, F401
+    BoolListType,
+    DictStateType,
     IntListType,
+    ListStateType,
+    PrimitiveStateType,
+    RealListType,
+    RealType,
+    RealVectorType,
+    StateType,
     StringListType,
     BoolListType,
 ]

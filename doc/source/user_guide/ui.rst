@@ -23,10 +23,10 @@ Import the ``ui`` function and pass in a settings object:
 
 .. code-block:: python
 
-   import ansys.fluent.core as pyfluent
+   from ansys.fluent.core import Solver
    from ansys.fluent.core.ui import ui
 
-   solver = pyfluent.Solver.from_install()
+   solver = Solver.from_install()
 
    # Launch the UI for the full settings tree
    ui(solver.settings)
