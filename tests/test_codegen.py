@@ -1056,10 +1056,8 @@ def test_named_object_commands_share_generated_bases(
         settings_rstgen._populate_rst_from_settings(rst_dir, generated.root, version)
         container_page = (rst_dir / f"{second.__name__}.rst").read_text()
         base_page = (rst_dir / f"{second.__bases__[0].__name__}.rst").read_text()
-        assert (
-            f":ref:`base class <named_object_commands_{second.__bases__[0].__name__}>`"
-            in container_page
-        )
+        assert ":show-inheritance:" in container_page
+        assert ".. rubric:: Base class" not in container_page
         assert ":ref:`display <" in container_page
         assert ":ref:`create <" not in container_page
         assert ":ref:`delete <" not in container_page
@@ -1152,7 +1150,8 @@ def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
         0
     ]
     base_html = base_html.split('role="main">', 1)[1].split("</section>", 1)[0]
-    assert f"{base.__name__}.html" in container_html
+    bases_line = container_html.split("Bases:", 1)[1].split("</p>", 1)[0]
+    assert f"{base.__name__}.html" in bases_line
     assert "display.html" in container_html
     assert "create.html" not in container_html
     assert "delete.html" not in container_html

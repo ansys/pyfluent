@@ -114,6 +114,18 @@ def _write_common(initial_param, r, cls, attr, names=None):
     _generate_table_for_rst(r, data_dict)
 
 
+def _named_object_command_base(cls):
+    return next(
+        (
+            base
+            for base in cls.__bases__
+            if base is not _NamedObjectCommandBase
+            and issubclass(base, _NamedObjectCommandBase)
+        ),
+        None,
+    )
+
+
 def _write_rst_header(
     r,
     cls,
@@ -154,26 +166,14 @@ def _write_rst_header(
     r.write(
         f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
     )
-    # ``:show-inheritance:`` on collection containers renders a noisy
-    # ``Bases: NamedObject[<member>], ...`` line exposing internal generic
-    # subscripts; suppress it there while keeping useful base-type info
-    # (for example scalar parameter types) on every other page.
-    if not hasattr(cls, "child_object_type"):
+    if not hasattr(cls, "child_object_type") or _named_object_command_base(cls):
         r.write(f"{istr1}:show-inheritance:\n")
     r.write("\n")
 
 
 def _write_rst_body(r, cls, cls_name):
     has_children = hasattr(cls, "child_names") and len(cls.child_names) > 0
-    command_base = next(
-        (
-            base
-            for base in cls.__bases__
-            if base is not _NamedObjectCommandBase
-            and issubclass(base, _NamedObjectCommandBase)
-        ),
-        None,
-    )
+    command_base = _named_object_command_base(cls)
     shared_commands = set(command_base.command_names) if command_base else set()
     commands = [
         name
@@ -184,12 +184,6 @@ def _write_rst_body(r, cls, cls_name):
     if has_children:
         r.write(".. rubric:: Attributes\n\n")
         _write_common("Attribute", r, cls, "child_names")
-    if command_base:
-        r.write(".. rubric:: Base class\n\n")
-        r.write(
-            f"Common named-object methods are documented in the "
-            f":ref:`base class <named_object_commands_{command_base.__name__}>`.\n\n"
-        )
     if commands:
         r.write(".. rubric:: Methods\n\n")
         _write_common("Method", r, cls, "command_names", commands)
@@ -232,26 +226,20 @@ def _write_rst_body(r, cls, cls_name):
 
 
 def _recurse_rst_children(rst_dir, cls, version, current_path):
-    for base in cls.__bases__:
-        if base is not _NamedObjectCommandBase and issubclass(
-            base, _NamedObjectCommandBase
-        ):
-            rstpath = os.path.normpath(os.path.join(rst_dir, base.__name__ + ".rst"))
-            if rstpath not in rst_list:
-                with open(rstpath, "w") as r:
-                    r.write(
-                        f":orphan:\n\n.. _named_object_commands_{base.__name__}:\n\n"
-                    )
-                    r.write(
-                        "Common named-object methods\n===========================\n\n"
-                    )
-                    r.write(
-                        f".. autoclass:: ansys.fluent.core.generated.v{version}."
-                        f"solver.settings.{base.__name__}\n\n"
-                    )
-                    r.write(".. rubric:: Methods\n\n")
-                    _write_common("Method", r, base, "command_names")
-                rst_list.append(rstpath)
+    base = _named_object_command_base(cls)
+    if base:
+        rstpath = os.path.normpath(os.path.join(rst_dir, base.__name__ + ".rst"))
+        if rstpath not in rst_list:
+            with open(rstpath, "w") as r:
+                r.write(f":orphan:\n\n.. _named_object_commands_{base.__name__}:\n\n")
+                r.write("Common named-object methods\n===========================\n\n")
+                r.write(
+                    f".. autoclass:: ansys.fluent.core.generated.v{version}."
+                    f"solver.settings.{base.__name__}\n\n"
+                )
+                r.write(".. rubric:: Methods\n\n")
+                _write_common("Method", r, base, "command_names")
+            rst_list.append(rstpath)
     for attr in _CHILD_LIST_ATTRS:
         if hasattr(cls, attr):
             for child in getattr(cls, attr):
