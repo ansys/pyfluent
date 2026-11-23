@@ -179,7 +179,7 @@ rep_defs.surface["outlet-temp-avg"].field.set_state(VC.TEMPERATURE)
 ```{python}
 initialization = Initialization(solver)
 init_type = initialization.initialization_type
-initialization.initialization_type.set_state(init_type.HYBRID)
+init_type.set_state(init_type.HYBRID)
 
 Initialize(solver)()
 
