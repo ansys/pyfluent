@@ -21,24 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Generic, solver-agnostic platform layer shared across Ansys solvers.
+"""Shared, solver-agnostic utilities and data types.
 
-``ansys.framework`` is the public *platform* layer introduced by the
-componentization effort (EPIC: https://github.com/ansys/pyfluent/issues/4618).
-It is a sibling namespace to ``ansys.fluent.core`` that holds the parts of the
-architecture that are not specific to Fluent: the process-controller, the
-transport/service boundary, the generic object framework and the generic
-session.
+The ``settings`` package groups reusable settings-tree definitions.
+Its ``state_types`` module defines scalar, collection, and nested state types
+used by settings backends and service contracts.
 
-Dependency rule (enforced by import-linter; see the architecture page in the
-docs):
+Dependency rule:
 
-    ``ansys.framework`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
+    ``ansys.fluent.core._tools`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
     ``ansys.api.*``.
 
-Solver-specific layers (such as ``ansys.fluent.core``) may depend on this
-package, never the reverse.
-
-This package is currently a stub. Modules are moved here incrementally, each
-behind a backward-compatible shim at the original ``ansys.fluent.core`` path.
+Solver-specific layers (such as ``ansys.fluent.core``) may depend on this, never the reverse.
 """
