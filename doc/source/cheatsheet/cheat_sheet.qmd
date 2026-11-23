@@ -144,7 +144,7 @@ models.energy.viscous_dissipation.set_state(True)
 viscous = Viscous(solver)
 viscous.model.set_state(viscous.model.K_EPSILON)
 k_epsilon_model = viscous.k_epsilon_model
-k_epsilon_model.model.set_state(k_epsilon_model.REALIZABLE)
+k_epsilon_model.set_state(k_epsilon_model.REALIZABLE)
 
 rad = Radiation(solver)
 rad.model.set_state(rad.model.MONTE_CARLO)
@@ -161,7 +161,7 @@ methods = soln.methods
 methods.p_v_coupling.flow_scheme.set_state("Coupled")
 
 grad_scheme = methods.spatial_discretization.gradient_scheme
-grad_scheme.gradient_scheme.set_state(grad_scheme.GREEN_GAUSS_NODE_BASED)
+grad_scheme.set_state(grad_scheme.GREEN_GAUSS_NODE_BASED)
 
 ```
 
@@ -173,7 +173,6 @@ surf_rep = rep_defs.surface.create("outlet-temp-avg")
 
 soln_report_type = rep_defs.surface["outlet-temp-avg"].report_type
 rep_defs.surface["outlet-temp-avg"].report_type.set_state(soln_report_type.SURFACE_AREA)
-rep_defs.surface["outlet-temp-avg"].field.set_state(VC.TEMPERATURE)
 ```
 
 ### Initialize and solve
