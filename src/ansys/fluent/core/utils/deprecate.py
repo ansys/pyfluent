@@ -38,18 +38,12 @@ from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 def _warn_state_assignment(name: str, replacement: str | None = None) -> None:
     stacklevel = 2
     frame = sys._getframe(1)
-    while (
-        frame is not None
-        and frame.f_code.co_name == "__setattr__"
-        and frame.f_globals.get("__name__")
-        in {
-            "ansys.fluent.core.solver.flobject",
-            "ansys.fluent.core.solver.settings_builtin_bases",
-            "ansys.fluent.core.services.object_model",
-            "ansys.fluent.core.workflow",
-            "ansys.fluent.core.workflow_old",
-        }
-    ):
+    while frame is not None and frame.f_code.co_name == "__setattr__":
+        module = frame.f_globals.get("__name__", "")
+        if module != "ansys.fluent.core" and not module.startswith(
+            "ansys.fluent.core."
+        ):
+            break
         stacklevel += 1
         frame = frame.f_back
     replacement = replacement or f"{name}.set_state(value)"
