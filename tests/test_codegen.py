@@ -36,6 +36,7 @@ from ansys.fluent.core.codegen import (
     allapigen,
     get_codegen_datamodel_dir,
     get_codegen_tui_dir,
+    settingsgen,
 )
 from ansys.fluent.core.codegen.api_tree import get_api_tree_file_name
 from ansys.fluent.core.codegen.builtin_settingsgen import (
@@ -707,16 +708,16 @@ class P4(String):
     fluent_name = 'P4'
     _python_name = 'P4'
 
-class N1_child(Group):
+class N1_item(Group):
     """
     'child_object_type' of N1.
     """
     _version = '251'
     exposure_level = ExposureLevel.ALPHA
     fluent_name = 'child-object-type'
-    _python_name = 'N1_child'
+    _python_name = 'N1_item'
 
-class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
+class N1(NamedObject[N1_item], _NonCreatableNamedObjectMixin[N1_item]):
     """
     N1 help.
     """
@@ -728,7 +729,7 @@ class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     _child_classes = dict(
         P4=P4,
     )
-    child_object_type = N1_child
+    child_object_type = N1_item
 
 class A1(String):
     """
@@ -836,6 +837,47 @@ def test_codegen_with_settings_static_info(monkeypatch):
     api_tree_expected["<solver_session>"] = settings_tree
     assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))
+
+
+def test_settings_command_stub_generates_command_objects(monkeypatch, tmp_path):
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    settings_static_info = {
+        "children": _get_group_settings_static_info(
+            "file",
+            {},
+            _get_command_settings_static_info(
+                "read_case",
+                [("file_name", "file"), ("pdf_file_name", "file")],
+            )
+            | _get_command_settings_static_info(
+                "rename", [("old", "string"), ("new", "string")]
+            ),
+            _get_query_settings_static_info("status", [("name", "string")]),
+        ),
+        "commands": {},
+        "queries": {},
+        "type": "group",
+    }
+
+    settingsgen.generate("271", {StaticInfoType.SETTINGS: settings_static_info})
+    stub = (tmp_path / "v271" / "solver" / "settings.pyi").read_text(encoding="utf-8")
+    ast.parse(stub)
+
+    assert "class read_case(Command):" in stub
+    assert "    file_name: file_name\n" in stub
+    assert "    pdf_file_name: pdf_file_name\n" in stub
+    assert (
+        "    def __call__(self, *, file_name: str = ..., "
+        "pdf_file_name: str = ...) -> StateType | None: ...\n"
+    ) in stub
+    assert "class rename(CommandWithPositionalArgs):" in stub
+    assert (
+        "    def __call__(self, old: str = ..., new: str = ...) "
+        "-> StateType | None: ...\n"
+    ) in stub
+    assert "    read_case: read_case\n" in stub
+    assert "    rename: rename\n" in stub
+    assert "    def status(self, name: str):\n" in stub
 
 
 _settings_static_info_duplicate_parameters = {

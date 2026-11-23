@@ -22,6 +22,7 @@
 # SOFTWARE.
 
 """Custom common higher level exceptions."""
+
 from collections.abc import Iterable
 from typing import Any
 import warnings
@@ -49,14 +50,19 @@ class DisallowedValuesError(ValueError):
         """Initialize DisallowedValuesError."""
         from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
-        super().__init__(
-            allowed_name_error_message(
-                context=context,
-                trial_name=name,
-                allowed_values=allowed_values,
-                message=f"{name} is not an allowed {context}",
-            )
+        self._message = allowed_name_error_message(
+            context=context,
+            trial_name=name,
+            allowed_values=allowed_values,
+            message=f"{name} is not an allowed {context}",
         )
+        # Forward the original arguments so pickle and copy.copy can
+        # reconstruct the exception via ``cls(*exc.args)``.
+        super().__init__(context, name, allowed_values)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        return self._message
 
 
 class InvalidArgument(ValueError):
@@ -129,6 +135,91 @@ class WarningControl:
         """Disables all PyFluent warnings."""
         warnings.simplefilter("ignore", PyFluentDeprecationWarning)
         warnings.simplefilter("ignore", PyFluentUserWarning)
+
+
+def _format_bytes(num_bytes: int) -> str:
+    """Return a human-readable binary size string for a byte count."""
+    size = float(num_bytes)
+    for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
+        if size < 1024.0 or unit == "TiB":
+            return f"{int(size)} B" if unit == "B" else f"{size:.2f} {unit}"
+        size /= 1024.0
+
+
+class IncompleteSolutionVariableDataError(RuntimeError):
+    """Raised when streamed solution variable data ends before all elements arrive.
+
+    The server first declares how many elements it will send for a zone
+    (``field_size``), and the client reconstructs the array from the streamed
+    chunks. If the stream ends before ``field_size`` elements have been
+    received, the data for that zone is incomplete and this error is raised.
+
+    The usual cause is that a *single* zone's data is too large for the server
+    to stream in one response, so the server stops sending before all elements
+    are delivered. This is common for large multi-component fields -- for
+    example ``SV_CENTROID`` (3 components) on a cell zone with hundreds of
+    millions of cells.
+
+    Note that the client ``chunk_size`` setting does not help here: it only
+    controls how a response is sliced into messages, not the total amount of
+    data requested for a zone.
+
+    To work around it:
+
+    * If several zones were requested in one call, request each zone separately
+      so no single response is oversized.
+    * If a single zone is itself too large, reduce the amount of data (for
+      example request a scalar field rather than a multi-component one), split
+      the zone into smaller cell zones, or read the values from the case/data
+      file offline instead of over gRPC.
+
+    Attributes
+    ----------
+    received : int
+        Number of elements actually received before the stream ended.
+    expected : int
+        Number of elements the server declared it would send for the zone.
+    item_size : int | None
+        Size in bytes of a single element, when known. Used to report the
+        approximate payload size in the error message.
+    """
+
+    def __init__(self, received: int, expected: int, item_size: int | None = None):
+        """Initialize IncompleteSolutionVariableDataError."""
+        self.received = received
+        self.expected = expected
+        self.item_size = item_size
+
+        if item_size:
+            size_note = f" (~{_format_bytes(expected * item_size)} requested)"
+        else:
+            size_note = ""
+
+        self._message = (
+            "Solution variable data stream ended prematurely: received "
+            f"{received:,} of {expected:,} expected elements{size_note}. "
+            "This usually means a single zone's data is too large for the "
+            "server to stream in one response. Note that changing the client "
+            "chunk size does not help, because it does not reduce the per-zone "
+            "total. To work around it: if you requested several zones in one "
+            "call, request each zone separately; if a single zone is too large "
+            "(common for multi-component fields such as 'SV_CENTROID' on very "
+            "large cell zones), request a smaller field, or split the zone into "
+            "smaller cell zones."
+        )
+        super().__init__(received, expected, item_size)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        return self._message
+
+
+class BadReductionRequest(Exception):
+    """Raised on an attempt to make a bad reduction request."""
+
+    def __init__(self, err):
+        """Initialize BadReductionRequest."""
+        super().__init__(f"Could not complete reduction function request: {err}")
 
 
 warning = WarningControl()

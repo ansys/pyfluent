@@ -17,12 +17,11 @@ Import geometry
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core import Precision, Meshing, examples
 
     >>> import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    >>> meshing_session = pyfluent.launch_fluent(
-    >>>     mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    >>> meshing_session = Meshing.from_install(
+    >>>     precision=Precision.DOUBLE, processor_count=2
     >>> )
     >>> workflow = meshing_session.workflow
     >>> workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
@@ -136,16 +135,13 @@ Import CAD and part management
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core import Precision, Meshing, examples
 
     >>> import_file_name = examples.download_file(
     >>>     "exhaust_system.fmd", "pyfluent/exhaust_system"
     >>> )
-    >>> meshing_session = pyfluent.launch_fluent(
-    >>>     precision=pyfluent.Precision.DOUBLE,
-    >>>     processor_count=2,
-    >>>     mode=pyfluent.FluentMode.MESHING
+    >>> meshing_session = Meshing.from_install(
+    >>>     precision=Precision.DOUBLE, processor_count=2
     >>> )
     >>> workflow = meshing_session.workflow
     >>> workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -608,14 +604,11 @@ Import geometry
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core import Precision, Meshing, examples
 
     >>> import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
-    >>> meshing_session = pyfluent.launch_fluent(
-    >>>     mode=pyfluent.FluentMode.MESHING,
-    >>>     precision=pyfluent.Precision.DOUBLE,
-    >>>     processor_count=2
+    >>> meshing_session = Meshing.from_install(
+    >>>     precision=Precision.DOUBLE, processor_count=2
     >>> )
     >>> workflow = meshing_session.workflow
     >>> tasks = workflow.TaskObject

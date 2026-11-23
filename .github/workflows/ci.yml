@@ -137,6 +137,46 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  # Componentization architecture rules (EPIC #4618). Report-only during Phase 0:
+  # the step is non-blocking so current violations are visible without failing
+  # the build. Becomes blocking in the hardening phase.
+  import-linter:
+    name: "Import contracts (report-only)"
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Download generated API files
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: generated-api-files
+          path: src/ansys/fluent/core/generated
+
+      - name: Install package and import-linter
+        shell: bash
+        run: |
+          python -m pip install -U pip
+          pip install . import-linter
+
+      # - name: Make the platform namespace importable
+      #   shell: bash
+      #   run: |
+      #     ANSYS_DIR=$(python -c "import os, ansys.fluent.core as m; print(os.path.dirname(os.path.dirname(os.path.dirname(m.__file__))))")
+      #     cp -r src/ansys/solver "$ANSYS_DIR"/
+
+      # - name: Run import-linter (report-only)
+      #   continue-on-error: true
+      #   run: lint-imports --verbose
+
   test-import:
     name: Build and Smoke tests
     needs: [build]
@@ -466,17 +506,33 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v27.1.latest
 
       - name: Run 27.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v27.1.latest
 
       - name: Print 27.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/v271/fluent_version.py
+      
+      - name: Pull 27.2 Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Run 27.2 API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Print 27.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/v272/fluent_version.py
 
       - name: Upload generated API files
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -528,9 +584,11 @@ jobs:
             version: 261
           - image-tag: v27.1.latest
             version: 271
+          - image-tag: v27.2.latest
+            version: 272
     timeout-minutes: 60
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 272 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -703,7 +761,7 @@ jobs:
           source .venv/bin/activate
           python -m pip install ansys-fluent-core[reader,tests]
           python -m pip install -q --force-reinstall dist/*.whl > /dev/null
-          python -m pytest --fluent-version=27.1 tests/test_pyconsole.py
+          python -m pytest --fluent-version=27.2 tests/test_pyconsole.py
 
   nightly-dev-test:
     name: Release Testing
@@ -760,7 +818,7 @@ jobs:
       - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-271
+          make unittest-all-272
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
           FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}

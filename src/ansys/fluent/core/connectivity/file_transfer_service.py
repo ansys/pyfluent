@@ -230,7 +230,7 @@ class StandaloneFileTransferStrategy(FileTransferStrategy):
             else:
                 local_file_name = self.pyfluent_cwd / file.name
             if local_file_name.exists() and local_file_name.samefile(remote_file_name):
-                return
+                continue
             shutil.copyfile(remote_file_name, str(local_file_name))
 
 

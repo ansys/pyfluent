@@ -16,10 +16,10 @@ For example, to launch a solver session from a local Fluent installation:
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.examples import download_file
   >>> case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-  >>> solver_session = pyfluent.Solver.from_install(case_file_name=case_file_name)
+  >>> solver_session = Solver.from_install(case_file_name=case_file_name)
 
 .. note::
 
@@ -32,7 +32,7 @@ Solution mode sessions
 ----------------------
 
 The above :obj:`~ansys.fluent.core.solver.session.solver.Solver` session object exposes a variety of Python child objects that provide access to the data
-and functions of the connected Fluent solver_session. A consistent interface style is maintained across those Python objects
+and functions of the connected Fluent session. A consistent interface style is maintained across those Python objects
 and each object adopts a specific responsibility that is reflected in its particular interface. For instance,
 the :obj:`~ansys.fluent.core.solver.session.solver.Solver` session provides child objects for solver settings and field data access respectively.
 You can see these ``fields`` and ``settings`` children by executing ``dir(solver)``. You can discover the
@@ -60,8 +60,8 @@ session that starts a second Fluent instance and is independent of your PyFluent
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.Meshing.from_install()
+  >>> from ansys.fluent.core import Meshing
+  >>> meshing_session = Meshing.from_install()
 
 
 A uniform interface exists across solver settings objects. For instance,
@@ -155,8 +155,8 @@ You can also create a :obj:`~ansys.fluent.core.meshing.session.pure_meshing.Pure
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> pure_meshing = pyfluent.PureMeshing.from_install()
+  >>> from ansys.fluent.core import PureMeshing
+  >>> pure_meshing = PureMeshing.from_install()
 
 
 The only difference between the two meshing session types is that a pure session cannot be
@@ -197,11 +197,11 @@ within its intended scope:
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.solver import ReadCase, Viscous
-  >>> solver_session_1 = pyfluent.Solver.from_install()
-  >>> solver_session_2 = pyfluent.Solver.from_install()
+  >>> solver_session_1 = Solver.from_install()
+  >>> solver_session_2 = Solver.from_install()
   >>> case_file = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> with using(solver_session_1):
   ...     ReadCase()(file_name=case_file)
@@ -307,7 +307,7 @@ being garbage collected:
 .. code:: python
 
   >>> def run_solver():
-  >>>     solver_session = pyfluent.Solver.from_install()
+  >>>     solver_session = Solver.from_install()
   >>>     # <insert some PyFluent solver actions>
   >>>     # solver is exited at the end of the function
 

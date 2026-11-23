@@ -61,6 +61,19 @@ intersphinx_mapping = {
 numpydoc_use_plots = True
 numpydoc_show_class_members = False
 numpydoc_xref_param_type = True
+numpydoc_xref_aliases = {
+    "FluentMode": "ansys.fluent.core.execution.launcher.launch_options.FluentMode",
+    "UIMode": "ansys.fluent.core.execution.launcher.launch_options.UIMode",
+    "Dimension": "ansys.fluent.core.execution.launcher.launch_options.Dimension",
+    "Precision": "ansys.fluent.core.execution.launcher.launch_options.Precision",
+    "FluentWindowsGraphicsDriver": (
+        "ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver"
+    ),
+    "FluentLinuxGraphicsDriver": (
+        "ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver"
+    ),
+    "FluentVersion": "ansys.fluent.core.execution.launcher.FluentVersion",
+}
 numpydoc_validate = True
 numpydoc_validation_checks = {
     "GL06",  # Found unknown section
@@ -197,6 +210,10 @@ html_theme_options = {
     },
     "navigation_depth": -1,
     "collapse_navigation": True,
+    "mcp_server": {
+        "url": "https://github.com/ansys/pyfluent-mcp",
+        "project_name": "PyFluent-MCP",
+    },
 }
 
 if os.getenv("PYFLUENT_DOC_SKIP_CHEATSHEET") != "1":

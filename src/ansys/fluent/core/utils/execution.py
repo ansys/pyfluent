@@ -109,7 +109,7 @@ def timeout_exec(fn: Callable[..., Any], timeout, args=None, kwargs=None):
     try:
         return_obj = async_result.get(timeout=timeout)
         pool.close()
-        if not return_obj and return_obj is not False:
+        if return_obj is None:
             return True
         return return_obj
     except TimeoutError:

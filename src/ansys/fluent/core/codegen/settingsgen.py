@@ -215,6 +215,20 @@ def _write_function_stub(name, data, s_stub):
     s_stub.write('        """\n')
 
 
+def _write_command_stub(data, s_stub):
+    args = []
+    for arg_name in data["argument_names"]:
+        arg_type = data["child_classes"][arg_name]["bases"][0]
+        py_arg_type = _arg_type_strings.get(arg_type, "Any")
+        args.append(f"{arg_name}: {py_arg_type} = ...")
+    if "CommandWithPositionalArgs" not in data["bases"] and args:
+        args.insert(0, "*")
+    signature = ", ".join(args)
+    if signature:
+        signature = f", {signature}"
+    s_stub.write(f"    def __call__(self{signature}) -> StateType | None: ...\n")
+
+
 def _write_class_header(s, s_stub, cls_name, bases, bases_stub, data):
     doc = data["doc"].strip().replace("\n", "\n    ")
     s.write(f"class {cls_name}({bases}):\n")
@@ -287,7 +301,10 @@ def _collect_child_classes(s, s_stub, data, classes_to_write):
         # If we didn't have this constraint, we could include the child-class
         # to write only if it is not found in the _NAME_BY_HASH dict and avoid
         # the _CLASS_WRITTEN set.
-        if k in command_names + query_names:
+        if k in command_names:
+            s_stub.write(f"    {k}: {unique_name}\n")
+            classes_to_write[unique_name] = (child_python_name, v, hash_, True)
+        elif k in query_names:
             _write_function_stub(k, v, s_stub)
             classes_to_write[unique_name] = (child_python_name, v, hash_, False)
         else:
@@ -329,7 +346,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     # in a string buffer which is written after writing the child class definitions.
     s = StringIO()
     s_stub = StringIO()
-    child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
+    child_object_name = f"{cls_name}_item" if data["child_object_type"] else None
     bases = ", ".join(_construct_bases(data["bases"], child_object_name))
     bases_stub = ", ".join(_construct_bases_stub(data["bases"], child_object_name))
     _write_class_header(s, s_stub, cls_name, bases, bases_stub, data)
@@ -337,11 +354,13 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     _write_name_lists(s, s_stub, data)
     classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
     _collect_child_classes(s, s_stub, data, classes_to_write)
+    if "Command" in data["bases"] or "CommandWithPositionalArgs" in data["bases"]:
+        _write_command_stub(data, s_stub)
     if child_object_name:
         child_object_type = data["child_object_type"]
         s.write(f"    child_object_type = {child_object_name}\n")
         classes_to_write[child_object_name] = (
-            f"{python_name}_child",
+            f"{python_name}_item",
             child_object_type,
             _gethash(child_object_type),
             True,

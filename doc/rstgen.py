@@ -294,6 +294,12 @@ def _get_reference(menu: type, menu_path: str, mode: str, is_datamodel: bool):
     return reference
 
 
+def _get_datamodel_display_name(menu: type):
+    """Display ``_<container>`` member classes as ``<container>_item``."""
+    name = menu.__name__
+    return f"{name[1:]}_item" if name.startswith("_") else name
+
+
 def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
     """Get title for RST.
 
@@ -309,10 +315,27 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
         Whether the menu is of datamodel.
     """
     if is_datamodel:
-        title = menu_path if menu["name"].__name__ == "Root" else menu["name"].__name__
+        if menu["name"].__name__ == "Root":
+            title = menu_path
+        else:
+            title = _get_datamodel_display_name(menu["name"])
     else:
         title = "tui" if menu["name"].__name__ == "main_menu" else menu["name"].__name__
     return title
+
+
+def _get_named_object_member(menu: dict):
+    """Return the named-object member class of a container menu, if any.
+
+    A datamodel named-object container (``PyNamedObjectContainer`` subclass)
+    exposes its member type as a nested ``_<container>`` class.
+    """
+    from ansys.fluent.core.services.object_model import PyNamedObjectContainer
+
+    container = menu["name"]
+    if isinstance(container, type) and issubclass(container, PyNamedObjectContainer):
+        return getattr(container, f"_{container.__name__}", None)
+    return None
 
 
 def _write_doc(menu: type, mode: str, is_datamodel: bool):
@@ -334,6 +357,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     index_file = folder / f"{folder.name}_contents.rst"
     title = _get_title(mode, menu_path, menu, is_datamodel)
     with open(index_file, "w", encoding="utf8") as f:
+        if is_datamodel and menu["name"].__name__.startswith("_"):
+            f.write(":html_theme.sidebar_secondary.remove:\n\n")
         f.write(_get_reference(menu, menu_path, mode, is_datamodel))
         f.write(f"{title}\n")
         f.write(f"{'=' * len(title)}\n\n")
@@ -348,11 +373,40 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         f.write("   :autosummary:\n")
         f.write("   :autosummary-members:\n\n")
 
+        # Surface the named-object member type (mirrors the settings docs), but
+        # only when it has its own generated page (i.e. it has sub-members).
+        named_object_member = _get_named_object_member(menu) if is_datamodel else None
+        if (
+            named_object_member is not None
+            and named_object_member in menu["with_members"]
+        ):
+            member_label = _get_datamodel_display_name(named_object_member)
+            _, member_path = _get_menu_name_path(named_object_member, True)
+            member_ref = (
+                f"ref_{mode}_datamodel_{member_path.rstrip('/').replace('/', '_')}"
+            )
+            f.write(".. rubric:: Named object type\n\n")
+            f.write(f":ref:`{member_label} <{member_ref}>`\n\n")
+            member_ref_role = f":ref:`{member_label} <{member_ref}>`"
+            f.write(
+                f"``{menu['name'].__name__}`` is organised like a dictionary. "
+                f"You can access each {member_ref_role} by name using "
+                f"``{menu['name'].__name__}['<name>']``, or use methods such "
+                f"as ``get()``, ``keys()`` and ``values()``.\n\n\n"
+            )
+        else:
+            named_object_member = None
+
         if menu["with_members"]:
             f.write(".. toctree::\n")
             f.write("   :hidden:\n\n")
+            named_member_name = (
+                named_object_member.__name__
+                if named_object_member is not None
+                else None
+            )
             for member in _get_sorted_members(menu["with_members"]):
-                if member.startswith("_"):
+                if member.startswith("_") and member != named_member_name:
                     continue
                 f.write(f"   {member}/{member}_contents\n")
 

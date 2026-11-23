@@ -22,7 +22,7 @@ dependencies = [
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
-    "ansys-units>=0.10,<1.0",
+    "ansys-units>=0.16,<0.17",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",
@@ -46,6 +46,13 @@ reader = ["h5py>=3.15.1"]
 ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 search = ["nltk>=3.10.3"]
+grpc = [
+    "ansys-api-fluent>=0.7.0",
+    "grpcio>=1.30.0",
+    "grpcio-health-checking>=1.30.0",
+    "grpcio-status>=1.26.0",
+    "grpcio-reflection>=1.30.0",
+]
 tests = [
     "pytest==9.2.0",
     "pytest-cov==7.1.0",
@@ -124,7 +131,8 @@ markers = [
     "nightly: Tests that run under nightly CI",
     "fluent_version(version): Tests that runs with specified Fluent version",
     "standalone: Tests that cannot be run within container",
-    "rest_server: Tests that require a live Fluent web server"
+    "rest_server: Tests that require a live Fluent web server",
+    "resilient: Tests for the resilient execution runtime (checkpoint, recovery, failover)"
 ]
 
 [tool.black]

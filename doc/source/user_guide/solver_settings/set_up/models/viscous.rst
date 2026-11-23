@@ -6,8 +6,8 @@ Setting up and querying the model
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> viscous = pyfluent.solver.Viscous(settings_source=solver_session)
+    >>> from ansys.fluent.core.solver import Viscous
+    >>> viscous = Viscous(settings_source=solver_session)
     >>> from pprint import pprint
     >>> pprint(viscous.get_state(), width=1)
     {'k_omega_model': 'sst',

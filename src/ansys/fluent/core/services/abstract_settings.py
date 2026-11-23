@@ -25,7 +25,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from ansys.fluent.core.solver.flobject import StateType
+from ansys.fluent.core._tools.settings.state_types import StateType
 
 
 class AbstractSettings(ABC):
