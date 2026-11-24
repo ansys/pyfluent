@@ -561,7 +561,6 @@ from ansys.fluent.core._tools.settings.state_types import (  # noqa: E402, F401
 )
 
 
-
 def check_type(val: Any, tp: Any) -> bool:
     """Check type of object.
 
