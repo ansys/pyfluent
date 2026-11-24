@@ -611,7 +611,7 @@ def test_read_case_using_lightweight_mode():
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name, lightweight_mode=True
         )
-    solver.setup.models.energy.enabled = False
+    solver.setup.models.energy.enabled.set_state(False)
     old_fluent_connection_id = id(solver._fluent_connection)
     timeout_loop(
         id(solver._fluent_connection) != old_fluent_connection_id,

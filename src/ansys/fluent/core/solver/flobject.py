@@ -26,7 +26,7 @@
 The only useful method is '`get_root``, which returns the root object for
 accessing Fluent settings.
 
-Child objects can be generally accessed or modified using attribute access.
+Child objects can be accessed using attribute access and modified using ``set_state``.
 Named child objects can be accessed or modified using index operators.
 
 Calling an object will return its current value.
@@ -35,8 +35,8 @@ Example
 -------
 >>> r = flobject.get_root(proxy)
 >>> is_energy_on = r.setup.models.energy.enabled()
->>> r.setup.models.energy.enabled = True
->>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
+>>> r.setup.models.energy.enabled.set_state(True)
+>>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant.set_state(20)
 """
 
 from __future__ import annotations
@@ -90,6 +90,7 @@ from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.utils.deprecate import _warn_state_assignment
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.get_completer_info import (
     get_completer_info as _get_completer_info,
@@ -1792,6 +1793,10 @@ class Group(SettingsBase[DictStateType]):
             )
             ex.args = (error_msg,)
             raise
+        # Invalid assignments to non-state attributes should raise without a
+        # misleading state-assignment deprecation warning.
+        if hasattr(attr, "set_state"):
+            _warn_state_assignment(name)
         try:
             return attr.set_state(value)
         except Exception as ex:
@@ -2510,6 +2515,10 @@ class Action(Base):
 
     def __setattr__(self, name: str, value: StateType) -> None:
         attr = getattr(self, name)
+        # Invalid assignments to non-state attributes should raise without a
+        # misleading state-assignment deprecation warning.
+        if hasattr(attr, "set_state"):
+            _warn_state_assignment(name)
         try:
             return attr.set_state(value)
         except Exception as ex:

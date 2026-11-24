@@ -184,12 +184,12 @@ and UI refresh work should be scheduled onto the active event loop thread.
   >>> graphics = Graphics(session=solver_session)
   >>>
   >>> contour1 = graphics.Contours["contour-1"]
-  >>> contour1.field = "temperature"
-  >>> contour1.surfaces_list = ["symmetry"]
+  >>> contour1.field.set_state("temperature")
+  >>> contour1.surfaces_list.set_state(["symmetry"])
   >>>
   >>> contour2 = graphics.Contours["contour-2"]
-  >>> contour2.field = "velocity-magnitude"
-  >>> contour2.surfaces_list = ["symmetry"]
+  >>> contour2.field.set_state("velocity-magnitude")
+  >>> contour2.surfaces_list.set_state(["symmetry"])
   >>> 
   >>> @execute_in_event_loop_threadsafe
   >>> def auto_refersh_call_back_iteration(session, event_info: IterationEndedEventInfo):

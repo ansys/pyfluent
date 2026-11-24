@@ -147,15 +147,15 @@ solver_session.settings.mesh.check()
 # Display the mesh in Fluent and save the image to a file to examine locally.
 
 mesh = Mesh(solver_session, new_instance_name="mesh")
-mesh.surfaces_list = mesh.surfaces_list.allowed_values()
+mesh.surfaces_list.set_state(mesh.surfaces_list.allowed_values())
 mesh.display()
 graphics = solver_session.settings.results.graphics
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
-graphics.picture.x_resolution = 3840
-graphics.picture.y_resolution = 2880
+graphics.picture.x_resolution.set_state(3840)
+graphics.picture.y_resolution.set_state(2880)
 graphics.picture.save_picture(file_name="mesh.png")
 
 # %%
@@ -172,7 +172,7 @@ solver_session.settings.setup.general.solver.two_dim_space.allowed_values()
 
 # %%
 
-solver_session.settings.setup.general.solver.two_dim_space = "axisymmetric"
+solver_session.settings.setup.general.solver.two_dim_space.set_state("axisymmetric")
 
 # %%
 # Models
@@ -194,7 +194,7 @@ species.model.option.allowed_values()
 
 # %%
 
-species.model.option = "species-transport"
+species.model.option.set_state("species-transport")
 
 # %%
 # Inspect the species model settings.
@@ -204,7 +204,7 @@ species.print_state()
 # %%
 # Enable volumetric reactions.
 
-species.reactions.enable_volumetric_reactions = True
+species.reactions.enable_volumetric_reactions.set_state(True)
 
 # %%
 # Set the material to methane-air.
@@ -216,14 +216,14 @@ species.reactions.enable_volumetric_reactions = True
 #    The chemical species in the system and their physical and thermodynamic properties are defined by our selection of the mixture material.
 #    We can alter the mixture material selection or modify the mixture material properties using the material settings (see `Materials`_).
 
-species.model.material = "methane-air"
+species.model.material.set_state("methane-air")
 
 # %%
 # Set the turbulence-chemistry interaction model to eddy-dissipation.
 #
 # *The eddy-dissipation model computes the rate of reaction under the assumption that chemical kinetics are fast compared to the rate at which reactants are mixed by turbulent fluctuations (eddies).*
 
-species.turb_chem_interaction_model = "eddy-dissipation"
+species.turb_chem_interaction_model.set_state("eddy-dissipation")
 
 # %%
 # Inspect the species model settings after the changes.
@@ -291,11 +291,13 @@ solver_session.settings.setup.boundary_conditions.velocity_inlet[
 # * Species mass fraction for o2: 0.23
 
 air_inlet = VelocityInlet(solver_session, name="air-inlet")
-air_inlet.momentum.velocity_magnitude = 0.5
-air_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-air_inlet.turbulence.turbulent_intensity = 0.1
-air_inlet.turbulence.hydraulic_diameter = 0.44
-air_inlet.thermal.temperature = 300
+air_inlet.momentum.velocity_magnitude.set_state(0.5)
+air_inlet.turbulence.turbulence_specification.set_state(
+    "Intensity and Hydraulic Diameter"
+)
+air_inlet.turbulence.turbulent_intensity.set_state(0.1)
+air_inlet.turbulence.hydraulic_diameter.set_state(0.44)
+air_inlet.thermal.temperature.set_state(300)
 air_inlet.species.species_mass_fraction["o2"] = 0.23
 
 # %%
@@ -328,11 +330,13 @@ solver_session.settings.setup.boundary_conditions.velocity_inlet[
 # * Species mass fraction for ch4: 1
 
 fuel_inlet = VelocityInlet(solver_session, name="fuel-inlet")
-fuel_inlet.momentum.velocity_magnitude = 80
-fuel_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-fuel_inlet.turbulence.turbulent_intensity = 0.1
-fuel_inlet.turbulence.hydraulic_diameter = 0.01
-fuel_inlet.thermal.temperature = 300
+fuel_inlet.momentum.velocity_magnitude.set_state(80)
+fuel_inlet.turbulence.turbulence_specification.set_state(
+    "Intensity and Hydraulic Diameter"
+)
+fuel_inlet.turbulence.turbulent_intensity.set_state(0.1)
+fuel_inlet.turbulence.hydraulic_diameter.set_state(0.01)
+fuel_inlet.thermal.temperature.set_state(300)
 fuel_inlet.species.species_mass_fraction["ch4"] = 1
 
 # %%
@@ -357,11 +361,13 @@ fuel_inlet.print_state()
 # Always assign reasonable values because backflow may occur during intermediate iterations and could affect the solution stability.*
 
 pressure_outlet = PressureOutlet(solver_session, name="pressure-outlet-9")
-pressure_outlet.momentum.gauge_pressure = 0
-pressure_outlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-pressure_outlet.turbulence.backflow_turbulent_intensity = 0.1
-pressure_outlet.turbulence.backflow_hydraulic_diameter = 0.45
-pressure_outlet.thermal.backflow_total_temperature = 300
+pressure_outlet.momentum.gauge_pressure.set_state(0)
+pressure_outlet.turbulence.turbulence_specification.set_state(
+    "Intensity and Hydraulic Diameter"
+)
+pressure_outlet.turbulence.backflow_turbulent_intensity.set_state(0.1)
+pressure_outlet.turbulence.backflow_hydraulic_diameter.set_state(0.45)
+pressure_outlet.thermal.backflow_total_temperature.set_state(300)
 pressure_outlet.species.backflow_species_mass_fraction["o2"] = 0.23
 
 # %%
@@ -384,8 +390,8 @@ solver_session.settings.setup.boundary_conditions.wall["wall-7"].rename("outer-w
 # * Temperature: 300 K
 
 outer_wall = WallBoundary(solver_session, name="outer-wall")
-outer_wall.thermal.thermal_condition = "Temperature"
-outer_wall.thermal.temperature = 300
+outer_wall.thermal.thermal_condition.set_state("Temperature")
+outer_wall.thermal.temperature.set_state(300)
 
 # %%
 # Verify the state of thermal properties of the outer-wall boundary condition after the changes.
@@ -407,8 +413,8 @@ solver_session.settings.setup.boundary_conditions.wall["wall-2"].rename("nozzle"
 # * Heat flux: 0 :math:`W/m^2`
 
 nozzle = WallBoundary(solver_session, name="nozzle")
-nozzle.thermal.thermal_condition = "Heat Flux"
-nozzle.thermal.heat_flux = 0
+nozzle.thermal.thermal_condition.set_state("Heat Flux")
+nozzle.thermal.heat_flux.set_state(0)
 
 # %%
 # Verify the state of thermal properties of the nozzle boundary condition after the changes.
@@ -450,8 +456,8 @@ solver_session.settings.solution.run_calculation.iterate(iter_count=200)
 # *The Time Scale Factor allows us to further manipulate the computed time step size calculated by Fluent.
 # Larger time steps can lead to faster convergence. However, if the time step is too large it can lead to solution instability.*
 
-solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_size_scale_factor = (
-    5
+solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_size_scale_factor.set_state(
+    (5)
 )
 
 # %%
@@ -478,9 +484,9 @@ solver_session.settings.results.report.fluxes.get_heat_transfer_sensible(zones="
 # Display filled contours of temperature and save the image to a file.
 
 contour1 = Contour(solver_session, new_instance_name="contour-temp")
-contour1.field = "temperature"
-contour1.surfaces_list = contour1.surfaces_list.allowed_values()
-contour1.colorings.banded = True
+contour1.field.set_state("temperature")
+contour1.surfaces_list.set_state(contour1.surfaces_list.allowed_values())
+contour1.colorings.banded.set_state(True)
 contour1.display()
 graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-temp.png")
@@ -498,15 +504,15 @@ graphics.picture.save_picture(file_name="contour-temp.png")
 # Display velocity vectors and save the image to a file.
 
 vector1 = Vector(solver_session, new_instance_name="vector-vel")
-vector1.surfaces_list = ["interior-4"]
-vector1.options.scale = 0.01
-vector1.vector_opt.fixed_length = True
+vector1.surfaces_list.set_state(["interior-4"])
+vector1.options.scale.set_state(0.01)
+vector1.vector_opt.fixed_length.set_state(True)
 
 # %%
 # *The fixed length option is useful when the vector magnitude varies dramatically.
 # With fixed length vectors, the velocity magnitude is described only by color instead of by both vector length and color.*
 
-vector1.vector_opt.scale_head = 0.1
+vector1.vector_opt.scale_head.set_state(0.1)
 vector1.display()
 graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="vector-vel.png")
@@ -525,8 +531,8 @@ graphics.picture.save_picture(file_name="vector-vel.png")
 # Display filled contours of mass fraction of :math:`CH_4` and save the image to a file.
 
 contour2 = Contour(solver_session, new_instance_name="contour-ch4-mass-fraction")
-contour2.field = "ch4"
-contour2.surfaces_list = contour2.surfaces_list.allowed_values()
+contour2.field.set_state("ch4")
+contour2.surfaces_list.set_state(contour2.surfaces_list.allowed_values())
 contour2.display()
 graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-ch4-mass-fraction.png")
@@ -543,8 +549,8 @@ graphics.picture.save_picture(file_name="contour-ch4-mass-fraction.png")
 # Display filled contours of mass fraction of :math:`O_2` and save the image to a file.
 
 contour3 = Contour(solver_session, new_instance_name="contour-o2-mass-fraction")
-contour3.field = "o2"
-contour3.surfaces_list = contour3.surfaces_list.allowed_values()
+contour3.field.set_state("o2")
+contour3.surfaces_list.set_state(contour3.surfaces_list.allowed_values())
 contour3.display()
 graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-o2-mass-fraction.png")
@@ -560,8 +566,8 @@ graphics.picture.save_picture(file_name="contour-o2-mass-fraction.png")
 # Display filled contours of mass fraction of :math:`CO_2` and save the image to a file.
 
 contour4 = Contour(solver_session, new_instance_name="contour-co2-mass-fraction")
-contour4.field = "co2"
-contour4.surfaces_list = contour4.surfaces_list.allowed_values()
+contour4.field.set_state("co2")
+contour4.surfaces_list.set_state(contour4.surfaces_list.allowed_values())
 contour4.display()
 graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-co2-mass-fraction.png")
@@ -577,8 +583,8 @@ graphics.picture.save_picture(file_name="contour-co2-mass-fraction.png")
 # Display filled contours of mass fraction of :math:`H_2O` and save the image to a file.
 
 contour5 = Contour(solver_session, new_instance_name="contour-h2o-mass-fraction")
-contour5.field = "h2o"
-contour5.surfaces_list = contour5.surfaces_list.allowed_values()
+contour5.field.set_state("h2o")
+contour5.surfaces_list.set_state(contour5.surfaces_list.allowed_values())
 contour5.display()
 graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-h2o-mass-fraction.png")

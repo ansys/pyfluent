@@ -111,7 +111,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     settings : settings_root
         Root of the solver settings tree.  Use for all case/solver
         configuration, e.g.
-        ``session.settings.setup.models.energy.enabled = True``.
+        ``session.settings.setup.models.energy.enabled.set_state(True)``.
     tui : main_menu
         Root of the Fluent solver TUI.  Access commands as Python
         attributes, e.g. ``session.tui.solve.iterate(10)``.

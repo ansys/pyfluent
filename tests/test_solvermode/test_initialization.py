@@ -43,12 +43,14 @@ def test_initialization_settings(new_solver_session):
     copy_by_name = solver.setup.materials.database.copy_by_name
     copy_by_name(type="fluid", name="air")
     copy_by_name(type="fluid", name="water-liquid")
-    solver.setup.models.multiphase.models = "vof"
-    solver.setup.general.operating_conditions.gravity = {
-        "enable": True,
-        "components": [0.0, 0.0, -9.81],
-    }
-    solver.setup.general.solver.time = "steady"
+    solver.setup.models.multiphase.models.set_state("vof")
+    solver.setup.general.operating_conditions.gravity.set_state(
+        {
+            "enable": True,
+            "components": [0.0, 0.0, -9.81],
+        }
+    )
+    solver.setup.general.solver.time.set_state("steady")
 
     solver.tui.define.models.multiphase.vof_sub_models("yes", "no")
     solver.tui.define.phases.set_domain_properties.change_phases_names("water", "air")
@@ -80,15 +82,17 @@ def test_initialization_settings(new_solver_session):
         },
     }
 
-    solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"
-    solver.solution.methods.p_v_coupling.coupled_form = True
-    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
-        True
+    solver.solution.methods.p_v_coupling.flow_scheme.set_state("Coupled")
+    solver.solution.methods.p_v_coupling.coupled_form.set_state(True)
+    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening.set_state(
+        (True)
     )
-    solver.solution.initialization.open_channel_auto_init = {
-        "boundary_zone": 3,
-        "flat_init": True,
-    }
+    solver.solution.initialization.open_channel_auto_init.set_state(
+        {
+            "boundary_zone": 3,
+            "flat_init": True,
+        }
+    )
     assert solver.solution.initialization.open_channel_auto_init() == {
         "boundary_zone": 3,
         "flat_init": True,
