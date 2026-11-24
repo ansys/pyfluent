@@ -558,17 +558,8 @@ from ansys.fluent.core._tools.settings.state_types import (  # noqa: E402, F401
     RealVectorType,
     StateType,
     StringListType,
-    BoolListType,
-]
-type DictStateType = dict[str, StateType]
-type ListStateType = list[StateType]
-type StateType = PrimitiveStateType | ListStateType | DictStateType
-"""Recursive type alias for state values in Fluent object hierarchies.
+)
 
-Includes primitives (bool, int, float, str), lists of primitives,
-and recursive dicts/lists for nested state structures. Both static
-type checkers and beartype see this same recursive definition.
-"""
 
 
 def check_type(val: Any, tp: Any) -> bool:
