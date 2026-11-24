@@ -611,7 +611,7 @@ def test_read_case_using_lightweight_mode():
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name, lightweight_mode=True
         )
-    solver.setup.models.energy.enabled = False
+    solver.setup.models.energy.enabled.set_state(False)
     old_fluent_connection_id = id(solver._fluent_connection)
     timeout_loop(
         id(solver._fluent_connection) != old_fluent_connection_id,
@@ -1040,11 +1040,6 @@ def test_beta_solver_session(new_solver_session_wo_exit):
     assert solver.is_active() is True
     assert "switch_to_meshing" in dir(solver)
     assert hasattr(solver, "switch_to_meshing")
-    with pytest.raises(BetaFeaturesNotEnabled):
-        meshing = solver.switch_to_meshing()
-    solver.enable_beta_features()
-    assert "switch_to_meshing" in dir(solver)
-    assert hasattr(solver, "switch_to_meshing")
     meshing = solver.switch_to_meshing()
 
     assert solver.is_active() is False
@@ -1066,11 +1061,12 @@ def test_error_raised_for_beta_feature_access_for_older_versions(
             meshing.enable_beta_features()
 
     if solver.get_fluent_version() >= FluentVersion.v252:
-        solver.enable_beta_features()
+        # switch_to_meshing is now a stable feature (no beta check required)
         assert "switch_to_meshing" in dir(solver)
     else:
-        with pytest.raises(RuntimeError):
-            solver.enable_beta_features()
+        # Feature not available on older Fluent versions - should raise RuntimeError
+        with pytest.raises(RuntimeError, match="requires Fluent 25.2 or later"):
+            solver.switch_to_meshing()
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -1121,7 +1117,6 @@ def test_dir_for_session(new_meshing_session_wo_exit):
             assert getattr(solver, attr)
         assert attr not in dir(solver)
 
-    solver.enable_beta_features()
     meshing_new = solver.switch_to_meshing()
 
     non_dunder_solver_attrs = [
@@ -1197,15 +1192,18 @@ def test_context_manager_with_session_switch(new_meshing_session_wo_exit):
 
 def test_iterate_with_interrupt(new_solver_session):
     case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
 
     solver = new_solver_session
     solver.settings.file.read_case(file_name=case_file)
+    solver.settings.solution.monitor.residual.options.criterion_type = "none"
     solver.settings.solution.initialization.hybrid_initialize()
+    initial_iteration = solver.scheme.eval("(get-current-iteration)")
+    total_iterations = 30
+    interrupt_requested = []
 
     def on_iteration_ended(session, event_info: IterationEndedEventInfo) -> None:
-        if event_info.index >= 10:
-            # Signal Fluent to stop — Fluent stops cleanly
+        if event_info.index >= initial_iteration + 10 and not interrupt_requested:
+            interrupt_requested.append(event_info.index)
             session.settings.solution.run_calculation.interrupt()
 
     solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
@@ -1214,7 +1212,21 @@ def test_iterate_with_interrupt(new_solver_session):
     # cleanly via interrupt().  The RuntimeError is suppressed by the
     # interruptible command guard in flobject.py, so workflow code
     # following iterate()/calculate() continues normally.
-    solver.settings.solution.run_calculation.iterate(iter_count=100)
+    solver.settings.solution.run_calculation.iterate(iter_count=total_iterations)
+
+    completed_iterations = (
+        solver.scheme.eval("(get-current-iteration)") - initial_iteration
+    )
+    assert interrupt_requested
+    assert 10 <= completed_iterations < total_iterations
+
+    solver.settings.solution.run_calculation.iterate(
+        iter_count=total_iterations - completed_iterations
+    )
+    assert (
+        solver.scheme.eval("(get-current-iteration)")
+        == initial_iteration + total_iterations
+    )
 
     solver.settings.results.graphics.contour.create(name="dummy-contour")
 

@@ -21,7 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from concurrent.futures import Future
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -43,6 +45,7 @@ from ansys.fluent.core._grpc_services.events_service_v0 import (
 from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.services.streaming_services.events_streaming import EventsManager
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:
@@ -220,7 +223,7 @@ def test_iteration_ended_sync_event_multiple_connections():
 
 def test_timestep_ended_sync_event(static_mixer_case_session):
     solver = static_mixer_case_session
-    solver.settings.setup.general.solver.time = "unsteady-2nd-order"
+    solver.settings.setup.general.solver.time.set_state("unsteady-2nd-order")
     solver.settings.solution.initialization.hybrid_initialize()
     count = 0
 
@@ -309,3 +312,178 @@ def test_progress_event_preserves_proto_field_order_when_message_is_empty(
 
     assert event_info.message == ""
     assert event_info.percentage == 9
+
+
+@pytest.fixture
+def mock_events_manager(mocker):
+    service = mocker.Mock()
+    service.register_pause_on_solution_events.side_effect = range(10)
+    manager = EventsManager(SolverEvent, service, mocker.Mock(), mocker.Mock())
+    service.event_from_proto_field.side_effect = lambda field: field
+    service._construct_event_info.side_effect = (
+        lambda response, event, cls: response.info
+    )
+
+    def dispatch(*events):
+        responses = [
+            SimpleNamespace(
+                WhichOneof=lambda name, event=event: event.value,
+                info=info,
+            )
+            for event, info in events
+        ]
+        service._process_streaming.return_value = iter(responses)
+        manager._process_streaming(manager._impl, "test", "BeginStreaming", None)
+
+    return manager, service, dispatch
+
+
+@pytest.mark.parametrize(
+    "event", [SolverEvent.ITERATION_ENDED, SolverEvent.TIMESTEP_ENDED]
+)
+def test_self_unregister_releases_current_hold_once(mock_events_manager, event):
+    manager, service, dispatch = mock_events_manager
+    calls = []
+
+    def callback(session, event_info):
+        calls.append(event_info.index)
+        manager.unregister_callback(callback_id)
+        service.resume_on_solution_event.assert_called_once_with(registration_id=0)
+        assert not manager._active_sync_event_ids
+
+    callback_id = manager.register_callback(event, callback)
+    dispatch(
+        (SolverEvent.SOLUTION_PAUSED, SimpleNamespace(level=0, index=2)),
+        (SolverEvent.SOLUTION_PAUSED, SimpleNamespace(level=0, index=3)),
+    )
+    assert calls == [2]
+    service.unregister_pause_on_solution_events.assert_called_once_with(
+        registration_id=0
+    )
+    service.resume_on_solution_event.assert_called_once_with(registration_id=0)
+
+
+def test_unregister_during_dispatch_preserves_other_callbacks(mock_events_manager):
+    manager, service, dispatch = mock_events_manager
+    calls = []
+
+    def first(session, event_info):
+        calls.append("first")
+        manager.unregister_callback(first_id)
+        manager.unregister_callback(removed_id)
+        manager.register_callback(
+            SolverEvent.CASE_LOADED, lambda session, event_info: calls.append("new")
+        )
+
+    first_id = manager.register_callback(SolverEvent.CASE_LOADED, first)
+    removed_id = manager.register_callback(
+        SolverEvent.CASE_LOADED, lambda session, event_info: calls.append("removed")
+    )
+    manager.register_callback(
+        SolverEvent.CASE_LOADED, lambda session, event_info: calls.append("remaining")
+    )
+    dispatch(
+        (SolverEvent.CASE_LOADED, None),
+        (SolverEvent.CASE_LOADED, None),
+    )
+    assert calls == ["first", "remaining", "remaining", "new"]
+
+
+@pytest.mark.parametrize(
+    "fail_method", ["unregister_pause_on_solution_events", "resume_on_solution_event"]
+)
+def test_failed_self_unregister_retains_cleanup_ownership(
+    mock_events_manager, fail_method, caplog
+):
+    manager, service, dispatch = mock_events_manager
+    getattr(service, fail_method).side_effect = [RuntimeError("service failed"), None]
+
+    def callback(session, event_info):
+        manager.unregister_callback(callback_id)
+
+    callback_id = manager.register_callback(SolverEvent.ITERATION_ENDED, callback)
+    dispatch((SolverEvent.SOLUTION_PAUSED, SimpleNamespace(level=0, index=2)))
+    assert "service failed" in caplog.text
+    assert manager._sync_event_ids[callback_id] == 0
+    assert not manager._active_sync_event_ids
+    manager.unregister_callback(callback_id)
+    assert callback_id not in manager._sync_event_ids
+
+
+def test_self_unregister_does_not_release_another_hold(mock_events_manager):
+    manager, service, dispatch = mock_events_manager
+    manager._active_sync_event_ids.add(9)
+
+    def callback(session, event_info):
+        manager.unregister_callback(callback_id)
+
+    callback_id = manager.register_callback(SolverEvent.ITERATION_ENDED, callback)
+    dispatch((SolverEvent.SOLUTION_PAUSED, SimpleNamespace(level=0, index=2)))
+    assert manager._active_sync_event_ids == {9}
+    service.resume_on_solution_event.assert_called_once_with(registration_id=0)
+
+
+def test_iteration_callback_can_unregister_itself(static_mixer_case_session):
+    solver = static_mixer_case_session
+    solver.settings.solution.initialization.hybrid_initialize()
+    calls = []
+    observed_iterations = []
+
+    def callback(session, event_info):
+        calls.append(event_info.index)
+        session.events.unregister_callback(callback_id)
+
+    callback_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, callback)
+    observer_id = solver.events.register_callback(
+        SolverEvent.ITERATION_ENDED,
+        lambda session, event_info: observed_iterations.append(event_info.index),
+    )
+    solver.settings.solution.run_calculation.iterate(iter_count=5)
+    assert len(calls) == 1
+    assert len(observed_iterations) == 5
+    solver.events.unregister_callback(observer_id)
+
+
+def test_interrupt_and_resume_inside_callback(mixing_elbow_case_session):
+    solver = mixing_elbow_case_session
+    solver.settings.solution.monitor.residual.options.criterion_type = "none"
+    solver.settings.solution.initialization.hybrid_initialize()
+    initial_iteration = solver.scheme.eval("(get-current-iteration)")
+    total_iterations = 15
+    callback_result = Future()
+
+    def callback(session, event_info):
+        if event_info.index < initial_iteration + 5:
+            return
+        try:
+            session.settings.solution.run_calculation.interrupt()
+            session.events.unregister_callback(callback_id)
+            completed_iterations = (
+                session.scheme.eval("(get-current-iteration)") - initial_iteration
+            )
+            assert 5 <= completed_iterations < total_iterations
+            session.settings.solution.run_calculation.iterate(
+                iter_count=total_iterations - completed_iterations
+            )
+            callback_result.set_result(session.scheme.eval("(get-current-iteration)"))
+        except Exception as exc:
+            callback_result.set_exception(exc)
+            raise
+
+    callback_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, callback)
+    solver.settings.solution.run_calculation.iterate(iter_count=total_iterations)
+    assert callback_result.result(timeout=60) == initial_iteration + total_iterations
+
+    # A subsequent synchronous callback proves the event stream survived removal.
+    observed_iterations = []
+    observer_id = solver.events.register_callback(
+        SolverEvent.ITERATION_ENDED,
+        lambda session, event_info: observed_iterations.append(event_info.index),
+    )
+    solver.settings.solution.run_calculation.iterate(iter_count=1)
+    assert observed_iterations[-1] == initial_iteration + total_iterations + 1
+    assert (
+        solver.scheme.eval("(get-current-iteration)")
+        == initial_iteration + total_iterations + 1
+    )
+    solver.events.unregister_callback(observer_id)

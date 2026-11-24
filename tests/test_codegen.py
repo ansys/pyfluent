@@ -25,6 +25,7 @@ import ast
 import importlib
 from pathlib import Path
 import pickle
+import pydoc
 import shutil
 import tempfile
 
@@ -878,6 +879,45 @@ def test_settings_command_stub_generates_command_objects(monkeypatch, tmp_path):
     assert "    read_case: read_case\n" in stub
     assert "    rename: rename\n" in stub
     assert "    def status(self, name: str):\n" in stub
+
+
+def test_settings_codegen_argument_docs_use_callable_names(monkeypatch, tmp_path):
+    from ansys.fluent.core.solver import flobject
+
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    monkeypatch.setattr(flobject, "_bases_by_class", {})
+    static_info = {
+        "type": "group",
+        "commands": {
+            "write-case": {
+                "type": "command",
+                "help": "Write a case.",
+                "arguments": {"file-name": {"type": "file", "file_purpose": "output"}},
+            },
+            "read-case": {
+                "type": "command",
+                "help": "Read a case.",
+                "arguments": {
+                    "file-name": {"type": "file", "file_purpose": "input"},
+                    "part-2": {"type": "string"},
+                },
+            },
+        },
+    }
+
+    settingsgen.generate("271", {StaticInfoType.SETTINGS: static_info})
+    path = tmp_path / "v271" / "solver" / "settings.py"
+    module = pyfluent.utils.load_module("test_settings_argument_docs", path)
+    command = module.root._child_classes["read_case"]
+
+    assert command.argument_names == ["file_name", "part_2"]
+    assert command._child_classes["file_name"].__name__ != "file_name"
+    assert "    file_name : str\n" in command.__doc__
+    assert "    file_name_1 : str\n" not in command.__doc__
+    assert "    part_2 : str\n" in command.__doc__
+    help_text = pydoc.render_doc(command, renderer=pydoc.plaintext)
+    assert "file_name : str" in help_text
+    assert "file_name_1 : str" not in help_text
 
 
 _settings_static_info_duplicate_parameters = {
