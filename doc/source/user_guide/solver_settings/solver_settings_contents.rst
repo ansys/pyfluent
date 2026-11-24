@@ -467,3 +467,4 @@ The following list summarizes common wildcards:
 
    set_up/setup_contents
    solution
+   run_control

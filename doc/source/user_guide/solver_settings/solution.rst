@@ -96,3 +96,6 @@ Initialize and solve
   >>> solution = solver_session.settings.solution
   >>> solution.initialization.hybrid_initialize()
   >>> solution.run_calculation.iterate(iter_count=100)
+
+For stopping a running calculation and continuing from its current solution,
+see :ref:`ref_run_control`.
