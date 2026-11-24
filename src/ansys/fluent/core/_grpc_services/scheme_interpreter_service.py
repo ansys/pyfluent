@@ -23,11 +23,18 @@
 """Wrapper over the scheme interpreter gRPC service of Fluent (v1 proto API)."""
 
 from collections.abc import Sequence
-from typing import Any
+from typing import Any, Union
 
+from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as scheme_eval_pb2_grpc_v0
 from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_grpc
 from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services._protocols import ServiceProtocol
+
+# Type aliases for multi-version support
+SchemeInterpreterStub = Union[
+    scheme_eval_pb2_grpc_v0.SchemeEvalStub,
+    scheme_interpreter_pb2_grpc.SchemeInterpreterStub,
+]
 
 
 class SchemeInterpreterService(ServiceProtocol):
@@ -93,13 +100,15 @@ class SchemeInterpreterService(ServiceProtocol):
         response = self._stub.StringEval(request, metadata=self._metadata)
         return response.output
 
-    def scheme_eval(self, val: Any, suppress_prompts: bool = True) -> Any:
+    def scheme_eval(
+        self, val: Any, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict
         """Evaluates a scheme expression.
 
         Parameters
         ----------
         val : Any
-            Input scheme expression represented as Python datatype
+            Input scheme expression represented as Python datatype (int, float, str, Symbol, tuple, list, dict)
 
         suppress_prompts : bool, optional
             Whether to suppress prompts in Fluent, by default True
@@ -107,7 +116,7 @@ class SchemeInterpreterService(ServiceProtocol):
         Returns
         -------
         Any
-            Output scheme value represented as Python datatype
+            Output scheme value represented as Python datatype (int, float, str, Symbol, tuple, list, dict)
         """
         request = scheme_interpreter_pb2.SchemeEvalRequest()
         _convert_py_value_to_scheme_pointer(val, request.input)
@@ -120,7 +129,9 @@ class SchemeInterpreterService(ServiceProtocol):
         response = self._stub.SchemeEval(request, metadata=new_metadata)
         return _convert_scheme_pointer_to_py_value(response.output)
 
-    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+    def eval(
+        self, scm_input: str, suppress_prompts: bool = True
+    ) -> Any:  # Scheme values: int, float, str, Symbol, tuple, list, dict
         """Evaluates a scheme expression in string format.
 
         Parameters
@@ -134,7 +145,7 @@ class SchemeInterpreterService(ServiceProtocol):
         Returns
         -------
         Any
-            Output scheme value represented as Python datatype
+            Output scheme value represented as Python datatype (int, float, str, Symbol, tuple, list, dict)
         """
         S = Symbol  # noqa N806
         val = (
@@ -162,7 +173,9 @@ class Symbol:
         return self.str
 
 
-def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer) -> None:
+def _convert_py_value_to_scheme_pointer(
+    val: Any, p: SchemePointer
+) -> None:  # val: int, float, str, Symbol, bool, tuple, list, dict
     """Convert Python datatype to Scheme pointer for v1 proto."""
     if isinstance(val, bool):
         p.b = val
@@ -187,7 +200,9 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer) -> None:
             _convert_py_value_to_scheme_pointer(v, item.pair.cdr)
 
 
-def _convert_scheme_pointer_to_py_value(p: SchemePointer) -> Any:
+def _convert_scheme_pointer_to_py_value(
+    p: SchemePointer,
+) -> Any:  # Returns: int, float, str, Symbol, bool, tuple, list, dict, None
     """Convert Scheme pointer to Python datatype for v1 proto."""
     if p.HasField("b"):
         return p.b
