@@ -738,29 +738,13 @@ class FluentConnection:
                 if result.returncode != 0:
                     # Cleanup script's target pid can be stale; check if process is actually alive
                     if not _pid_exists(pid):
-                        logger.info(
-                            f"Cleanup script reported exit status {result.returncode}, "
-                            f"but Fluent process {pid} is no longer running. "
-                            "Treating as already exited."
-                        )
                         return
 
-                    logger.error(
-                        f"Cleanup script failed with exit status {result.returncode}"
-                    )
-                    if result.stdout:
-                        logger.error(f"Cleanup script stdout:\n{result.stdout}")
-                    if result.stderr:
-                        logger.error(f"Cleanup script stderr:\n{result.stderr}")
-
-                    # Platform-aware kill fallback
+                    # Attempt platform-aware kill fallback
                     kill_cmd = (
                         ["taskkill", "/PID", str(pid), "/F"]
                         if os.name == "nt"
                         else ["kill", "-9", str(pid)]
-                    )
-                    logger.warning(
-                        f"Attempting fallback '{' '.join(kill_cmd)}' to terminate pid {pid}..."
                     )
                     fallback_result = subprocess.run(
                         kill_cmd,
@@ -769,17 +753,10 @@ class FluentConnection:
                         timeout=30,
                         text=True,
                     )
-                    if fallback_result.returncode == 0 or not _pid_exists(pid):
-                        logger.info(f"Fluent process {pid} is no longer running.")
-                        return
-
-                    logger.warning(
-                        f"Fallback kill command also failed with status "
-                        f"{fallback_result.returncode}: {fallback_result.stderr}"
-                    )
-                    raise subprocess.CalledProcessError(
-                        result.returncode, cmd_list, result.stdout, result.stderr
-                    )
+                    if fallback_result.returncode != 0 and _pid_exists(pid):
+                        raise subprocess.CalledProcessError(
+                            result.returncode, cmd_list, result.stdout, result.stderr
+                        )
             elif self._slurm_job_id:
                 logger.debug("Fluent running inside Slurm, closing Slurm session...")
                 self._close_slurm()
