@@ -23,7 +23,7 @@
 """Wrapper over the text interface gRPC service of Fluent (v1 proto API)."""
 
 from collections.abc import Sequence
-from typing import Any
+from typing import Any, cast
 
 from google.protobuf.json_format import MessageToDict
 import grpc
@@ -118,14 +118,16 @@ class TextInterfaceService(ServiceProtocol):
         attribute = text_interface_pb2.Attribute.Name(
             text_interface_pb2.Attribute.ATTRIBUTE_CHILD_NAMES
         ).lower()
-        return self.get_attribute_value(path, attribute, include_unavailable)
+        return cast(
+            list[str], self.get_attribute_value(path, attribute, include_unavailable)
+        )
 
     def get_doc_string(self, path: str, include_unavailable: bool = False) -> str:
         """Get docstring for a menu."""
         attribute = text_interface_pb2.Attribute.Name(
             text_interface_pb2.Attribute.ATTRIBUTE_HELP_STRING
         ).lower()
-        return self.get_attribute_value(path, attribute, include_unavailable)
+        return cast(str, self.get_attribute_value(path, attribute, include_unavailable))
 
 
 def _convert_value_to_gvalue(val: ValueT, gval: Variant) -> None:
