@@ -25,7 +25,7 @@
 
 from typing import Any, ClassVar, Protocol, TypeGuard, runtime_checkable
 
-from ansys.fluent.core.execution.session.session import _get_active_session
+from ansys.fluent.core.execution import _get_active_session
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
     NamedObject,
