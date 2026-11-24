@@ -210,6 +210,10 @@ html_theme_options = {
     },
     "navigation_depth": -1,
     "collapse_navigation": True,
+    "mcp_server": {
+        "url": "https://github.com/ansys/pyfluent-mcp",
+        "project_name": "PyFluent-MCP",
+    },
 }
 
 if os.getenv("PYFLUENT_DOC_SKIP_CHEATSHEET") != "1":
