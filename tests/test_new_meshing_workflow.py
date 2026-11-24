@@ -364,91 +364,91 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
     two_dim_mesh = new_meshing_session_wo_exit.two_dimensional_meshing(legacy=True)
 
-    two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
-    two_dim_mesh.load_cad_geometry_2d.length_unit = "mm"
-    two_dim_mesh.load_cad_geometry_2d.refaceting.refacet = False
+    two_dim_mesh.load_cad_geometry_2d.file_name.set_state(import_file_name)
+    two_dim_mesh.load_cad_geometry_2d.length_unit.set_state("mm")
+    two_dim_mesh.load_cad_geometry_2d.refaceting.set_state({"refacet": False})
     two_dim_mesh.load_cad_geometry_2d()
 
     # Set regions and boundaries
-    two_dim_mesh.update_boundaries_2d.selection_type = "zone"
+    two_dim_mesh.update_boundaries_2d.selection_type.set_state("zone")
     two_dim_mesh.update_boundaries_2d()
 
     # Define global sizing
-    two_dim_mesh.define_global_sizing_2d.curvature_normal_angle = 20
-    two_dim_mesh.define_global_sizing_2d.max_size = 2000.0
-    two_dim_mesh.define_global_sizing_2d.min_size = 5.0
-    two_dim_mesh.define_global_sizing_2d.size_functions = "Curvature"
+    two_dim_mesh.define_global_sizing_2d.curvature_normal_angle.set_state(20)
+    two_dim_mesh.define_global_sizing_2d.max_size.set_state(2000.0)
+    two_dim_mesh.define_global_sizing_2d.min_size.set_state(5.0)
+    two_dim_mesh.define_global_sizing_2d.size_functions.set_state("Curvature")
     two_dim_mesh.define_global_sizing_2d()
 
     # Add local sizing
-    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
-    two_dim_mesh.add_local_sizing_2d.boi_control_name = "boi_1"
-    two_dim_mesh.add_local_sizing_2d.boi_execution = "Body Of Influence"
-    two_dim_mesh.add_local_sizing_2d.boi_face_label_list = ["boi"]
-    two_dim_mesh.add_local_sizing_2d.boi_size = 50.0
-    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
+    two_dim_mesh.add_local_sizing_2d.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_2d.boi_control_name.set_state("boi_1")
+    two_dim_mesh.add_local_sizing_2d.boi_execution.set_state("Body Of Influence")
+    two_dim_mesh.add_local_sizing_2d.boi_face_label_list.set_state(["boi"])
+    two_dim_mesh.add_local_sizing_2d.boi_size.set_state(50.0)
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_2d.draw_size_control.set_state(True)
     two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
-    two_dim_mesh.add_local_sizing_2d.boi_control_name = "edgesize_1"
-    two_dim_mesh.add_local_sizing_2d.boi_execution = "Edge Size"
-    two_dim_mesh.add_local_sizing_2d.boi_size = 5.0
-    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
-    two_dim_mesh.add_local_sizing_2d.edge_label_list = ["airfoil-te"]
+    two_dim_mesh.add_local_sizing_2d.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_2d.boi_control_name.set_state("edgesize_1")
+    two_dim_mesh.add_local_sizing_2d.boi_execution.set_state("Edge Size")
+    two_dim_mesh.add_local_sizing_2d.boi_size.set_state(5.0)
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_2d.draw_size_control.set_state(True)
+    two_dim_mesh.add_local_sizing_2d.edge_label_list.set_state(["airfoil-te"])
     two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
-    two_dim_mesh.add_local_sizing_2d.boi_control_name = "curvature_1"
-    two_dim_mesh.add_local_sizing_2d.boi_curvature_normal_angle = 10
-    two_dim_mesh.add_local_sizing_2d.boi_execution = "Curvature"
-    two_dim_mesh.add_local_sizing_2d.boi_max_size = 2
-    two_dim_mesh.add_local_sizing_2d.boi_min_size = 1.5
-    two_dim_mesh.add_local_sizing_2d.boi_scope_to = "edge labels"
-    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
-    two_dim_mesh.add_local_sizing_2d.edge_label_list = ["airfoil"]
+    two_dim_mesh.add_local_sizing_2d.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_2d.boi_control_name.set_state("curvature_1")
+    two_dim_mesh.add_local_sizing_2d.boi_curvature_normal_angle.set_state(10)
+    two_dim_mesh.add_local_sizing_2d.boi_execution.set_state("Curvature")
+    two_dim_mesh.add_local_sizing_2d.boi_max_size.set_state(2)
+    two_dim_mesh.add_local_sizing_2d.boi_min_size.set_state(1.5)
+    two_dim_mesh.add_local_sizing_2d.boi_scope_to.set_state("edge labels")
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_2d.draw_size_control.set_state(True)
+    two_dim_mesh.add_local_sizing_2d.edge_label_list.set_state(["airfoil"])
     two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
 
     # Add boundary layer
-    two_dim_mesh.add_2d_boundary_layers.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers.bl_control_name = "aspect-ratio_1"
-    two_dim_mesh.add_2d_boundary_layers.number_of_layers = 4
-    two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
+    two_dim_mesh.add_2d_boundary_layers.add_child.set_state("yes")
+    two_dim_mesh.add_2d_boundary_layers.bl_control_name.set_state("aspect-ratio_1")
+    two_dim_mesh.add_2d_boundary_layers.number_of_layers.set_state(4)
+    two_dim_mesh.add_2d_boundary_layers.offset_method_type.set_state("aspect-ratio")
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"show_advanced_options": True}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_edge_zones_based_on_labels": "no"}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_face_zones_based_on_labels": "no"}
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
-    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name = "uniform_1"
-    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
-    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
-    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child.set_state("yes")
+    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name.set_state("uniform_1")
+    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height.set_state(2)
+    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers.set_state(4)
+    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type.set_state("uniform")
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"show_advanced_options": True}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_edge_zones_based_on_labels": "no"}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_face_zones_based_on_labels": "no"}
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
