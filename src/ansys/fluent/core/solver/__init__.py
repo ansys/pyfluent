@@ -28,7 +28,6 @@ solver. Start at the :ref:`settings root <ref_root>` to navigate the full
 hierarchy, or import commonly used settings classes such as ``Viscous`` and
 ``VelocityInlet`` directly from this package.
 
-For solver session classes, see :ref:`session <ref_ansys_fluent_core_solver_session>`.
 """
 
 from importlib import import_module
