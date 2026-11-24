@@ -25,8 +25,9 @@
 
 Use the hierarchical Python settings API to configure and run the Fluent
 solver. Start at the :ref:`settings root <ref_root>` to navigate the full
-hierarchy, or import commonly used settings classes such as ``Viscous`` and
-``VelocityInlet`` directly from this package.
+hierarchy. Import commonly used settings classes such as ``Viscous`` and
+``VelocityInlet`` directly from this package, rather than navigating
+the hierarchy to find them.
 
 """
 
