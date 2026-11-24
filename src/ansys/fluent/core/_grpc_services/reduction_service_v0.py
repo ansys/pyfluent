@@ -22,7 +22,7 @@
 
 """Wrapper over the reduction gRPC service of Fluent (v0 proto API)."""
 
-from typing import Any, Union, cast
+from typing import Any, Union
 
 from ansys.api.fluent.v0 import reduction_pb2, reduction_pb2_grpc
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
@@ -94,19 +94,19 @@ class ReductionService(ServiceProtocol):
         """Get area."""
         request = self._make_request("AreaRequest", locations, ctxt)
         response = self._stub.Area(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def area_average(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get area average."""
         request = self._make_request("AreaAveRequest", locations, ctxt, expression)
         response = self._stub.AreaAve(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def area_integral(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get area integral."""
         request = self._make_request("AreaIntRequest", locations, ctxt, expression)
         response = self._stub.AreaInt(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def centroid(self, locations, ctxt=None) -> ReductionResult:
         """Get centroid."""
@@ -118,7 +118,7 @@ class ReductionService(ServiceProtocol):
         """Count the number of faces or cells within the locations."""
         request = self._make_request("CountRequest", locations, ctxt)
         response = self._stub.Count(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def count_if(self, condition, locations, ctxt=None) -> ReductionResult:
         """Count the number of faces or cells where the specified condition is satisfied."""
@@ -126,7 +126,7 @@ class ReductionService(ServiceProtocol):
             "CountIfRequest", locations, ctxt, expression=condition
         )
         response = self._stub.CountIf(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def force(self, locations, ctxt=None) -> ReductionResult:
         """Get force."""
@@ -138,13 +138,13 @@ class ReductionService(ServiceProtocol):
         """Get mass average."""
         request = self._make_request("MassAveRequest", locations, ctxt, expression)
         response = self._stub.MassAve(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_average(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get mass flow average."""
         request = self._make_request("MassFlowAveRequest", locations, ctxt, expression)
         response = self._stub.MassFlowAve(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_average_absolute(
         self, expression, locations, ctxt=None
@@ -154,31 +154,31 @@ class ReductionService(ServiceProtocol):
             "MassFlowAveAbsRequest", locations, ctxt, expression
         )
         response = self._stub.MassFlowAveAbs(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_integral(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get mass flow integral."""
         request = self._make_request("MassFlowIntRequest", locations, ctxt, expression)
         response = self._stub.MassFlowInt(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def mass_integral(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get mass integral."""
         request = self._make_request("MassIntRequest", locations, ctxt, expression)
         response = self._stub.MassInt(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def maximum(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get maximum."""
         request = self._make_request("MaximumRequest", locations, ctxt, expression)
         response = self._stub.Maximum(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def minimum(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get minimum."""
         request = self._make_request("MinimumRequest", locations, ctxt, expression)
         response = self._stub.Minimum(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def pressure_force(self, locations, ctxt=None) -> ReductionResult:
         """Get pressure force."""
@@ -196,19 +196,19 @@ class ReductionService(ServiceProtocol):
         """Get volume."""
         request = self._make_request("VolumeRequest", locations, ctxt)
         response = self._stub.Volume(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def volume_average(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get volume average."""
         request = self._make_request("VolumeRequest", locations, ctxt, expression)
         response = self._stub.VolumeAve(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def volume_integral(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get volume integral."""
         request = self._make_request("VolumeIntRequest", locations, ctxt, expression)
         response = self._stub.VolumeInt(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def moment(self, expression, locations, ctxt=None) -> ReductionResult:
         """Get moment."""
@@ -222,7 +222,7 @@ class ReductionService(ServiceProtocol):
         """Get sum."""
         request = self._make_request("SumRequest", locations, ctxt, expression, weight)
         response = self._stub.Sum(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
 
     def sum_if(
         self, expression, condition, locations, weight: str | Weight, ctxt=None
@@ -232,4 +232,4 @@ class ReductionService(ServiceProtocol):
             "SumIfRequest", locations, ctxt, expression, weight, condition
         )
         response = self._stub.SumIf(request, metadata=self._metadata)
-        return cast(ReductionResult, _convert_variant_to_value(response.value))
+        return _convert_variant_to_value(response.value)
