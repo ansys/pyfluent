@@ -124,6 +124,7 @@ class EventsManager(Generic[TEvent]):
         # can also be done in other streaming services
         self._session = session
         self._sync_event_ids = {}
+        self._active_sync_event_ids: set[int] = set()
         self._service = session_events_service
 
     def _construct_event_info(self, response, event: TEvent):
@@ -161,7 +162,10 @@ class EventsManager(Generic[TEvent]):
                         self._fluent_error_state.set("fatal", error_message)
                         continue
                     callbacks_map = self._impl._service_callbacks.get(event_name, {})
-                    for callback in callbacks_map.values():
+                    for callback_id in tuple(callbacks_map):
+                        callback = callbacks_map.get(callback_id)
+                        if callback is None:
+                            continue
                         callback(
                             session=self._session,
                             event_info=event_info,
@@ -303,16 +307,28 @@ class EventsManager(Generic[TEvent]):
         ----------
         callback_id : str
             ID of the registered callback.
+
+        Notes
+        -----
+        Unregistering a solution-event callback releases its current solver
+        hold, if any, as well as disabling future invocations.
         """
         with self._impl._lock:
-            for callbacks_map in self._impl._service_callbacks.values():
-                if callback_id in callbacks_map:
-                    del callbacks_map[callback_id]
-            sync_event_id = self._sync_event_ids.pop(callback_id, None)
-            if sync_event_id:
+            sync_event_id = self._sync_event_ids.get(callback_id)
+            if sync_event_id is not None:
                 self._service.unregister_pause_on_solution_events(
                     registration_id=sync_event_id
                 )
+                self._resume_sync_event(sync_event_id)
+                del self._sync_event_ids[callback_id]
+            for callbacks_map in self._impl._service_callbacks.values():
+                if callback_id in callbacks_map:
+                    del callbacks_map[callback_id]
+
+    def _resume_sync_event(self, registration_id: int) -> None:
+        if registration_id in self._active_sync_event_ids:
+            self._service.resume_on_solution_event(registration_id=registration_id)
+            self._active_sync_event_ids.remove(registration_id)
 
     def start(self, *args, **kwargs) -> None:
         """Start streaming."""
@@ -334,6 +350,7 @@ class EventsManager(Generic[TEvent]):
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
             if unique_id == int(event_info.level):
+                self._active_sync_event_ids.add(unique_id)
                 if event_type.name == "ITERATION_ENDED":
                     event_info = IterationEndedEventInfo(index=event_info.index)
                 else:
@@ -350,7 +367,7 @@ class EventsManager(Generic[TEvent]):
                         exc_info=True,
                     )
                 finally:
-                    self._service.resume_on_solution_event(registration_id=unique_id)
+                    self._resume_sync_event(unique_id)
 
         self._sync_event_ids[callback_id] = unique_id
         return self._event_type.SOLUTION_PAUSED, on_pause

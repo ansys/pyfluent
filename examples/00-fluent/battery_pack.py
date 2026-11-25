@@ -125,11 +125,15 @@ mesh = Mesh(solver, new_instance_name="mesh-1")
 
 all_walls = mesh.surfaces_list.allowed_values()
 
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
-mesh.surfaces_list = all_walls
-mesh.options.edges = True
+mesh.surfaces_list.set_state(all_walls)
+mesh.options.edges.set_state(True)
 mesh.display()
 
 graphics.picture.save_picture(file_name="battery_pack_1.png")
@@ -145,7 +149,7 @@ graphics.picture.save_picture(file_name="battery_pack_1.png")
 
 solver_general_settings = General(solver)
 
-solver_general_settings.solver.time = "unsteady-1st-order"
+solver_general_settings.solver.time.set_state("unsteady-1st-order")
 
 # %%
 # Enable Battery Model (NTGK/DCIR)
@@ -160,18 +164,24 @@ solver_general_settings.solver.time = "unsteady-1st-order"
 
 battery_model = Battery(solver)
 
-battery_model.enabled = True
-battery_model.echem_model = "ntgk/dcir"
-battery_model.eload_condition.eload_settings.eload_type = "specified-system-power"
-battery_model.eload_condition.eload_settings.power_value = 200  # W  (Total pack power)
+battery_model.enabled.set_state(True)
+battery_model.echem_model.set_state("ntgk/dcir")
+battery_model.eload_condition.eload_settings.eload_type.set_state(
+    "specified-system-power"
+)
+battery_model.eload_condition.eload_settings.power_value.set_state(
+    200
+)  # W  (Total pack power)
 
 # Conductive zones
-battery_model.zone_assignment.active_zone = "cell_*"  # Active cells
-battery_model.zone_assignment.passive_zone = "*bar*|*tabzone*"  # Bars zones + tab zones
+battery_model.zone_assignment.active_zone.set_state("cell_*")  # Active cells
+battery_model.zone_assignment.passive_zone.set_state(
+    "*bar*|*tabzone*"
+)  # Bars zones + tab zones
 
 # External electrical contacts
-battery_model.zone_assignment.negative_tab = ["tab_n"]  # Negative terminal
-battery_model.zone_assignment.positive_tab = ["tab_p"]  # Positive terminal
+battery_model.zone_assignment.negative_tab.set_state(["tab_n"])  # Negative terminal
+battery_model.zone_assignment.positive_tab.set_state(["tab_p"])  # Positive terminal
 
 # %%
 # Define materials
@@ -248,15 +258,17 @@ conditions.copy(from_="wall-cell_1", to="wall*")
 controls = Controls(solver)
 
 # Disable flow and turbulence equations
-controls.equations = {
-    "flow": False,
-    "kw": False,
-}
+controls.equations.set_state(
+    {
+        "flow": False,
+        "kw": False,
+    }
+)
 
 solution = Solution(solver)
 
-solution.monitor.residual.options.criterion_type = (
-    "none"  # No automatic convergence check
+solution.monitor.residual.options.criterion_type.set_state(
+    ("none")  # No automatic convergence check
 )
 
 # %%
@@ -277,8 +289,8 @@ definitions.surface["voltage_surface_areaavg"] = {
 report_plot = solver.settings.solution.monitor.report_plots[
     "voltage_surface_areaavg-rplot"
 ]
-report_plot.axes.x.number_format.precision = 0  # Integer time steps
-report_plot.axes.y.number_format.precision = 2  # 2 decimal places for voltage
+report_plot.axes.x.number_format.precision.set_state(0)  # Integer time steps
+report_plot.axes.y.number_format.precision.set_state(2)  # 2 decimal places for voltage
 
 # Volume report: maximum temperature in all cell zones
 definitions.volume["volume_max_temp"] = {
@@ -291,8 +303,8 @@ definitions.volume["volume_max_temp"] = {
 
 # Format plot axes
 report_plot_1 = solver.settings.solution.monitor.report_plots["volume_max_temp-rplot"]
-report_plot_1.axes.x.number_format.precision = 0
-report_plot_1.axes.y.number_format.precision = 2
+report_plot_1.axes.x.number_format.precision.set_state(0)
+report_plot_1.axes.y.number_format.precision.set_state(2)
 
 # %%
 # Initialize solution
@@ -305,8 +317,8 @@ initialize.standard_initialize()
 # ------------------
 Transient_controls = solver.settings.solution.run_calculation.transient_controls
 
-Transient_controls.time_step_count = 50  # Number of time steps
-Transient_controls.time_step_size = 30  # s  (30 s per step)
+Transient_controls.time_step_count.set_state(50)  # Number of time steps
+Transient_controls.time_step_size.set_state(30)  # s  (30 s per step)
 
 calculation = RunCalculation(solver)
 calculation.calculate()  # Run transient simulation
@@ -318,12 +330,12 @@ calculation.calculate()  # Run transient simulation
 # Current density vector plot
 vector = Vector(solver, new_instance_name="current-magnitude-vector")
 
-vector.vector_field = "current-density-j"  # A/m²  (Current density vector)
-vector.field = "current-magnitude"  # A/m²  (Magnitude for coloring)
-vector.surfaces_list = ["tab_n", "tab_p", "wall*"]
-vector.options.vector_style = "arrow"
-vector.options.scale = 0.03  # Scale factor for visibility
-vector.vector_opt.fixed_length = True  # Uniform arrow length
+vector.vector_field.set_state("current-density-j")  # A/m²  (Current density vector)
+vector.field.set_state("current-magnitude")  # A/m²  (Magnitude for coloring)
+vector.surfaces_list.set_state(["tab_n", "tab_p", "wall*"])
+vector.options.vector_style.set_state("arrow")
+vector.options.scale.set_state(0.03)  # Scale factor for visibility
+vector.vector_opt.fixed_length.set_state(True)  # Uniform arrow length
 vector.display()
 
 graphics.views.restore_view(view_name="isometric")
@@ -337,9 +349,9 @@ graphics.picture.save_picture(file_name="battery_pack_2.png")
 # Temperature contour
 temp_contour = Contour(solver, new_instance_name="temp_contour")
 
-temp_contour.field = "temperature"  # K
-temp_contour.surfaces_list = ["tab_n", "tab_p", "wall*"]
-temp_contour.colorings.banded = True
+temp_contour.field.set_state("temperature")  # K
+temp_contour.surfaces_list.set_state(["tab_n", "tab_p", "wall*"])
+temp_contour.colorings.banded.set_state(True)
 temp_contour.display()
 
 graphics.views.restore_view(view_name="isometric")
@@ -353,9 +365,9 @@ graphics.picture.save_picture(file_name="battery_pack_3.png")
 # Joule heat source contour
 joule_contour = Contour(solver, new_instance_name="joule_heating_contour")
 
-joule_contour.field = "battery-joule-heat-source"  # W/m³
-joule_contour.surfaces_list = ["tab_n", "tab_p", "wall*"]
-joule_contour.colorings.banded = True
+joule_contour.field.set_state("battery-joule-heat-source")  # W/m³
+joule_contour.surfaces_list.set_state(["tab_n", "tab_p", "wall*"])
+joule_contour.colorings.banded.set_state(True)
 joule_contour.display()
 
 graphics.views.restore_view(view_name="isometric")
@@ -369,9 +381,9 @@ graphics.picture.save_picture(file_name="battery_pack_4.png")
 # Total heat source contour
 total_heat_contour = Contour(solver, new_instance_name="total_heating_contour")
 
-total_heat_contour.field = "total-heat-source"  # W/m³  (Joule + reaction heat)
-total_heat_contour.surfaces_list = ["tab_n", "tab_p", "wall*"]
-total_heat_contour.colorings.banded = True
+total_heat_contour.field.set_state("total-heat-source")  # W/m³  (Joule + reaction heat)
+total_heat_contour.surfaces_list.set_state(["tab_n", "tab_p", "wall*"])
+total_heat_contour.colorings.banded.set_state(True)
 total_heat_contour.display()
 
 graphics.views.restore_view(view_name="isometric")

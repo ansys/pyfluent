@@ -372,8 +372,8 @@ def _test_moment(solver):
 def _test_sum(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions["test_expr_1"].definition = (
-        "Sum(AbsolutePressure, ['inlet1'], Weight=Area)"
+    solver.setup.named_expressions["test_expr_1"].definition.set_state(
+        ("Sum(AbsolutePressure, ['inlet1'], Weight=Area)")
     )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert isinstance(expr_val, float) and expr_val != 0.0
@@ -391,8 +391,8 @@ def _test_sum(solver):
 def _test_sum_if(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions["test_expr_1"].definition = (
-        "SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)"
+    solver.setup.named_expressions["test_expr_1"].definition.set_state(
+        ("SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)")
     )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert isinstance(expr_val, float) and expr_val != 0.0

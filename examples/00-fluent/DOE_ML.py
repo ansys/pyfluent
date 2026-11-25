@@ -127,14 +127,16 @@ for idx1, coldVel in np.ndenumerate(coldVelArr):
         cold_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
             "cold-inlet"
         ]
-        cold_inlet.momentum.velocity.value = coldVel
+        cold_inlet.momentum.velocity.value.set_state(coldVel)
 
         hot_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ]
-        hot_inlet.momentum.velocity.value = hotVel
+        hot_inlet.momentum.velocity.value.set_state(hotVel)
 
-        solver_session.settings.solution.initialization.initialization_type = "standard"
+        solver_session.settings.solution.initialization.initialization_type.set_state(
+            "standard"
+        )
         solver_session.settings.solution.initialization.standard_initialize()
         solver_session.settings.solution.run_calculation.iterate(iter_count=200)
 

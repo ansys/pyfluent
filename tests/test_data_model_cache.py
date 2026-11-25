@@ -241,8 +241,8 @@ def test_update_cache_internal_names_as_keys(
 def test_get_cached_values_in_command_arguments(new_meshing_session):
     wt = new_meshing_session.watertight(legacy=True)
     geo_import = new_meshing_session.workflow.TaskObject["Import Geometry"]
-    geo_import.Arguments = dict(FileName="Bob")
-    geo_import.Arguments = dict(FileName=None)
+    geo_import.Arguments.set_state(dict(FileName="Bob"))
+    geo_import.Arguments.set_state(dict(FileName=None))
     assert "FileName" in wt.import_geometry.command_arguments()
     assert wt.import_geometry.command_arguments()["FileName"] is None
 

@@ -586,8 +586,8 @@ solver_session.settings.mesh.check()
 
 viscous = solver_session.settings.setup.models.viscous
 
-viscous.model = "k-omega"
-viscous.k_omega_model = "sst"
+viscous.model.set_state("k-omega")
+viscous.k_omega_model.set_state("sst")
 
 ###############################################################################
 # Set velocity and turbulence boundary conditions for first inlet
@@ -622,10 +622,12 @@ boundary_conditions.copy(
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Set the boundary conditions at the outlet (``outlet-1``).
 
-boundary_conditions.pressure_outlet["outlet-1"].turbulence.turbulent_intensity = 0.05
 boundary_conditions.pressure_outlet[
     "outlet-1"
-].turbulence.backflow_turbulent_intensity = 0.05
+].turbulence.turbulent_intensity.set_state(0.05)
+boundary_conditions.pressure_outlet[
+    "outlet-1"
+].turbulence.backflow_turbulent_intensity.set_state(0.05)
 
 ###############################################################################
 # Initialize flow field
@@ -665,10 +667,10 @@ solver_session.settings.file.write(
 graphics = solver_session.settings.results.graphics
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
-graphics.picture.x_resolution = 1920
-graphics.picture.y_resolution = 1440
+graphics.picture.x_resolution.set_state(1920)
+graphics.picture.y_resolution.set_state(1440)
 
 ###############################################################################
 # Create path lines
@@ -751,12 +753,12 @@ graphics.picture.save_picture(file_name="contour-velocity.png")
 solver_session.settings.results.scene["scene-1"] = {}
 scene1 = solver_session.settings.results.scene["scene-1"]
 scene1.graphics_objects.add(name="mesh-1")
-scene1.graphics_objects["mesh-1"].transparency = 90
+scene1.graphics_objects["mesh-1"].transparency.set_state(90)
 scene1.graphics_objects.add(name="contour-velocity")
 scene1.display()
 
-graphics.views.camera.position = [1.70, 1.14, 0.29]
-graphics.views.camera.up_vector = [-0.66, 0.72, -0.20]
+graphics.views.camera.position.set_state([1.70, 1.14, 0.29])
+graphics.views.camera.up_vector.set_state([-0.66, 0.72, -0.20])
 graphics.picture.save_picture(file_name="scene-1.png")
 
 #########################################################################

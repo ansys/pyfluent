@@ -121,7 +121,7 @@ def test_mixing_elbow_meshing_workflow(
     assign_task_args(
         task_name="smooth-transition_1", BLControlName="smooth-transition_1"
     )
-    add_boundary_layer.Arguments = {}
+    add_boundary_layer.Arguments.set_state({})
 
     execute_task_with_pre_and_postconditions(task_name="Add Boundary Layers")
 
