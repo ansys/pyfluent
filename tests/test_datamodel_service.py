@@ -1140,3 +1140,27 @@ def test_py_named_object_methods_in_workflow(new_meshing_session):
     assert isinstance(meshing.workflow, PyMenu)
     assert isinstance(meshing.workflow.TaskObject, PyNamedObjectContainer)
     assert isinstance(meshing.workflow.TaskObject["Import Geometry"], PyNamedObject)
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_command_instancing_in_meshing_workflow(new_meshing_session):
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    meshing = new_meshing_session
+    meshing.meshing_workflow.general.initialize_workflow(
+        workflow_type="Watertight Geometry"
+    )
+    # create an instance of the command
+    cmd = meshing.meshing_workflow.application.import_geometry.create()
+
+    # accesses an object representing the same underlying command instance
+    cmd_ = meshing.meshing_workflow.application.import_geometry[cmd.name()]
+    assert cmd.name() == cmd_.name()
+
+    cmd.file_name.set_state(import_file_name)  # sets an argument
+
+    cmd()  # executes
+
+    assert meshing.is_active()
+    assert cmd.file_name.get_state() is not None
