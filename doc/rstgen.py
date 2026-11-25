@@ -389,8 +389,9 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             f.write(f":ref:`{member_label} <{member_ref}>`\n\n")
             member_ref_role = f":ref:`{member_label} <{member_ref}>`"
             f.write(
-                f"``{menu['name'].__name__}`` is organised like a dictionary. "
-                f"You can access each {member_ref_role} by name using "
+                f"``{menu['name'].__name__}`` is organised like a Python "
+                f"dictionary holding objects of type {member_ref_role} by name. "
+                f"You can access them using "
                 f"``{menu['name'].__name__}['<name>']``, or use methods such "
                 f"as ``get()``, ``keys()`` and ``values()``.\n\n\n"
             )

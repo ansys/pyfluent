@@ -126,6 +126,28 @@ def _named_object_command_base(cls):
     )
 
 
+def _process_autodoc_bases(app, name, obj, options, bases):
+    child_type = getattr(obj, "child_object_type", None)
+    if child_type is None:
+        return
+
+    child_name = getattr(child_type, "_python_name", None)
+    if not child_name:
+        return
+
+    child_ref = f"{child_type.__module__}.{child_type.__name__}"
+    for index, base in enumerate(bases):
+        if child_type not in getattr(base, "__args__", ()):
+            continue
+        origin = getattr(base, "__origin__", None)
+        if origin is None:
+            continue
+        bases[index] = (
+            f":py:class:`{origin.__module__}.{origin.__qualname__}`\\ "
+            f"[:py:class:`{child_name} <{child_ref}>`\\ ]"
+        )
+
+
 def _write_rst_header(
     r,
     cls,
@@ -205,10 +227,10 @@ def _write_rst_body(r, cls, cls_name):
         else:
             access_example = f"{cls._python_name}['<name>']"
             r.write(
-                f"``{cls._python_name}`` is organised like a dictionary. You "
-                f"can access each {instance_ref} by name using "
-                f"``{access_example}``, or use methods such as ``get()``, "
-                f"``keys()`` and ``values()``.\n\n\n"
+                f"``{cls._python_name}`` is organised like a Python dictionary "
+                f"holding objects of type {instance_ref} by name. "
+                f"You can access them using ``{access_example}``, or use "
+                f"methods such as ``get()``, ``keys()`` and ``values()``.\n\n\n"
             )
     if parents_dict.get(cls_name):
         r.write(".. rubric:: Included in:\n\n")

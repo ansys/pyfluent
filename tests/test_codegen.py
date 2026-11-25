@@ -1112,10 +1112,19 @@ def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
     monkeypatch.setitem(sys.modules, module_name, generated)
     monkeypatch.setattr(parent, "settings", generated, raising=False)
     spec.loader.exec_module(generated)
+    container = generated.root._child_classes["container"]
+    child_type = container.child_object_type
+    child_type.__name__ = "container_1_item"
+    generated.container_1_item = child_type
     source = tmp_path / "docs"
     source.mkdir()
     settings_rstgen._populate_parents_list(generated.root)
     settings_rstgen._populate_rst_from_settings(source, generated.root, "271")
+    container_rst = (source / f"{container.__name__}.rst").read_text()
+    assert (
+        "organised like a Python dictionary holding objects of type "
+        ":ref:`container_item <container_1_item>` by name."
+    ) in container_rst
     (source / "conf.py").write_text(
         "extensions = ['sphinx.ext.autodoc']\nmaster_doc = 'index'\n",
         encoding="utf-8",
@@ -1137,9 +1146,9 @@ def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
         warningiserror=True,
         freshenv=True,
     )
+    app.connect("autodoc-process-bases", settings_rstgen._process_autodoc_bases)
     app.build()
     assert app.statuscode == 0, warnings.getvalue()
-    container = generated.root._child_classes["container"]
     base = container.__bases__[0]
     container_html = (tmp_path / "html" / f"{container.__name__}.html").read_text(
         encoding="utf-8"
@@ -1152,14 +1161,16 @@ def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
     ]
     base_html = base_html.split('role="main">', 1)[1].split("</section>", 1)[0]
     bases_line = container_html.split("Bases:", 1)[1].split("</p>", 1)[0]
-    assert f"{base.__name__}.html" in bases_line
+    assert '<span class="pre">container_item</span>' in bases_line
+    assert '<span class="pre">container_1_item</span>' not in bases_line
+    assert "container_1_item.html" in bases_line
     assert "display.html" in container_html
     assert "create.html" not in container_html
     assert "delete.html" not in container_html
     assert "create.html" in base_html
     assert "delete.html" in base_html
 
-    
+
 def test_settings_codegen_argument_docs_use_callable_names(monkeypatch, tmp_path):
     from ansys.fluent.core.solver import flobject
 
