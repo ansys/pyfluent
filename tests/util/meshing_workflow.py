@@ -26,7 +26,7 @@ def assign_task_arguments(
     workflow, check_state: bool, task_name: str, **kwargs
 ) -> None:
     task = workflow.TaskObject[task_name]
-    task.Arguments = kwargs
+    task.Arguments.set_state(kwargs)
     if check_state:
         # the state that we have set must be a subset of the total state
         assert kwargs.items() <= task.Arguments().items()
