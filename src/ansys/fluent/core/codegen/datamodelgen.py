@@ -588,14 +588,14 @@ class DataModelGenerator:
                 for arg_info in args_info:
                     self._write_arg_class(f, arg_info, f"{indent}            ")
 
-                f.write(
-                    f"{indent}        def create_instance(self) -> _{k}Arguments:\n"
-                )
+                f.write(f"{indent}        def create(self) -> _{k}Arguments:\n")
                 f.write(
                     f"{indent}            args = self._get_create_instance_args()\n"
                 )
                 f.write(f"{indent}            if args is not None:\n")
-                f.write(f"{indent}                return self._{k}Arguments(*args)\n\n")
+                f.write(
+                    f"{indent}                return self._create_arguments_instance(*args)\n\n"
+                )
                 api_tree[k] = st_info_key[2]
 
         _write_action_classes(

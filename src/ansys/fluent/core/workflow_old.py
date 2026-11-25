@@ -115,7 +115,7 @@ def _new_command_for_task(task, session):
     task_cmd_name = task.CommandName()
     cmd_creator = getattr(session, task_cmd_name)
     if cmd_creator:
-        new_cmd = cmd_creator.create_instance()
+        new_cmd = cmd_creator.create()
         if new_cmd:
             return new_cmd
     raise CommandInstanceCreationError(task._name_())
@@ -532,7 +532,7 @@ class BaseTask:
         for command_name in self._task.GetNextPossibleTasks():
             comm_obj = getattr(
                 self._command_source._command_source, command_name
-            ).create_instance()
+            ).create()
             self._python_task_names_map[
                 camel_to_snake_case(
                     comm_obj.get_attr("APIName") or comm_obj.get_attr("helpString")
@@ -1654,7 +1654,7 @@ class Workflow:
                     continue
                 command_obj = getattr(self._command_source, command)
                 if isinstance(command_obj, PyCommand):
-                    command_obj_instance = command_obj.create_instance()
+                    command_obj_instance = command_obj.create()
                     if not command_obj_instance.get_attr("requiredInputs"):
                         help_str = command_obj_instance.get_attr(
                             "APIName"

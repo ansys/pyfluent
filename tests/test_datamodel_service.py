@@ -24,6 +24,7 @@
 import gc
 import inspect
 from time import sleep
+from unittest.mock import Mock, patch
 import warnings
 
 from conftest import SKIP_INVESTIGATING
@@ -117,6 +118,97 @@ def test_pyarguments_registers_and_releases_command_arguments():
     assert service.released == [
         ("workflow", "", "ImportGeometry", "cmd-id"),
     ]
+
+
+def test_command_argument_instance_creation_lookup_and_execution():
+    service = Mock()
+    service._cache = None
+    service.create_command_arguments.return_value = "command-id"
+    service.get_state.return_value = {"x": 4}
+    service.get_attribute_value.return_value = False
+    service.execute_command.return_value = "executed"
+
+    class DoCommand(PyCommand):
+        class _DoArguments(PyArguments):
+            def __init__(self, service, rules, command, path, command_id):
+                super().__init__(service, rules, command, path, command_id)
+                self.x = PyArgumentsSubItem(self, "x", service, rules, path)
+
+    command = DoCommand(service, "rules", "Do")
+
+    with patch.object(PyCommand, "_get_file_purpose", return_value=None):
+        created = command.create()
+        with pytest.warns(PyFluentDeprecationWarning, match="x.set_state"):
+            created.x = 4
+        found = command[created.name()]
+
+        assert found is created
+        assert created.name() == found.name() == "command-id"
+        assert isinstance(created, PyArguments)
+
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always", PyFluentDeprecationWarning)
+            assert found.x() == 4
+        assert not captured
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always", PyFluentDeprecationWarning)
+            assert found() == "executed"
+        assert not captured
+
+    service.create_command_arguments.assert_called_once_with("rules", "", "Do")
+    service.register_command_arguments.assert_called_once_with(
+        "rules", "", "Do", "command-id"
+    )
+    service.set_state.assert_called_once()
+    service.execute_command.assert_called_once_with("rules", "", "Do", {"x": 4})
+    command_id = created.name()
+    del created, found
+    gc.collect()
+    with pytest.raises(KeyError, match=command_id):
+        command[command_id]
+
+
+def test_legacy_command_create_instance_warns_but_other_state_calls_do_not():
+    service = Mock()
+    service._cache = None
+    service.create_command_arguments.return_value = "command-id"
+    service.get_state.return_value = {"x": 4}
+    command = PyCommand(service, "rules", "Do")
+
+    with pytest.warns(PyFluentDeprecationWarning, match="use create\\(\\)"):
+        command.create_instance()
+
+    state = PyStateContainer(service, "rules")
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        assert state() == {"x": 4}
+    assert not captured
+
+
+def test_query_argument_instance_creation_lookup_and_execution():
+    service = Mock()
+    service._cache = None
+    service.create_command_arguments.return_value = "query-id"
+    service.get_state.return_value = {"x": "value"}
+    service.execute_query.return_value = "queried"
+
+    class FindQuery(PyQuery):
+        class _FindArguments(PyArguments):
+            def __init__(self, service, rules, query, path, query_id):
+                super().__init__(service, rules, query, path, query_id)
+
+    query = FindQuery(service, "rules", "Find")
+    created = query.create()
+    found = query[created.name()]
+
+    assert isinstance(created, PyArguments)
+    assert found.name() == "query-id"
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        assert found() == "queried"
+    assert not captured
+
+    service.execute_query.assert_called_once_with("rules", "", "Find", {"x": "value"})
 
 
 def test_state_assignment_deprecation(mocker):
@@ -500,9 +592,9 @@ def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    x = meshing.meshing.ImportGeometry.create_instance()
+    x = meshing.meshing.ImportGeometry.create()
 
-    assert x.LengthUnit() == "mm"
+    assert x.LengthUnit.get_state() == "mm"
 
     assert x.LengthUnit.allowed_values() == ["m", "cm", "mm", "in", "ft", "um", "nm"]
 
@@ -510,15 +602,15 @@ def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
 
     assert x.LengthUnit.get_state() == "ft"
 
-    assert not x.ImportCadPreferences.ShowImportCadPreferences()
+    assert not x.ImportCadPreferences.ShowImportCadPreferences.get_state()
 
     x.ImportCadPreferences.ShowImportCadPreferences.set_state(True)
 
-    assert x.ImportCadPreferences.ShowImportCadPreferences()
+    assert x.ImportCadPreferences.ShowImportCadPreferences.get_state()
 
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
-    assert x.FileName() == "dummy_file_name.dummy_extn"
+    assert x.FileName.get_state() == "dummy_file_name.dummy_extn"
 
 
 def _is_internal_name(name: str, prefix: str) -> bool:
@@ -568,7 +660,7 @@ def test_named_object_specific_methods(new_meshing_session):
 
 def test_command_creation_inside_singleton(new_meshing_session):
     meshing = new_meshing_session
-    read_mesh = meshing.meshing.File.ReadMesh.create_instance()
+    read_mesh = meshing.meshing.File.ReadMesh.create()
     assert read_mesh.FileName is not None
 
 
@@ -830,7 +922,7 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
 
 def test_set_command_args_and_sub_args(new_meshing_session):
     meshing = new_meshing_session
-    ig = meshing.meshing.ImportGeometry.create_instance()
+    ig = meshing.meshing.ImportGeometry.create()
 
     ig.FileFormat = "Mesh"
 
@@ -848,7 +940,7 @@ def test_set_command_args_and_sub_args(new_meshing_session):
 @pytest.mark.fluent_version(">=26.1")
 def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session
-    ic = meshing.meshing.LoadCADGeometry.create_instance()
+    ic = meshing.meshing.LoadCADGeometry.create()
 
     ic.Refaceting.Refacet = True
 
@@ -887,13 +979,13 @@ def test_field_level_help(new_meshing_session):
         assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
             "Specify the CAD geometry that you want to work with. Choose from"
         )
-    import_geometry = meshing.meshing.ImportGeometry.create_instance()
+    import_geometry = meshing.meshing.ImportGeometry.create()
     assert isinstance(import_geometry.FileFormat, PyArgumentsTextualSubItem)
     # Field-level help at parameter-type command argument level
     assert import_geometry.FileFormat.__doc__.strip().startswith(
         "Indicate whether the imported geometry is a CAD File or"
     )
-    linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
+    linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create()
     assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
     if meshing.get_fluent_version() >= FluentVersion.v271:
@@ -918,18 +1010,18 @@ def test_py_query(new_meshing_session):
         meshing_session.meshing_utilities.get_labels_on_face_zones, PyQuery
     )
     get_labels_on_face_zones_instance = (
-        meshing_session.meshing_utilities.get_labels_on_face_zones.create_instance()
+        meshing_session.meshing_utilities.get_labels_on_face_zones.create()
     )
     assert isinstance(get_labels_on_face_zones_instance, PyArguments)
 
     if meshing_session.get_fluent_version() >= FluentVersion.v261:
-        assert get_labels_on_face_zones_instance() == {
+        assert get_labels_on_face_zones_instance.get_state() == {
             "face_zone_name_list": None,
             "face_zone_id_list": None,
             "face_zone_name_pattern": "",
         }
     else:
-        assert get_labels_on_face_zones_instance() == {
+        assert get_labels_on_face_zones_instance.get_state() == {
             "face_zone_name_list": [],
             "face_zone_id_list": [],
             "face_zone_name_pattern": "",
@@ -938,12 +1030,12 @@ def test_py_query(new_meshing_session):
     get_labels_on_face_zones_instance.face_zone_name_list = ["wall-inlet", "wall-elbow"]
 
     if meshing_session.get_fluent_version() >= FluentVersion.v261:
-        assert get_labels_on_face_zones_instance() == {
+        assert get_labels_on_face_zones_instance.get_state() == {
             "face_zone_name_list": ["wall-inlet", "wall-elbow"],
             "face_zone_name_pattern": "",
         }
     else:
-        assert get_labels_on_face_zones_instance() == {
+        assert get_labels_on_face_zones_instance.get_state() == {
             "face_zone_name_list": ["wall-inlet", "wall-elbow"],
             "face_zone_id_list": [],
             "face_zone_name_pattern": "",

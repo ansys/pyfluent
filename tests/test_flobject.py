@@ -503,6 +503,24 @@ def test_state_assignment_deprecation():
         assert r.g_1.i_2.get_state() == 4
 
 
+def test_command_argument_call_is_not_deprecated():
+    r = flobject.get_root(Proxy())
+    state = {"r_1": 1.0, "i_2": 2, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state(state)
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        assert r.g_1.r_1() == 1.0
+        assert r.g_1() == state
+        assert not captured
+
+    command_argument = r.c_1.a_1
+    object.__setattr__(command_argument, "get_state", lambda: 3.2)
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        assert command_argument() == 3.2
+    assert not captured
+
+
 def test_command_argument_assignment_deprecation(mocker):
     r = flobject.get_root(Proxy())
     arg = r.c_1.a_1
@@ -631,6 +649,28 @@ def test_command():
     assert ret == ["A", "B", "C"]
     with pytest.raises(TypeError):
         ret = r.c_3()
+
+
+def test_command_instance_creation_lookup_and_execution():
+    r = flobject.get_root(Proxy())
+    r.g_1.r_1.set_state(2.4)
+    command = r.c_1
+    command._setattr("_version", FluentVersion.v261)
+
+    created = command.create()
+    with pytest.warns(PyFluentDeprecationWarning, match="a_1.set_state"):
+        created.a_1 = 3.2
+    found = command[created.name()]
+
+    assert found.name() == created.name()
+    assert found.a_1.get_state() == 3.2
+    found.set_state({"a_2": False})
+    assert found.get_state() == {"a_1": 3.2, "a_2": False}
+    found()
+    assert r.g_1.r_1.get_state() == 2.4 - 3.2
+
+    with pytest.raises(KeyError, match="missing"):
+        command["missing"]
 
 
 def test_attrs():
