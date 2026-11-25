@@ -33,6 +33,7 @@ import shutil
 import sys
 import tempfile
 import types
+from typing import Generic, TypeVar
 
 import pytest
 
@@ -1161,6 +1162,8 @@ def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
     ]
     base_html = base_html.split('role="main">', 1)[1].split("</section>", 1)[0]
     bases_line = container_html.split("Bases:", 1)[1].split("</p>", 1)[0]
+    assert '<span class="pre">NamedObject</span>' in bases_line
+    assert '<span class="pre">CreatableNamedObjectMixin</span>' in bases_line
     assert '<span class="pre">container_item</span>' in bases_line
     assert '<span class="pre">container_1_item</span>' not in bases_line
     assert "container_1_item.html" in bases_line
@@ -1169,6 +1172,29 @@ def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
     assert "delete.html" not in container_html
     assert "create.html" in base_html
     assert "delete.html" in base_html
+
+
+def test_process_autodoc_bases_uses_short_names(monkeypatch):
+    monkeypatch.syspath_prepend(str(Path(__file__).parents[1] / "doc"))
+    settings_rstgen = importlib.import_module("settings_rstgen")
+    item_type = TypeVar("item_type")
+
+    class Item:
+        _python_name = "named_item"
+
+    class NamedObject(Generic[item_type]):
+        pass
+
+    class Container:
+        child_object_type = Item
+
+    bases = [NamedObject[Item]]
+    settings_rstgen._process_autodoc_bases(None, "", Container, None, bases)
+
+    assert bases == [
+        f":py:class:`NamedObject <{NamedObject.__module__}.{NamedObject.__qualname__}>`\\ "
+        f"[:py:class:`named_item <{Item.__module__}.{Item.__name__}>`\\ ]"
+    ]
 
 
 def test_settings_codegen_argument_docs_use_callable_names(monkeypatch, tmp_path):

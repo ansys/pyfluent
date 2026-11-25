@@ -142,8 +142,9 @@ def _process_autodoc_bases(app, name, obj, options, bases):
         origin = getattr(base, "__origin__", None)
         if origin is None:
             continue
+        origin_ref = f"{origin.__module__}.{origin.__qualname__}"
         bases[index] = (
-            f":py:class:`{origin.__module__}.{origin.__qualname__}`\\ "
+            f":py:class:`{origin.__name__} <{origin_ref}>`\\ "
             f"[:py:class:`{child_name} <{child_ref}>`\\ ]"
         )
 
