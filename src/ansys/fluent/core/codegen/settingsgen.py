@@ -36,8 +36,10 @@ from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, walk_api
 from ansys.fluent.core.solver import _docstrings
 from ansys.fluent.core.solver.flobject import (
+    _NAMED_OBJECT_COMMANDS,
     ListObject,
     NamedObject,
+    _NamedObjectCommandBase,
     get_cls,
     to_constant_name,
     to_python_name,
@@ -112,7 +114,11 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data = {
         "version": version,
         "name": cls.__name__,
-        "bases": [base.__name__ for base in cls.__bases__],
+        "bases": [
+            base.__name__
+            for base in cls.__bases__
+            if not issubclass(base, _NamedObjectCommandBase)
+        ],
     }
     if "command" in cls.__doc__:
         data["doc"] = strip_parameters(cls.__doc__)
@@ -172,6 +178,10 @@ _NAME_BY_HASH = {}
 # Keeps tracks of which classes have been written to the file.
 # See the implementation note in _write_data() for more details.
 _CLASS_WRITTEN = set()
+
+_NAMED_OBJECT_MIXINS = {}
+_NAMED_OBJECT_MIXINS_WRITTEN = set()
+_NAMED_OBJECT_MIXIN_STUBS_WRITTEN = set()
 
 
 def _get_unique_name(name):
@@ -255,13 +265,25 @@ def _write_scalar_attrs(s, s_stub, python_name, data):
     s_stub.write("    _python_name: str\n")
 
 
-def _write_name_lists(s, s_stub, data):
+def _write_name_lists(s, s_stub, data, command_mixin=None, shared_commands=()):
     child_names = data["child_names"]
     if child_names:
         s.write(f"    child_names = {child_names}\n")
         s_stub.write("    child_names: list[str]\n")
     command_names = data["command_names"]
-    if command_names:
+    if command_mixin and len(command_names) > len(shared_commands):
+        extra_commands = [
+            (index, name)
+            for index, name in enumerate(command_names)
+            if name not in shared_commands
+        ]
+        s.write(
+            "    command_names = _merge_named_object_command_names(\n"
+            f"        {command_mixin}.command_names, {extra_commands!r}\n"
+            "    )\n"
+        )
+        s_stub.write("    command_names: list[str]\n")
+    elif command_names and not command_mixin:
         s.write(f"    command_names = {command_names}\n")
         s_stub.write("    command_names: list[str]\n")
     query_names = data["query_names"]
@@ -274,12 +296,51 @@ def _write_name_lists(s, s_stub, data):
         s_stub.write("    argument_names: list[str]\n")
 
 
+def _write_child_class_mapping(s, children, shared_commands):
+    shared_children = {k: v for k, v in children.items() if k in shared_commands}
+    command_mixin = None
+    if shared_children:
+        # Command classes encode version- and container-specific metadata.
+        key = (tuple(shared_commands), tuple(shared_children.items()))
+        command_mixin = _NAMED_OBJECT_MIXINS.get(key)
+        if command_mixin is None:
+            command_mixin = _get_unique_name("_NamedObjectCommands")
+            _NAME_BY_HASH[_gethash(("named-object-commands", key))] = command_mixin
+            _NAMED_OBJECT_MIXINS[key] = command_mixin
+
+    other_children = [
+        (index, k, v)
+        for index, (k, v) in enumerate(children.items())
+        if k not in shared_children
+    ]
+    if other_children or not command_mixin:
+        if command_mixin:
+            s.write("    _child_classes = _merge_named_object_child_classes(\n")
+            s.write(f"        {command_mixin}._child_classes,\n")
+            s.write("        [\n")
+            for index, k, name in other_children:
+                s.write(f"            ({index}, {k!r}, {name}),\n")
+            s.write("        ],\n")
+        else:
+            s.write("    _child_classes = dict(\n")
+            for _, k, name in other_children:
+                s.write(f"        {k}={name},\n")
+        s.write("    )\n")
+    return command_mixin, shared_children
+
+
 def _collect_child_classes(s, s_stub, data, classes_to_write):
     if not data["child_classes"]:
-        return
+        return None, (), {}
     command_names = data["command_names"]
     query_names = data["query_names"]
-    s.write("    _child_classes = dict(\n")
+    shared_commands = []
+    if "NamedObject" in data["bases"]:
+        for name in command_names:
+            if data["child_classes"][name]["fluent_name"] in _NAMED_OBJECT_COMMANDS:
+                shared_commands.append(name)
+
+    children = {}
     for k, v in data["child_classes"].items():
         name = v["name"]
         # Retrieving the original python name before get_cls() modifies it.
@@ -293,7 +354,7 @@ def _collect_child_classes(s, s_stub, data, classes_to_write):
         if not unique_name:
             unique_name = _get_unique_name(name)
             _NAME_BY_HASH[hash_] = unique_name
-        s.write(f"        {k}={unique_name},\n")
+        children[k] = unique_name
         # We include the child-class to write irrespective of the above
         # _NAME_BY_HASH lookup result and later use the global _CLASS_WRITTEN
         # set to avoid duplicate writes. This is necessary because class
@@ -302,7 +363,8 @@ def _collect_child_classes(s, s_stub, data, classes_to_write):
         # to write only if it is not found in the _NAME_BY_HASH dict and avoid
         # the _CLASS_WRITTEN set.
         if k in command_names:
-            s_stub.write(f"    {k}: {unique_name}\n")
+            if k not in shared_commands:
+                s_stub.write(f"    {k}: {unique_name}\n")
             classes_to_write[unique_name] = (child_python_name, v, hash_, True)
         elif k in query_names:
             _write_function_stub(k, v, s_stub)
@@ -310,7 +372,10 @@ def _collect_child_classes(s, s_stub, data, classes_to_write):
         else:
             s_stub.write(f"    {k}: {unique_name}\n")
             classes_to_write[unique_name] = (child_python_name, v, hash_, True)
-    s.write("    )\n")
+    command_mixin, shared_children = _write_child_class_mapping(
+        s, children, shared_commands
+    )
+    return command_mixin, tuple(shared_commands), shared_children
 
 
 def _write_optional_attrs(s, s_stub, data):
@@ -346,14 +411,25 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     # in a string buffer which is written after writing the child class definitions.
     s = StringIO()
     s_stub = StringIO()
+    child_code = StringIO()
+    child_stub = StringIO()
     child_object_name = f"{cls_name}_item" if data["child_object_type"] else None
-    bases = ", ".join(_construct_bases(data["bases"], child_object_name))
-    bases_stub = ", ".join(_construct_bases_stub(data["bases"], child_object_name))
+    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
+    command_mixin, shared_commands, shared_children = _collect_child_classes(
+        child_code, child_stub, data, classes_to_write
+    )
+    bases = _construct_bases(data["bases"], child_object_name)
+    bases_stub = _construct_bases_stub(data["bases"], child_object_name)
+    if command_mixin:
+        bases.insert(0, command_mixin)
+        bases_stub.insert(0, command_mixin)
+    bases = ", ".join(bases)
+    bases_stub = ", ".join(bases_stub)
     _write_class_header(s, s_stub, cls_name, bases, bases_stub, data)
     _write_scalar_attrs(s, s_stub, python_name, data)
-    _write_name_lists(s, s_stub, data)
-    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
-    _collect_child_classes(s, s_stub, data, classes_to_write)
+    _write_name_lists(s, s_stub, data, command_mixin, shared_commands)
+    s.write(child_code.getvalue())
+    s_stub.write(child_stub.getvalue())
     if "Command" in data["bases"] or "CommandWithPositionalArgs" in data["bases"]:
         _write_command_stub(data, s_stub)
     if child_object_name:
@@ -375,6 +451,28 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
                 name, python_name, data, f, f_stub if should_write_stub else None
             )
             _CLASS_WRITTEN.add(name)
+    if command_mixin and command_mixin not in _NAMED_OBJECT_MIXINS_WRITTEN:
+        f.write(f"class {command_mixin}(_NamedObjectCommandBase):\n")
+        f.write(f"    command_names = {list(shared_commands)!r}\n")
+        f.write("    _child_classes = dict(\n")
+        for name, child_class in shared_children.items():
+            f.write(f"        {name}={child_class},\n")
+        f.write("    )\n")
+        for name, child_class in shared_children.items():
+            f.write(f"    {name} = {child_class}\n")
+        f.write("\n")
+        _NAMED_OBJECT_MIXINS_WRITTEN.add(command_mixin)
+    if (
+        f_stub
+        and command_mixin
+        and command_mixin not in _NAMED_OBJECT_MIXIN_STUBS_WRITTEN
+    ):
+        f_stub.write(f"class {command_mixin}(_NamedObjectCommandBase):\n")
+        f_stub.write("    command_names: list[str]\n")
+        for name, child_class in shared_children.items():
+            f_stub.write(f"    {name}: {child_class}\n")
+        f_stub.write("\n")
+        _NAMED_OBJECT_MIXIN_STUBS_WRITTEN.add(command_mixin)
     f.write(s.getvalue())
     if f_stub:
         f_stub.write(s_stub.getvalue())
@@ -418,6 +516,9 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     data = _populate_data(cls, api_tree, version)
     _NAME_BY_HASH.clear()
     _CLASS_WRITTEN.clear()
+    _NAMED_OBJECT_MIXINS.clear()
+    _NAMED_OBJECT_MIXINS_WRITTEN.clear()
+    _NAMED_OBJECT_MIXIN_STUBS_WRITTEN.clear()
     if verbose:
         print(f"{str(output_file)}")
         print(f"{str(output_stub_file)}")
@@ -432,6 +533,9 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write("    ExposureLevel,\n")
         header.write("    _ChildNamedObjectAccessorMixin,\n")
         header.write("    _NonCreatableNamedObjectMixin,\n")
+        header.write("    _NamedObjectCommandBase,\n")
+        header.write("    _merge_named_object_child_classes,\n")
+        header.write("    _merge_named_object_command_names,\n")
         header.write("    _InputFile,\n")
         header.write("    _OutputFile,\n")
         header.write("    _InOutFile,\n")
