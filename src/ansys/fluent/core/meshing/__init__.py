@@ -35,6 +35,7 @@ Meshing workflows use the underlying meshing workflow object. See the
 import warnings
 
 from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
+from ansys.fluent.core.execution import using
 from ansys.fluent.core.meshing.session import Meshing, PureMeshing
 from ansys.fluent.core.meshing.session.meshing import BaseMeshing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -396,6 +397,7 @@ class LoadMeshingWorkflow:
 
 
 __all__ = [
+    "using",
     "Meshing",
     "PureMeshing",
     "WatertightMeshing",
