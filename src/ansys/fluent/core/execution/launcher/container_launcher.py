@@ -191,7 +191,7 @@ class DockerLauncher:
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
         py : bool, optional
-            Pass ``True`` to request Python mode. By default, the launcher omits ``-py``.
+            Pass ``True`` to request Python mode. By default, the launcher deactivates the mode.
         gpu : bool, optional
             If True, starts Fluent with GPU Solver enabled.
         start_watchdog : bool, optional
