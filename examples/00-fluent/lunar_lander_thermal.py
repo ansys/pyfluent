@@ -282,14 +282,14 @@ solver_session.settings.file.read_mesh(file_name=lander_mesh_file)
 # 1.
 
 # Set solution to transient
-solver_session.settings.setup.general.solver.time = "unsteady-2nd-order"
+solver_session.settings.setup.general.solver.time.set_state("unsteady-2nd-order")
 
 # Set transient settings
 trans_controls = solver_session.settings.solution.run_calculation.transient_controls
-trans_controls.type = "Fixed"
-trans_controls.max_iter_per_time_step = 20
-trans_controls.time_step_count = 1
-trans_controls.time_step_size = step_size
+trans_controls.type.set_state("Fixed")
+trans_controls.max_iter_per_time_step.set_state(20)
+trans_controls.time_step_count.set_state(1)
+trans_controls.time_step_size.set_state(step_size)
 
 ###############################################################################
 # Enable models
@@ -298,8 +298,8 @@ trans_controls.time_step_size = step_size
 # viscosity model to laminar.
 
 models = solver_session.settings.setup.models
-models.energy.enabled = True
-models.viscous.model = "laminar"
+models.energy.enabled.set_state(True)
+models.viscous.model.set_state("laminar")
 
 ###############################################################################
 # Set up radiation model
@@ -317,8 +317,8 @@ models.viscous.model = "laminar"
 
 # Set up radiation model
 radiation = models.radiation
-radiation.model = "monte-carlo"
-radiation.monte_carlo.number_of_histories = 1e7
+radiation.model.set_state("monte-carlo")
+radiation.monte_carlo.number_of_histories.set_state(1e7)
 
 # Define range of solar wavelengths
 radiation.multiband["solar"] = {
@@ -333,8 +333,8 @@ radiation.multiband["thermal-ir"] = {
 
 # Solve radiation once per timestep
 radiation_freq = radiation.solve_frequency
-radiation_freq.method = "time-step"
-radiation_freq.time_step_interval = 1
+radiation_freq.method.set_state("time-step")
+radiation_freq.time_step_interval.set_state(1)
 
 ###############################################################################
 # Define materials
@@ -348,10 +348,10 @@ radiation_freq.time_step_interval = 1
 # Thermal conductivity: 0
 
 vacuum = solver_session.settings.setup.materials.solid.create("vacuum")
-vacuum.chemical_formula = ""
-vacuum.thermal_conductivity.value = 0
-vacuum.absorption_coefficient.value = 0
-vacuum.refractive_index.value = 1
+vacuum.chemical_formula.set_state("")
+vacuum.thermal_conductivity.value.set_state(0)
+vacuum.absorption_coefficient.value.set_state(0)
+vacuum.refractive_index.value.set_state(1)
 
 # --- Properties of fluff (see ref. [2]) ---
 # Density: 1000 [kg m^-3]
@@ -359,12 +359,12 @@ vacuum.refractive_index.value = 1
 # Thermal conductivity: 9.22e-4*(1 + 1.48*(temperature/350 K)^3) [W m^-1 K^-1]
 
 fluff = solver_session.settings.setup.materials.solid.create("fluff")
-fluff.chemical_formula = ""
-fluff.density.value = 1000
-fluff.specific_heat.value = 1050
-fluff.thermal_conductivity.option = "expression"
-fluff.thermal_conductivity.expression = (
-    "9.22e-4[W m^-1 K^-1]*(1 + 1.48*(StaticTemperature/350[K])^3)"
+fluff.chemical_formula.set_state("")
+fluff.density.value.set_state(1000)
+fluff.specific_heat.value.set_state(1050)
+fluff.thermal_conductivity.option.set_state("expression")
+fluff.thermal_conductivity.expression.set_state(
+    ("9.22e-4[W m^-1 K^-1]*(1 + 1.48*(StaticTemperature/350[K])^3)")
 )
 
 # --- Properties of regolith (see ref. [2]) ---
@@ -373,12 +373,12 @@ fluff.thermal_conductivity.expression = (
 # Thermal conductivity: 9.30e-4*(1 + 0.73*(temperature/350 K)^3) [W m^-1 K^-1]
 
 regolith = solver_session.settings.setup.materials.solid.create("regolith")
-regolith.chemical_formula = ""
-regolith.density.value = 2000
-regolith.specific_heat.value = 1050
-regolith.thermal_conductivity.option = "expression"
-regolith.thermal_conductivity.expression = (
-    "9.30e-4[W m^-1 K^-1]*(1 + 0.73*(StaticTemperature/350[K])^3)"
+regolith.chemical_formula.set_state("")
+regolith.density.value.set_state(2000)
+regolith.specific_heat.value.set_state(1050)
+regolith.thermal_conductivity.option.set_state("expression")
+regolith.thermal_conductivity.expression.set_state(
+    ("9.30e-4[W m^-1 K^-1]*(1 + 0.73*(StaticTemperature/350[K])^3)")
 )
 
 ###############################################################################
@@ -394,7 +394,7 @@ cellzones.set_zone_type(
     zone_list=["geom-2_domain"],
     new_type="solid",
 )
-cellzones.solid["geom-2_domain"].material = "vacuum"
+cellzones.solid["geom-2_domain"].material.set_state("vacuum")
 
 ###############################################################################
 # Regolith boundary condition
@@ -412,31 +412,35 @@ cellzones.solid["geom-2_domain"].material = "vacuum"
 
 regolith_bc = solver_session.settings.setup.boundary_conditions.wall["regolith"]
 
-regolith_bc.thermal.q.value = 0.031
-regolith_bc.thermal.planar_conduction = True
-regolith_bc.thermal.shell_conduction = [
-    {
-        "thickness": 0.02,
-        "material": "fluff",
-    },
-    {
-        "thickness": 0.04,
-        "material": "regolith",
-    },
-    {
-        "thickness": 0.08,
-        "material": "regolith",
-    },
-    {
-        "thickness": 0.16,
-        "material": "regolith",
-    },
-    {
-        "thickness": 0.32,
-        "material": "regolith",
-    },
-]
-regolith_bc.radiation.internal_emissivity_band = {"solar": 0.87, "thermal-ir": 0.97}
+regolith_bc.thermal.q.value.set_state(0.031)
+regolith_bc.thermal.planar_conduction.set_state(True)
+regolith_bc.thermal.shell_conduction.set_state(
+    [
+        {
+            "thickness": 0.02,
+            "material": "fluff",
+        },
+        {
+            "thickness": 0.04,
+            "material": "regolith",
+        },
+        {
+            "thickness": 0.08,
+            "material": "regolith",
+        },
+        {
+            "thickness": 0.16,
+            "material": "regolith",
+        },
+        {
+            "thickness": 0.32,
+            "material": "regolith",
+        },
+    ]
+)
+regolith_bc.radiation.internal_emissivity_band.set_state(
+    {"solar": 0.87, "thermal-ir": 0.97}
+)
 
 ###############################################################################
 # Space boundary condition
@@ -452,16 +456,18 @@ regolith_bc.radiation.internal_emissivity_band = {"solar": 0.87, "thermal-ir": 0
 
 space_bc = solver_session.settings.setup.boundary_conditions.wall["space"]
 
-space_bc.thermal.thermal_bc = "Temperature"
-space_bc.thermal.t.value = 3
-space_bc.thermal.material = "vacuum"
-space_bc.radiation.mc_bsource_p = True
+space_bc.thermal.thermal_bc.set_state("Temperature")
+space_bc.thermal.t.value.set_state(3)
+space_bc.thermal.material.set_state("vacuum")
+space_bc.radiation.mc_bsource_p.set_state(True)
 space_bc.radiation.direct_irradiation_settings.direct_irradiation["solar"] = 1414
-space_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {
-    "solar": 0,
-    "thermal-ir": 0,
-}
-space_bc.radiation.internal_emissivity_band = {"solar": 1, "thermal-ir": 1}
+space_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band.set_state(
+    {
+        "solar": 0,
+        "thermal-ir": 0,
+    }
+)
+space_bc.radiation.internal_emissivity_band.set_state({"solar": 1, "thermal-ir": 1})
 
 ###############################################################################
 # Spacecraft walls boundary condition
@@ -477,14 +483,18 @@ space_bc.radiation.internal_emissivity_band = {"solar": 1, "thermal-ir": 1}
 
 sc_mli_bc = solver_session.settings.setup.boundary_conditions.wall["sc-mli"]
 
-sc_mli_bc.thermal.planar_conduction = True
-sc_mli_bc.thermal.shell_conduction = [
-    {
-        "thickness": 0.03,
-        "material": "aluminum",
-    },
-]
-sc_mli_bc.radiation.internal_emissivity_band = {"solar": 0.05, "thermal-ir": 0.05}
+sc_mli_bc.thermal.planar_conduction.set_state(True)
+sc_mli_bc.thermal.shell_conduction.set_state(
+    [
+        {
+            "thickness": 0.03,
+            "material": "aluminum",
+        },
+    ]
+)
+sc_mli_bc.radiation.internal_emissivity_band.set_state(
+    {"solar": 0.05, "thermal-ir": 0.05}
+)
 
 ###############################################################################
 # Spacecraft radiator boundary condition
@@ -501,14 +511,16 @@ sc_mli_bc.radiation.internal_emissivity_band = {"solar": 0.05, "thermal-ir": 0.0
 
 sc_rad_bc = solver_session.settings.setup.boundary_conditions.wall["sc-radiator"]
 
-sc_rad_bc.thermal.planar_conduction = True
-sc_rad_bc.thermal.shell_conduction = [
-    {
-        "thickness": 0.03,
-        "material": "aluminum",
-    },
-]
-sc_rad_bc.radiation.internal_emissivity_band = {"solar": 0.17}
+sc_rad_bc.thermal.planar_conduction.set_state(True)
+sc_rad_bc.thermal.shell_conduction.set_state(
+    [
+        {
+            "thickness": 0.03,
+            "material": "aluminum",
+        },
+    ]
+)
+sc_rad_bc.radiation.internal_emissivity_band.set_state({"solar": 0.17})
 
 ###############################################################################
 # Initialize simulation
@@ -565,11 +577,11 @@ for i in range(1, 5 + 1):
     }
     regolith_report_names.extend([report_name])
 
-surf_report_defs["regolith-layer-1-temp"].surface_names = ["regolith"]
-surf_report_defs["regolith-layer-2-temp"].surface_names = ["regolith-1:2"]
-surf_report_defs["regolith-layer-3-temp"].surface_names = ["regolith-2:3"]
-surf_report_defs["regolith-layer-4-temp"].surface_names = ["regolith-3:4"]
-surf_report_defs["regolith-layer-5-temp"].surface_names = ["regolith-4:5"]
+surf_report_defs["regolith-layer-1-temp"].surface_names.set_state(["regolith"])
+surf_report_defs["regolith-layer-2-temp"].surface_names.set_state(["regolith-1:2"])
+surf_report_defs["regolith-layer-3-temp"].surface_names.set_state(["regolith-2:3"])
+surf_report_defs["regolith-layer-4-temp"].surface_names.set_state(["regolith-3:4"])
+surf_report_defs["regolith-layer-5-temp"].surface_names.set_state(["regolith-4:5"])
 
 ###############################################################################
 # Temperature report files
@@ -595,10 +607,10 @@ surf_report_files["regolith-temps-rfile"] = {
 
 autosave = solver_session.settings.solution.calculation_activity.auto_save
 
-autosave.case_frequency = "if-mesh-is-modified"
-autosave.data_frequency = 1
-autosave.save_data_file_every.frequency_type = "time-step"
-autosave.append_file_name_with.file_suffix_type = "time-step"
+autosave.case_frequency.set_state("if-mesh-is-modified")
+autosave.data_frequency.set_state(1)
+autosave.save_data_file_every.frequency_type.set_state("time-step")
+autosave.append_file_name_with.file_suffix_type.set_state("time-step")
 
 ###############################################################################
 # Convergence criteria
@@ -609,15 +621,15 @@ autosave.append_file_name_with.file_suffix_type = "time-step"
 residuals = solver_session.settings.solution.monitor.residual.equations
 
 for criterion in ["continuity", "x-velocity", "y-velocity", "z-velocity"]:
-    residuals[criterion].check_convergence = False
-    residuals[criterion].monitor = False
+    residuals[criterion].check_convergence.set_state(False)
+    residuals[criterion].monitor.set_state(False)
 
 ###############################################################################
 # Write case file
 # ~~~~~~~~~~~~~~~
 # Write the case file. Enable overwrite.
 
-solver_session.settings.file.batch_options.confirm_overwrite = True
+solver_session.settings.file.batch_options.confirm_overwrite.set_state(True)
 solver_session.settings.file.write(
     file_name="lunar_lander_thermal.cas.h5",
     file_type="case",
@@ -654,11 +666,13 @@ for i in range(n_steps):
     # Set beam direction
     solver_session.settings.setup.boundary_conditions.wall[
         "space"
-    ].radiation.direct_irradiation_settings.beam_direction = [
-        beam_x,
-        beam_y,
-        beam_z,
-    ]
+    ].radiation.direct_irradiation_settings.beam_direction.set_state(
+        [
+            beam_x,
+            beam_y,
+            beam_z,
+        ]
+    )
 
     # Calculate radiator mean temperature
     rad_mean_temp = get_surf_mean_temp(
@@ -671,9 +685,9 @@ for i in range(n_steps):
         "sc-radiator"
     ].radiation.internal_emissivity_band["thermal-ir"]
     if rad_mean_temp < 273:
-        radiation_emission.value = 0.09
+        radiation_emission.value.set_state(0.09)
     else:
-        radiation_emission.value = 0.70
+        radiation_emission.value.set_state(0.70)
 
     # Run simulation for 1 timestep
     solver_session.settings.solution.run_calculation.calculate()

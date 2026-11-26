@@ -7,11 +7,15 @@ import inspect
 import os
 import platform
 import subprocess
+import sys
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
 
 from ansys.fluent.core import __version__
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from settings_rstgen import _process_autodoc_bases  # noqa: E402
 
 # -- Project information -----------------------------------------------------
 
@@ -210,6 +214,10 @@ html_theme_options = {
     },
     "navigation_depth": -1,
     "collapse_navigation": True,
+    "mcp_server": {
+        "url": "https://github.com/ansys/pyfluent-mcp",
+        "project_name": "PyFluent-MCP",
+    },
 }
 
 if os.getenv("PYFLUENT_DOC_SKIP_CHEATSHEET") != "1":
@@ -316,6 +324,7 @@ def skip(app, what, name, obj, would_skip, options):
 def setup(app):
     """Setup function for Sphinx builder."""
     app.connect("autodoc-skip-member", skip)
+    app.connect("autodoc-process-bases", _process_autodoc_bases)
 
 
 # PyAnsys tags configuration

@@ -190,24 +190,23 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
   10.0
 
 
-To modify the state of any object, you can assign the corresponding attribute
-in its parent object. This assignment can be done at any level. For ``Group``
-and ``NamedObject`` types, the state value is a dictionary. For the
-``ListObject`` type, the state value is a list.
+To modify an object's state, call its ``set_state()`` method. For ``Group`` and
+``NamedObject`` types, the state value is a dictionary. For the ``ListObject``
+type, the state value is a list. Attribute assignment to set state is deprecated
+and emits a warning. Indexed assignment remains supported.
 
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Energy, VelocityInlet, Viscous
   >>> viscous = Viscous(settings_source=solver_session)
-  >>> viscous.model = 'laminar'
+  >>> viscous.model.set_state('laminar')
   >>> energy = Energy(settings_source=solver_session)
-  >>> energy.enabled = False
+  >>> energy.enabled.set_state(False)
   >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet1")
-  >>> inlet1.vmag.constant = 14
+  >>> inlet1.vmag.constant.set_state(14)
 
 
-You can also access the state of an object with the ``get_state()`` method and
-modify it with the ``set_state()`` method.
+You can also access the state of an object with the ``get_state()`` method.
 
 ``Real`` and ``RealList`` settings objects can incorporate units alongside values. If an object
 supports units, you can retrieve its value and units as an ``ansys.units.Quantity`` object using
@@ -429,7 +428,7 @@ wildcard pattern to the ``zone_list`` argument of the ``set_zone_type`` command:
 
 For string lists with allowed values, for instance::
 
-  >>> solver_session.settings.results.graphics.contour['contour-1'].surfaces_list = 'in*'
+  >>> solver_session.settings.results.graphics.contour['contour-1'].surfaces_list.set_state('in*')
 
 sets ``surfaces_list`` to all matches of surface names starting with ``in``, so when you prompt for the
 list of surfaces::
@@ -467,3 +466,4 @@ The following list summarizes common wildcards:
 
    set_up/setup_contents
    solution
+   run_control

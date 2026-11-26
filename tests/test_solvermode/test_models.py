@@ -49,8 +49,8 @@ def test_solver_models(mixing_elbow_settings_session):
 def test_disk_2d_models(disk_settings_session):
     solver_session = disk_settings_session
     models = solver_session.setup.models
-    solver_session.setup.general.solver.two_dim_space = "axisymmetric"
-    solver_session.setup.general.solver.two_dim_space = "swirl"
+    solver_session.setup.general.solver.two_dim_space.set_state("axisymmetric")
+    solver_session.setup.general.solver.two_dim_space.set_state("swirl")
 
     models.viscous.model = "k-epsilon"
     near_wall = models.viscous.near_wall_treatment

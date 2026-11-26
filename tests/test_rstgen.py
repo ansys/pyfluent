@@ -67,6 +67,10 @@ def test_datamodel_named_object_instance_pages(tmp_path, monkeypatch, mode):
 
     ref = f"ref_{mode}_datamodel_workflow_Tasks__Tasks"
     assert f":ref:`Tasks_item <{ref}>`" in container
+    assert (
+        "organised like a Python dictionary holding objects of type "
+        f":ref:`Tasks_item <{ref}>` by name."
+    ) in container
     assert "``Tasks['<name>']``" in container
     assert "   _Tasks/_Tasks_contents\n" in container
     assert f".. _{ref}:\n\nTasks_item\n==========\n" in instance

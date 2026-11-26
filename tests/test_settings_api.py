@@ -272,8 +272,8 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
         == 2
     )
 
-    solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
-        "Temperature"
+    solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc.set_state(
+        ("Temperature")
     )
     assert (
         len(
@@ -517,7 +517,7 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
 
     solver.settings.solution.initialization.hybrid_initialize()
     if solver.get_fluent_version() >= FluentVersion.v261:
-        solver.settings.setup.models.multiphase.model = "eulerian"
+        solver.settings.setup.models.multiphase.model.set_state("eulerian")
         solver.tui.define.models.multiphase.hybrid_models.ddpm("yes")
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
@@ -526,16 +526,18 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
             "option": ("../kernel_type", "option"),
         }
     )
-    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled = (
-        True
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled.set_state(
+        (True)
     )
-    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type = (
-        "inverse-distance"
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type.set_state(
+        ("inverse-distance")
     )
-    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel = {
-        "option": "gaussian",
-        "gaussian_factor": 0.5,
-    }
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.set_state(
+        {
+            "option": "gaussian",
+            "gaussian_factor": 0.5,
+        }
+    )
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type()
         == "gaussian"
@@ -563,12 +565,14 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
 @pytest.mark.fluent_version(">=25.2,<=26.1")
 def test_nested_alias_till_26r1(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    solver.settings.setup.models.viscous.model = "k-omega"
-    solver.settings.setup.models.viscous.k_omega_model = "standard"
+    solver.settings.setup.models.viscous.model.set_state("k-omega")
+    solver.settings.setup.models.viscous.k_omega_model.set_state("standard")
     # k_omega_options is alias of k_omega
     # kw_low_re_correction is alias of k_omega_low_re_correction
     # Testing all 4 combinations
-    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = True
+    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.set_state(
+        True
+    )
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
@@ -600,13 +604,13 @@ def test_nested_alias_till_26r1(mixing_elbow_settings_session):
 @pytest.mark.fluent_version(">=27.1")
 def test_nested_alias(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    solver.settings.setup.models.viscous.model = "k-omega"
-    solver.settings.setup.models.viscous.k_omega_model = "standard"
+    solver.settings.setup.models.viscous.model.set_state("k-omega")
+    solver.settings.setup.models.viscous.k_omega_model.set_state("standard")
     # k_omega_options is alias of k_omega
     # kw_low_re_correction is alias of k_omega_low_re_correction
     # Testing all 4 combinations
-    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = (
-        True
+    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled.set_state(
+        (True)
     )
     with pytest.warns(
         DeprecatedSettingWarning,
@@ -774,12 +778,12 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
 
     # Named-object
     solver.settings.solution.report_definitions.surface["report-def-1"] = {}
-    solver.settings.solution.report_definitions.surface["report-def-1"].report_type = (
-        "surface-area"
-    )
     solver.settings.solution.report_definitions.surface[
         "report-def-1"
-    ].surface_names = ["cold-inlet", "hot-inlet"]
+    ].report_type.set_state(("surface-area"))
+    solver.settings.solution.report_definitions.surface[
+        "report-def-1"
+    ].surface_names.set_state(["cold-inlet", "hot-inlet"])
     assert "create_output_parameter" not in dir(
         solver.settings.solution.report_definitions.surface["report-def-1"]
     )
@@ -856,32 +860,32 @@ def test_named_object_commands(mixing_elbow_settings_session):
 @pytest.mark.fluent_version(">=26.1")
 def test_migration_adapter_for_strings(mixing_elbow_settings_session_grpc_rest):
     solver = mixing_elbow_settings_session_grpc_rest
-    solver.settings.setup.general.solver.time = "unsteady-2nd-order"
-    solver.settings.setup.models.discrete_phase.general_settings.interaction.enabled = (
-        True
+    solver.settings.setup.general.solver.time.set_state("unsteady-2nd-order")
+    solver.settings.setup.models.discrete_phase.general_settings.interaction.enabled.set_state(
+        (True)
     )
 
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.enabled = (
-        True
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.enabled.set_state(
+        (True)
     )
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.option = (
-        "particle-time-step"
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.option.set_state(
+        ("particle-time-step")
     )
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.dpm_time_step_size = (
-        0.0002
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.dpm_time_step_size.set_state(
+        (0.0002)
     )
 
     # Migration adapter is set on the 'create_particles_at' to accept boolean values as well besides string
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
-        False
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at.set_state(
+        (False)
     )
     assert (
         solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
         == "fluid-flow-time-step"
     )
 
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
-        True
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at.set_state(
+        (True)
     )
     assert (
         solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
@@ -933,7 +937,7 @@ def test_action_behavior(mixing_elbow_case_session):
     assert isinstance(
         solver.settings.solution.run_calculation.iterate.iter_count(), int
     )
-    solver.settings.solution.run_calculation.iterate.iter_count = 55
+    solver.settings.solution.run_calculation.iterate.iter_count.set_state(55)
     assert solver.settings.solution.run_calculation.iterate.iter_count() == 55
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True

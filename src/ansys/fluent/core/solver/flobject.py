@@ -26,7 +26,7 @@
 The only useful method is '`get_root``, which returns the root object for
 accessing Fluent settings.
 
-Child objects can be generally accessed or modified using attribute access.
+Child objects can be accessed using attribute access and modified using ``set_state``.
 Named child objects can be accessed or modified using index operators.
 
 Calling an object will return its current value.
@@ -35,8 +35,8 @@ Example
 -------
 >>> r = flobject.get_root(proxy)
 >>> is_energy_on = r.setup.models.energy.enabled()
->>> r.setup.models.energy.enabled = True
->>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
+>>> r.setup.models.energy.enabled.set_state(True)
+>>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant.set_state(20)
 """
 
 from __future__ import annotations
@@ -90,6 +90,7 @@ from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.utils.deprecate import _warn_state_assignment
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.get_completer_info import (
     get_completer_info as _get_completer_info,
@@ -1792,6 +1793,10 @@ class Group(SettingsBase[DictStateType]):
             )
             ex.args = (error_msg,)
             raise
+        # Invalid assignments to non-state attributes should raise without a
+        # misleading state-assignment deprecation warning.
+        if hasattr(attr, "set_state"):
+            _warn_state_assignment(name)
         try:
             return attr.set_state(value)
         except Exception as ex:
@@ -1909,8 +1914,34 @@ class NamedObjectWildcardPath(WildcardPath):
 ChildTypeT = TypeVar("ChildTypeT")
 
 
+class _NamedObjectCommandMixin:
+    """Provide shared named-object command behavior."""
+
+    def list(self) -> Any:
+        """Print the object names."""
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list(object_path=self.path)
+        else:
+            return self.list_1()
+
+    def list_properties(self, object_name: str) -> Any:
+        """Print the properties of the given object name.
+
+        Parameters
+        ----------
+        object_name : str
+            Name of the object whose properties are to be listed.
+        """
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
+        else:
+            return self.list_properties_1(object_name=object_name)
+
+
 @no_runtime_type_check
-class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
+class NamedObject(
+    SettingsBase[DictStateType], _NamedObjectCommandMixin, Generic[ChildTypeT]
+):
     """A ``NamedObject`` container is a container object similar to a Python dictionary
     object. Generally, many such objects can be created with different names.
 
@@ -2123,25 +2154,40 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
         return CombinedNamedObject([self, other])
 
-    def list(self) -> Any:
-        """Print the object names."""
-        if FluentVersion(self._version) >= FluentVersion.v261:
-            return self._root.list(object_path=self.path)
-        else:
-            return self.list_1()
 
-    def list_properties(self, object_name: str) -> Any:
-        """Print the properties of the given object name.
+class _NamedObjectCommandBase(_NamedObjectCommandMixin):
+    """Keep generated named-object command metadata independent per container."""
 
-        Parameters
-        ----------
-        object_name : str
-            Name of the object whose properties are to be listed.
-        """
-        if FluentVersion(self._version) >= FluentVersion.v261:
-            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
-        else:
-            return self.list_properties_1(object_name=object_name)
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if NamedObject in cls.__bases__:
+            if "command_names" not in cls.__dict__:
+                cls.command_names = cls.command_names.copy()
+            if "_child_classes" not in cls.__dict__:
+                cls._child_classes = cls._child_classes.copy()
+
+
+_NAMED_OBJECT_COMMANDS = frozenset(
+    {"create", "delete", "rename", "list", "list-properties", "make-a-copy"}
+)
+
+
+def _merge_named_object_command_names(
+    shared: list[str], others: list[tuple[int, str]]
+) -> list[str]:
+    names = shared.copy()
+    for index, name in others:
+        names.insert(index, name)
+    return names
+
+
+def _merge_named_object_child_classes(
+    shared: dict[str, type], others: list[tuple[int, str, type]]
+) -> dict[str, type]:
+    children = list(shared.items())
+    for index, name, child in others:
+        children.insert(index, (name, child))
+    return dict(children)
 
 
 class CombinedNamedObject:
@@ -2510,6 +2556,10 @@ class Action(Base):
 
     def __setattr__(self, name: str, value: StateType) -> None:
         attr = getattr(self, name)
+        # Invalid assignments to non-state attributes should raise without a
+        # misleading state-assignment deprecation warning.
+        if hasattr(attr, "set_state"):
+            _warn_state_assignment(name)
         try:
             return attr.set_state(value)
         except Exception as ex:
@@ -3138,7 +3188,7 @@ def _process_generated_children(info_dict, names, cls, taboo, version, doc_parts
         if doc_parts is not None:
             th = ccls._state_type
             th = th.__name__ if hasattr(th, "__name__") else str(th)
-            doc_parts.append(f"    {ccls.__name__} : {th}\n")
+            doc_parts.append(f"    {parent_attr_name} : {th}\n")
             doc_parts.append(f"        {ccls.__doc__}\n")
 
         names.append(parent_attr_name)
@@ -3323,6 +3373,12 @@ def _create_generated_class(
         include_child_named_objects,
         user_creatable,
     )
+    if obj_type == "named-object" and any(
+        name in _NAMED_OBJECT_COMMANDS and (name != "create" or user_creatable)
+        for name in info.get("commands", {})
+    ):
+        command_base = type("_NamedObjectCommands", (_NamedObjectCommandBase,), {})
+        bases = (command_base,) + bases
 
     pname, parent_attr_name = _resolve_generated_names(
         pname,
@@ -3365,6 +3421,19 @@ def get_cls(
         _register_generated_commands_section(cls, info, taboo, version, user_creatable)
         _register_generated_queries_section(cls, info, taboo, version)
         _register_generated_arguments_section(cls, info, taboo, version)
+
+        if issubclass(cls.__bases__[0], _NamedObjectCommandBase):
+            command_base = cls.__bases__[0]
+            command_base.command_names = [
+                name
+                for name in cls.command_names
+                if cls._child_classes[name].fluent_name in _NAMED_OBJECT_COMMANDS
+            ]
+            command_base._child_classes = {
+                name: cls._child_classes[name] for name in command_base.command_names
+            }
+            for name, command in command_base._child_classes.items():
+                setattr(command_base, name, command)
 
         _set_generated_return_type(cls, info, version)
         _set_generated_child_object_type(cls, info, version)

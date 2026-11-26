@@ -34,7 +34,7 @@ from util.solver import get_name_info
 @pytest.mark.settings_only
 def test_boundaries_elbow(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
-    solver_session.setup.models.energy.enabled = True
+    solver_session.setup.models.energy.enabled.set_state(True)
 
     cold_inlet = solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     assert D(1) == cold_inlet.momentum.velocity()
@@ -86,7 +86,7 @@ def test_boundaries_elbow(mixing_elbow_settings_session):
 
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"
-    ].turbulence.turbulent_viscosity_ratio = 4
+    ].turbulence.turbulent_viscosity_ratio.set_state(4)
     assert (
         solver_session.setup.boundary_conditions.pressure_outlet[
             "outlet"
@@ -132,8 +132,8 @@ def test_boundaries_periodic(periodic_rot_settings_session):
     solver_session.setup.boundary_conditions.pressure_outlet["outlet"].rename("out")
     solver_session.setup.boundary_conditions.velocity_inlet[
         "inlet"
-    ].momentum.velocity = 5.0
-    solver_session.setup.boundary_conditions["inlet"].momentum.velocity = 10.0
+    ].momentum.velocity.set_state(5.0)
+    solver_session.setup.boundary_conditions["inlet"].momentum.velocity.set_state(10.0)
     boundaries_check = ["inlet", "out", "pipe2_wall"]
     boundary_test = dict()
     for name, boundary in solver_session.setup.boundary_conditions.items():

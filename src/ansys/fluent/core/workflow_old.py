@@ -42,6 +42,7 @@ from ansys.fluent.core.services.object_model import (
     PyCommand,
     PyMenu,
 )
+from ansys.fluent.core.utils.deprecate import _warn_state_assignment
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -471,6 +472,7 @@ class BaseTask:
         if attr in self.__dict__:
             self.__dict__[attr] = value
         elif attr in self.arguments() or attr == "arguments":
+            _warn_state_assignment(attr)
             getattr(self, attr).set_state(value)
         else:
             setattr(self._task, attr, value)
@@ -868,7 +870,10 @@ class ArgumentsWrapper(PyCallableStateObject):
 
     def __setattr__(self, key, value):
         try:
-            getattr(self, key).set_state(value)
+            attr = getattr(self, key)
+            set_state = attr.set_state
+            _warn_state_assignment(key)
+            set_state(value)
         except AttributeError:
             raise AttributeError(
                 f"No attribute named '{key}' in '{self._task.name()}'."
@@ -967,6 +972,9 @@ class ArgumentWrapper(PyCallableStateObject):
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
+            _warn_state_assignment(
+                attr, f"the parent object's set_state({{{attr!r}: value}})"
+            )
             self.set_state({attr: value})
 
     def __dir__(self):
@@ -1526,6 +1534,7 @@ class Workflow:
         if attr in self.__dict__:
             self.__dict__[attr] = value
         elif attr in self._task_objects:
+            _warn_state_assignment(attr)
             self._task_objects[attr].set_state(value)
         else:
             super().__setattr__(attr, value)

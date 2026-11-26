@@ -37,13 +37,51 @@ Most applications can use the public launch API from
 workflows and are loaded on demand.
 """
 
+from collections.abc import Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from importlib import import_module
+from typing import TYPE_CHECKING
 
-__all__ = ("docker", "launcher", "scheduler", "session")
+if TYPE_CHECKING:
+    from ansys.fluent.core.execution.session.session import BaseSession
+
+_SUBPACKAGES = ("docker", "launcher", "scheduler", "session")
+__all__ = (*_SUBPACKAGES, "using")
+
+_active_session: ContextVar["BaseSession | None"] = ContextVar(
+    "active_session", default=None
+)
+
+
+def _get_active_session():
+    return _active_session.get()
+
+
+@contextmanager
+def using(session: "BaseSession") -> Iterator[None]:
+    """Make a Fluent session active within a ``with`` block.
+
+    Top-level settings objects use this session when you omit ``settings_source``.
+    Leaving the block restores the previous active session, even if the block
+    raises an exception.
+
+    Examples
+    --------
+    >>> from ansys.fluent.core.execution import using
+    >>> from ansys.fluent.core.solver import Viscous
+    >>> with using(solver_session):
+    ...     Viscous().model.set_state("laminar")
+    """
+    token = _active_session.set(session)
+    try:
+        yield
+    finally:
+        _active_session.reset(token)
 
 
 def __getattr__(name: str):
-    if name not in __all__:
+    if name not in _SUBPACKAGES:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
     module = import_module(f".{name}", __name__)
     globals()[name] = module
