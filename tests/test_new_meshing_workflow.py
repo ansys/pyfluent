@@ -401,8 +401,8 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
 
     two_dim_mesh.add_local_sizing_2d.add_child.set_state("yes")
     two_dim_mesh.add_local_sizing_2d.boi_control_name.set_state("curvature_1")
-    two_dim_mesh.add_local_sizing_2d.boi_curvature_normal_angle.set_state(10)
     two_dim_mesh.add_local_sizing_2d.boi_execution.set_state("Curvature")
+    two_dim_mesh.add_local_sizing_2d.boi_curvature_normal_angle.set_state(10)
     two_dim_mesh.add_local_sizing_2d.boi_max_size.set_state(2)
     two_dim_mesh.add_local_sizing_2d.boi_min_size.set_state(1.5)
     two_dim_mesh.add_local_sizing_2d.boi_scope_to.set_state("edge labels")
@@ -434,7 +434,7 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
     two_dim_mesh.add_2d_boundary_layers_child_1.add_child.set_state("yes")
     two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name.set_state("uniform_1")
-    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height.set_state(2)
+    two_dim_mesh.add_2d_boundary_layers_child_1.max_layer_height.set_state(2)
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers.set_state(4)
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type.set_state("uniform")
     two_dim_mesh.add_2d_boundary_layers_child_1()

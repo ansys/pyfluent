@@ -1264,11 +1264,12 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
     assert solver.is_active() is False
 
 
-@pytest.mark.nightly
-@pytest.mark.fluent_version(">=26.1")
+# @pytest.mark.nightly
+# @pytest.mark.fluent_version(">=26.1")
 def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
+    import_file_name = r"D:\PyFluent_Dev\pyfluent\NACA0012.fmd"
     two_dim_mesh = TwoDimensionalMeshing(session=new_meshing_session_wo_exit)
 
     two_dim_mesh.load_cad_geometry.file_name.set_state(import_file_name)
@@ -1293,7 +1294,6 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     two_dim_mesh.add_local_sizing_wtm.boi_execution.set_state("Body Of Influence")
     two_dim_mesh.add_local_sizing_wtm.boi_face_label_list.set_state(["boi"])
     two_dim_mesh.add_local_sizing_wtm.boi_size.set_state(50.0)
-    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label.set_state("label")
     two_dim_mesh.add_local_sizing_wtm.draw_size_control.set_state(True)
     two_dim_mesh.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
@@ -1301,15 +1301,14 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     two_dim_mesh.add_local_sizing_wtm.boi_control_name.set_state("edgesize_1")
     two_dim_mesh.add_local_sizing_wtm.boi_execution.set_state("Edge Size")
     two_dim_mesh.add_local_sizing_wtm.boi_size.set_state(5.0)
-    two_dim_mesh.add_local_sizing_wtm.boi_zoneor_label.set_state("label")
     two_dim_mesh.add_local_sizing_wtm.draw_size_control.set_state(True)
     two_dim_mesh.add_local_sizing_wtm.edge_label_list.set_state(["airfoil-te"])
     two_dim_mesh.add_local_sizing_wtm.add_child_and_update(defer_update=False)
 
     two_dim_mesh.add_local_sizing_wtm.add_child.set_state("yes")
     two_dim_mesh.add_local_sizing_wtm.boi_control_name.set_state("curvature_1")
-    two_dim_mesh.add_local_sizing_wtm.boi_curvature_normal_angle.set_state(10)
     two_dim_mesh.add_local_sizing_wtm.boi_execution.set_state("Curvature")
+    two_dim_mesh.add_local_sizing_wtm.boi_curvature_normal_angle.set_state(10)
     two_dim_mesh.add_local_sizing_wtm.boi_max_size.set_state(2)
     two_dim_mesh.add_local_sizing_wtm.boi_min_size.set_state(1.5)
     two_dim_mesh.add_local_sizing_wtm.boi_scope_to.set_state("edges")
@@ -1331,17 +1330,17 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
         (True)
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels.set_state(
-        ("no")
+        (False)
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels.set_state(
-        ("no")
+        (False)
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
     two_dim_mesh.add_2d_boundary_layers_child_1.add_child.set_state("yes")
     two_dim_mesh.add_2d_boundary_layers_child_1.control_name.set_state("uniform_1")
-    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height.set_state(2)
+    two_dim_mesh.add_2d_boundary_layers_child_1.max_layer_height.set_state(2)
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers.set_state(4)
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type.set_state("uniform")
     two_dim_mesh.add_2d_boundary_layers_child_1()
@@ -1352,10 +1351,10 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
         (True)
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels.set_state(
-        ("no")
+        (False)
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels.set_state(
-        ("no")
+        (False)
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
