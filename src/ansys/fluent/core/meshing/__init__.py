@@ -130,7 +130,7 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
 
 
 class WatertightMeshing:
-    """Provides watertight meshing specialization of the workflow wrapper.
+    """Start a workflow for generating a volume mesh from watertight CAD geometry.
 
     See the :ref:`Watertight geometry workflow example
     <ref_watertight_meshing_workflow_example>` for a sample usage example.
@@ -174,7 +174,7 @@ class WatertightMeshing:
 
 
 class FaultTolerantMeshing:
-    """Provides fault tolerant meshing specialization of the workflow wrapper.
+    """Start a workflow for meshing CAD geometry with gaps or overlaps.
 
     See the :ref:`Fault-tolerant workflow example
     <ref_fault_tolerant_meshing_workflow_example>` for a sample usage example.
@@ -218,7 +218,7 @@ class FaultTolerantMeshing:
 
 
 class TwoDimensionalMeshing:
-    """Provides 2D meshing specialization of the workflow wrapper.
+    """Start a workflow for meshing two-dimensional geometry.
 
     See the :ref:`2D workflow example
     <ref_two_dimensional_meshing_workflow_example>` for a sample usage example.
@@ -262,7 +262,7 @@ class TwoDimensionalMeshing:
 
 
 class TopologyBasedMeshing:
-    """Provides topology based meshing specialization of the workflow wrapper.
+    """Start the topology-based meshing workflow (beta).
 
     Parameters
     ----------
@@ -303,7 +303,7 @@ class TopologyBasedMeshing:
 
 
 class CreateMeshingWorkflow:
-    """Provides a specialization of the workflow wrapper for a newly created workflow.
+    """Create an empty workflow to populate with meshing tasks.
 
     See the :ref:`create workflow example <ref_create_meshing_workflow_example>`
     for a sample usage example.
@@ -347,7 +347,7 @@ class CreateMeshingWorkflow:
 
 
 class LoadMeshingWorkflow:
-    """Provides a specialization of the workflow wrapper for a loaded workflow.
+    """Load a saved meshing workflow to reuse its tasks and settings.
 
     See the :ref:`load workflow example <ref_load_meshing_workflow_example>` for
     a sample usage example.

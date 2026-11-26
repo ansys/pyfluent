@@ -21,8 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Meshing workflow specialization of the Workflow module that wraps and extends the
-core functionality."""
+"""Workflows for generating a mesh from CAD and saving or reusing meshing tasks."""
 
 from __future__ import annotations
 
@@ -56,8 +55,7 @@ else:
 
 
 class MeshingWorkflow(Workflow):
-    """Provides meshing specialization of the workflow wrapper that extends the core
-    functionality in an object-oriented manner.
+    """Configure and run the tasks in a Fluent meshing workflow.
 
     See the :ref:`workflow API <ref_ansys_fluent_core_workflow>` for details of the
     underlying workflow object.
@@ -93,7 +91,7 @@ class MeshingWorkflow(Workflow):
 
 
 class WatertightMeshingWorkflow(MeshingWorkflow, _WatertightBase):
-    """Provides watertight meshing specialization of the workflow wrapper."""
+    """Generate a volume mesh from watertight CAD geometry."""
 
     def __init__(
         self,
@@ -119,7 +117,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow, _WatertightBase):
 
 
 class FaultTolerantMeshingWorkflow(MeshingWorkflow, _FaultTolerantBase):
-    """Provides fault-tolerant meshing specialization of the workflow wrapper."""
+    """Prepare and mesh CAD geometry with gaps, overlaps, or other defects."""
 
     def __init__(
         self,
@@ -194,7 +192,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow, _FaultTolerantBase):
 
 
 class TwoDimensionalMeshingWorkflow(MeshingWorkflow, _TwoDBase):
-    """Provides 2D meshing specialization of the workflow wrapper."""
+    """Generate a mesh for a two-dimensional geometry."""
 
     def __init__(
         self,
@@ -220,7 +218,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow, _TwoDBase):
 
 
 class TopologyBasedMeshingWorkflow(MeshingWorkflow, _TopologyBasedBase):
-    """Provides topology-based meshing specialization of the workflow wrapper."""
+    """Generate a mesh using the topology-based meshing workflow (beta)."""
 
     def __init__(
         self,
@@ -255,7 +253,7 @@ class WorkflowMode(Enum):
 
 
 class LoadedWorkflow(Workflow):
-    """Provides a specialization of the workflow wrapper for a loaded workflow."""
+    """Continue working with the tasks in a saved meshing workflow."""
 
     def __init__(
         self,
@@ -287,8 +285,7 @@ class LoadedWorkflow(Workflow):
 
 
 class CreatedWorkflow(Workflow):
-    """Provides a specialization of the workflow wrapper for a newly created
-    workflow."""
+    """Build a custom meshing workflow by adding tasks to an empty workflow."""
 
     def __init__(
         self,

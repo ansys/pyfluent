@@ -401,7 +401,8 @@ class BaseMeshing(BaseSession):
     ) -> "_meshing_workflow_type.LoadMeshingWorkflow":
         """Load a previously saved meshing workflow from file.
 
-        Restores workflow configuration including tasks, settings, and state.
+        Restore the saved tasks, settings, and state. See the
+        :ref:`worked example <ref_load_meshing_workflow_example>`.
 
         Parameters
         ----------
@@ -440,7 +441,8 @@ class BaseMeshing(BaseSession):
     ) -> "_meshing_workflow_type.CreateMeshingWorkflow":
         """Create a new blank meshing workflow for manual task configuration.
 
-        Provides an empty workflow to build custom task sequences from scratch.
+        Insert tasks in the order you need. See the
+        :ref:`worked example <ref_create_meshing_workflow_example>`.
 
         Parameters
         ----------
@@ -555,7 +557,9 @@ class BaseMeshing(BaseSession):
     def watertight(
         self, legacy: bool | None = None
     ) -> "_meshing_workflow_type.WatertightMeshing":
-        """Get the watertight meshing workflow.
+        """Start a workflow for meshing watertight CAD geometry.
+
+        See the :ref:`watertight geometry example <ref_watertight_meshing_workflow_example>`.
 
         Parameters
         ----------
@@ -575,7 +579,9 @@ class BaseMeshing(BaseSession):
     def fault_tolerant(
         self, legacy: bool | None = None
     ) -> "_meshing_workflow_type.FaultTolerantMeshing":
-        """Get the fault-tolerant meshing workflow.
+        """Start a workflow for meshing CAD geometry with gaps or overlaps.
+
+        See the :ref:`fault-tolerant example <ref_fault_tolerant_meshing_workflow_example>`.
 
         Parameters
         ----------
@@ -595,7 +601,9 @@ class BaseMeshing(BaseSession):
     def two_dimensional_meshing(
         self, legacy: bool | None = None
     ) -> "_meshing_workflow_type.TwoDimensionalMeshing":
-        """Get the 2D meshing workflow.
+        """Start a workflow for meshing two-dimensional geometry.
+
+        See the :ref:`2D meshing example <ref_two_dimensional_meshing_workflow_example>`.
 
         Parameters
         ----------
