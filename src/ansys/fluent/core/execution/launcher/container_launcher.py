@@ -84,7 +84,7 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
     :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
     """
     py: bool | None
-    """If True, runs Fluent in Python mode. Defaults to None."""
+    """Pass ``-py`` to request Python mode only when ``True``."""
     use_docker_compose: bool | None
     """Whether to use Docker Compose to launch Fluent."""
     use_podman_compose: bool | None
@@ -191,7 +191,7 @@ class DockerLauncher:
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
         py : bool, optional
-            If True, runs Fluent in Python mode. Defaults to None.
+            Pass ``True`` to request Python mode. By default, the launcher omits ``-py``.
         gpu : bool, optional
             If True, starts Fluent with GPU Solver enabled.
         start_watchdog : bool, optional

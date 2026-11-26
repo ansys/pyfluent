@@ -102,7 +102,7 @@ class StandaloneArgsWithoutDryRunMode(
     replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
     """
     py: bool | None
-    """Run Fluent in Python mode. If omitted or ``None``, enable it only for known Fluent versions 2025 R1 and later."""
+    """Run Fluent in Python mode. Launches default to Python mode for known Fluent versions 2025 R1 and later."""
     cwd: str | None
     """Working directory for the Fluent client."""
     fluent_path: str | None

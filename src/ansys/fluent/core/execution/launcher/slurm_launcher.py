@@ -429,7 +429,7 @@ class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
     This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
     """
     py: bool | None
-    """If True, Fluent will run in Python mode. Default is None."""
+    """Pass ``-py`` to request Python mode only when ``True``."""
     cwd: "PathType | None"
     """Working directory for the Fluent client."""
     fluent_path: "PathType | None"
@@ -528,7 +528,7 @@ class SlurmLauncher:
             solver session. This is all orchestrated by PyFluent and requires no special usage.
             This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
         py : bool, optional
-            If True, Fluent will run in Python mode. Default is None.
+            Pass ``True`` to request Python mode. By default, the launcher omits ``-py``.
         gpu : bool, optional
             If True, Fluent will start with GPU Solver.
         cwd : :class:`os.PathLike` or str, optional
