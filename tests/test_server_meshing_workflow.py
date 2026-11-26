@@ -1264,12 +1264,11 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
     assert solver.is_active() is False
 
 
-# @pytest.mark.nightly
-# @pytest.mark.fluent_version(">=26.1")
+@pytest.mark.nightly
+@pytest.mark.fluent_version(">=26.1")
 def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
-    import_file_name = r"D:\PyFluent_Dev\pyfluent\NACA0012.fmd"
     two_dim_mesh = TwoDimensionalMeshing(session=new_meshing_session_wo_exit)
 
     two_dim_mesh.load_cad_geometry.file_name.set_state(import_file_name)
