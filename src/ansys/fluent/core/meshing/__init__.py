@@ -32,6 +32,7 @@ Meshing workflows use the underlying meshing workflow object. See the
 :ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` for details.
 """
 
+from typing import TYPE_CHECKING
 import warnings
 
 from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
@@ -39,6 +40,10 @@ from ansys.fluent.core.execution import using
 from ansys.fluent.core.meshing.session import Meshing, PureMeshing
 from ansys.fluent.core.meshing.session.meshing import BaseMeshing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.meshing import meshing_workflow as current
+    from ansys.fluent.core.meshing import meshing_workflow_old as legacy_workflows
 
 
 def _validate_meshing_session(session: BaseMeshing) -> bool:
@@ -149,7 +154,9 @@ class WatertightMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> (
+        "current.WatertightMeshingWorkflow | legacy_workflows.WatertightMeshingWorkflow"
+    ):
         """Initialize WatertightMeshing.
 
         Parameters
@@ -193,7 +200,7 @@ class FaultTolerantMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.FaultTolerantMeshingWorkflow | legacy_workflows.FaultTolerantMeshingWorkflow":
         """Initialize FaultTolerantMeshing.
 
         Parameters
@@ -237,7 +244,7 @@ class TwoDimensionalMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.TwoDimensionalMeshingWorkflow | legacy_workflows.TwoDimensionalMeshingWorkflow":
         """Initialize TwoDimensionalMeshing.
 
         Parameters
@@ -278,7 +285,7 @@ class TopologyBasedMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.TopologyBasedMeshingWorkflow | legacy_workflows.TopologyBasedMeshingWorkflow":
         """Initialize TopologyBasedMeshing.
 
         Parameters
@@ -322,7 +329,7 @@ class CreateMeshingWorkflow:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.CreatedWorkflow | legacy_workflows.CreatedWorkflow":
         """Initialize CreateMeshingWorkflow.
 
         Parameters
@@ -369,7 +376,7 @@ class LoadMeshingWorkflow:
         session: PureMeshing | Meshing,
         file_path: str,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.LoadedWorkflow | legacy_workflows.LoadedWorkflow":
         """Initialize LoadMeshingWorkflow.
 
         Parameters

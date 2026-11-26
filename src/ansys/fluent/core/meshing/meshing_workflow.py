@@ -320,7 +320,7 @@ def _get_current_workflow(current_workflow, name: str):
 
 def get_current_workflow(
     workflow_root, current_workflow, workflow_factories, load_workflow_handle
-) -> Workflow:
+) -> Workflow | None:
     """Get the currently active workflow in the PyFluent-native interface.
 
     Parameters
@@ -336,13 +336,8 @@ def get_current_workflow(
 
     Returns
     -------
-    :class:`~ansys.fluent.core.workflow.Workflow`
-        The currently active workflow instance.
-
-    Raises
-    ------
-    RuntimeError
-        If no workflow is initialized.
+    :class:`~ansys.fluent.core.workflow.Workflow` or None
+        The active workflow, or None if no workflow type is selected.
     """
     # New mode: Check workflow type from meshing_workflow datamodel
     workflow_type = workflow_root.general.workflow.workflow_type()

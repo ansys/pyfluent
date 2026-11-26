@@ -55,14 +55,28 @@ from ansys.fluent.core.fields.field_data.live_field_data import (
 )
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.execution.launcher.standalone_launcher import (
-        StandaloneArgsWithoutDryRunMode,
-    )
+    from typing import TypeVar
+
     from ansys.fluent.core.execution.launcher.container_launcher import (
         ContainerArgsWithoutDryRunMode,
     )
     from ansys.fluent.core.execution.launcher.pim_launcher import PIMArgsWithoutMode
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneArgsWithoutDryRunMode,
+    )
+    from ansys.fluent.core.meshing.session import Meshing, PureMeshing
     from ansys.fluent.core.resilient import ResilientConfig
+    from ansys.fluent.core.solver.session import (
+        PrePost,
+        Solver,
+        SolverAero,
+        SolverIcing,
+    )
+
+    # Launchers construct a registered mode, not an arbitrary subclass of cls.
+    _LaunchSession = TypeVar(
+        "_LaunchSession", Meshing, PureMeshing, Solver, SolverAero, SolverIcing, PrePost
+    )
 
 from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
@@ -563,11 +577,11 @@ class BaseSession:
     @overload
     @classmethod
     def from_install(
-        cls,
+        cls: type["_LaunchSession"],
         *,
         dry_run: Literal[False] = False,
         **kwargs: Unpack["StandaloneArgsWithoutDryRunMode"],
-    ) -> "BaseSession": ...
+    ) -> "_LaunchSession": ...
 
     @overload
     @classmethod
@@ -578,15 +592,28 @@ class BaseSession:
         **kwargs: Unpack["StandaloneArgsWithoutDryRunMode"],
     ) -> tuple[str, str]: ...
 
+    @overload
+    @classmethod
+    def from_install(
+        cls: type["_LaunchSession"],
+        *,
+        dry_run: bool,
+        **kwargs: Unpack["StandaloneArgsWithoutDryRunMode"],
+    ) -> "_LaunchSession | tuple[str, str]": ...
+
     @classmethod
     def from_install(  # pylint: disable=missing-param-doc
-        cls,
+        cls: type["_LaunchSession"],
         *,
         dry_run: bool = False,
         **kwargs: Unpack["StandaloneArgsWithoutDryRunMode"],
-    ) -> "BaseSession | tuple[str, str]":
+    ) -> "_LaunchSession | tuple[str, str]":
         """
         Launch a Fluent session in standalone mode.
+
+        Calling ``Meshing.from_install()``, for example, returns a ``Meshing``
+        session. With ``dry_run=True``, no session is created; the result is a
+        pair containing the launch string and server-info filename.
 
         Parameters
         ----------
@@ -689,11 +716,11 @@ class BaseSession:
     @overload
     @classmethod
     def from_container(
-        cls,
+        cls: type["_LaunchSession"],
         *,
         dry_run: Literal[False] = False,
         **kwargs: Unpack["ContainerArgsWithoutDryRunMode"],
-    ) -> "BaseSession": ...
+    ) -> "_LaunchSession": ...
 
     @overload
     @classmethod
@@ -704,13 +731,22 @@ class BaseSession:
         **kwargs: Unpack["ContainerArgsWithoutDryRunMode"],
     ) -> dict[str, Any]: ...
 
+    @overload
+    @classmethod
+    def from_container(
+        cls: type["_LaunchSession"],
+        *,
+        dry_run: bool,
+        **kwargs: Unpack["ContainerArgsWithoutDryRunMode"],
+    ) -> "_LaunchSession | dict[str, Any]": ...
+
     @classmethod
     def from_container(  # pylint: disable=missing-param-doc
-        cls,
+        cls: type["_LaunchSession"],
         *,
         dry_run: bool = False,
         **kwargs: Unpack["ContainerArgsWithoutDryRunMode"],
-    ) -> "BaseSession | dict[str, Any]":
+    ) -> "_LaunchSession | dict[str, Any]":
         """
         Launch a Fluent session in container mode.
 
@@ -782,8 +818,10 @@ class BaseSession:
 
         Returns
         -------
-        Meshing | PureMeshing | Solver | SolverIcing | dict
-            Session object or configuration dictionary if ``dry_run`` is True.
+        session or dict
+            Session for the requested Fluent mode (for example, ``Meshing``
+            for ``Meshing.from_container()``), or the container configuration
+            dictionary if ``dry_run`` is True.
 
         Raises
         ------
