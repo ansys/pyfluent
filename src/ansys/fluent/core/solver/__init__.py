@@ -25,7 +25,12 @@
 
 Use the hierarchical Python settings API to configure and run the Fluent
 solver. Start at the :ref:`settings root <ref_root>` to navigate the full
-hierarchy. Import commonly used settings classes such as ``Viscous`` and
+hierarchy.
+
+Solver sessions are created and managed through session objects
+( See :ref:`session <ref_ansys_fluent_core_solver_session>` ).
+
+Import commonly used settings classes such as ``Viscous`` and
 ``VelocityInlet`` directly from this package, rather than navigating
 the hierarchy to find them.
 
