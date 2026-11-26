@@ -39,49 +39,75 @@ You can change the Fluent version by replacing ``25.1`` with the version you wan
 
 Build documentation
 -------------------
-To build the PyFluent documentation locally, run the following commands in the root
-(``pyfluent``) directory of the repository:
-
-Windows
-~~~~~~~
-
-1. Install poppler
-    i. Download `Release-24.08.0-0.zip <https://github.com/oschwartz10612/poppler-windows/releases/download/v24.08.0-0/Release-24.08.0-0.zip>`_.
-    ii. Unzip `Release-24.08.0-0.zip`.
-    iii. Add `<path to..>/Release-24.08.0-0/poppler-24.08.0/Library/bin` to PATH.
-
-2. Execute the following commands:
+The documentation can be built locally without a Fluent installation, API
+codegen, ``quarto``, or poppler. Install the documentation dependencies and
+run the HTML build from the ``doc`` directory of the repository:
 
 .. code:: console
 
     pip install ansys-fluent-core[docs]
-    quarto install tinytex --no-prompt --update-path
     cd doc
-    set BUILD_ALL_DOCS=1
-    set FLUENT_IMAGE_TAG=v25.1.0
+    set PYFLUENT_DOC_SKIP_CHEATSHEET=1
     make html
+
+On Linux and macOS, use ``export PYFLUENT_DOC_SKIP_CHEATSHEET=1`` instead of
+``set``. The cheat sheet is the only part of the documentation that needs
+poppler, which converts its PDF output to PNG. The examples gallery is not
+executed during a local build, so no Fluent session is needed.
+
+The HTML documentation is written to ``_build/html``. Open its
+``index.html`` file in a browser to view it.
+
+To include the parts that need extra setup, set these variables before
+running ``make html``:
+
+* ``BUILD_ALL_DOCS=1`` generates the settings, datamodel, and TUI API
+  reference pages. When it is unset, these generation scripts are skipped
+  and the remaining pages are built without generated API files. To use
+  it, the generated API files must exist. On a fresh clone, generate them
+  with ``python codegen/allapigen.py``, which requires a licensed Ansys
+  Fluent installation. See the Development Installation section of
+  :ref:`ref_installation`.
+
+* ``FLUENT_IMAGE_TAG`` selects the Fluent version whose generated API files
+  are used for the settings API reference. It is the tag of the Fluent
+  Docker image that PyFluent uses when launching in a container; for
+  example, ``v25.1.0`` selects the files in
+  ``src/ansys/fluent/core/generated/v251``. When it is unset, PyFluent uses
+  the latest released Fluent version, so you do not need to set it if that
+  version matches your generated API files. See
+  :ref:`ref_environment_variables`.
+
+* ``PYFLUENT_DOC_SKIP_EXAMPLES=1`` omits the examples gallery.
+
+To build the cheat sheet as well, install poppler and the ``quarto`` PDF
+toolchain, and leave ``PYFLUENT_DOC_SKIP_CHEATSHEET`` unset.
+
+Windows
+~~~~~~~
+
+1. Download `Release-24.08.0-0.zip <https://github.com/oschwartz10612/poppler-windows/releases/download/v24.08.0-0/Release-24.08.0-0.zip>`_ and unzip it.
+2. Add ``<path to>/Release-24.08.0-0/poppler-24.08.0/Library/bin`` to ``PATH``.
 
 Linux
 ~~~~~
 
 .. code:: console
 
-    pip install ansys-fluent-core[docs]
     sudo apt-get update
     sudo apt-get install -y poppler-utils
+
+On both platforms, install ``tinytex`` and build the documentation:
+
+.. code:: console
+
     quarto install tinytex --no-prompt --update-path
     cd doc
-    set BUILD_ALL_DOCS=1
-    set FLUENT_IMAGE_TAG=v25.1.0
     make html
 
-After the build completes, the HTML documentation is located in the
-``_build/html`` directory. You can load the ``index.html`` file in
-this directory into a web browser.
+You can clear all generated HTML files from ``_build/html`` with:
 
-You can clear all HTML files from the ``_build/html`` directory with:
-
-.. code::
+.. code:: console
 
     make clean
 
