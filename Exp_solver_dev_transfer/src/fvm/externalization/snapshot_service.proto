@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package fvm.externalization.v1;
+
+import "google/protobuf/wrappers.proto";
+
+service SnapshotService {
+  rpc Publish(stream google.protobuf.BytesValue)
+      returns (google.protobuf.BytesValue);
+}

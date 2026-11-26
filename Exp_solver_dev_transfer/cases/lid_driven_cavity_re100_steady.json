@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "case_id": "lid_driven_cavity_re100_steady",
+  "description": "Steady 64x64 Re=100 lid-driven cavity solved with fixed pseudo-time iterations.",
+  "units": "SI",
+  "physics": {
+    "model": "incompressible_laminar",
+    "transient": false
+  },
+  "domain": {
+    "type": "rectangle",
+    "width_m": 1.0,
+    "height_m": 1.0
+  },
+  "mesh": {
+    "type": "uniform_cartesian",
+    "nx": 128,
+    "ny": 128
+  },
+  "material": {
+    "type": "newtonian_fluid",
+    "density_kg_m3": 1.0,
+    "dynamic_viscosity_pa_s": 0.01
+  },
+  "initial_conditions": {
+    "u_m_s": 0.0,
+    "v_m_s": 0.0,
+    "pressure_pa": 0.0
+  },
+  "boundary_conditions": {
+    "west": {"type": "no_slip_wall"},
+    "east": {"type": "no_slip_wall"},
+    "south": {"type": "no_slip_wall"},
+    "north": {"type": "moving_wall", "velocity_m_s": [1.0, 0.0]},
+    "pressure_correction": "homogeneous_neumann"
+  },
+  "solver": {
+    "max_steps": 10000,
+    "velocity_tolerance_m_s": 1e-6,
+    "continuity_tolerance_s_inv": 1e-8,
+    "mass_tolerance_m2_s": 1e-10,
+    "momentum_residual_tolerance": 1e-10,
+    "pressure_residual_tolerance": 1e-10
+  }
+}
