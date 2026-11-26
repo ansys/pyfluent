@@ -56,7 +56,7 @@ poppler
 postprocess
 PIM
 PyFluent
-Python
+Python(?!-lsp-server)
 Pythonic
 post_helper
 post_objects_container
