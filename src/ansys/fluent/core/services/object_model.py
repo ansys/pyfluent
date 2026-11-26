@@ -46,8 +46,11 @@ from collections.abc import Callable, Iterator, Sequence
 import functools
 import logging
 from typing import Any, Iterable, TypeVar
+import warnings
+import weakref
 
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.abstract_object_model import AbstractObjectModel
 from ansys.fluent.core.services.object_model_utilities import (
@@ -1250,17 +1253,64 @@ class PyAction:
                 f"The underlying DatamodelService reported an error: {e}."
             )
 
-    def create_instance(self) -> "PyArguments":
-        """Create a command-argument instance for this operation.
+    def _get_arguments_class(self) -> type["PyArguments"]:
+        operation_name = getattr(self, self._operation)
+        return getattr(type(self), f"_{operation_name}Arguments", PyArguments)
 
-        The returned :class:`PyArguments` wrapper exposes the operation's
-        arguments for inspection and state updates. Its lifetime is registered
-        with the underlying service so command-argument resources can be
-        released when the wrapper is deleted.
-        """
+    def _create_arguments_instance(self, *args) -> "PyArguments":
+        action_id = args[-1]
+        instances = self.__dict__.setdefault(
+            "_argument_instances", weakref.WeakValueDictionary()
+        )
+        instance = instances.get(action_id)
+        if instance is not None:
+            return instance
+        if action_id in self.__dict__.get("_released_argument_instance_ids", set()):
+            raise KeyError(action_id)
+
+        arguments = self._get_arguments_class()(*args)
+        arguments.__dict__["_operation"] = self._operation
+        instances[action_id] = arguments
+
+        action_ref = weakref.ref(self)
+
+        def mark_released(_):
+            action = action_ref()
+            if action is not None:
+                action.__dict__.setdefault(
+                    "_released_argument_instance_ids", set()
+                ).add(action_id)
+                action.__dict__.get("_argument_instance_refs", {}).pop(action_id, None)
+
+        self.__dict__.setdefault("_argument_instance_refs", {})[action_id] = (
+            weakref.ref(arguments, mark_released)
+        )
+        return arguments
+
+    def create_instance(self) -> "PyArguments | None":
+        """Deprecated alias for :meth:`create`."""
+        warnings.warn(
+            "create_instance() is deprecated; use create() instead.",
+            PyFluentDeprecationWarning,
+            stacklevel=2,
+        )
+        return self.create()
+
+    def create(self) -> "PyArguments | None":
+        """Create an argument instance for this operation."""
         args = self._get_create_instance_args()
         if args is not None:
-            return PyArguments(*args)
+            return self._create_arguments_instance(*args)
+
+    def __getitem__(self, action_id: str) -> "PyArguments":
+        """Return a wrapper for an existing action-argument instance."""
+        return self._create_arguments_instance(
+            self.service,
+            self.rules,
+            getattr(self, self._operation),
+            self.path.copy(),
+            action_id,
+        )
 
     def get_completer_info(
         self, prefix: str = "", excluded: Iterable | None = None
@@ -1278,13 +1328,21 @@ class PyAction:
 
 
 class PyQuery(PyAction):
-    """Enables querying Fluent’s data model through a simple Python interface."""
+    """Enables querying Fluent’s data model through a simple Python interface.
+
+    Query-argument instances support the same creation and lookup API as
+    command-argument instances.
+    """
 
     _operation = "query"
 
 
 class PyCommand(PyAction):
-    """Enables commanding Fluent’s data model through a simple Python interface."""
+    """Enables commanding Fluent’s data model through a simple Python interface.
+
+    Command-argument instances can be created with :meth:`create` or retrieved
+    by their identifier using item access.
+    """
 
     _operation = "command"
 
@@ -1318,7 +1376,7 @@ class PyCommand(PyAction):
 
     def _get_file_purpose(self, arg):
         try:
-            cmd_instance = self.create_instance()
+            cmd_instance = self.create()
             arg_instance = getattr(cmd_instance, arg)
             file_purpose = arg_instance.get_attr("filePurpose")
             del cmd_instance, arg_instance
@@ -1476,6 +1534,20 @@ class PyArguments(_PyArgumentsSetattrMixin, PyStateContainer):
             Value of the attribute.
         """
         return self._get_remote_attr(attrib)
+
+    def name(self) -> str:
+        """Return the identifier of this action-argument instance."""
+        return self.id
+
+    def __call__(self) -> ValueT:
+        """Execute the action with this instance's current argument state."""
+        operation = self.__dict__.get("_operation")
+        if operation is None:
+            return super().__call__()
+
+        action_class = PyCommand if operation == "command" else PyQuery
+        action = action_class(self.service, self.rules, self.command, self.path[:-1])
+        return action(**self.get_state())
 
 
 class PyArgumentsTextualSubItem(PyArgumentsSubItem, PyTextual):

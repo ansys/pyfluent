@@ -29,7 +29,7 @@ accessing Fluent settings.
 Child objects can be accessed using attribute access and modified using ``set_state``.
 Named child objects can be accessed or modified using index operators.
 
-Calling an object will return its current value.
+Calling a settings object returns its current value; calling a command executes it.
 
 Example
 -------
@@ -78,6 +78,7 @@ from typing import (
     get_args,
     get_origin,
 )
+from uuid import uuid4
 import warnings
 import weakref
 
@@ -2571,7 +2572,26 @@ class Action(Base):
 
 
 class BaseCommand(Action):
-    """Executes command."""
+    """Executes commands and creates command instances with staged arguments."""
+
+    def create(self) -> "CommandInstance":
+        """Create a command instance for setting arguments before execution."""
+        command_instances = self.__dict__.get("_command_instances")
+        if command_instances is None:
+            command_instances = weakref.WeakValueDictionary()
+            self._setattr("_command_instances", command_instances)
+        name = uuid4().hex
+        instance = CommandInstance(self, name)
+        command_instances[name] = instance
+        return instance
+
+    def __getitem__(self, name: str) -> "CommandInstance":
+        """Return a previously created command instance by name."""
+        command_instances = self.__dict__.get("_command_instances", {})
+        try:
+            return command_instances[name]
+        except KeyError:
+            raise KeyError(name) from None
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
@@ -2742,6 +2762,73 @@ class CommandWithPositionalArgs(BaseCommand):
             ):
                 return None
             raise
+
+
+class _CommandInstanceArgument:
+    """Local state proxy for one argument of a command instance."""
+
+    def __init__(self, instance: "CommandInstance", name: str):
+        self._instance = instance
+        self._name = name
+
+    def get_state(self) -> StateType:
+        """Get the value stored for this argument."""
+        return self._instance._state.get(self._name)
+
+    def set_state(self, state: StateType) -> None:
+        """Set the value stored for this argument."""
+        self._instance._state[self._name] = state
+
+    def get_attr(self, attrib: str) -> StateType:
+        """Get an attribute from the command's argument definition."""
+        return getattr(self._instance._command, self._name).get_attr(attrib)
+
+    def __call__(self) -> StateType:
+        """Get the stored argument value."""
+        return self.get_state()
+
+
+class CommandInstance:
+    """A command with locally staged argument values."""
+
+    def __init__(self, command: BaseCommand, name: str):
+        object.__setattr__(self, "_command", command)
+        object.__setattr__(self, "_name", name)
+        object.__setattr__(self, "_state", {})
+
+    def _argument_name(self, name: str) -> str:
+        aliases = self._command._child_aliases
+        canonical_name = aliases.get(name, (name,))[0]
+        if canonical_name not in self._command.argument_names:
+            raise AttributeError(
+                f"'{self._command.python_path}' has no command argument '{name}'"
+            )
+        return canonical_name
+
+    def __getattr__(self, name: str) -> _CommandInstanceArgument:
+        return _CommandInstanceArgument(self, self._argument_name(name))
+
+    def __setattr__(self, name: str, value: StateType) -> None:
+        argument_name = self._argument_name(name)
+        _warn_state_assignment(name)
+        self._state[argument_name] = value
+
+    def name(self) -> str:
+        """Return the command instance name."""
+        return self._name
+
+    def get_state(self) -> dict:
+        """Get the argument values staged for this command instance."""
+        return dict(self._state)
+
+    def set_state(self, state: dict) -> None:
+        """Set argument values for this command instance."""
+        for name, value in state.items():
+            self._state[self._argument_name(name)] = value
+
+    def __call__(self) -> StateType | None:
+        """Execute the command with the staged argument values."""
+        return self._command(**self._state)
 
 
 class Query(Action):

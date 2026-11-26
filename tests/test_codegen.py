@@ -392,10 +392,10 @@ class Root(PyMenu):
                     Argument A2.
                     """
 
-            def create_instance(self) -> _C2Arguments:
+            def create(self) -> _C2Arguments:
                 args = self._get_create_instance_args()
                 if args is not None:
-                    return self._C2Arguments(*args)
+                    return self._create_arguments_instance(*args)
 
     class P1(PyTextual):
         """
@@ -426,10 +426,10 @@ class Root(PyMenu):
                 Argument A1.
                 """
 
-        def create_instance(self) -> _C1Arguments:
+        def create(self) -> _C1Arguments:
             args = self._get_create_instance_args()
             if args is not None:
-                return self._C1Arguments(*args)'''
+                return self._create_arguments_instance(*args)'''
 
 
 @pytest.mark.parametrize(

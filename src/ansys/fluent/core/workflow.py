@@ -178,7 +178,7 @@ def command_name_to_task_name(meshing_root, command_name: str) -> str:
     # TODO: This fix is applicable till the server lacks the mechanism to return mapped values
     #  for '<Task Object>.get_next_possible_tasks()' and
     #  for '<Workflow>.get_new_insertable_tasks()'.
-    command_instance = getattr(meshing_root, command_name).create_instance()
+    command_instance = getattr(meshing_root, command_name).create()
     return command_instance.get_attr("APIName") or command_instance.get_attr(
         "helpString"
     )
