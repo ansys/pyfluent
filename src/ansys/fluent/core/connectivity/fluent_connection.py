@@ -736,27 +736,12 @@ class FluentConnection:
                     text=True,
                 )
                 if result.returncode != 0:
-                    # Cleanup script's target pid can be stale; check if process is actually alive
-                    if not _pid_exists(pid):
-                        return
-
-                    # Attempt platform-aware kill fallback
-                    kill_cmd = (
-                        ["taskkill", "/PID", str(pid), "/F"]
-                        if os.name == "nt"
-                        else ["kill", "-9", str(pid)]
+                    # Cleanup script targets multiple pids (cortex, host, nodes); any of
+                    # them can already be stale, so a nonzero exit here isn't necessarily fatal.
+                    logger.debug(
+                        f"Cleanup script exited with status {result.returncode}: "
+                        f"{result.stderr or result.stdout}"
                     )
-                    fallback_result = subprocess.run(
-                        kill_cmd,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        timeout=30,
-                        text=True,
-                    )
-                    if fallback_result.returncode != 0 and _pid_exists(pid):
-                        raise subprocess.CalledProcessError(
-                            result.returncode, cmd_list, result.stdout, result.stderr
-                        )
             elif self._slurm_job_id:
                 logger.debug("Fluent running inside Slurm, closing Slurm session...")
                 self._close_slurm()
