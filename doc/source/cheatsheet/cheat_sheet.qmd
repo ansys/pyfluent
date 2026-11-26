@@ -84,7 +84,8 @@ import_geom.length_unit.set_state("mm")
 import_geom()
 
 surf_mesh = watertight.create_surface_mesh
-surf_mesh.cfd_surface_mesh_controls.max_size.set_state(0.3)
+mesh_controls = surf_mesh.cfd_surface_mesh_controls
+mesh_controls.max_size.set_state(0.3)
 surf_mesh()
 
 watertight.describe_geometry.setup_type.set_state("fluid")
@@ -104,7 +105,8 @@ volume_mesh()
 inlet = VelocityInlet(solver, name="cold-inlet")
 inlet.momentum.velocity_magnitude.set_state(0.4)
 
-turb_spec = inlet.turbulence.turbulence_specification
+turbulence = inlet.turbulence
+turb_spec = turbulence.turbulence_specification
 turb_spec.set_state(turb_spec.INTENSITY_AND_HYDRAULIC_DIAMETER)
 
 turbulence.turbulent_intensity.set_state(0.05)
@@ -118,7 +120,8 @@ inlet.thermal.temperature.set_state(293.15)
 ```{python}
 materials = Materials(solver)
 air_copy = materials.fluid.make_a_copy(from_="air", to="air-copied")
-materials.fluid["air-copied"].viscosity.set_state(1.81e-05)
+air_copied = materials.fluid["air-copied"]
+air_copied.viscosity.set_state(1.81e-05)
 
 # Create new material
 my_solid = materials.solid.create("my-solid")
@@ -130,7 +133,8 @@ my_solid.thermal_conductivity.value.set_state(7.6)
 
 ```{python}
 cell_zones = CellZoneConditions(solver)
-cell_zones.fluid["elbow-fluid"].general.material.set_state("air-copied")
+fluid = cell_zones.fluid["elbow-fluid"]
+fluid.general.material.set_state("air-copied")
 ```
 
 ### Models
@@ -149,7 +153,8 @@ rad.model.set_state(rad.model.MONTE_CARLO)
 rad.solve_frequency.number_of_histories.set_state(1e7)
 
 species = Species(solver)
-species.model.option.set_state(species.model.option.SPECIES_TRANSPORT)
+species_option = species.model.option
+species_option.set_state(species_option.SPECIES_TRANSPORT)
 ```
 ## Solution
 ```{python}
@@ -169,9 +174,10 @@ grad_scheme.set_state(grad_scheme.GREEN_GAUSS_NODE_BASED)
 rep_defs = ReportDefinitions(solver)
 surf_rep = rep_defs.surface.create("outlet-temp-avg")
 
-soln_report_type = rep_defs.surface["outlet-temp-avg"].report_type
-rep_defs.surface["outlet-temp-avg"].report_type.set_state(soln_report_type.SURFACE_AREAAVG)
-rep_defs.surface["outlet-temp-avg"].field.set_state(VC.TEMPERATURE)
+outlet_temp = rep_defs.surface["outlet-temp-avg"]
+report_type = outlet_temp.report_type
+report_type.set_state(report_type.SURFACE_AREAAVG)
+outlet_temp.field.set_state(VC.TEMPERATURE)
 ```
 
 ### Initialize and solve
@@ -187,8 +193,6 @@ run_calc = RunCalculation(solver)
 run_calc.parameters.iter_count.set_state(100)
 
 Iterate(solver)()
-
-Monitor(solver).residual.plot()
 ```
 
 ## Post-Processing
@@ -243,11 +247,8 @@ pressure_outlet = PressureOutlet(solver, name="outlet")
 
 wall = WallBoundary(solver, name="wall-elbow")
 area = reduction.area(locations=[velocity_inlet])
-volume = reduction.volume(locations=[velocity_inlet])
 
 avg_pressure = reduction.area_average(
-  VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
-total_mass = reduction.mass_integral(
   VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
 
 force = reduction.force(locations=[wall])
@@ -261,7 +262,6 @@ sv_info = solver.fields.solution_variable_info
 sv_data = solver.fields.solution_variable_data
 
 zones_info = sv_info.get_zones_info()
-temp_data = sv_data.get_data(variable_name=VC.TEMPERATURE, zone_names=["elbow-fluid"], domain_name="mixture")
 
 temp_array = sv_data.create_empty_array(VC.TEMPERATURE, "elbow-fluid", "mixture")
 temp_array[:] = 500
