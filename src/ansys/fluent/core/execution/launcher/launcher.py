@@ -188,8 +188,8 @@ class LaunchFluentArgsNoContainer(LauncherArgsBase, TypedDict, total=False):
     """
     py: bool | None
     """Request Python mode. Standalone launches default to it for known Fluent versions
-    2025 R1 and later. Container and Slurm launches require an explicit ``True`` to add ``-py``.
-    PIM launches ignore this option.
+    2025 R1 and later. Container and Slurm launches require an explicit ``True`` to activate
+    the mode. PIM launches ignore this option.
     """
     cwd: str | None
     """Working directory for the Fluent client."""
