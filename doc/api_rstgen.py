@@ -46,6 +46,14 @@ HIDDEN_MODULES = {
 }
 
 
+DETAIL_MODULES = {
+    "ansys.fluent.core.meshing.meshing_workflow",
+    "ansys.fluent.core.solver.error_message",
+    "ansys.fluent.core.solver.flobject",
+    "ansys.fluent.core.solver.flunits",
+}
+
+
 def _write_common_options(rst_file, module_name):
     excluded = "__weakref__, __dict__"
     if module_name in {
@@ -55,6 +63,8 @@ def _write_common_options(rst_file, module_name):
     }:
         # Document the using() aliases only at their canonical execution entry.
         excluded += ", using"
+    if module_name == "ansys.fluent.core.solver":
+        excluded += ", Solver, SolverAero, SolverIcing, SolverLite, PrePost"
     rst_file.write(
         "    :members:\n"
         "    :show-inheritance:\n"
@@ -104,7 +114,7 @@ def _write_module_page(source_path):
     output_path = API_DIR / source_path.relative_to(SOURCE_PACKAGE).with_suffix(".rst")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf8") as rst_file:
-        if module_name == "ansys.fluent.core.meshing.meshing_workflow":
+        if module_name in DETAIL_MODULES:
             rst_file.write(":orphan:\n\n")
         _write_api_page(rst_file, source_path.stem, "automodule", module_name)
 
@@ -169,6 +179,30 @@ def _write_package_index(source_path):
                     "LoadMeshingWorkflow",
                 ):
                     detail.write(f".. autoclass:: {name}\n\n")
+        elif package_name == "ansys.fluent.core.solver":
+            rst_file.write(
+                ".. _ref_ansys_fluent_core_solver:\n\n"
+                f"{package_name}\n{'=' * len(package_name)}\n\n"
+                "Start at the :ref:`solver settings root <ref_root>`. A solver "
+                "session exposes this hierarchy as ``solver_session.settings``. "
+                "Use it to set up a case, run a calculation, and inspect results.\n\n"
+                "To start Fluent, choose a :ref:`solver session "
+                "<ref_ansys_fluent_core_solver_session>`. For a worked introduction, "
+                "see the :ref:`solver settings guide <ref_solver_settings_guide>`.\n\n"
+                "If you know the setting you need, look it up in the "
+                ":doc:`direct-access settings catalog <settings_classes>`. "
+                "For settings object types, units, or error messages, see "
+                ":doc:`flobject`, :doc:`flunits`, or :doc:`error_message`.\n"
+            )
+            with (output_directory / "settings_classes.rst").open(
+                "w", encoding="utf8"
+            ) as detail:
+                detail.write(
+                    ":orphan:\n\n.. _ref_solver_settings_classes:\n\n"
+                    "Direct-access settings classes\n==============================\n\n"
+                    f".. automodule:: {package_name}\n"
+                )
+                _write_common_options(detail, package_name)
         else:
             _write_api_page(rst_file, title, "automodule", package_name)
         rst_file.write("\n.. toctree::\n")
@@ -176,7 +210,7 @@ def _write_package_index(source_path):
         rst_file.write("    :hidden:\n\n")
 
         for child in _documented_children(source_path):
-            if _module_name(child) == "ansys.fluent.core.meshing.meshing_workflow":
+            if _module_name(child) in DETAIL_MODULES:
                 continue
             if child.is_dir():
                 rst_file.write(f"    {child.name}/{child.name}_contents\n")

@@ -3,52 +3,34 @@
 Solver settings objects
 =======================
 
-.. vale Google.Spacing = NO
-
-Solver settings objects provide a natural way to access and modify Fluent solver
-settings and issue commands to be executed.
-An appropriate call to the :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent`
-function returns an object whose interface directly exposes the :ref:`ref_root` of the solver settings hierarchy.
-
-.. vale Google.Spacing = YES
-
-
-New format for accessing solver settings objects
-------------------------------------------------
-
-To simplify access to solver settings and improve readability, you can now
-instantiate settings objects directly using a concise constructor-style syntax.
-This avoids navigating the full hierarchy of solver settings while preserving
-the same functional capabilities.
-
-Example usage
-~~~~~~~~~~~~~
+Start a :ref:`solver session <ref_ansys_fluent_core_solver_session>` and use
+``solver_session.settings`` to configure and run Fluent. The
+:ref:`settings root <ref_root>` lists the available settings and commands.
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import Solver
-  >>> from ansys.fluent.core.solver import VelocityInlet
+  >>> from ansys.fluent.core.solver.session import Solver
   >>> solver_session = Solver.from_install()
-  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
-
-
-This format provides a more natural way to create and interact with settings objects,
-making your code easier to read and maintain. By abstracting the underlying hierarchy,
-users can focus on the specific settings they need without dealing with potential changes
-in the Fluent API structure.
-
-The traditional hierarchy-based API remains fully supported. The new syntax is an
-additional, more convenient option and not a replacement.
-
-Accessing solver settings
--------------------------
-
-.. code-block:: python
-
   >>> file = solver_session.settings.file
   >>> setup = solver_session.settings.setup
   >>> solution = solver_session.settings.solution
   >>> results = solver_session.settings.results
+
+Access a setting directly
+-------------------------
+
+If you know the setting you need, you can import its class instead of walking
+the hierarchy. For example, in a case with a velocity inlet named ``inlet-1``,
+both paths below refer to the same boundary condition:
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core.solver import VelocityInlet
+  >>> inlet1 = setup.boundary_conditions.velocity_inlet["inlet-1"]
+  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
+
+See the :ref:`direct-access settings catalog <ref_solver_settings_classes>` for
+the available classes.
 
 
 Exposure levels
@@ -68,7 +50,7 @@ the settings root to expose beta or alpha objects.
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import ExposureLevel
+  >>> from ansys.fluent.core.solver.flobject import ExposureLevel
   >>> solver_session.settings.set_exposure_level(ExposureLevel.STABLE)
 
 The available levels are:
@@ -88,7 +70,7 @@ Show beta objects
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import ExposureLevel
+  >>> from ansys.fluent.core.solver.flobject import ExposureLevel
   >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
 
 After enabling beta exposure, beta settings objects, commands, queries, and
@@ -109,7 +91,7 @@ This also keeps beta objects visible.
 
   .. code-block:: python
 
-    >>> from ansys.fluent.core import ExposureLevel
+    >>> from ansys.fluent.core.solver.flobject import ExposureLevel
     >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
     >>> solver_session.settings.setup.set_exposure_level(ExposureLevel.BETA)
     Traceback (most recent call last):
@@ -357,10 +339,11 @@ in a single solver session:
 
 .. code-block::
 
-  >>> from ansys.fluent.core import Solver, examples
+  >>> from ansys.fluent.core.examples.downloads import download_file
+  >>> from ansys.fluent.core.solver.session import Solver
   >>> from ansys.fluent.core.solver import Viscous, VelocityInlet
   >>> from pprint import pprint
-  >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+  >>> import_file_name = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver_session = Solver.from_install()
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
