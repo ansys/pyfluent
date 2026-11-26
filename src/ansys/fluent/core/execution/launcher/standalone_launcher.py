@@ -198,7 +198,7 @@ class StandaloneLauncher:
             If True, runs in lightweight mode where mesh settings are read into a background solver session,
             replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
         py : bool, optional
-            Run Fluent in Python mode. If omitted or ``None``, Python mode is enabled
+            Run Fluent in Python mode. If omitted or ``None``, the mode is enabled
             for Fluent 2025 R1 and later and disabled for earlier or unknown versions.
         gpu : bool, optional
             If True, starts Fluent with GPU Solver enabled.
