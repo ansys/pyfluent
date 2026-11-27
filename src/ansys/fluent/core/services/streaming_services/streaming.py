@@ -27,6 +27,7 @@ from collections.abc import Callable
 import itertools
 import logging
 import threading
+from typing import Any
 
 logger = logging.getLogger("pyfluent.networking")
 
@@ -36,7 +37,12 @@ class StreamingService:
 
     _service_id = itertools.count()
 
-    def __init__(self, stream_begin_method, target, streaming_service):
+    def __init__(
+        self,
+        stream_begin_method: str,
+        target: Callable[..., None],
+        streaming_service: object,
+    ) -> None:
         """__init__ method of StreamingService class."""
         self._lock: threading.RLock = threading.RLock()
         self._streaming: bool = False
@@ -46,15 +52,19 @@ class StreamingService:
         self._streaming_service = streaming_service
         self._stream_thread: threading.Thread | None = None
         self._service_callback_id = itertools.count()
-        self._service_callbacks: dict = {}
+        self._service_callbacks: dict[
+            str, list[Callable[..., None] | tuple[Any, ...] | dict[str, Any]]
+        ] = {}
 
     @property
-    def is_streaming(self):
+    def is_streaming(self) -> bool:
         """Checks whether it is streaming."""
         with self._lock:
             return self._streaming
 
-    def register_callback(self, callback: Callable, *args, **kwargs) -> str:
+    def register_callback(
+        self, callback: Callable[..., None], *args: Any, **kwargs: Any
+    ) -> str:
         """Register the callback.
 
         Parameters
@@ -76,7 +86,7 @@ class StreamingService:
             self._service_callbacks[callback_id] = [callback, args, kwargs]
             return callback_id
 
-    def unregister_callback(self, callback_id: str):
+    def unregister_callback(self, callback_id: str) -> None:
         """Unregister the callback.
 
         Parameters
@@ -88,7 +98,7 @@ class StreamingService:
             if callback_id in self._service_callbacks:
                 del self._service_callbacks[callback_id]
 
-    def start(self, *args, **kwargs) -> None:
+    def start(self, *args: Any, **kwargs: Any) -> None:
         """Start streaming."""
         with self._lock:
             if not self.is_streaming:
@@ -119,5 +129,6 @@ class StreamingService:
             self._streaming = False
             self._stream_thread = None
 
-    def _prepare(self):
+    def _prepare(self) -> None:
+        """Prepare streaming service."""
         pass  # Currently only used by monitor services.

@@ -24,6 +24,7 @@
 """Module for monitors management."""
 
 import threading
+from typing import Any
 
 import numpy as np
 
@@ -47,7 +48,7 @@ class MonitorsManager(StreamingService):
         Monitors streaming service.
     """
 
-    def __init__(self, session_id: str, service):
+    def __init__(self, session_id: str, service: object) -> None:
         """__init__ method of MonitorsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
@@ -56,8 +57,8 @@ class MonitorsManager(StreamingService):
         )
         self._session_id: str = session_id
         self._lock_refresh: threading.Lock = threading.Lock()
-        self._monitors_info = None
-        self._data_frames = {}
+        self._monitors_info: dict[str, Any] | None = None
+        self._data_frames: dict[str, Any] = {}
 
     def get_monitor_set_names(self) -> list[str]:
         """Get monitor set names.
@@ -74,7 +75,7 @@ class MonitorsManager(StreamingService):
         with self._lock:
             return list(self._data_frames)
 
-    def get_monitor_set_prop(self, monitor_set_name: str, property: str) -> str:
+    def get_monitor_set_prop(self, monitor_set_name: str, property: str) -> str | None:
         """Get monitor set property.
 
         Parameters
@@ -92,7 +93,9 @@ class MonitorsManager(StreamingService):
         with self._lock:
             return self._monitors_info.get(monitor_set_name, {}).get(property)
 
-    def get_monitor_set_plot(self, monitor_set_name, *args, **kwargs) -> None | object:
+    def get_monitor_set_plot(
+        self, monitor_set_name: str, *args: Any, **kwargs: Any
+    ) -> None | object:
         """Get monitor set plot.
 
         Parameters
@@ -116,7 +119,7 @@ class MonitorsManager(StreamingService):
 
     def get_monitor_set_data(
         self,
-        monitor_set_name,
+        monitor_set_name: str,
         start_index: int = 0,
         end_index: int | None = None,
     ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
@@ -173,10 +176,12 @@ class MonitorsManager(StreamingService):
             self.stop()
             self.start()
 
-    def _prepare(self):
+    def _prepare(self) -> None:
         self._update_dataframe()
 
-    def _populate_dataframes(self, data_received, *args, **kwargs):
+    def _populate_dataframes(
+        self, data_received: dict[str, Any], *args: Any, **kwargs: Any
+    ) -> None:
         for _, df_data in self._data_frames.items():
             df = df_data["df"]
             monitors = df_data["monitors"]
@@ -198,7 +203,7 @@ class MonitorsManager(StreamingService):
                     callback, args, kwargs = callback_map
                     callback(*args, **kwargs)
 
-    def _update_dataframe(self):
+    def _update_dataframe(self) -> None:
         with self._lock:
             self._monitors_info = self._streaming_service.get_monitors_info()
             self._data_frames = {}
@@ -212,7 +217,14 @@ class MonitorsManager(StreamingService):
                 self._data_frames[monitor_set_name]["df"] = df
                 self._data_frames[monitor_set_name]["monitors"] = monitors_name
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: str,
+        stream_begin_method: str,
+        started_evt: threading.Event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Begin monitors streaming."""
         responses = self._streaming_service._process_streaming(
             *args,
@@ -223,7 +235,7 @@ class MonitorsManager(StreamingService):
         )
         while True:
             try:
-                data_received = {}
+                data_received: dict[str, Any] = {}
                 response = next(responses)
                 x_axis_index, y_data = self._streaming_service.parse_streaming_response(
                     response

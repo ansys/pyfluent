@@ -30,20 +30,30 @@ service. The grpc service implementation lives in:
 * ``ansys.fluent.core._grpc_services.transcript_service_v0`` (v0 proto API)
 """
 
+from collections.abc import Generator
+import threading
+from typing import Any
+
 
 class Transcript:
     """Transcript backed by the Transcript gRPC service."""
 
-    def __init__(self, service):
+    def __init__(self, service: object) -> None:
         """Initialize Transcript."""
         self.service = service
 
-    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+    def begin_streaming(
+        self,
+        request: object,
+        started_evt: threading.Event,
+        id: str,
+        stream_begin_method: str,
+    ) -> Generator[object, None, None] | None:
         """Begin streaming from Fluent."""
         return self.service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
 
-    def end_streaming(self, id, stream_begin_method) -> None:
+    def end_streaming(self, id: str, stream_begin_method: str) -> None:
         """End streaming from Fluent."""
         self.service.end_streaming(id, stream_begin_method)
