@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _convergence_reports:
+
+convergence_reports
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.convergence_reports
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`convergence_reports_item <convergence_reports_item>`
+
+``convergence_reports`` is organised like a Python dictionary holding objects of type :ref:`convergence_reports_item <convergence_reports_item>` by name. You can access them using ``convergence_reports['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================================   ====================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                Summary
+
+======================================================   ====================================================================================================================================================================================
+:ref:`convergence_conditions <convergence_conditions>`       Available options that allow you to set convergence conditions on the solution based on the values from report definitions. For example, surface, volume, lift, drag, and so on.
+
+======================================================   ====================================================================================================================================================================================
+

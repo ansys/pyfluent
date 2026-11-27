@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fuel_type:
+
+fuel_type
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fuel_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`fuel_stream <fuel_stream>`       Fuel stream parameters.
+
+================================   ===========================
+

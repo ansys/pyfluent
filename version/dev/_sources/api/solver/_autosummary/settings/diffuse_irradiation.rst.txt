@@ -1,0 +1,31 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _diffuse_irradiation:
+
+diffuse_irradiation
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.diffuse_irradiation
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`diffuse_irradiation_item <diffuse_irradiation_item>`
+
+``diffuse_irradiation`` is organised like a Python dictionary holding objects of type :ref:`diffuse_irradiation_item <diffuse_irradiation_item>` by name. You can access them using ``diffuse_irradiation['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+====================================================================   =============================
+
+Parent                                                                                       Summary
+
+====================================================================   =============================
+:ref:`diffuse_irradiation_settings <diffuse_irradiation_settings>`     Diffuse irradiation settings.
+
+:ref:`diffuse_irradiation_settings <diffuse_irradiation_settings_1>`   Diffuse irradiation settings.
+
+====================================================================   =============================
+

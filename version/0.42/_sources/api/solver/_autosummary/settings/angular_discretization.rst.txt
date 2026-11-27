@@ -1,0 +1,38 @@
+:orphan:
+
+.. _angular_discretization:
+
+angular_discretization
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.angular_discretization
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ===============================================
+
+Attribute                                                                              Summary
+
+============================================   ===============================================
+:ref:`n_theta_divisions <n_theta_divisions>`                        Number of polar divisions.
+
+:ref:`n_phi_divisions <n_phi_divisions>`                        Number of azimuthal divisions.
+
+:ref:`n_theta_pixels <n_theta_pixels>`                 Number of polar pixels per solid-angle.
+
+:ref:`n_phi_pixels <n_phi_pixels>`                 Number of azimuthal pixels per solid-angle.
+
+============================================   ===============================================
+
+.. rubric:: Included in:
+
+==============================================   ==========================================================
+
+Parent                                                                                              Summary
+
+==============================================   ==========================================================
+:ref:`discrete_ordinates <discrete_ordinates>`       Enable/disable the discrete ordinates radiation model.
+
+==============================================   ==========================================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_ComplexMeshingRegions__ComplexMeshingRegionsArguments:
+
+_ComplexMeshingRegionsArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.ComplexMeshingRegions._ComplexMeshingRegionsArguments
+   :members: _ComplexMeshingRegionsOption
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

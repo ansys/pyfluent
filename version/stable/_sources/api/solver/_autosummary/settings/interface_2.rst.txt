@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interface_2:
+
+interface
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.interface_2
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`interface_item <interface_2_item>`
+
+``interface`` is organised like a Python dictionary holding objects of type :ref:`interface_item <interface_2_item>` by name. You can access them using ``interface['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

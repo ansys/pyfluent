@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_mole_fraction:
+
+species_mole_fraction
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.species_mole_fraction
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`species_mole_fraction_item <species_mole_fraction_item>`
+
+``species_mole_fraction`` is organised like a Python dictionary holding objects of type :ref:`species_mole_fraction_item <species_mole_fraction_item>` by name. You can access them using ``species_mole_fraction['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+===========================   =====================================================
+
+Parent                                                                      Summary
+
+===========================   =====================================================
+:ref:`species <species_9>`    Allows to change species model variables or settings.
+
+:ref:`species <species_10>`   Allows to change species model variables or settings.
+
+:ref:`species <species_11>`   Allows to change species model variables or settings.
+
+:ref:`species <species_13>`   Allows to change species model variables or settings.
+
+===========================   =====================================================
+

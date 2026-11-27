@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_47_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.phase_47_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ============================================================
+
+Attribute                                                                               Summary
+
+================================   ============================================================
+:ref:`turbulence <turbulence_4>`       Allows to change turbulence model variables or settings.
+
+:ref:`geometry <geometry_7>`             Allows to change geometry model variables or settings.
+
+================================   ============================================================
+
+.. rubric:: Included in:
+
+=======================   =================================================================
+
+Parent                                                                              Summary
+
+=======================   =================================================================
+:ref:`phase <phase_47>`       Provides an object description for phase-specific conditions.
+
+=======================   =================================================================
+

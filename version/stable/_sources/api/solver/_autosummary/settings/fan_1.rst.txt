@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fan_1:
+
+fan
+===
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.fan_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`fan_item <fan_1_item>`
+
+``fan`` is organised like a Python dictionary holding objects of type :ref:`fan_item <fan_1_item>` by name. You can access them using ``fan['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

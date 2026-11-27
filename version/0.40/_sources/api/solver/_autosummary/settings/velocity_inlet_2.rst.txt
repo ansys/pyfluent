@@ -1,0 +1,21 @@
+:orphan:
+
+.. _velocity_inlet_2:
+
+velocity_inlet
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.velocity_inlet_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ========================================================================================
+
+Parent                                                                                                                                                          Summary
+
+============================================================================   ========================================================================================
+:ref:`non_reflecting_boundary_treatment <non_reflecting_boundary_treatment>`       Non reflecting boundary treatment using minimal pressure reflection approach object.
+
+============================================================================   ========================================================================================
+

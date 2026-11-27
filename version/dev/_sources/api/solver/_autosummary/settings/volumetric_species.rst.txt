@@ -1,0 +1,31 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _volumetric_species:
+
+volumetric_species
+==================
+
+.. deprecated:: Ansys Fluent 2024 R2
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.volumetric_species
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`volumetric_species_item <volumetric_species_item>`
+
+``volumetric_species`` is organised like a Python dictionary holding objects of type :ref:`volumetric_species_item <volumetric_species_item>` by name. You can access them using ``volumetric_species['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   ================
+
+Parent                                Summary
+
+==========================   ================
+:ref:`species <species_6>`   Mixture species.
+
+==========================   ================
+

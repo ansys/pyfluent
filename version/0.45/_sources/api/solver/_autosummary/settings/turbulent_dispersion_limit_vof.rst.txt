@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turbulent_dispersion_limit_vof:
+
+turbulent_dispersion_limit_vof
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.turbulent_dispersion_limit_vof
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`turbulent_dispersion_limit_vof_item <turbulent_dispersion_limit_vof_item>`
+
+``turbulent_dispersion_limit_vof`` is organised like a Python dictionary holding objects of type :ref:`turbulent_dispersion_limit_vof_item <turbulent_dispersion_limit_vof_item>` by name. You can access them using ``turbulent_dispersion_limit_vof['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+====================================================   =======================================================================
+
+Parent                                                                                                                 Summary
+
+====================================================   =======================================================================
+:ref:`turbulent_dispersion <turbulent_dispersion_1>`       Limiting and transition function controls for turbulent dispersion.
+
+====================================================   =======================================================================
+

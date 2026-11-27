@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _material_4:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.material_4
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`material_item <material_4_item>`
+
+``material`` is organised like a Python dictionary holding objects of type :ref:`material_item <material_4_item>` by name. You can access them using ``material['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   ====================
+
+Parent                                    Summary
+
+==========================   ====================
+:ref:`species <species_4>`       Mixture species.
+
+==========================   ====================
+

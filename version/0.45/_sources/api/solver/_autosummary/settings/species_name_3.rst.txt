@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_name_3:
+
+species_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.species_name_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ======================================
+
+Parent                                                                    Summary
+
+========================================   ======================================
+:ref:`setup_item <setup_1_item>`                    'child_object_type' of setup.
+
+:ref:`init_value_item <init_value_item>`       'child_object_type' of init_value.
+
+========================================   ======================================
+

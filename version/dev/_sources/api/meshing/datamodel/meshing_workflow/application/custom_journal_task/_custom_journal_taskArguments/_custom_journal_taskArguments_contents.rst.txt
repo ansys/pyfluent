@@ -1,0 +1,16 @@
+:html_theme.sidebar_secondary.remove:
+
+.. _ref_meshing_datamodel_meshing_workflow_application_custom_journal_task__custom_journal_taskArguments:
+
+custom_journal_taskArguments_item
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.v272.meshing.meshing_workflow.Root.application.custom_journal_task._custom_journal_taskArguments
+   :members: _journal_string, _prime_journal, _python_journal
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

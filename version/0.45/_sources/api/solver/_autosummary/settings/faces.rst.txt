@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _faces:
+
+faces
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.faces
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`faces_item <faces_item>`
+
+``faces`` is organised like a Python dictionary holding objects of type :ref:`faces_item <faces_item>` by name. You can access them using ``faces['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================   ==================================
+
+Parent                                                        Summary
+
+================================   ==================================
+:ref:`bodies_item <bodies_item>`       'child_object_type' of bodies.
+
+================================   ==================================
+

@@ -1,0 +1,30 @@
+:orphan:
+
+.. _named_object_commands__NamedObjectCommands:
+
+Common named-object methods
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings._NamedObjectCommands
+
+.. rubric:: Methods
+
+==========================================   =====================================================
+
+Method                                                                                     Summary
+
+==========================================   =====================================================
+:ref:`create <create>`                           Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                    Delete selected objects.
+
+:ref:`rename <rename>`                                                          Rename the object.
+
+:ref:`list <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                      Create a copy of the object.
+
+==========================================   =====================================================
+

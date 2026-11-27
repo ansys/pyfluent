@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _exhaust_fan_1:
+
+exhaust_fan
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.exhaust_fan_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`exhaust_fan_item <exhaust_fan_1_item>`
+
+``exhaust_fan`` is organised like a Python dictionary holding objects of type :ref:`exhaust_fan_item <exhaust_fan_1_item>` by name. You can access them using ``exhaust_fan['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

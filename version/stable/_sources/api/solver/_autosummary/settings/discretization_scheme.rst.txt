@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _discretization_scheme:
+
+discretization_scheme
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.discretization_scheme
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`discretization_scheme_item <discretization_scheme_item>`
+
+``discretization_scheme`` is organised like a Python dictionary holding objects of type :ref:`discretization_scheme_item <discretization_scheme_item>` by name. You can access them using ``discretization_scheme['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================================   ===================================
+
+Parent                                                                               Summary
+
+======================================================   ===================================
+:ref:`spatial_discretization <spatial_discretization>`       Spatial Discretization Schemes.
+
+======================================================   ===================================
+

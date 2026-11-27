@@ -1,0 +1,48 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parametric_studies:
+
+parametric_studies
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.parametric_studies
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================================   ===========================
+
+Method                                                                 Summary
+
+================================================   ===========================
+:ref:`initialize <initialize_5>`                       Start Parametric Study.
+
+:ref:`duplicate <duplicate>`                       Duplicate Parametric Study.
+
+:ref:`set_as_current <set_as_current_2>`                 Set As Current Study.
+
+:ref:`export_design_table <export_design_table>`    Export Design Point Table.
+
+:ref:`import_design_table <import_design_table>`    Import Design Point Table.
+
+================================================   ===========================
+
+.. rubric:: Named object type
+
+:ref:`parametric_studies_item <parametric_studies_item>`
+
+``parametric_studies`` is organised like a Python dictionary holding objects of type :ref:`parametric_studies_item <parametric_studies_item>` by name. You can access them using ``parametric_studies['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================================================
+
+Parent                                                                                                         Summary
+
+================================================   ===================================================================
+:ref:`parameter_workspace <parameter_workspace>`   Provides access to parameter management and parametric study tools.
+
+================================================   ===================================================================
+

@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_preferences_MeshingWorkflow_CadLogOption:
+
+CadLogOption
+============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.preferences.Root.MeshingWorkflow.CadLogOption
+   :members: Location, Prefix, Write
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

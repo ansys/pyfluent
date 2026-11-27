@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_61:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_61
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`stabilization <stabilization>`       'stabilization' child.
+
+====================================   ==========================
+

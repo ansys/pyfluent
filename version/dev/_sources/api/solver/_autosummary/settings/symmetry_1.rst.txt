@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _symmetry_1:
+
+symmetry
+========
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.symmetry_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`symmetry_item <symmetry_1_item>`
+
+``symmetry`` is organised like a Python dictionary holding objects of type :ref:`symmetry_item <symmetry_1_item>` by name. You can access them using ``symmetry['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`boundary_conditions <boundary_conditions>`   The boundary conditions object.
+
+================================================   ===============================
+

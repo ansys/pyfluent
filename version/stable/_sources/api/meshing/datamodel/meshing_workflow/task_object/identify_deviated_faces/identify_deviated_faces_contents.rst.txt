@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_identify_deviated_faces:
+
+identify_deviated_faces
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v261.meshing.meshing_workflow.Root.task_object.identify_deviated_faces
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`identify_deviated_faces_item <ref_meshing_datamodel_meshing_workflow_task_object_identify_deviated_faces__identify_deviated_faces>`
+
+``identify_deviated_faces`` is organised like a Python dictionary holding objects of type :ref:`identify_deviated_faces_item <ref_meshing_datamodel_meshing_workflow_task_object_identify_deviated_faces__identify_deviated_faces>` by name. You can access them using ``identify_deviated_faces['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _identify_deviated_faces/_identify_deviated_faces_contents

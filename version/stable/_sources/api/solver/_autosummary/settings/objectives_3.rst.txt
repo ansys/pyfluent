@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _objectives_3:
+
+objectives
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.objectives_3
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`objectives_item <objectives_3_item>`
+
+Access each :ref:`objectives_item <objectives_3_item>` by index using ``objectives[<index>]``.
+
+
+.. rubric:: Included in:
+
+================================   =========================
+
+Parent                                               Summary
+
+================================   =========================
+:ref:`objectives <objectives_2>`       Optimizer objectives.
+
+================================   =========================
+

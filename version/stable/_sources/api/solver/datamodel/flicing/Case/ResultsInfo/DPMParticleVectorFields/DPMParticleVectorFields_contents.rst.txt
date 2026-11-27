@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_ResultsInfo_DPMParticleVectorFields:
+
+DPMParticleVectorFields
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v261.object_model.flicing.Root.Case.ResultsInfo.DPMParticleVectorFields
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`DPMParticleVectorFields_item <ref_solver_datamodel_flicing_Case_ResultsInfo_DPMParticleVectorFields__DPMParticleVectorFields>`
+
+``DPMParticleVectorFields`` is organised like a Python dictionary holding objects of type :ref:`DPMParticleVectorFields_item <ref_solver_datamodel_flicing_Case_ResultsInfo_DPMParticleVectorFields__DPMParticleVectorFields>` by name. You can access them using ``DPMParticleVectorFields['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _DPMParticleVectorFields/_DPMParticleVectorFields_contents

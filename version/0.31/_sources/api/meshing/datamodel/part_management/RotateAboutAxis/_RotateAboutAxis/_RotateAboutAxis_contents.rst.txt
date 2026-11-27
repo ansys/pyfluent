@@ -1,0 +1,23 @@
+.. _ref_meshing_datamodel_part_management_RotateAboutAxis__RotateAboutAxis:
+
+_RotateAboutAxis
+================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root.RotateAboutAxis._RotateAboutAxis
+   :members: Angle, Applied, AxisX, AxisY, AxisZ, Children, Context, Global, Name, PivotX, PivotY, PivotZ, Type, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Add/Add_contents
+   Apply/Apply_contents
+   Remove/Remove_contents
+   Rename/Rename_contents
+   Undo/Undo_contents
+   Update/Update_contents

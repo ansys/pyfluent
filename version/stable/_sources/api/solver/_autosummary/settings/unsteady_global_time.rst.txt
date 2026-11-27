@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _unsteady_global_time:
+
+unsteady_global_time
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.unsteady_global_time
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================
+
+Parent                                                Summary
+
+==========================   ================================
+:ref:`methods <methods_2>`       The solution methods object.
+
+==========================   ================================
+

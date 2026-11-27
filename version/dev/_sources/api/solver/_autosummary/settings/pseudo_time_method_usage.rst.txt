@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _pseudo_time_method_usage:
+
+pseudo_time_method_usage
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.pseudo_time_method_usage
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`pseudo_time_method_usage_item <pseudo_time_method_usage_item>`
+
+``pseudo_time_method_usage`` is organised like a Python dictionary holding objects of type :ref:`pseudo_time_method_usage_item <pseudo_time_method_usage_item>` by name. You can access them using ``pseudo_time_method_usage['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+=========================   ======================
+
+Parent                                     Summary
+
+=========================   ======================
+:ref:`expert <expert_13>`   Expert options object.
+
+=========================   ======================
+

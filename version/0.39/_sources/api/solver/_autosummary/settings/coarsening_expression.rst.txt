@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coarsening_expression:
+
+coarsening_expression
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.coarsening_expression
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =======================
+
+Parent                                           Summary
+
+==============================   =======================
+:ref:`expression <expression>`       'expression' child.
+
+==============================   =======================
+

@@ -1,0 +1,44 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _volumes_4:
+
+volumes
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.volumes_4
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =============================================
+
+Method                                                                           Summary
+
+========================================   =============================================
+:ref:`display <display_8>`                                      Display graphics object.
+
+:ref:`add_to_graphics <add_to_graphics>`       Add graphics object to existing graphics.
+
+:ref:`clear_history <clear_history>`                               Clear object history.
+
+========================================   =============================================
+
+.. rubric:: Named object type
+
+:ref:`volumes_item <volumes_4_item>`
+
+``volumes`` is organised like a Python dictionary holding objects of type :ref:`volumes_item <volumes_4_item>` by name. You can access them using ``volumes['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   ============================================================
+
+Parent                                                                            Summary
+
+==========================   ============================================================
+:ref:`graphics <graphics>`       Controls the graphics display of the simulation results.
+
+==========================   ============================================================
+

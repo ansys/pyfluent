@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _volume:
+
+volume
+======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.volume
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =======================
+
+Parent                                     Summary
+
+========================   =======================
+:ref:`create <create_6>`       Crate new boundary.
+
+:ref:`create <create_5>`       Crate new boundary.
+
+========================   =======================
+

@@ -1,0 +1,31 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _quadrature_moment_boundary_value:
+
+quadrature_moment_boundary_value
+================================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.quadrature_moment_boundary_value
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`quadrature_moment_boundary_value_item <quadrature_moment_boundary_value_item>`
+
+``quadrature_moment_boundary_value`` is organised like a Python dictionary holding objects of type :ref:`quadrature_moment_boundary_value_item <quadrature_moment_boundary_value_item>` by name. You can access them using ``quadrature_moment_boundary_value['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`population_balance <population_balance>`                                   Population balance settings.
+
+:ref:`multiphase <multiphase_7>`                     Allows to change multiphase model variables or settings.
+
+==============================================   ============================================================
+

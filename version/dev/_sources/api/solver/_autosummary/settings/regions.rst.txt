@@ -1,0 +1,44 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _regions:
+
+regions
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.regions
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   ===============================================================================
+
+Method                                                                                                             Summary
+
+========================================   ===============================================================================
+:ref:`create_surface <create_surface_1>`              Create wrapped solid region surfaces for the selected solid regions.
+
+:ref:`display <display_3>`                           Display wrapped solid region surfaces for the selected solid regions.
+
+:ref:`recreate <recreate>`                 Recreate solid regions using either one region per part or one region per body.
+
+========================================   ===============================================================================
+
+.. rubric:: Named object type
+
+:ref:`regions_item <regions_item>`
+
+``regions`` is organised like a Python dictionary holding objects of type :ref:`regions_item <regions_item>` by name. You can access them using ``regions['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   =====================================
+
+Parent                                                                         Summary
+
+==============================================   =====================================
+:ref:`wrapped_solid_item <wrapped_solid_item>`   'child_object_type' of wrapped_solid.
+
+==============================================   =====================================
+

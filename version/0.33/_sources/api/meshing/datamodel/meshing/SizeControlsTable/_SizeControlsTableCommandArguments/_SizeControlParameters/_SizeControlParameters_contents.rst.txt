@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_SizeControlsTable__SizeControlsTableCommandArguments__SizeControlParameters:
+
+_SizeControlParameters
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.SizeControlsTable._SizeControlsTableCommandArguments._SizeControlParameters
+   :members: _NewLabelCells, _NewLabelCurvature, _NewLabelMax, _NewLabelMin, _NewLabelObjects, _NewLabelResolution, _NewLabelType, _NewLabels, _NewZoneType
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

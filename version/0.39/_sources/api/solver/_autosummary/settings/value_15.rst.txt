@@ -1,0 +1,23 @@
+:orphan:
+
+.. _value_15:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.value_15
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`add_zone <add_zone>`           Add thread-real-pair object.
+
+:ref:`add_zone_1 <add_zone_1>`       Add thread-real-pair object.
+
+==============================   ================================
+

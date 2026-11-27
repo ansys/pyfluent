@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parameters_11:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.parameters_11
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`parameters_item <parameters_11_item>`
+
+``parameters`` is organised like a Python dictionary holding objects of type :ref:`parameters_item <parameters_11_item>` by name. You can access them using ``parameters['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================================   ==============================================
+
+Parent                                                                                            Summary
+
+========================================================   ==============================================
+:ref:`prescribed_profile_item <prescribed_profile_item>`       'child_object_type' of prescribed_profile.
+
+========================================================   ==============================================
+

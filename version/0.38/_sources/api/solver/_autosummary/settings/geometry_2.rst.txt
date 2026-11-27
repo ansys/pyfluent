@@ -1,0 +1,34 @@
+:orphan:
+
+.. _geometry_2:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.geometry_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ============================================
+
+Attribute                                                                                 Summary
+
+==================================================   ============================================
+:ref:`manage <manage>`                                   The adaption geometry management object.
+
+:ref:`reconstruct_geometry <reconstruct_geometry>`        Enable/Disable geometry based adaption.
+
+==================================================   ============================================
+
+.. rubric:: Included in:
+
+====================   ========================
+
+Parent                                  Summary
+
+====================   ========================
+:ref:`adapt <adapt>`       The adaption object.
+
+====================   ========================
+

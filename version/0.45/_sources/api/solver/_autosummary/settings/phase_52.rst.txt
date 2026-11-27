@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_52:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.phase_52
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================================================================================
+
+Parent                                                                                                                    Summary
+
+==========================   ====================================================================================================
+:ref:`compute <compute_1>`       Initiates automatic computation of reference values based on selected zones and flow conditions.
+
+==========================   ====================================================================================================
+

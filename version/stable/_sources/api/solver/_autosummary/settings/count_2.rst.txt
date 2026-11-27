@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _count_2:
+
+count
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.count_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=========================   =========================
+
+Parent                                        Summary
+
+=========================   =========================
+:ref:`method <method_27>`       Partition the domain.
+
+=========================   =========================
+

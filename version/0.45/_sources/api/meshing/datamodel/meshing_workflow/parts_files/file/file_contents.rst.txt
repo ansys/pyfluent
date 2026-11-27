@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_files_file:
+
+file
+====
+
+.. autoclass:: ansys.fluent.core.generated.v261.meshing.meshing_workflow.Root.parts_files.file
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`file_item <ref_meshing_datamodel_meshing_workflow_parts_files_file__file>`
+
+``file`` is organised like a Python dictionary holding objects of type :ref:`file_item <ref_meshing_datamodel_meshing_workflow_parts_files_file__file>` by name. You can access them using ``file['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _file/_file_contents

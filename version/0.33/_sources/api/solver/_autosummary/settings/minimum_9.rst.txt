@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_9:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.minimum_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ====================================================================
+
+Parent                                                                                      Summary
+
+============================   ====================================================================
+:ref:`histogram <histogram>`       Provides access to create new and edit existing histogram plots.
+
+============================   ====================================================================
+

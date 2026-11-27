@@ -1,0 +1,30 @@
+:orphan:
+
+.. _named_object_commands__NamedObjectCommands_17:
+
+Common named-object methods
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings._NamedObjectCommands_17
+
+.. rubric:: Methods
+
+==========================================   =========================================
+
+Method                                                                         Summary
+
+==========================================   =========================================
+:ref:`create <create_18>`                                        Add new Design Point.
+
+:ref:`delete <delete_8>`                                         Delete Design Points.
+
+:ref:`rename <rename>`                                              Rename the object.
+
+:ref:`list <list_1>`                                    List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`       List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                          Create a copy of the object.
+
+==========================================   =========================================
+

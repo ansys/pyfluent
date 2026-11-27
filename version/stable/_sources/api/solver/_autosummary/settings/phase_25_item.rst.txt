@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_25_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.phase_25_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ======================================================================
+
+Attribute                                                                                                             Summary
+
+====================================================   ======================================================================
+:ref:`recirculation_outlet <recirculation_outlet_1>`       Allows to change recirculation-outlet model variables or settings.
+
+:ref:`geometry <geometry_7>`                                           Allows to change geometry model variables or settings.
+
+====================================================   ======================================================================
+
+.. rubric:: Included in:
+
+=======================   ======================================
+
+Parent                                                   Summary
+
+=======================   ======================================
+:ref:`phase <phase_25>`       Domain name to define settings on.
+
+=======================   ======================================
+

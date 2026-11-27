@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _frequency_setup:
+
+frequency_setup
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.frequency_setup
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`frequency_setup_item <frequency_setup_item>`
+
+``frequency_setup`` is organised like a Python dictionary holding objects of type :ref:`frequency_setup_item <frequency_setup_item>` by name. You can access them using ``frequency_setup['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   ====================================================================================================================================================
+
+Parent                                                                                                                                                                    Summary
+
+==========================   ====================================================================================================================================================
+:ref:`graphics <graphics>`   Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+==========================   ====================================================================================================================================================
+

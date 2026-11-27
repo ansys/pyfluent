@@ -1,0 +1,21 @@
+:orphan:
+
+.. _by_physics_boundary:
+
+by_physics_boundary
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.by_physics_boundary
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`automatic <automatic>`       'automatic' child.
+
+============================   ======================
+

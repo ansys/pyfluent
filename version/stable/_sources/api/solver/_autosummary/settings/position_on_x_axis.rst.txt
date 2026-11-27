@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _position_on_x_axis:
+
+position_on_x_axis
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.position_on_x_axis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+===========================   ====================
+
+Parent                                     Summary
+
+===========================   ====================
+:ref:`options <options_22>`       'options' child.
+
+===========================   ====================
+

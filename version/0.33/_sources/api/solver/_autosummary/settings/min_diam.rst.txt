@@ -1,0 +1,21 @@
+:orphan:
+
+.. _min_diam:
+
+min_diam
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.min_diam
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ======================================================
+
+Parent                                                                                Summary
+
+====================================   ======================================================
+:ref:`rosin_rammler <rosin_rammler>`       Rosin-Rammler particle size distribution settings.
+
+====================================   ======================================================
+

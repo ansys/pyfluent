@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _plane_slice:
+
+plane_slice
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.plane_slice
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`plane_slice_item <plane_slice_item>`
+
+``plane_slice`` is organised like a Python dictionary holding objects of type :ref:`plane_slice_item <plane_slice_item>` by name. You can access them using ``plane_slice['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   ===============================================================================================
+
+Parent                                                                                                                 Summary
+
+============================   ===============================================================================================
+:ref:`surfaces <surfaces_9>`       Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+============================   ===============================================================================================
+

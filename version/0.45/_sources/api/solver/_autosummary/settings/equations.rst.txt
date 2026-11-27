@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _equations:
+
+equations
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.equations
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`equations_item <equations_item>`
+
+``equations`` is organised like a Python dictionary holding objects of type :ref:`equations_item <equations_item>` by name. You can access them using ``equations['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   =============================
+
+Parent                                               Summary
+
+============================   =============================
+:ref:`controls <controls_1>`       Solution controls object.
+
+============================   =============================
+

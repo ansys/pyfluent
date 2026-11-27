@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _bodies:
+
+bodies
+======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.bodies
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`bodies_item <bodies_item>`
+
+``bodies`` is organised like a Python dictionary holding objects of type :ref:`bodies_item <bodies_item>` by name. You can access them using ``bodies['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`parts_item <parts_item>`       'child_object_type' of parts.
+
+==============================   =================================
+

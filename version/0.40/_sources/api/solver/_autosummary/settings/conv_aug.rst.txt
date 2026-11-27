@@ -1,0 +1,21 @@
+:orphan:
+
+.. _conv_aug:
+
+conv_aug
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.conv_aug
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ===========================================
+
+Parent                                                                                             Summary
+
+============================================================   ===========================================
+:ref:`mt_evap_cond_sbm_sphf_par <mt_evap_cond_sbm_sphf_par>`       Single phase heat flux parameter group.
+
+============================================================   ===========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _dimension_reduction:
+
+dimension_reduction
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.dimension_reduction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================================================
+
+Parent                                                                                            Summary
+
+======================================================   ================================================
+:ref:`integration_parameters <integration_parameters>`       Species model integration parameters option.
+
+======================================================   ================================================
+

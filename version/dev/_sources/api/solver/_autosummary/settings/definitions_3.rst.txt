@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _definitions_3:
+
+definitions
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.definitions_3
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`definitions_item <definitions_3_item>`
+
+``definitions`` is organised like a Python dictionary holding objects of type :ref:`definitions_item <definitions_3_item>` by name. You can access them using ``definitions['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================   =====================
+
+Parent                                           Summary
+
+================================   =====================
+:ref:`objectives <objectives_1>`   Optimizer objectives.
+
+================================   =====================
+

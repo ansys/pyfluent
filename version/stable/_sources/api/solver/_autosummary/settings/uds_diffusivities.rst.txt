@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _uds_diffusivities:
+
+uds_diffusivities
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.uds_diffusivities
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`uds_diffusivities_item <uds_diffusivities_item>`
+
+``uds_diffusivities`` is organised like a Python dictionary holding objects of type :ref:`uds_diffusivities_item <uds_diffusivities_item>` by name. You can access them using ``uds_diffusivities['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   =======================================
+
+Parent                                                                     Summary
+
+========================================   =======================================
+:ref:`uds_diffusivity <uds_diffusivity>`       Material property: uds-diffusivity.
+
+========================================   =======================================
+

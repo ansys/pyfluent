@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_13:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enable_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ====================================
+
+Parent                                                      Summary
+
+============================   ====================================
+:ref:`sources_1 <sources_1>`       Source terms for this cell zone.
+
+============================   ====================================
+

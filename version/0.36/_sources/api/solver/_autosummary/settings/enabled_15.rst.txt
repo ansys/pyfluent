@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_15:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_15
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================================
+
+Parent                                                                     Summary
+
+==============================   =================================================
+:ref:`dpm_domain <dpm_domain>`       Group containing DPM domain related settings.
+
+==============================   =================================================
+

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _output_parameters:
+
+output_parameters
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.output_parameters
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`output_parameters_item <output_parameters_item>`
+
+``output_parameters`` is organised like a Python dictionary holding objects of type :ref:`output_parameters_item <output_parameters_item>` by name. You can access them using ``output_parameters['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   =========================================
+
+Parent                                                                             Summary
+
+==============================================   =========================================
+:ref:`design_points_item <design_points_item>`       'child_object_type' of design_points.
+
+==============================================   =========================================
+

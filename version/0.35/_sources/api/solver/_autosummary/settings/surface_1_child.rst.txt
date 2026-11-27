@@ -1,0 +1,67 @@
+:orphan:
+
+.. _surface_1_child:
+
+surface_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.surface_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ==============================================================================
+
+Attribute                                                                                                                                 Summary
+
+================================================================   ==============================================================================
+:ref:`name <name_4>`                                                                                                          Name of the object.
+
+:ref:`report_type <report_type>`                                       The report type; the list may vary on the selected report definition type.
+
+:ref:`field <field>`                                                                                                               'field' child.
+
+:ref:`surface_names <surface_names>`                                                                                       'surface_names' child.
+
+:ref:`locations <locations_5>`                                                                                                 'locations' child.
+
+:ref:`per_selection <per_selection>`                                                                                       'per_selection' child.
+
+:ref:`average_over <average_over>`                                                                                          'average_over' child.
+
+:ref:`retain_instantaneous_values <retain_instantaneous_values>`                                             'retain_instantaneous_values' child.
+
+:ref:`custom_vector <custom_vector>`                                                                                       'custom_vector' child.
+
+:ref:`phase <phase_52>`                                                                                                            'phase' child.
+
+:ref:`output_parameter <output_parameter_1>`                                   Option to make report definition available as an output parameter.
+
+:ref:`create_report_file <create_report_file>`                                                   Create a new file set for the report definition.
+
+:ref:`create_report_plot <create_report_plot>`                                                   Create a new plot set for the report definition.
+
+================================================================   ==============================================================================
+
+.. rubric:: Methods
+
+========================================================   ======================================================================
+
+Method                                                                                                                    Summary
+
+========================================================   ======================================================================
+:ref:`create_output_parameter <create_output_parameter>`       Option to make report definition available as an output parameter.
+
+========================================================   ======================================================================
+
+.. rubric:: Included in:
+
+============================   ===============================
+
+Parent                                                 Summary
+
+============================   ===============================
+:ref:`surface_1 <surface_1>`       The report definition type.
+
+============================   ===============================
+

@@ -1,0 +1,42 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _report_definitions_1:
+
+report_definitions
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.report_definitions_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   =================================
+
+Method                                                                   Summary
+
+============================================   =================================
+:ref:`print_to_console <print_to_console_2>`   Print parameter value to console.
+
+:ref:`write_to_file <write_to_file_11>`           Write parameter value to file.
+
+============================================   =================================
+
+.. rubric:: Named object type
+
+:ref:`report_definitions_item <report_definitions_1_item>`
+
+``report_definitions`` is organised like a Python dictionary holding objects of type :ref:`report_definitions_item <report_definitions_1_item>` by name. You can access them using ``report_definitions['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================================   =============================
+
+Parent                                                               Summary
+
+============================================   =============================
+:ref:`output_parameters <output_parameters>`   The output-parameters object.
+
+============================================   =============================
+

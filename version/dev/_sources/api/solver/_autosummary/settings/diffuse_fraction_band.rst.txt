@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _diffuse_fraction_band:
+
+diffuse_fraction_band
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.diffuse_fraction_band
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`diffuse_fraction_band_item <diffuse_fraction_band_item>`
+
+``diffuse_fraction_band`` is organised like a Python dictionary holding objects of type :ref:`diffuse_fraction_band_item <diffuse_fraction_band_item>` by name. You can access them using ``diffuse_fraction_band['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================================   =============================
+
+Parent                                                                                     Summary
+
+==================================================================   =============================
+:ref:`diffuse_irradiation_settings <diffuse_irradiation_settings>`   Diffuse irradiation settings.
+
+==================================================================   =============================
+

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _bounded_by_plane:
+
+bounded_by_plane
+================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.bounded_by_plane
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`bounded_by_plane_item <bounded_by_plane_item>`
+
+``bounded_by_plane`` is organised like a Python dictionary holding objects of type :ref:`bounded_by_plane_item <bounded_by_plane_item>` by name. You can access them using ``bounded_by_plane['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================   =================================
+
+Parent                                                         Summary
+
+==================================   =================================
+:ref:`definitions <definitions_1>`       Design condition definitions.
+
+==================================   =================================
+

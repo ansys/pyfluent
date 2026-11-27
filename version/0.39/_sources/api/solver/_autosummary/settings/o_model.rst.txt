@@ -1,0 +1,21 @@
+:orphan:
+
+.. _o_model:
+
+o_model
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.o_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`thermal_parameters <thermal_parameters>`       Thermal NOx model.
+
+==============================================   ======================
+

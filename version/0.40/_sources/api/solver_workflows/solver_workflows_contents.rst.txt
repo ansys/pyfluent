@@ -1,0 +1,14 @@
+.. _ref_solver_workflows:
+
+Solver workflows
+================
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    Solver workflow <../solver/solver_workflow>
+    Workflow <../solver/workflow>
+
+
+Solver workflows provide task-based guided workflows for setting up and running solver simulations.

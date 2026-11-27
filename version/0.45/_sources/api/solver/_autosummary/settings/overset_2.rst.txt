@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _overset_2:
+
+overset
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.overset_2
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`overset_item <overset_2_item>`
+
+``overset`` is organised like a Python dictionary holding objects of type :ref:`overset_item <overset_2_item>` by name. You can access them using ``overset['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

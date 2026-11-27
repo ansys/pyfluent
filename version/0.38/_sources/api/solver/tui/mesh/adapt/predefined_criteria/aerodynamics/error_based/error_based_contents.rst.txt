@@ -1,0 +1,14 @@
+.. _ref_solver_tui_mesh_adapt_predefined_criteria_aerodynamics_error_based:
+
+error_based
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.mesh.adapt.predefined_criteria.aerodynamics.error_based
+   :members: combined_hessian_indicator, goal_based_error_indicator, mach_hessian_indicator, pressure_hessian_indicator, velocity_hessian_indicator
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

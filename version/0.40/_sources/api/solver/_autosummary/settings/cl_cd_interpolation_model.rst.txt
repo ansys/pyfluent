@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cl_cd_interpolation_model:
+
+cl_cd_interpolation_model
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cl_cd_interpolation_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================
+
+Parent                                                               Summary
+
+================================================   =========================
+:ref:`virtual_blade_model <virtual_blade_model>`       The vbm model object.
+
+================================================   =========================
+

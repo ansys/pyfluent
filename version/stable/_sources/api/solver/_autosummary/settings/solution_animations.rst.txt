@@ -1,0 +1,44 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _solution_animations:
+
+solution_animations
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.solution_animations
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =============================================
+
+Method                                                                           Summary
+
+========================================   =============================================
+:ref:`display <display_8>`                                      Display graphics object.
+
+:ref:`add_to_graphics <add_to_graphics>`       Add graphics object to existing graphics.
+
+:ref:`clear_history <clear_history>`                               Clear object history.
+
+========================================   =============================================
+
+.. rubric:: Named object type
+
+:ref:`solution_animations_item <solution_animations_item>`
+
+``solution_animations`` is organised like a Python dictionary holding objects of type :ref:`solution_animations_item <solution_animations_item>` by name. You can access them using ``solution_animations['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================   =============================================================================================
+
+Parent                                                                                                                                     Summary
+
+==================================================   =============================================================================================
+:ref:`calculation_activity <calculation_activity>`       Manages additional solution-time activities like animations and mesh quality diagnostics.
+
+==================================================   =============================================================================================
+

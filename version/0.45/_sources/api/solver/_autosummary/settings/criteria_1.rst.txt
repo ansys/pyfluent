@@ -1,0 +1,42 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _criteria_1:
+
+criteria
+========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.criteria_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+======================================   ===================
+
+Method                                               Summary
+
+======================================   ===================
+:ref:`add_objective <add_objective>`          Add Objective.
+
+:ref:`add_constraint <add_constraint>`       Add Constraint.
+
+======================================   ===================
+
+.. rubric:: Named object type
+
+:ref:`criteria_item <criteria_1_item>`
+
+``criteria`` is organised like a Python dictionary holding objects of type :ref:`criteria_item <criteria_1_item>` by name. You can access them using ``criteria['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   =============
+
+Parent                               Summary
+
+============================   =============
+:ref:`optimize <optimize_1>`       Optimize.
+
+============================   =============
+

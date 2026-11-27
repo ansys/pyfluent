@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _multi_component_diffusion_mf:
+
+multi_component_diffusion_mf
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.multi_component_diffusion_mf
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`multi_component_diffusion_mf_item <multi_component_diffusion_mf_item>`
+
+``multi_component_diffusion_mf`` is organised like a Python dictionary holding objects of type :ref:`multi_component_diffusion_mf_item <multi_component_diffusion_mf_item>` by name. You can access them using ``multi_component_diffusion_mf['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   =================================
+
+Parent                                                 Summary
+
+==========================   =================================
+:ref:`options <options_2>`       Species model options object.
+
+==========================   =================================
+

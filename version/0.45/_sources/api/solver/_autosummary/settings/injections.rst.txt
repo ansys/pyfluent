@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _injections:
+
+injections
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.injections
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`injections_item <injections_item>`
+
+``injections`` is organised like a Python dictionary holding objects of type :ref:`injections_item <injections_item>` by name. You can access them using ``injections['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`discrete_phase <discrete_phase>`       Toplevel object.
+
+======================================   ====================
+

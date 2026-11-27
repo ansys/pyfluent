@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_XYPlot:
+
+XYPlot
+======
+
+.. autoclass:: ansys.fluent.core.generated.v272.object_model.flicing.Root.Case.Results.Graphics.XYPlot
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`XYPlot_item <ref_solver_datamodel_flicing_Case_Results_Graphics_XYPlot__XYPlot>`
+
+``XYPlot`` is organised like a Python dictionary holding objects of type :ref:`XYPlot_item <ref_solver_datamodel_flicing_Case_Results_Graphics_XYPlot__XYPlot>` by name. You can access them using ``XYPlot['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _XYPlot/_XYPlot_contents

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _defaults:
+
+defaults
+========
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.defaults
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`defaults_item <defaults_item>`
+
+``defaults`` is organised like a Python dictionary holding objects of type :ref:`defaults_item <defaults_item>` by name. You can access them using ``defaults['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`initialization <initialization_1>`   Solution initialization object.
+
+========================================   ===============================
+

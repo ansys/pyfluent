@@ -1,0 +1,21 @@
+:orphan:
+
+.. _y_virtual_origin:
+
+y_virtual_origin
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.y_virtual_origin
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

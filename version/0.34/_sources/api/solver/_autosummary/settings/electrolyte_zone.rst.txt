@@ -1,0 +1,23 @@
+:orphan:
+
+.. _electrolyte_zone:
+
+electrolyte_zone
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.electrolyte_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`zone_assignment <zone_assignment>`                              Zone assignment.
+
+:ref:`dual_potential_zone <dual_potential_zone>`       Dual-potential zone assignment.
+
+================================================   ===================================
+

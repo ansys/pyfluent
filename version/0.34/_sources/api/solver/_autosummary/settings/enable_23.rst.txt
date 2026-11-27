@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_23:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enable_23
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   ===========================================
+
+Parent                                                                                                         Summary
+
+========================================================================   ===========================================
+:ref:`warped_face_gradient_correction <warped_face_gradient_correction>`       Warped-face-gradient-correction object.
+
+========================================================================   ===========================================
+

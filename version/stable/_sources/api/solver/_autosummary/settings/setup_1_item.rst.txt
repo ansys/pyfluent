@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _setup_1_item:
+
+setup_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.setup_1_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   =============================================
+
+Attribute                                                                    Summary
+
+====================================   =============================================
+:ref:`species_name <species_name_3>`       Species name in species-real-pair object.
+
+:ref:`value <value_16>`                            Value in thread-real-pair object.
+
+====================================   =============================================
+
+.. rubric:: Included in:
+
+======================   =================================
+
+Parent                                             Summary
+
+======================   =================================
+:ref:`setup <setup_1>`       Membrane species diffusivity.
+
+======================   =================================
+

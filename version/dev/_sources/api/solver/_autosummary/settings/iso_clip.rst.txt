@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _iso_clip:
+
+iso_clip
+========
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.iso_clip
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`iso_clip_item <iso_clip_item>`
+
+``iso_clip`` is organised like a Python dictionary holding objects of type :ref:`iso_clip_item <iso_clip_item>` by name. You can access them using ``iso_clip['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+=============================   ===========================================================================================
+
+Parent                                                                                                              Summary
+
+=============================   ===========================================================================================
+:ref:`surfaces <surfaces_10>`   Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+=============================   ===========================================================================================
+

@@ -1,0 +1,20 @@
+.. _ref_meshing_datamodel_meshing_ShareTopology__ShareTopologyCommandArguments:
+
+_ShareTopologyCommandArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.ShareTopology._ShareTopologyCommandArguments
+   :members: _EdgeLabels, _GapDistance, _GapDistanceConnect, _InterfaceSelect, _STMinSize
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _SMImprovePreferences/_SMImprovePreferences_contents
+   _ShareTopologyPreferences/_ShareTopologyPreferences_contents
+   _SurfaceMeshPreferences/_SurfaceMeshPreferences_contents

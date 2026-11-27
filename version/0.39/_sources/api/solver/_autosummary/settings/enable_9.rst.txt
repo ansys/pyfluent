@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_9:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enable_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =====================
+
+Parent                           Summary
+
+================   =====================
+:ref:`nox <nox>`       NOx model object.
+
+================   =====================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_20:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enable_20
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ===============================
+
+Parent                                                                                   Summary
+
+==============================================================   ===============================
+:ref:`high_order_term_relaxation <high_order_term_relaxation>`       High Order Relaxation Menu.
+
+==============================================================   ===============================
+

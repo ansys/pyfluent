@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_2_1:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_2_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =============================================================================
+
+Parent                                                                                                         Summary
+
+======================================   =============================================================================
+:ref:`injection_type <injection_type>`       Define the type of the injection, including surface, file, and atomizers.
+
+======================================   =============================================================================
+

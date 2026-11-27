@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _value_30:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.value_30
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`objectives_item <objectives_1_item>`       'child_object_type' of objectives.
+
+:ref:`results_item <results_1_item>`                'child_object_type' of results.
+
+==========================================   ======================================
+

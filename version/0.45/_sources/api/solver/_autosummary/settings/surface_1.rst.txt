@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surface_1:
+
+surface
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.surface_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`surface_item <surface_1_item>`
+
+``surface`` is organised like a Python dictionary holding objects of type :ref:`surface_item <surface_1_item>` by name. You can access them using ``surface['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ==============================================================================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                                                                                                  Summary
+
+==============================================   ==============================================================================================================================================================================================================================================================================================
+:ref:`report_definitions <report_definitions>`       Provides access to create an object that specifies a certain quantity or set of values to be computed at the end of a solver timestep or iteration. You can then choose to have multiple report definitions printed to the console written to a single file or plotted in the same window.
+
+==============================================   ==============================================================================================================================================================================================================================================================================================
+

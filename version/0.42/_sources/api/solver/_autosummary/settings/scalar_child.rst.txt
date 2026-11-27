@@ -1,0 +1,40 @@
+:orphan:
+
+.. _scalar_child:
+
+scalar_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.scalar_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ===============================
+
+Attribute                                                        Summary
+
+======================================   ===============================
+:ref:`domain_id <domain_id>`                       Phase Domain ID/name.
+
+:ref:`solution_zones <solution_zones>`                    The zone type.
+
+:ref:`selected_zones <selected_zones>`               The solution zones.
+
+:ref:`flux_fcn <flux_fcn>`                       The flux function name.
+
+:ref:`unsteady_fcn <unsteady_fcn>`           The unsteady function name.
+
+======================================   ===============================
+
+.. rubric:: Included in:
+
+======================   ================================
+
+Parent                                            Summary
+
+======================   ================================
+:ref:`scalar <scalar>`       User-defined scalar options.
+
+======================   ================================
+

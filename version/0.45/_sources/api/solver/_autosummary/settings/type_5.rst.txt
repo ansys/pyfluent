@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _type_5:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.type_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`copy_materials <copy_materials>`       Copy materials from database.
+
+======================================   =================================
+

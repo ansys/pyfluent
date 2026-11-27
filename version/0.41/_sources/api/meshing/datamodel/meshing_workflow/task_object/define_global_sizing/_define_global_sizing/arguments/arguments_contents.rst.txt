@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_define_global_sizing__define_global_sizing_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.define_global_sizing._define_global_sizing.arguments
+   :members: cells_per_gap, curvature_normal_angle, enable_multi_threading, growth_rate, max_size, mesher, min_size, number_of_multi_threads, prime_size_control_ids, reverse_edge_zone_orientationfor_persistent, scope_proximity_to, size_functions
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

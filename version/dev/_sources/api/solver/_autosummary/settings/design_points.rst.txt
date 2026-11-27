@@ -1,0 +1,68 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _design_points:
+
+design_points
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.design_points
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================================================   =======================================================
+
+Method                                                                                                                       Summary
+
+==========================================================================   =======================================================
+:ref:`duplicate <duplicate_1>`                                                                               Duplicate Design Point.
+
+:ref:`load_case_data <load_case_data>`                                       Loads relevant case/data file for current design point.
+
+:ref:`set_as_current <set_as_current_3>`                                                                   Set current design point.
+
+:ref:`clear_generated_data <clear_generated_data>`                                                             Clear Generated Data.
+
+:ref:`status_of_all_dps <status_of_all_dps>`                                                            Status of All Design Points.
+
+:ref:`update_current <update_current>`                                                                  Update Current Design Point.
+
+:ref:`update_all <update_all>`                                                                              Update All Design Point.
+
+:ref:`update_selected <update_selected>`                                                              Update Selected Design Points.
+
+:ref:`interrupt <interrupt_4>`                                                                            Interrupt Design Point(s).
+
+:ref:`abort <abort_1>`                                                                                        Abort Design Point(s).
+
+:ref:`connect_to_web_session <connect_to_web_session>`                                 Connect to Web Interface of the Design Point.
+
+:ref:`download_output_files <download_output_files_1>`                                                        Download Output Files.
+
+:ref:`interrupt_all_concurrent_dps <interrupt_all_concurrent_dps>`                           Interrupt All Concurrent Design Points.
+
+:ref:`abort_all_concurrent_dps <abort_all_concurrent_dps>`                                       Abort All Concurrent Design Points.
+
+:ref:`refresh_status_of_concurrent_dps <refresh_status_of_concurrent_dps>`               Refresh Status of Concurrent Design Points.
+
+==========================================================================   =======================================================
+
+.. rubric:: Named object type
+
+:ref:`design_points_item <design_points_item>`
+
+``design_points`` is organised like a Python dictionary holding objects of type :ref:`design_points_item <design_points_item>` by name. You can access them using ``design_points['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================================   ==========================================
+
+Parent                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`parametric_studies_item <parametric_studies_item>`   'child_object_type' of parametric_studies.
+
+========================================================   ==========================================
+

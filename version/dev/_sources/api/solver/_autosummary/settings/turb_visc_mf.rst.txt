@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _turb_visc_mf:
+
+turb_visc_mf
+============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.turb_visc_mf
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`turb_visc_mf_item <turb_visc_mf_item>`
+
+``turb_visc_mf`` is organised like a Python dictionary holding objects of type :ref:`turb_visc_mf_item <turb_visc_mf_item>` by name. You can access them using ``turb_visc_mf['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================================   =======================================================================================================
+
+Parent                                                                                                                                                   Summary
+
+======================================================   =======================================================================================================
+:ref:`user_defined_functions <user_defined_functions>`   User-defined functions to define the turbulent viscosity and the turbulent Prandtl and Schmidt numbers.
+
+======================================================   =======================================================================================================
+

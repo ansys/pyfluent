@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _product:
+
+product
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.product
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`product_item <product_item>`
+
+``product`` is organised like a Python dictionary holding objects of type :ref:`product_item <product_item>` by name. You can access them using ``product['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================   ======================================
+
+Parent                                                            Summary
+
+================================   ======================================
+:ref:`definitions <definitions>`   Adjoint observables definition object.
+
+================================   ======================================
+

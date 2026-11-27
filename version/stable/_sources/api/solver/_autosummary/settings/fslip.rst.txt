@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fslip:
+
+fslip
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.fslip
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=============================   ==========================================================
+
+Parent                                                                             Summary
+
+=============================   ==========================================================
+:ref:`momentum <momentum_11>`       Allows to change momentum model variables or settings.
+
+=============================   ==========================================================
+

@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_42:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.name_42
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ==================================================
+
+Parent                                                                                                          Summary
+
+==================================================================   ==================================================
+:ref:`create <create_15>`                                                               Create a custom field function.
+
+:ref:`custom_field_functions_item <custom_field_functions_1_item>`       'child_object_type' of custom_field_functions.
+
+==================================================================   ==================================================
+

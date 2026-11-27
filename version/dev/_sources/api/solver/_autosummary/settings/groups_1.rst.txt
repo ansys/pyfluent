@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _groups_1:
+
+groups
+======
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.groups_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`groups_item <groups_1_item>`
+
+``groups`` is organised like a Python dictionary holding objects of type :ref:`groups_item <groups_1_item>` by name. You can access them using ``groups['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`parts_item <parts_item>`   'child_object_type' of parts.
+
+==============================   =============================
+

@@ -1,0 +1,31 @@
+.. _ref_meshing_datamodel_meshing_Diagnostics:
+
+Diagnostics
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.Diagnostics
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Close/Close_contents
+   Compute/Compute_contents
+   DiagOptions/DiagOptions_contents
+   Draw/Draw_contents
+   First/First_contents
+   Histogram/Histogram_contents
+   Ignore/Ignore_contents
+   List/List_contents
+   Mark/Mark_contents
+   Next/Next_contents
+   Previous/Previous_contents
+   Restore/Restore_contents
+   Summary/Summary_contents
+   Update/Update_contents

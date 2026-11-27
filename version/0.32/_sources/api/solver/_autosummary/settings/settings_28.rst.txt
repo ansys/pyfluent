@@ -1,0 +1,46 @@
+:orphan:
+
+.. _settings_28:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_28
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   ======================================================================
+
+Argument                                                                                                            Summary
+
+==================================================   ======================================================================
+:ref:`explicit_relaxation <explicit_relaxation>`                                          Explicit Under Relaxation Factor.
+
+:ref:`initial_iterations <initial_iterations>`                                      Number of initial iterations (Stage 1).
+
+:ref:`pre_iterations <pre_iterations>`                   Number of iterations before updating the Courant number (Stage 2).
+
+:ref:`cfl_update_frequency <cfl_update_frequency>`                           Frequency of Courant number updates (Stage 2).
+
+:ref:`cfl_start <cfl_start>`                                                                       Starting Courant number.
+
+:ref:`cfl_max <cfl_max>`                                                                            Maximum Courant number.
+
+:ref:`ramp <ramp>`                                                                       Use Courant number linear ramping.
+
+:ref:`ramp_it <ramp_it>`                                                                 Courant number ramping iterations.
+
+==================================================   ======================================================================
+
+.. rubric:: Included in:
+
+============================================   ======================================================
+
+Parent                                                                                        Summary
+
+============================================   ======================================================
+:ref:`solution_steering <solution_steering>`       Enable solution steering for density-based solver.
+
+============================================   ======================================================
+

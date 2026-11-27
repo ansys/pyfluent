@@ -1,0 +1,40 @@
+:orphan:
+
+.. _ensight_gold_surface:
+
+ensight_gold_surface
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.ensight_gold_surface
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================================   =========================================================
+
+Argument                                                                                                     Summary
+
+========================================================   =========================================================
+:ref:`file_name <file_name_1>`                                                      The desired file name to export.
+
+:ref:`cell_func_domain_export <cell_func_domain_export>`                           The list of quantities to export.
+
+:ref:`binary_format <binary_format>`                                   Specifies whether to export in binary format.
+
+:ref:`surfaces <surfaces>`                                                           The list of surfaces to export.
+
+:ref:`cell_centered <cell_centered>`                           Specifies whether export the cell center data values.
+
+========================================================   =========================================================
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`export <export>`       Export files.
+
+======================   =================
+

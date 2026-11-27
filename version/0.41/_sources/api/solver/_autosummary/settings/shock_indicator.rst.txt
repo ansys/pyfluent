@@ -1,0 +1,32 @@
+:orphan:
+
+.. _shock_indicator:
+
+shock_indicator
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.shock_indicator
+    :show-inheritance:
+
+.. rubric:: Methods
+
+====================================   ==========================================================================================================
+
+Method                                                                                                                                    Summary
+
+====================================   ==========================================================================================================
+:ref:`density_based <density_based>`       Define cell registers and settings suitable for adaption using the density-based shock wave indicator.
+
+====================================   ==========================================================================================================
+
+.. rubric:: Included in:
+
+==================================   ================================================
+
+Parent                                                                        Summary
+
+==================================   ================================================
+:ref:`aerodynamics <aerodynamics>`       The aerodynamics predefined criteria object.
+
+==================================   ================================================
+

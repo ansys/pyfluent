@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _inter_row_disturbances:
+
+inter_row_disturbances
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.inter_row_disturbances
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`inter_row_disturbances_item <inter_row_disturbances_item>`
+
+``inter_row_disturbances`` is organised like a Python dictionary holding objects of type :ref:`inter_row_disturbances_item <inter_row_disturbances_item>` by name. You can access them using ``inter_row_disturbances['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================   =======================================
+
+Parent                                                                               Summary
+
+==================================================   =======================================
+:ref:`frequency_setup_item <frequency_setup_item>`   'child_object_type' of frequency_setup.
+
+==================================================   =======================================
+

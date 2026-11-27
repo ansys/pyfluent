@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _radiator_2:
+
+radiator
+========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.radiator_2
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`radiator_item <radiator_2_item>`
+
+``radiator`` is organised like a Python dictionary holding objects of type :ref:`radiator_item <radiator_2_item>` by name. You can access them using ``radiator['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

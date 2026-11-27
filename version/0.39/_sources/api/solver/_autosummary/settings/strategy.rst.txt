@@ -1,0 +1,21 @@
+:orphan:
+
+.. _strategy:
+
+strategy
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.strategy
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==============================================
+
+Parent                                                                            Summary
+
+========================================   ==============================================
+:ref:`stabilization_2 <stabilization_2>`       The adjoint stabilization controls object.
+
+========================================   ==============================================
+

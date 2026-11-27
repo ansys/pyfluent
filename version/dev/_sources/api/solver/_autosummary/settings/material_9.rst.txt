@@ -1,0 +1,40 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _material_9:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.material_9
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==================   ====================
+
+Method                            Summary
+
+==================   ====================
+:ref:`new <new_3>`   Create new material.
+
+==================   ====================
+
+.. rubric:: Named object type
+
+:ref:`material_item <material_9_item>`
+
+``material`` is organised like a Python dictionary holding objects of type :ref:`material_item <material_9_item>` by name. You can access them using ``material['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   ========================================================
+
+Parent                                                                          Summary
+
+============================   ========================================================
+:ref:`graphics <graphics_1>`   Controls the graphics display of the simulation results.
+
+============================   ========================================================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _disable_rhie_chow_flux:
+
+disable_rhie_chow_flux
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.disable_rhie_chow_flux
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==================
+
+Parent                                Summary
+
+========================   ==================
+:ref:`expert <expert_6>`       Expert object.
+
+========================   ==================
+

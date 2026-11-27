@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _vof_sub_models:
+
+vof_sub_models
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.vof_sub_models
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   =========
+
+Attribute                                                        Summary
+
+============================================================   =========
+:ref:`open_channel_flow <open_channel_flow>`                       Help.
+
+:ref:`open_channel_flow_wave_bc <open_channel_flow_wave_bc>`       Help.
+
+============================================================   =========
+
+.. rubric:: Included in:
+
+================================   =====================
+
+Parent                                           Summary
+
+================================   =====================
+:ref:`multiphase <multiphase_1>`       Multiphase model.
+
+================================   =====================
+

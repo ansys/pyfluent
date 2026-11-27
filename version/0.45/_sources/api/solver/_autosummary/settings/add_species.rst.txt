@@ -1,0 +1,37 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _add_species:
+
+add_species
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.add_species
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ==========================================
+
+Argument                                                                  Summary
+
+====================================   ==========================================
+:ref:`species_name <species_name_1>`       Species name in add-species operation.
+
+:ref:`value <value_17>`                           Value in add-species operation.
+
+====================================   ==========================================
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`setup <setup_1>`                  Membrane species diffusivity.
+
+:ref:`init_value <init_value>`       Initial concentration (kmol/m3).
+
+==============================   ====================================
+

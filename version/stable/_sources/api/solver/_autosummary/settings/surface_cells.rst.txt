@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surface_cells:
+
+surface_cells
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.surface_cells
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`surface_cells_item <surface_cells_item>`
+
+``surface_cells`` is organised like a Python dictionary holding objects of type :ref:`surface_cells_item <surface_cells_item>` by name. You can access them using ``surface_cells['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   ===============================================================================================
+
+Parent                                                                                                                 Summary
+
+============================   ===============================================================================================
+:ref:`surfaces <surfaces_9>`       Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+============================   ===============================================================================================
+

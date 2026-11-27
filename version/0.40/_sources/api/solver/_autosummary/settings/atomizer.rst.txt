@@ -1,0 +1,86 @@
+:orphan:
+
+.. _atomizer:
+
+atomizer
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.atomizer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   =====================================================
+
+Attribute                                                                                                    Summary
+
+============================================================   =====================================================
+:ref:`direction <direction_2>`                                     Lagrangian atomizer injection direction settings.
+
+:ref:`x_center <x_center>`                                                                                 X-Center.
+
+:ref:`y_center <y_center>`                                                                                 Y-Center.
+
+:ref:`z_center <z_center>`                                                                                 Z-Center.
+
+:ref:`x_virtual_origin <x_virtual_origin>`                                                         X-Virtual Origin.
+
+:ref:`y_virtual_origin <y_virtual_origin>`                                                         Y-Virtual Origin.
+
+:ref:`z_virtual_origin <z_virtual_origin>`                                                         Z-Virtual Origin.
+
+:ref:`x_fan_normal_vector <x_fan_normal_vector>`                                                X-Fan Normal Vector.
+
+:ref:`y_fan_normal_vector <y_fan_normal_vector>`                                                Y-Fan Normal Vector.
+
+:ref:`z_fan_normal_vector <z_fan_normal_vector>`                                                Z-Fan Normal Vector.
+
+:ref:`vapor_pressure <vapor_pressure>`                                                               Vapor Pressure.
+
+:ref:`inner_diameter <inner_diameter>`                                                      Injector Inner Diameter.
+
+:ref:`outer_diameter <outer_diameter>`                                                      Injector Outer Diameter.
+
+:ref:`spray_half_angle <spray_half_angle>`                                                         Spray Half Angle.
+
+:ref:`orifice_length <orifice_length>`                                                               Orifice Length.
+
+:ref:`radius_of_curvature <radius_of_curvature>`                                         Corner Radius of Curvature.
+
+:ref:`constant_a <constant_a>`                                                                           Constant A.
+
+:ref:`upstream_pressure <upstream_pressure>`                                                      Upstream Pressure.
+
+:ref:`relative_velocity <relative_velocity>`                                                      Relative Velocity.
+
+:ref:`mixture_quality <mixture_quality>`                                                            Mixture Quality.
+
+:ref:`saturation_temperature <saturation_temperature>`                                              Saturation Temp.
+
+:ref:`orifice_width <orifice_width>`                                                                  Orifice Width.
+
+:ref:`sheet_constant <sheet_constant>`                                                               Sheet Constant.
+
+:ref:`ligament_constant <ligament_constant>`                                                      Ligament Constant.
+
+:ref:`dsipersion_constant <dsipersion_constant>`                                                Dispersion Constant.
+
+:ref:`maximum_half_angle <maximum_half_angle>`                                                   Maximum Half Angle.
+
+:ref:`flaf_fan_sheet_constant <flaf_fan_sheet_constant>`                                    Flat Fan Sheet Constant.
+
+:ref:`atomizer_dispersion_angle <atomizer_dispersion_angle>`                              Atomizer Dispersion Angle.
+
+============================================================   =====================================================
+
+.. rubric:: Included in:
+
+======================================   ===========================================
+
+Parent                                                                       Summary
+
+======================================   ===========================================
+:ref:`initial_values <initial_values>`       Lagrangian particle initial properties.
+
+======================================   ===========================================
+

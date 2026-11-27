@@ -1,0 +1,46 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _bodies_item:
+
+bodies_item
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.bodies_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=====================   ==========================
+
+Attribute                                  Summary
+
+=====================   ==========================
+:ref:`name <name_17>`              Input new name.
+
+:ref:`faces <faces>`        Define topology faces.
+
+=====================   ==========================
+
+.. rubric:: Methods
+
+==============================================   =========================================
+
+Method                                                                             Summary
+
+==============================================   =========================================
+:ref:`create_baffle_face <create_baffle_face>`       Create 2-sided baffle or shared face.
+
+==============================================   =========================================
+
+.. rubric:: Included in:
+
+======================   =========================
+
+Parent                                     Summary
+
+======================   =========================
+:ref:`bodies <bodies>`       Define topology body.
+
+======================   =========================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _moving_object_velocity_inputs:
+
+moving_object_velocity_inputs
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.moving_object_velocity_inputs
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================================   =================================================
+
+Attribute                                                                                                                                    Summary
+
+================================================================================================   =================================================
+:ref:`moving_object_velocity_specification_method <moving_object_velocity_specification_method>`       Moving Object: Velocity Specification Method.
+
+:ref:`moving_object_velocity <moving_object_velocity>`                                                            Moving Object: Velocity Magnitude.
+
+:ref:`moving_object_direction <moving_object_direction>`                                                         Moving object direction components.
+
+================================================================================================   =================================================
+
+.. rubric:: Included in:
+
+================================   ==========================================================
+
+Parent                                                                                Summary
+
+================================   ==========================================================
+:ref:`momentum_10 <momentum_10>`       Allows to change momentum model variables or settings.
+
+================================   ==========================================================
+

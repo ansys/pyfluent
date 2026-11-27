@@ -1,0 +1,21 @@
+:orphan:
+
+.. _input_parameters_1_child:
+
+input_parameters_child
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.input_parameters_1_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===========================================
+
+Parent                                                                               Summary
+
+==============================================   ===========================================
+:ref:`input_parameters_1 <input_parameters_1>`       Input Parameter Values of Design Point.
+
+==============================================   ===========================================
+

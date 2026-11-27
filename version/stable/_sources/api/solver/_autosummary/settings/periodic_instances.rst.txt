@@ -1,0 +1,44 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _periodic_instances:
+
+periodic_instances
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.periodic_instances
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   ==================================================
+
+Method                                                                                Summary
+
+========================================   ==================================================
+:ref:`detect_surfaces <detect_surfaces>`       Detect the surfaces for the periodic instance.
+
+:ref:`clear_repeats <clear_repeats>`                     Clear the periodic instance repeats.
+
+========================================   ==================================================
+
+.. rubric:: Named object type
+
+:ref:`periodic_instances_item <periodic_instances_item>`
+
+``periodic_instances`` is organised like a Python dictionary holding objects of type :ref:`periodic_instances_item <periodic_instances_item>` by name. You can access them using ``periodic_instances['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================   ============================================================
+
+Parent                                                                                        Summary
+
+======================================   ============================================================
+:ref:`turbomachinery <turbomachinery>`                                     The turbomachinery models.
+
+:ref:`graphics <graphics>`                   Controls the graphics display of the simulation results.
+
+======================================   ============================================================
+

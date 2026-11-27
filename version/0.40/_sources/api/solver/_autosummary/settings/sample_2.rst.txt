@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sample_2:
+
+sample
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.sample_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ================================================================================
+
+Parent                                                                                                                          Summary
+
+====================================================   ================================================================================
+:ref:`pick_sample_to_reduce <pick_sample_to_reduce>`       Pick a sample for which to first set-up and then perform the data reduction.
+
+====================================================   ================================================================================
+

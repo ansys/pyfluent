@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _fan:
+
+fan
+===
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.fan
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`fan_item <fan_item>`
+
+``fan`` is organised like a Python dictionary holding objects of type :ref:`fan_item <fan_item>` by name. You can access them using ``fan['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`boundaries <boundaries>`   Defines physics boundaries for a volume region.
+
+==============================   ===============================================
+

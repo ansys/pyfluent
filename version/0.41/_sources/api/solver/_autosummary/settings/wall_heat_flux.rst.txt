@@ -1,0 +1,21 @@
+:orphan:
+
+.. _wall_heat_flux:
+
+wall_heat_flux
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.wall_heat_flux
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _do_source:
+
+do_source
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.do_source
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

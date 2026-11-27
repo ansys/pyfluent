@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_boundary_conditions:
+
+species_boundary_conditions
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.species_boundary_conditions
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`species_boundary_conditions_item <species_boundary_conditions_item>`
+
+``species_boundary_conditions`` is organised like a Python dictionary holding objects of type :ref:`species_boundary_conditions_item <species_boundary_conditions_item>` by name. You can access them using ``species_boundary_conditions['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+===========================   =========================================================
+
+Parent                                                                          Summary
+
+===========================   =========================================================
+:ref:`species <species_11>`       Allows to change species model variables or settings.
+
+===========================   =========================================================
+

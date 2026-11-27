@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ratio:
+
+ratio
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`efficiency <efficiency>`       The object.
+
+==============================   ===============
+

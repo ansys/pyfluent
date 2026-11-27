@@ -1,0 +1,21 @@
+:orphan:
+
+.. _print_connected_clients:
+
+print_connected_clients
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.print_connected_clients
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ========================================
+
+Parent                                                Summary
+
+==================   ========================================
+:ref:`grpc <grpc>`       Start, stop or manage a gRPC server.
+
+==================   ========================================
+

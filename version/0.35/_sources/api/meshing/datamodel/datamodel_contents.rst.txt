@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel:
+
+meshing.datamodel
+=================
+
+.. automodule:: ansys.fluent.core.datamodel
+   :autosummary:
+
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   meshing/meshing_contents
+   meshing_utilities/meshing_utilities_contents
+   part_management/part_management_contents
+   pm_file_management/pm_file_management_contents
+   preferences/preferences_contents
+   workflow/workflow_contents

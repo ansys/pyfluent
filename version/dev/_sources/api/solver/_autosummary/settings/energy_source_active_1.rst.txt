@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _energy_source_active_1:
+
+energy_source_active
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.energy_source_active_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`energy_source_active_item <energy_source_active_1_item>`
+
+``energy_source_active`` is organised like a Python dictionary holding objects of type :ref:`energy_source_active_item <energy_source_active_1_item>` by name. You can access them using ``energy_source_active['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ======================================
+
+Parent                                                                          Summary
+
+==============================================   ======================================
+:ref:`fmu_model_settings <fmu_model_settings>`   FMU-coupling solution method settings.
+
+==============================================   ======================================
+

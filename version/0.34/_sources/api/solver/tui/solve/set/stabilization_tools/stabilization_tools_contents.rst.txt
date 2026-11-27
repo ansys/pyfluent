@@ -1,0 +1,19 @@
+.. _ref_solver_tui_solve_set_stabilization_tools:
+
+stabilization_tools
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.solve.set.stabilization_tools
+   :members: enable, stabilization_mode
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   contingency_tools/contingency_tools_contents
+   diagnostics_tools/diagnostics_tools_contents

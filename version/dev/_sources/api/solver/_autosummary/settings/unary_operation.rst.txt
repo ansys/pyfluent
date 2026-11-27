@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _unary_operation:
+
+unary_operation
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.unary_operation
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`unary_operation_item <unary_operation_item>`
+
+``unary_operation`` is organised like a Python dictionary holding objects of type :ref:`unary_operation_item <unary_operation_item>` by name. You can access them using ``unary_operation['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================   ======================================
+
+Parent                                                            Summary
+
+================================   ======================================
+:ref:`definitions <definitions>`   Adjoint observables definition object.
+
+================================   ======================================
+

@@ -1,0 +1,44 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cumulative_plot:
+
+cumulative_plot
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.cumulative_plot
+    :show-inheritance:
+
+.. rubric:: Methods
+
+======================   ========================================
+
+Method                                                    Summary
+
+======================   ========================================
+:ref:`plot <plot_8>`              Display cumulative-plot object.
+
+:ref:`write <write_5>`       Write the Cumulative Forces/Moments.
+
+:ref:`print <print_6>`              Print cumulative-plot object.
+
+======================   ========================================
+
+.. rubric:: Named object type
+
+:ref:`cumulative_plot_item <cumulative_plot_item>`
+
+``cumulative_plot`` is organised like a Python dictionary holding objects of type :ref:`cumulative_plot_item <cumulative_plot_item>` by name. You can access them using ``cumulative_plot['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+====================   =======================================================================================================================
+
+Parent                                                                                                                                 Summary
+
+====================   =======================================================================================================================
+:ref:`plot <plot_4>`       Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+====================   =======================================================================================================================
+

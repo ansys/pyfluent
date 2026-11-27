@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enable_17:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.enable_17
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================
+
+Parent                                                    Summary
+
+==========================   ====================================
+:ref:`sources <sources_1>`       Source terms for this cell zone.
+
+==========================   ====================================
+

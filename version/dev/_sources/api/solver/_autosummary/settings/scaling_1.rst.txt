@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _scaling_1:
+
+scaling
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.scaling_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`scaling_item <scaling_1_item>`
+
+``scaling`` is organised like a Python dictionary holding objects of type :ref:`scaling_item <scaling_1_item>` by name. You can access them using ``scaling['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================   =============================
+
+Parent                                                     Summary
+
+==================================   =============================
+:ref:`definitions <definitions_2>`   Design condition definitions.
+
+==================================   =============================
+

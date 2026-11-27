@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _cross_section_multicomponent_item:
+
+cross_section_multicomponent_item
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.cross_section_multicomponent_item
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`cross_section_multicomponent_item_item <cross_section_multicomponent_item_item>`
+
+``cross_section_multicomponent_item`` is organised like a Python dictionary holding objects of type :ref:`cross_section_multicomponent_item_item <cross_section_multicomponent_item_item>` by name. You can access them using ``cross_section_multicomponent_item['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================================   =====================================================================
+
+Parent                                                                                                                             Summary
+
+==================================================================   =====================================================================
+:ref:`cross_section_multicomponent <cross_section_multicomponent>`       Manages cross-section data for multicomponent collision modeling.
+
+==================================================================   =====================================================================
+

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _contact_resistance_locations:
+
+contact_resistance_locations
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.contact_resistance_locations
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`contact_resistance_locations_item <contact_resistance_locations_item>`
+
+``contact_resistance_locations`` is organised like a Python dictionary holding objects of type :ref:`contact_resistance_locations_item <contact_resistance_locations_item>` by name. You can access them using ``contact_resistance_locations['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   =======================
+
+Parent                                                     Summary
+
+========================================   =======================
+:ref:`advanced_models <advanced_models>`   Advanced model options.
+
+========================================   =======================
+

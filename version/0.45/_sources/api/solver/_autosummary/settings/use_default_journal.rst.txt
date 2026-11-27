@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _use_default_journal:
+
+use_default_journal
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.use_default_journal
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`job_settings <job_settings>`       Remote Job Settings.
+
+==================================   ========================
+

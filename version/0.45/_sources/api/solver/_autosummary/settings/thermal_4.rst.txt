@@ -1,0 +1,41 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _thermal_4:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.thermal_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================   =======================================
+
+Attribute                                                                                                        Summary
+
+==============================================================================   =======================================
+:ref:`temperature <temperature_3>`                                                                          Temperature.
+
+:ref:`vibrational_electronic_temperature <vibrational_electronic_temperature>`       Vibrational-Electronic Temperature.
+
+==============================================================================   =======================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`pressure_far_field_item <pressure_far_field_item>`         'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_19_item>`                                             'child_object_type' of phase.
+
+:ref:`pressure_far_field_item <pressure_far_field_1_item>`       'child_object_type' of pressure_far_field.
+
+:ref:`phase_item <phase_43_item>`                                             'child_object_type' of phase.
+
+==========================================================   ==============================================
+

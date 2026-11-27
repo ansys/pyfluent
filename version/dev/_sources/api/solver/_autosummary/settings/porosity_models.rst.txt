@@ -1,0 +1,40 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _porosity_models:
+
+porosity_models
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.porosity_models
+    :show-inheritance:
+
+.. rubric:: Methods
+
+======================================   ===========================================
+
+Method                                                                       Summary
+
+======================================   ===========================================
+:ref:`read_from_file <read_from_file>`   Read core porosity models from a .hxc file.
+
+======================================   ===========================================
+
+.. rubric:: Named object type
+
+:ref:`porosity_models_item <porosity_models_item>`
+
+``porosity_models`` is organised like a Python dictionary holding objects of type :ref:`porosity_models_item <porosity_models_item>` by name. You can access them using ``porosity_models['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ==========================
+
+Parent                                                                Summary
+
+================================================   ==========================
+:ref:`core_porosity_model <core_porosity_model>`   Core porosity model group.
+
+================================================   ==========================
+

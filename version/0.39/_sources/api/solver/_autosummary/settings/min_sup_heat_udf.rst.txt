@@ -1,0 +1,21 @@
+:orphan:
+
+.. _min_sup_heat_udf:
+
+min_sup_heat_udf
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.min_sup_heat_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================================   =================================
+
+Parent                                                                                                       Summary
+
+================================================================================   =================================
+:ref:`mt_evap_cond_sbm_boil_model_exp_opt <mt_evap_cond_sbm_boil_model_exp_opt>`       Boiling model expert options.
+
+================================================================================   =================================
+

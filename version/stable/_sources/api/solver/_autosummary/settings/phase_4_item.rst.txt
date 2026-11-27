@@ -1,0 +1,33 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_4_item:
+
+phase_item
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.phase_4_item
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================
+
+Attribute                                                                         Summary
+
+============================   ==========================================================
+:ref:`geometry <geometry_7>`       Allows to change geometry model variables or settings.
+
+============================   ==========================================================
+
+.. rubric:: Included in:
+
+======================   ======================================
+
+Parent                                                  Summary
+
+======================   ======================================
+:ref:`phase <phase_4>`       Domain name to define settings on.
+
+======================   ======================================
+

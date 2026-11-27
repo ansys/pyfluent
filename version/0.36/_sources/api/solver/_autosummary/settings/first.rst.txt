@@ -1,0 +1,21 @@
+:orphan:
+
+.. _first:
+
+first
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.first
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==================================================================================
+
+Parent                                                                                                                    Summary
+
+============================================   ==================================================================================
+:ref:`timestep_selector <timestep_selector>`       Options and settings related to selecting timesteps for the transient dataset.
+
+============================================   ==================================================================================
+

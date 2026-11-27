@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _lift:
+
+lift
+====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.lift
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`lift_item <lift_item>`
+
+``lift`` is organised like a Python dictionary holding objects of type :ref:`lift_item <lift_item>` by name. You can access them using ``lift['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ==============================================================================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                                                                                                  Summary
+
+==============================================   ==============================================================================================================================================================================================================================================================================================
+:ref:`report_definitions <report_definitions>`       Provides access to create an object that specifies a certain quantity or set of values to be computed at the end of a solver timestep or iteration. You can then choose to have multiple report definitions printed to the console written to a single file or plotted in the same window.
+
+==============================================   ==============================================================================================================================================================================================================================================================================================
+

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _reactions_1:
+
+reactions
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.reactions_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`reactions_item <reactions_1_item>`
+
+``reactions`` is organised like a Python dictionary holding objects of type :ref:`reactions_item <reactions_1_item>` by name. You can access them using ``reactions['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================   =====================================
+
+Parent                                                             Summary
+
+==================================   =====================================
+:ref:`electrolysis <electrolysis>`   The Electrochemical Devices settings.
+
+==================================   =====================================
+

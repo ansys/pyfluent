@@ -1,0 +1,31 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _qbmm_boundary_value:
+
+qbmm_boundary_value
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.qbmm_boundary_value
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`qbmm_boundary_value_item <qbmm_boundary_value_item>`
+
+``qbmm_boundary_value`` is organised like a Python dictionary holding objects of type :ref:`qbmm_boundary_value_item <qbmm_boundary_value_item>` by name. You can access them using ``qbmm_boundary_value['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`population_balance <population_balance>`                                   Population balance settings.
+
+:ref:`multiphase <multiphase_7>`                     Allows to change multiphase model variables or settings.
+
+==============================================   ============================================================
+

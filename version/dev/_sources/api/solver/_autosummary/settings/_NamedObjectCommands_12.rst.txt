@@ -1,0 +1,30 @@
+:orphan:
+
+.. _named_object_commands__NamedObjectCommands_12:
+
+Common named-object methods
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings._NamedObjectCommands_12
+
+.. rubric:: Methods
+
+==========================================   ===========================================================
+
+Method                                                                                           Summary
+
+==========================================   ===========================================================
+:ref:`create <create>`                                 Create a new instance of the current object type.
+
+:ref:`delete <delete_2>`                                                        Delete selected objects.
+
+:ref:`rename <rename>`                                                                Rename the object.
+
+:ref:`list <list_4>`                           List the names of the definitions for poor mesh numerics.
+
+:ref:`list_properties <list_properties_5>`   List the properties of a definition for poor mesh numerics.
+
+:ref:`make_a_copy <make_a_copy>`                                            Create a copy of the object.
+
+==========================================   ===========================================================
+

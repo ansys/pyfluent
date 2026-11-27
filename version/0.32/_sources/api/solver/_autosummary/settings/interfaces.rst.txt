@@ -1,0 +1,49 @@
+:orphan:
+
+.. _interfaces:
+
+interfaces
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.interfaces
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =========================================
+
+Method                                                                       Summary
+
+========================================   =========================================
+:ref:`create <create_6>`                                     Create mesh interfaces.
+
+:ref:`delete <delete>`                                      Delete selected objects.
+
+:ref:`rename <rename>`                                            Rename the object.
+
+:ref:`list <list>`                                    List the names of the objects.
+
+:ref:`list_properties <list_properties>`       List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                        Create a copy of the object.
+
+:ref:`auto_create <auto_create>`                             Create mesh interfaces.
+
+========================================   =========================================
+
+.. rubric:: Named object type
+
+:ref:`interfaces_child <interfaces_child>`
+
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`physics_1 <physics_1>`       UTL physics definitions.
+
+============================   ============================
+

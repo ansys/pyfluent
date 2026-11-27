@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _under_relaxation_3:
+
+under_relaxation
+================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.under_relaxation_3
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`under_relaxation_item <under_relaxation_3_item>`
+
+``under_relaxation`` is organised like a Python dictionary holding objects of type :ref:`under_relaxation_item <under_relaxation_3_item>` by name. You can access them using ``under_relaxation['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================   ============================
+
+Parent                                                                    Summary
+
+==================================================   ============================
+:ref:`advancement_controls <advancement_controls>`   The adjoint controls object.
+
+==================================================   ============================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _field_12:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.field_12
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ==============================================
+
+Argument                                                          Summary
+
+========================   ==============================================
+:ref:`width <width_2>`         The height for the camera's field of view.
+
+:ref:`height <height_1>`        The width for the camera's field of view.
+
+========================   ==============================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`camera <camera>`       'camera' child.
+
+======================   ===================
+

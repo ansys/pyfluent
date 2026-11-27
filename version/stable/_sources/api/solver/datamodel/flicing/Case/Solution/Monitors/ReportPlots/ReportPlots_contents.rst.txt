@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Solution_Monitors_ReportPlots:
+
+ReportPlots
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v261.object_model.flicing.Root.Case.Solution.Monitors.ReportPlots
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`ReportPlots_item <ref_solver_datamodel_flicing_Case_Solution_Monitors_ReportPlots__ReportPlots>`
+
+``ReportPlots`` is organised like a Python dictionary holding objects of type :ref:`ReportPlots_item <ref_solver_datamodel_flicing_Case_Solution_Monitors_ReportPlots__ReportPlots>` by name. You can access them using ``ReportPlots['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _ReportPlots/_ReportPlots_contents

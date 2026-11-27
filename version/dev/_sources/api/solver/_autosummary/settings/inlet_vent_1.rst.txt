@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _inlet_vent_1:
+
+inlet_vent
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.inlet_vent_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`inlet_vent_item <inlet_vent_1_item>`
+
+``inlet_vent`` is organised like a Python dictionary holding objects of type :ref:`inlet_vent_item <inlet_vent_1_item>` by name. You can access them using ``inlet_vent['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`boundary_conditions <boundary_conditions>`   The boundary conditions object.
+
+================================================   ===============================
+

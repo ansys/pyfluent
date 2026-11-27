@@ -1,0 +1,40 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _register_based:
+
+register_based
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.register_based
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==================   ==================================================================
+
+Method                                                                          Summary
+
+==================   ==================================================================
+:ref:`set <set_1>`   Applies numerical diagnostic settings to a specific cell register.
+
+==================   ==================================================================
+
+.. rubric:: Named object type
+
+:ref:`register_based_item <register_based_item>`
+
+``register_based`` is organised like a Python dictionary holding objects of type :ref:`register_based_item <register_based_item>` by name. You can access them using ``register_based['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================================================================
+
+Parent                                                                                                                         Summary
+
+================================================   ===================================================================================
+:ref:`poor_mesh_numerics <poor_mesh_numerics_2>`   Provides tools to monitor and address numerical issues caused by poor mesh quality.
+
+================================================   ===================================================================================
+

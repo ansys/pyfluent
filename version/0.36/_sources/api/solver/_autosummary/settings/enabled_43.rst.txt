@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_43:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_43
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================
+
+Parent                                                                  Summary
+
+================================================   ============================
+:ref:`predefined_workflow <predefined_workflow>`       Use predefined workflow.
+
+================================================   ============================
+

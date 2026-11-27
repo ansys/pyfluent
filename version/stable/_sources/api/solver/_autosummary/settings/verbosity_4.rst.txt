@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _verbosity_4:
+
+verbosity
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.verbosity_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   =============================================
+
+Parent                                                       Summary
+
+====================   =============================================
+:ref:`copy <copy_1>`       Copy boundary conditions to another zone.
+
+====================   =============================================
+

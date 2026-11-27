@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _multicomponent_item:
+
+multicomponent_item
+===================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.multicomponent_item
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`multicomponent_item_item <multicomponent_item_item>`
+
+``multicomponent_item`` is organised like a Python dictionary holding objects of type :ref:`multicomponent_item_item <multicomponent_item_item>` by name. You can access them using ``multicomponent_item['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================   ==============
+
+Parent                                          Summary
+
+======================================   ==============
+:ref:`multicomponent <multicomponent>`   First species.
+
+======================================   ==============
+

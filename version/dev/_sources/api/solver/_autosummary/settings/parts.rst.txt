@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _parts:
+
+parts
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.parts
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`parts_item <parts_item>`
+
+``parts`` is organised like a Python dictionary holding objects of type :ref:`parts_item <parts_item>` by name. You can access them using ``parts['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================   ==================
+
+Parent                                              Summary
+
+======================================   ==================
+:ref:`model_topology <model_topology>`   List the topology.
+
+======================================   ==================
+

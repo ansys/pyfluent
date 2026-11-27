@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zone_1:
+
+zone
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zone_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`dynamic_zones_child <dynamic_zones_child>`       'child_object_type' of dynamic_zones.
+
+================================================   =========================================
+

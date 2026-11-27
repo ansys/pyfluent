@@ -1,0 +1,21 @@
+:orphan:
+
+.. _anode_ca_brugg_coeff:
+
+anode_ca_brugg_coeff
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.anode_ca_brugg_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ============================
+
+Parent                                                      Summary
+
+====================================   ============================
+:ref:`anode_ca_zone <anode_ca_zone>`       Up anode catalyst layer.
+
+====================================   ============================
+

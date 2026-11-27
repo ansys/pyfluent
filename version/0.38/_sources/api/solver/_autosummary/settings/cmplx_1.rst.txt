@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cmplx_1:
+
+cmplx
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cmplx_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================================
+
+Parent                                                            Summary
+
+============================   ==========================================
+:ref:`create_13 <create_13>`       Create a new Generalized Force object.
+
+============================   ==========================================
+

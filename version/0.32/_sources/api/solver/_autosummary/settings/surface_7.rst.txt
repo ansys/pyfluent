@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surface_7:
+
+surface
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.surface_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================
+
+Parent                                            Summary
+
+====================================   ==================
+:ref:`split_surface <split_surface>`       Split Surface.
+
+====================================   ==================
+

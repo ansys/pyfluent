@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _internal_emissivity_band:
+
+internal_emissivity_band
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.internal_emissivity_band
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`internal_emissivity_band_item <internal_emissivity_band_item>`
+
+``internal_emissivity_band`` is organised like a Python dictionary holding objects of type :ref:`internal_emissivity_band_item <internal_emissivity_band_item>` by name. You can access them using ``internal_emissivity_band['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================   ===================================================
+
+Parent                                                                       Summary
+
+==============================   ===================================================
+:ref:`radiation <radiation_7>`       Radiation settings for this boundary-condition.
+
+==============================   ===================================================
+

@@ -1,0 +1,46 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compute_resources:
+
+compute_resources
+=================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.compute_resources
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==============================================   ====================================
+
+Method                                                                        Summary
+
+==============================================   ====================================
+:ref:`add <add_8>`                                             Add Computer Resource.
+
+:ref:`get_current <get_current>`                        Get Current Compute Resource.
+
+:ref:`set_current <set_current>`                        Set Current Compute Resource.
+
+:ref:`disconnect_current <disconnect_current>`   Disconnect Current Compute Resource.
+
+==============================================   ====================================
+
+.. rubric:: Named object type
+
+:ref:`compute_resources_item <compute_resources_item>`
+
+``compute_resources`` is organised like a Python dictionary holding objects of type :ref:`compute_resources_item <compute_resources_item>` by name. You can access them using ``compute_resources['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   =======================
+
+Parent                                                     Summary
+
+========================================   =======================
+:ref:`run_calculation <run_calculation>`   Run-calculation object.
+
+========================================   =======================
+

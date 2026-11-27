@@ -1,0 +1,38 @@
+:orphan:
+
+.. _fine_tune_parameter:
+
+fine_tune_parameter
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.fine_tune_parameter
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ===================================================
+
+Argument                                                             Summary
+
+======================   ===================================================
+:ref:`user_a <user_a>`       Fine-tuning parameter A in abuse model fitting.
+
+:ref:`user_e <user_e>`       Fine-tuning parameter E in abuse model fitting.
+
+:ref:`user_m <user_m>`       Fine-tuning parameter m in abuse model fitting.
+
+:ref:`user_n <user_n>`       Fine-tuning parameter n in abuse model fitting.
+
+======================   ===================================================
+
+.. rubric:: Included in:
+
+====================================================   ============================================
+
+Parent                                                                                      Summary
+
+====================================================   ============================================
+:ref:`thermal_abuse_fitting <thermal_abuse_fitting>`       Thermal abuse parameter estimation tool.
+
+====================================================   ============================================
+

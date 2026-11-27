@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_import_cad_and_part_management__import_cad_and_part_management_arguments_refaceting:
+
+refaceting
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.import_cad_and_part_management._import_cad_and_part_management.arguments.refaceting
+   :members: deviation, facet_max_edge_length, max_edge_length_factor, max_size, normal_angle, refacet
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _species_fraction:
+
+species_fraction
+================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.species_fraction
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`species_fraction_item <species_fraction_item>`
+
+``species_fraction`` is organised like a Python dictionary holding objects of type :ref:`species_fraction_item <species_fraction_item>` by name. You can access them using ``species_fraction['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`species_setting <species_setting>`   The species settings object.
+
+========================================   ============================
+

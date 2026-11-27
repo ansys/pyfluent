@@ -1,0 +1,21 @@
+:orphan:
+
+.. _multiple_shadow_nodes_option:
+
+multiple_shadow_nodes_option
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.multiple_shadow_nodes_option
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =============================================
+
+Parent                                                                         Summary
+
+======================================   =============================================
+:ref:`convert_domain <convert_domain>`       Convert entire domain to polyhedra cells.
+
+======================================   =============================================
+

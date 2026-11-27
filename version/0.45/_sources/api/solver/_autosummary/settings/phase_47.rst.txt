@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _phase_47:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.phase_47
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`phase_item <phase_47_item>`
+
+``phase`` is organised like a Python dictionary holding objects of type :ref:`phase_item <phase_47_item>` by name. You can access them using ``phase['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`rans_les_interface_item <rans_les_interface_1_item>`       'child_object_type' of rans_les_interface.
+
+==========================================================   ==============================================
+

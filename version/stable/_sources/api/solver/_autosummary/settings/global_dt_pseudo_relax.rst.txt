@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _global_dt_pseudo_relax:
+
+global_dt_pseudo_relax
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.global_dt_pseudo_relax
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`global_dt_pseudo_relax_item <global_dt_pseudo_relax_item>`
+
+``global_dt_pseudo_relax`` is organised like a Python dictionary holding objects of type :ref:`global_dt_pseudo_relax_item <global_dt_pseudo_relax_item>` by name. You can access them using ``global_dt_pseudo_relax['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+======================================================================================   ==================================================
+
+Parent                                                                                                                              Summary
+
+======================================================================================   ==================================================
+:ref:`pseudo_time_explicit_relaxation_factor <pseudo_time_explicit_relaxation_factor>`       Pseudo time explicit relaxation factor object.
+
+======================================================================================   ==================================================
+

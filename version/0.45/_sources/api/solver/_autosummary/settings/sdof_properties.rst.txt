@@ -1,0 +1,40 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _sdof_properties:
+
+sdof_properties
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.sdof_properties
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================================   ==================================
+
+Method                                                                        Summary
+
+================================================   ==================================
+:ref:`list_properties_all <list_properties_all>`       'list_properties_all' command.
+
+================================================   ==================================
+
+.. rubric:: Named object type
+
+:ref:`sdof_properties_item <sdof_properties_item>`
+
+``sdof_properties`` is organised like a Python dictionary holding objects of type :ref:`sdof_properties_item <sdof_properties_item>` by name. You can access them using ``sdof_properties['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`six_dof <six_dof>`       'six_dof' child.
+
+========================   ====================
+

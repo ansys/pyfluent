@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _mixture:
+
+mixture
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.mixture
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`mixture_item <mixture_item>`
+
+``mixture`` is organised like a Python dictionary holding objects of type :ref:`mixture_item <mixture_item>` by name. You can access them using ``mixture['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   ================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+============================   ================================================================================================================================
+:ref:`materials <materials>`   Accesses the material database and configuration tools for defining fluid, solid, and particle materials used in the simulation.
+
+============================   ================================================================================================================================
+

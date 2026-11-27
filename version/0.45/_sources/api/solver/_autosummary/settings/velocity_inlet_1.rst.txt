@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _velocity_inlet_1:
+
+velocity_inlet
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.velocity_inlet_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`velocity_inlet_item <velocity_inlet_1_item>`
+
+``velocity_inlet`` is organised like a Python dictionary holding objects of type :ref:`velocity_inlet_item <velocity_inlet_1_item>` by name. You can access them using ``velocity_inlet['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

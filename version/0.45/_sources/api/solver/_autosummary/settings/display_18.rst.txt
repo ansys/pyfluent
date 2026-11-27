@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _display_18:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.display_18
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`preview <preview_1>`       Design tool export object.
+
+==========================   ==============================
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _enabled_58:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.enabled_58
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ======================
+
+Parent                                          Summary
+
+==============================   ======================
+:ref:`smoothing <smoothing_1>`       'smoothing' child.
+
+==============================   ======================
+

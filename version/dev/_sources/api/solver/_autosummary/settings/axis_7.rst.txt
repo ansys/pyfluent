@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _axis_7:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.axis_7
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`axis_item <axis_7_item>`
+
+``axis`` is organised like a Python dictionary holding objects of type :ref:`axis_item <axis_7_item>` by name. You can access them using ``axis['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`boundary_conditions <boundary_conditions>`   The boundary conditions object.
+
+================================================   ===============================
+

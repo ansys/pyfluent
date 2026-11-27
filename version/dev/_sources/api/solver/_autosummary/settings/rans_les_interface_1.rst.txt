@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rans_les_interface_1:
+
+rans_les_interface
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.rans_les_interface_1
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`rans_les_interface_item <rans_les_interface_1_item>`
+
+``rans_les_interface`` is organised like a Python dictionary holding objects of type :ref:`rans_les_interface_item <rans_les_interface_1_item>` by name. You can access them using ``rans_les_interface['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`boundary_conditions <boundary_conditions>`   The boundary conditions object.
+
+================================================   ===============================
+

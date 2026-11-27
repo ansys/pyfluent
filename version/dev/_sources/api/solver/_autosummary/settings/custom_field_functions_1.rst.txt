@@ -1,0 +1,42 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _custom_field_functions_1:
+
+custom_field_functions
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.custom_field_functions_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+====================   ===================================================
+
+Method                                                             Summary
+
+====================   ===================================================
+:ref:`save <save_2>`        Save saving a custom field function to a file.
+
+:ref:`load <load_1>`   Read custom field-function definitions from a file.
+
+====================   ===================================================
+
+.. rubric:: Named object type
+
+:ref:`custom_field_functions_item <custom_field_functions_1_item>`
+
+``custom_field_functions`` is organised like a Python dictionary holding objects of type :ref:`custom_field_functions_item <custom_field_functions_1_item>` by name. You can access them using ``custom_field_functions['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================   =========================================================================================
+
+Parent                                                                                                       Summary
+
+========================   =========================================================================================
+:ref:`results <results>`   Access all post-processing tools and reporting features for analyzing simulation results.
+
+========================   =========================================================================================
+

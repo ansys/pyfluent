@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _nci_secondary_gradient:
+
+nci_secondary_gradient
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.nci_secondary_gradient
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`nci_secondary_gradient_item <nci_secondary_gradient_item>`
+
+``nci_secondary_gradient`` is organised like a Python dictionary holding objects of type :ref:`nci_secondary_gradient_item <nci_secondary_gradient_item>` by name. You can access them using ``nci_secondary_gradient['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`advanced <advanced_5>`   Solution method advanced object.
+
+============================   ================================
+

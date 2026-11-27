@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_Pathlines:
+
+Pathlines
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v261.object_model.flicing.Root.Case.Results.Graphics.Pathlines
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`Pathlines_item <ref_solver_datamodel_flicing_Case_Results_Graphics_Pathlines__Pathlines>`
+
+``Pathlines`` is organised like a Python dictionary holding objects of type :ref:`Pathlines_item <ref_solver_datamodel_flicing_Case_Results_Graphics_Pathlines__Pathlines>` by name. You can access them using ``Pathlines['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _Pathlines/_Pathlines_contents

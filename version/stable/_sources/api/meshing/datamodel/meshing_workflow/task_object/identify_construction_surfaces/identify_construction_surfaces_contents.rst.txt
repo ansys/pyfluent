@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_identify_construction_surfaces:
+
+identify_construction_surfaces
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.v261.meshing.meshing_workflow.Root.task_object.identify_construction_surfaces
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. rubric:: Named object type
+
+:ref:`identify_construction_surfaces_item <ref_meshing_datamodel_meshing_workflow_task_object_identify_construction_surfaces__identify_construction_surfaces>`
+
+``identify_construction_surfaces`` is organised like a Python dictionary holding objects of type :ref:`identify_construction_surfaces_item <ref_meshing_datamodel_meshing_workflow_task_object_identify_construction_surfaces__identify_construction_surfaces>` by name. You can access them using ``identify_construction_surfaces['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. toctree::
+   :hidden:
+
+   _identify_construction_surfaces/_identify_construction_surfaces_contents

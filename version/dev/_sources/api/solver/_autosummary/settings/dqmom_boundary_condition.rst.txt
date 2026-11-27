@@ -1,0 +1,31 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _dqmom_boundary_condition:
+
+dqmom_boundary_condition
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.dqmom_boundary_condition
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`dqmom_boundary_condition_item <dqmom_boundary_condition_item>`
+
+``dqmom_boundary_condition`` is organised like a Python dictionary holding objects of type :ref:`dqmom_boundary_condition_item <dqmom_boundary_condition_item>` by name. You can access them using ``dqmom_boundary_condition['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ========================================================
+
+Parent                                                                                            Summary
+
+==============================================   ========================================================
+:ref:`population_balance <population_balance>`                               Population balance settings.
+
+:ref:`multiphase <multiphase_8>`                 Allows to change multiphase model variables or settings.
+
+==============================================   ========================================================
+

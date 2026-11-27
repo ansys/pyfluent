@@ -1,0 +1,35 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _add_7:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.add_7
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   =======================
+
+Argument                               Summary
+
+====================   =======================
+:ref:`name <name_9>`       Object name to add.
+
+====================   =======================
+
+.. rubric:: Included in:
+
+==========================================   ================================
+
+Parent                                                                Summary
+
+==========================================   ================================
+:ref:`geometry <geometry_5>`                                     Main object.
+
+:ref:`graphics_objects <graphics_objects>`       The graphics objects object.
+
+==========================================   ================================
+

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _backflow_species_mass_fraction:
+
+backflow_species_mass_fraction
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.backflow_species_mass_fraction
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`backflow_species_mass_fraction_item <backflow_species_mass_fraction_item>`
+
+``backflow_species_mass_fraction`` is organised like a Python dictionary holding objects of type :ref:`backflow_species_mass_fraction_item <backflow_species_mass_fraction_item>` by name. You can access them using ``backflow_species_mass_fraction['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   =========================================================
+
+Parent                                                                         Summary
+
+==========================   =========================================================
+:ref:`species <species_6>`       Allows to change species model variables or settings.
+
+==========================   =========================================================
+

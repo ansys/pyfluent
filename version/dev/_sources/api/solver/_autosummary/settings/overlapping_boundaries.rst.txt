@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _overlapping_boundaries:
+
+overlapping_boundaries
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.overlapping_boundaries
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`overlapping_boundaries_item <overlapping_boundaries_item>`
+
+``overlapping_boundaries`` is organised like a Python dictionary holding objects of type :ref:`overlapping_boundaries_item <overlapping_boundaries_item>` by name. You can access them using ``overlapping_boundaries['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================================   ==================================
+
+Parent                                                                Summary
+
+========================================   ==================================
+:ref:`interfaces_item <interfaces_item>`   'child_object_type' of interfaces.
+
+========================================   ==================================
+

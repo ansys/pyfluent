@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _rake_surface:
+
+rake_surface
+============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.rake_surface
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`rake_surface_item <rake_surface_item>`
+
+``rake_surface`` is organised like a Python dictionary holding objects of type :ref:`rake_surface_item <rake_surface_item>` by name. You can access them using ``rake_surface['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+=============================   ===========================================================================================
+
+Parent                                                                                                              Summary
+
+=============================   ===========================================================================================
+:ref:`surfaces <surfaces_10>`   Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+=============================   ===========================================================================================
+

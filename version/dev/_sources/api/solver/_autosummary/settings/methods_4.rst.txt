@@ -1,0 +1,44 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _methods_4:
+
+methods
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.methods_4
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==============================   ============================================================
+
+Method                                                                                Summary
+
+==============================   ============================================================
+:ref:`default <default_1>`                                          Reset methods to default.
+
+:ref:`balanced <balanced>`             Set methods to balance accuracy, stability, and speed.
+
+:ref:`best_match <best_match>`   Set methods to best match flow solver settings for accuracy.
+
+==============================   ============================================================
+
+.. rubric:: Named object type
+
+:ref:`methods_item <methods_4_item>`
+
+``methods`` is organised like a Python dictionary holding objects of type :ref:`methods_item <methods_4_item>` by name. You can access them using ``methods['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================================   ============================
+
+Parent                                                                    Summary
+
+==================================================   ============================
+:ref:`sensitivity_analysis <sensitivity_analysis>`   Sensitivity analysis object.
+
+==================================================   ============================
+

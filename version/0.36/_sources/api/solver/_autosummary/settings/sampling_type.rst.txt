@@ -1,0 +1,23 @@
+:orphan:
+
+.. _sampling_type:
+
+sampling_type
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sampling_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =================================================
+
+Parent                                                                                           Summary
+
+====================================================   =================================================
+:ref:`create_doe <create_doe>`                             Create Design of Experiments using optiSLang.
+
+:ref:`get_number_of_designs <get_number_of_designs>`                              Get Number of Designs.
+
+====================================================   =================================================
+

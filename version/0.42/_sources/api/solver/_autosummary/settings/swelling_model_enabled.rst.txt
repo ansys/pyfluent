@@ -1,0 +1,21 @@
+:orphan:
+
+.. _swelling_model_enabled:
+
+swelling_model_enabled
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.swelling_model_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ======================
+
+Parent                                                  Summary
+
+======================================   ======================
+:ref:`swelling_model <swelling_model>`       Up swelling model.
+
+======================================   ======================
+

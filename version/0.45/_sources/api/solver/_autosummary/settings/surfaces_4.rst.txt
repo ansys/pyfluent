@@ -1,0 +1,24 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surfaces_4:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.surfaces_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===============
+
+Parent                                 Summary
+
+============================   ===============
+:ref:`locations <locations>`       The object.
+
+:ref:`location <location_5>`       The object.
+
+============================   ===============
+

@@ -1,0 +1,22 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _name_48:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.name_48
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==============================
+
+Parent                                            Summary
+
+========================   ==============================
+:ref:`delete <delete_7>`       Delete animation sequence.
+
+========================   ==============================
+

@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surface_integral:
+
+surface_integral
+================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.surface_integral
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`surface_integral_item <surface_integral_item>`
+
+``surface_integral`` is organised like a Python dictionary holding objects of type :ref:`surface_integral_item <surface_integral_item>` by name. You can access them using ``surface_integral['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+================================   ======================================
+
+Parent                                                            Summary
+
+================================   ======================================
+:ref:`definitions <definitions>`   Adjoint observables definition object.
+
+================================   ======================================
+

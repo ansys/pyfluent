@@ -1,0 +1,40 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _interfaces:
+
+interfaces
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.interfaces
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================   ===========================
+
+Method                                                 Summary
+
+================================   ===========================
+:ref:`auto_create <auto_create>`       Create mesh interfaces.
+
+================================   ===========================
+
+.. rubric:: Named object type
+
+:ref:`interfaces_item <interfaces_item>`
+
+``interfaces`` is organised like a Python dictionary holding objects of type :ref:`interfaces_item <interfaces_item>` by name. You can access them using ``interfaces['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==========================   ============================
+
+Parent                                            Summary
+
+==========================   ============================
+:ref:`physics <physics_1>`       UTL physics definitions.
+
+==========================   ============================
+

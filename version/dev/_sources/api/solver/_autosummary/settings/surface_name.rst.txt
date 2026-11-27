@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _surface_name:
+
+surface_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.surface_name
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`surface_name_item <surface_name_item>`
+
+``surface_name`` is organised like a Python dictionary holding objects of type :ref:`surface_name_item <surface_name_item>` by name. You can access them using ``surface_name['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`by_surface <by_surface>`   The surface to specify colors and/or materials.
+
+==============================   ===============================================
+

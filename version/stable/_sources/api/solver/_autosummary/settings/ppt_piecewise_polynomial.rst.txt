@@ -1,0 +1,47 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _ppt_piecewise_polynomial:
+
+ppt_piecewise_polynomial
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.ppt_piecewise_polynomial
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ====================================================
+
+Attribute                                                                       Summary
+
+================================   ====================================================
+:ref:`function_of <function_of>`       The independent variable of polynomial function.
+
+:ref:`range <range>`                                     Piecewise-polynomial settings.
+
+================================   ====================================================
+
+.. rubric:: Included in:
+
+==================================================   ===========================================
+
+Parent                                                                                   Summary
+
+==================================================   ===========================================
+:ref:`lift_euler_item <lift_euler_item>`                      'child_object_type' of lift_euler.
+
+:ref:`wall_lub_euler_item <wall_lub_euler_item>`          'child_object_type' of wall_lub_euler.
+
+:ref:`turb_disp_euler_item <turb_disp_euler_item>`       'child_object_type' of turb_disp_euler.
+
+:ref:`slip_velocity_item <slip_velocity_item>`             'child_object_type' of slip_velocity.
+
+:ref:`surface_tension_item <surface_tension_item>`       'child_object_type' of surface_tension.
+
+:ref:`intf_area_item <intf_area_item>`                         'child_object_type' of intf_area.
+
+:ref:`slope_limiter_item <slope_limiter_item>`             'child_object_type' of slope_limiter.
+
+==================================================   ===========================================
+

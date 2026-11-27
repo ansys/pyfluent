@@ -1,0 +1,40 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _objects:
+
+objects
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.objects
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================   ==========================================================================
+
+Method                                                                                                Summary
+
+================================   ==========================================================================
+:ref:`process_all <process_all>`       Process all generalized forces objects by recreating and mapping them.
+
+================================   ==========================================================================
+
+.. rubric:: Named object type
+
+:ref:`objects_item <objects_item>`
+
+``objects`` is organised like a Python dictionary holding objects of type :ref:`objects_item <objects_item>` by name. You can access them using ``objects['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`generalized_forces <generalized_forces>`       Settings for Generalized Forces calculation and objects.
+
+==============================================   ============================================================
+

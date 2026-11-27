@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_surface_mesh__create_surface_mesh_arguments_surface_mesh_preferences:
+
+surface_mesh_preferences
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.create_surface_mesh._create_surface_mesh.arguments.surface_mesh_preferences
+   :members: auto_assign_zone_types, auto_merge, auto_surface_remesh, fold_face_limit, improve_quality, max_step_width, parallel_region_compute, quality_improve_collapase_skewness_limit, quality_improve_max_angle, quality_improve_skewness_limit, remove_steps, self_intersect_check, separate_by_angle, separation_angle, set_volume_mesh_max_size, show_in_gui, thin_volume_meshing_auto_control_creation, volume_mesh_max_size
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

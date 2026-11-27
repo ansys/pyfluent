@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _custom_vectors:
+
+custom_vectors
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.custom_vectors
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`custom_vectors_item <custom_vectors_item>`
+
+``custom_vectors`` is organised like a Python dictionary holding objects of type :ref:`custom_vectors_item <custom_vectors_item>` by name. You can access them using ``custom_vectors['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+========================   =========================================================================================
+
+Parent                                                                                                       Summary
+
+========================   =========================================================================================
+:ref:`results <results>`   Access all post-processing tools and reporting features for analyzing simulation results.
+
+========================   =========================================================================================
+

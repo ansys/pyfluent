@@ -1,0 +1,21 @@
+:orphan:
+
+.. _update_contact_marks:
+
+update_contact_marks
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.update_contact_marks
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`flow_control <flow_control>`       'flow_control' child.
+
+==================================   =========================
+

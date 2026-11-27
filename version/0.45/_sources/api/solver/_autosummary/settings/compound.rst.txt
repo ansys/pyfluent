@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _compound:
+
+compound
+========
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.compound
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`compound_item <compound_item>`
+
+``compound`` is organised like a Python dictionary holding objects of type :ref:`compound_item <compound_item>` by name. You can access them using ``compound['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+==================================   =================================
+
+Parent                                                         Summary
+
+==================================   =================================
+:ref:`definitions <definitions_1>`       Design condition definitions.
+
+==================================   =================================
+

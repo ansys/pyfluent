@@ -1,0 +1,38 @@
+:orphan:
+
+.. _transparency_options:
+
+transparency_options
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.transparency_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ================================================================================================================
+
+Attribute                                                                                                                                                 Summary
+
+==============================================   ================================================================================================================
+:ref:`use_home_tab_range <use_home_tab_range>`       Provide whether to automatically use global/local/custom range provided in Home tab for transparency values.
+
+:ref:`settings <settings_5>`                                                                         Provide custom transparency ranges and values for filtering.
+
+:ref:`reset <reset_2>`                                                                           Specifies whether to resets the values to precalculated default.
+
+:ref:`invert <invert>`                                                                           Wheter to invert the transparency range values in reverse order.
+
+==============================================   ================================================================================================================
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`volumes_4_child <volumes_4_child>`       'child_object_type' of volumes.
+
+========================================   ===================================
+

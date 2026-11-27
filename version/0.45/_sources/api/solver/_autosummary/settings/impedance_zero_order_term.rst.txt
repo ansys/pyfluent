@@ -1,0 +1,36 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _impedance_zero_order_term:
+
+impedance_zero_order_term
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.impedance_zero_order_term
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+=============================   ==========================================================
+
+Parent                                                                             Summary
+
+=============================   ==========================================================
+:ref:`momentum <momentum>`          Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_1>`        Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_2>`        Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_3>`        Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_6>`        Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_8>`        Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_9>`        Allows to change momentum model variables or settings.
+
+:ref:`momentum <momentum_10>`       Allows to change momentum model variables or settings.
+
+=============================   ==========================================================
+

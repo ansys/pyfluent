@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _extrapolate_eqn_vars:
+
+extrapolate_eqn_vars
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v272.solver.settings.extrapolate_eqn_vars
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`extrapolate_eqn_vars_item <extrapolate_eqn_vars_item>`
+
+``extrapolate_eqn_vars`` is organised like a Python dictionary holding objects of type :ref:`extrapolate_eqn_vars_item <extrapolate_eqn_vars_item>` by name. You can access them using ``extrapolate_eqn_vars['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+===========================   =========================================================
+
+Parent                                                                          Summary
+
+===========================   =========================================================
+:ref:`options <options_15>`   Options for time stepping and extrapolation of variables.
+
+===========================   =========================================================
+

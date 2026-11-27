@@ -1,0 +1,29 @@
+:orphan:
+:html_theme.sidebar_secondary.remove:
+
+.. _droplet_particle:
+
+droplet_particle
+================
+
+.. autoclass:: ansys.fluent.core.generated.v261.solver.settings.droplet_particle
+    :show-inheritance:
+
+.. rubric:: Named object type
+
+:ref:`droplet_particle_item <droplet_particle_item>`
+
+``droplet_particle`` is organised like a Python dictionary holding objects of type :ref:`droplet_particle_item <droplet_particle_item>` by name. You can access them using ``droplet_particle['<name>']``, or use methods such as ``get()``, ``keys()`` and ``values()``.
+
+
+.. rubric:: Included in:
+
+============================   ====================================================================================================================================
+
+Parent                                                                                                                                                      Summary
+
+============================   ====================================================================================================================================
+:ref:`materials <materials>`       Accesses the material database and configuration tools for defining fluid, solid, and particle materials used in the simulation.
+
+============================   ====================================================================================================================================
+

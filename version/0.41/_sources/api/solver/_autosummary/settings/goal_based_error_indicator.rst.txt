@@ -1,0 +1,44 @@
+:orphan:
+
+.. _goal_based_error_indicator:
+
+goal_based_error_indicator
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.goal_based_error_indicator
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ===========================================================================
+
+Argument                                                                                                             Summary
+
+==============================================   ===========================================================================
+:ref:`skip_initial <skip_initial>`                                              Optionally skip initial adjoint advancement.
+
+:ref:`initial_iterations <initial_iterations>`       The number of initial adjoint iterations before invoking mesh adaption.
+
+:ref:`adjoint_iterations <adjoint_iterations>`               The number of adjoint iterations before invoking mesh adaption.
+
+:ref:`number_of_modes <number_of_modes>`                                        The number of modes for adjoint advancement.
+
+:ref:`smoothing_steps <smoothing_steps>`                                      The number of smoothing steps before adaption.
+
+:ref:`reset_history <reset_history>`                                                      Optionally reset adaption history.
+
+:ref:`print_history <print_history>`                                                      Optionally print adaption history.
+
+==============================================   ===========================================================================
+
+.. rubric:: Included in:
+
+================================   ===============================================
+
+Parent                                                                     Summary
+
+================================   ===============================================
+:ref:`error_based <error_based>`       The error-based predefined criteria object.
+
+================================   ===============================================
+
