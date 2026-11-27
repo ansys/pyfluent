@@ -55,6 +55,9 @@ __all__ = (
 
 
 @no_runtime_type_check
+# These field-data contracts use annotations imported only under TYPE_CHECKING, such as SurfaceFieldDataRequest 
+# and npt.NDArray. They remain available to static checkers, but beartype cannot resolve those names at runtime.
+# That is why these contracts opt out; abstract classes do not generally need an exemption.
 class BaseFieldDataSource(ABC):
     """Abstract contract for a user-facing field-data source.
 
