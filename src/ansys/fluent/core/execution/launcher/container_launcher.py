@@ -84,7 +84,7 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
     :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
     """
     py: bool | None
-    """Pass ``-py`` to request Python mode only when ``True``."""
+    """Pass ``True`` to request Python mode. By default, the launcher deactivates the mode."""
     use_docker_compose: bool | None
     """Whether to use Docker Compose to launch Fluent."""
     use_podman_compose: bool | None
