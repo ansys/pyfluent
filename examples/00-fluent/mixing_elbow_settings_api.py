@@ -90,7 +90,7 @@ solver_session.settings.mesh.check()
 # ~~~~~~~~~~~~~~~~~~~~
 # Enable heat transfer by activating the energy equation.
 
-solver_session.settings.setup.models.energy.enabled = True
+solver_session.settings.setup.models.energy.enabled.set_state(True)
 
 ###############################################################################
 # Create material
@@ -109,7 +109,7 @@ solver_session.settings.setup.materials.database.copy_by_name(
 
 solver_session.settings.setup.cell_zone_conditions.fluid[
     "elbow-fluid"
-].general.material = "water-liquid"
+].general.material.set_state("water-liquid")
 
 ###############################################################################
 # Set up boundary conditions for CFD analysis
@@ -128,11 +128,13 @@ cold_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ]
 
-cold_inlet.momentum.velocity_magnitude.value = 0.4
-cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-cold_inlet.turbulence.turbulent_intensity = 0.05
-cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
-cold_inlet.thermal.temperature.value = 293.15
+cold_inlet.momentum.velocity_magnitude.value.set_state(0.4)
+cold_inlet.turbulence.turbulence_specification.set_state(
+    "Intensity and Hydraulic Diameter"
+)
+cold_inlet.turbulence.turbulent_intensity.set_state(0.05)
+cold_inlet.turbulence.hydraulic_diameter.set_state("4 [in]")
+cold_inlet.thermal.temperature.value.set_state(293.15)
 
 # hot inlet (hot-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
@@ -145,10 +147,12 @@ hot_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
     "hot-inlet"
 ]
 
-hot_inlet.momentum.velocity_magnitude.value = 1.2
-hot_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
-hot_inlet.thermal.temperature.value = 313.15
+hot_inlet.momentum.velocity_magnitude.value.set_state(1.2)
+hot_inlet.turbulence.turbulence_specification.set_state(
+    "Intensity and Hydraulic Diameter"
+)
+hot_inlet.turbulence.hydraulic_diameter.set_state("1 [in]")
+hot_inlet.thermal.temperature.value.set_state(313.15)
 
 # pressure outlet (outlet), Setting: Value:
 # Backflow Turbulent Intensity: 5 [%]
@@ -156,10 +160,10 @@ hot_inlet.thermal.temperature.value = 313.15
 
 solver_session.settings.setup.boundary_conditions.pressure_outlet[
     "outlet"
-].turbulence.turbulent_viscosity_ratio = 4
+].turbulence.turbulent_viscosity_ratio.set_state(4)
 solver_session.settings.setup.boundary_conditions.pressure_outlet[
     "outlet"
-].turbulence.backflow_turbulent_intensity = 0.05
+].turbulence.backflow_turbulent_intensity.set_state(0.05)
 
 ###############################################################################
 # Initialize flow field
@@ -185,10 +189,10 @@ solver_session.settings.solution.run_calculation.iterate(iter_count=150)
 graphics = solver_session.settings.results.graphics
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
-graphics.picture.x_resolution = 1920
-graphics.picture.y_resolution = 1440
+graphics.picture.x_resolution.set_state(1920)
+graphics.picture.y_resolution.set_state(1440)
 
 ###############################################################################
 # Create velocity vectors
@@ -203,12 +207,14 @@ velocity_symmetry = solver_session.settings.results.graphics.vector[
     "velocity_vector_symmetry"
 ]
 velocity_symmetry.print_state()
-velocity_symmetry.field = "velocity-magnitude"
-velocity_symmetry.surfaces_list = [
-    "symmetry-xyplane",
-]
-velocity_symmetry.options.scale = 4
-velocity_symmetry.style = "arrow"
+velocity_symmetry.field.set_state("velocity-magnitude")
+velocity_symmetry.surfaces_list.set_state(
+    [
+        "symmetry-xyplane",
+    ]
+)
+velocity_symmetry.options.scale.set_state(4)
+velocity_symmetry.style.set_state("arrow")
 velocity_symmetry.display()
 
 graphics.views.restore_view(view_name="front")
@@ -230,11 +236,13 @@ mass_flow_rate = solver_session.settings.solution.report_definitions.flux[
     "mass_flow_rate"
 ]
 mass_flow_rate.boundaries.allowed_values()
-mass_flow_rate.boundaries = [
-    "cold-inlet",
-    "hot-inlet",
-    "outlet",
-]
+mass_flow_rate.boundaries.set_state(
+    [
+        "cold-inlet",
+        "hot-inlet",
+        "outlet",
+    ]
+)
 mass_flow_rate.print_state()
 solver_session.settings.solution.report_definitions.compute(
     report_defs=["mass_flow_rate"]

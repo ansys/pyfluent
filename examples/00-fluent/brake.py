@@ -84,8 +84,8 @@ session.settings.file.read_case(file_name=import_filename)
 ############################
 # Define models and material
 # --------------------------
-session.settings.setup.models.energy = {"enabled": True}
-session.settings.setup.general.solver.time = "unsteady-2nd-order-bounded"
+session.settings.setup.models.energy.set_state({"enabled": True})
+session.settings.setup.general.solver.time.set_state("unsteady-2nd-order-bounded")
 session.tui.define.materials.copy("solid", "steel")
 
 #########################################
@@ -158,7 +158,7 @@ session.tui.define.boundary_conditions.set.wall(
 # ----------
 # Initialize with 300 K temperature
 
-session.settings.solution.initialization.initialization_type = "standard"
+session.settings.solution.initialization.initialization_type.set_state("standard")
 session.settings.solution.initialization.standard_initialize()
 
 ###############################################################################################
@@ -172,7 +172,7 @@ session.settings.solution.initialization.standard_initialize()
 session.settings.solution.report_definitions.volume["max-pad-temperature"] = {}
 session.settings.solution.report_definitions.volume[
     "max-pad-temperature"
-].report_type = "volume-max"
+].report_type.set_state("volume-max")
 session.settings.solution.report_definitions.volume["max-pad-temperature"] = {
     "field": "temperature",
     "cell_zones": ["geom-1-innerpad", "geom-1-outerpad"],
@@ -181,7 +181,7 @@ session.settings.solution.report_definitions.volume["max-pad-temperature"] = {
 session.settings.solution.report_definitions.volume["max-disc-temperature"] = {}
 session.settings.solution.report_definitions.volume[
     "max-disc-temperature"
-].report_type = "volume-max"
+].report_type.set_state("volume-max")
 session.settings.solution.report_definitions.volume["max-disc-temperature"] = {
     "field": "temperature",
     "cell_zones": ["disc1", "disc2"],
@@ -197,11 +197,13 @@ session.settings.solution.monitor.report_files["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"],
     "file_name": "max-temperature.out",
 }
-session.settings.solution.monitor.report_files["max-temperature"].report_defs = [
-    "max-pad-temperature",
-    "max-disc-temperature",
-    "flow-time",
-]
+session.settings.solution.monitor.report_files["max-temperature"].report_defs.set_state(
+    [
+        "max-pad-temperature",
+        "max-disc-temperature",
+        "flow-time",
+    ]
+)
 
 session.settings.results.graphics.contour.create(name="contour-1")
 session.settings.results.graphics.contour["contour-1"] = {
@@ -256,8 +258,8 @@ session.settings.results.graphics.contour["temperature"] = {
     },
 }
 
-session.settings.results.graphics.contour["temperature"].range_option.option = (
-    "auto-range-off"
+session.settings.results.graphics.contour["temperature"].range_option.option.set_state(
+    ("auto-range-off")
 )
 session.settings.results.graphics.contour["temperature"].range_option.set_state(
     {
@@ -285,7 +287,9 @@ session.settings.solution.calculation_activity.solution_animations[
 # * Set time step size
 # * Set number of time steps and maximum number of iterations per time step
 
-session.settings.solution.run_calculation.transient_controls.time_step_size = 0.01
+session.settings.solution.run_calculation.transient_controls.time_step_size.set_state(
+    0.01
+)
 session.settings.solution.run_calculation.dual_time_iterate(
     time_step_count=200, max_iter_per_step=5
 )

@@ -23,18 +23,6 @@
 
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
-
-def using(session):
-    """Make a session active for top-level settings within a ``with`` block.
-
-    This top-level function is retained for backward compatibility. The
-    implementation lives with the session base implementation.
-    """
-    from ansys.fluent.core.execution.session.session import using as _using
-
-    return _using(session)
-
-
 # isort: off
 
 # config must be initialized before logging setup.
@@ -47,6 +35,7 @@ from ansys.fluent.core.diagnostics.logger import *
 
 from ansys.fluent.core.diagnostics.exceptions import *
 from ansys.fluent.core.diagnostics.search import *
+from ansys.fluent.core.execution import using as using
 from ansys.fluent.core.execution.launcher.launch_options import *
 from ansys.fluent.core.execution.launcher.launcher import *
 from ansys.fluent.core.execution.session import *

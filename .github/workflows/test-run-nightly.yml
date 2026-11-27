@@ -100,6 +100,7 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
           VERSION: ${{ env.FLUENT_VERSION }}
+          FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}
 
       - name: Upload Coverage Results to Codecov
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1

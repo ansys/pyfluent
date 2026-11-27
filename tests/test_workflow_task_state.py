@@ -22,10 +22,15 @@
 # SOFTWARE.
 
 from copy import deepcopy
+import inspect
+import warnings
 
 import pytest
 
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
+from ansys.fluent.core.services.object_model import PyMenu, PyStateContainer
 from ansys.fluent.core.workflow import Workflow, make_task_wrapper
+from ansys.fluent.core.workflow_old import ArgumentsWrapper, ArgumentWrapper
 
 
 class FakeTask:
@@ -57,6 +62,47 @@ class FakeTask:
 class FakeArguments:
     def __call__(self):
         return {"length_unit": "mm", "controls": {}, "state": "argument"}
+
+
+def test_task_argument_assignment_warns_at_caller(mocker):
+    task_object = FakeTask({})
+    arguments = PyMenu(mocker.Mock(), "test")
+    child = PyStateContainer(mocker.Mock(), "test")
+    object.__setattr__(arguments, "length_unit", child)
+    task_object.arguments = arguments
+    task = make_task_wrapper(task_object, "example", None, None, None)
+    set_state = mocker.patch.object(PyStateContainer, "set_state", autospec=True)
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        line = inspect.currentframe().f_lineno + 1
+        task.length_unit = "in"
+    assert len(captured) == 1
+    assert captured[0].filename == __file__
+    assert captured[0].lineno == line
+    set_state.assert_called_once_with(child, "in")
+
+
+def test_legacy_argument_assignment_warns_but_index_assignment_does_not(mocker):
+    task = mocker.Mock()
+    wrapper = ArgumentsWrapper(task)
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        wrapper.length_unit = "in"
+        wrapper["length_unit"] = "mm"
+    assert len(captured) == 1
+    assert captured[0].category is PyFluentDeprecationWarning
+    assert task.length_unit.set_state.call_args_list == [
+        mocker.call("in"),
+        mocker.call("mm"),
+    ]
+
+    argument = object.__new__(ArgumentWrapper)
+    argument.__dict__.update(_task=task, _arg_name="controls")
+    with pytest.warns(PyFluentDeprecationWarning, match="set_state.*size"):
+        argument.size = 3
+    task.arguments.update_dict.assert_called_once_with({"controls": {"size": 3}})
 
 
 @pytest.mark.parametrize(

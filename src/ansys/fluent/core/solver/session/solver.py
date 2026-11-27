@@ -113,7 +113,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     settings : settings_root
         Root of the solver settings tree.  Use for all case/solver
         configuration, e.g.
-        ``session.settings.setup.models.energy.enabled = True``.
+        ``session.settings.setup.models.energy.enabled.set_state(True)``.
     tui : main_menu
         Root of the Fluent solver TUI.  Access commands as Python
         attributes, e.g. ``session.tui.solve.iterate(10)``.
@@ -473,17 +473,24 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         """Switch to meshing mode and return a meshing session object. Deactivate this
         object's public interface and streaming services.
 
-        Raises
-        ------
-        AttributeError
-            If beta features are not enabled in Fluent.
-
         Returns
         -------
         Meshing
+
+        Raises
+        ------
+        RuntimeError
+            If Fluent version is less than 25.2.
         """
-        if not self._is_beta_enabled:
-            raise BetaFeaturesNotEnabled("switch_to_meshing")
+        from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+        fluent_version = self.get_fluent_version()
+        if fluent_version < FluentVersion.v252:
+            raise RuntimeError(
+                f"switch_to_meshing() requires Fluent 25.2 or later. "
+                f"Current version: {fluent_version.value}"
+            )
+
         from ansys.fluent.core.meshing.session.meshing import Meshing
 
         self.settings.switch_to_meshing_mode()
