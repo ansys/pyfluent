@@ -23,7 +23,7 @@
 
 """Fluent meshing session classes.
 
-This package exposes two meshing session types:
+Import either session class from ``ansys.fluent.core.meshing.session``:
 
 * :class:`~ansys.fluent.core.meshing.session.meshing.Meshing` supports switching
     the running Fluent process to solver mode with ``switch_to_solver()``.
@@ -31,8 +31,12 @@ This package exposes two meshing session types:
     meshing capabilities without solver switching, for workflows where meshing
     and solving run separately.
 
-Both classes inherit the common meshing API from the internal :class:`~ansys.fluent.core.meshing.session.base_meshing.BaseMeshing`
-class, which extends :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
+Both session types provide the same workflow methods. Start a workflow with
+:meth:`watertight() <ansys.fluent.core.meshing.session.base_meshing.BaseMeshing.watertight>`
+or resume a saved one with
+:meth:`load_workflow() <ansys.fluent.core.meshing.session.base_meshing.BaseMeshing.load_workflow>`.
+Browse the :class:`shared meshing methods <ansys.fluent.core.meshing.session.base_meshing.BaseMeshing>`
+for the full list, or follow the :ref:`meshing workflows guide <ref_meshing_guide>`.
 """
 
 from ansys.fluent.core.meshing.session.meshing import Meshing

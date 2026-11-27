@@ -116,7 +116,10 @@ def _write_module_page(source_path):
     with output_path.open("w", encoding="utf8") as rst_file:
         if module_name in DETAIL_MODULES:
             rst_file.write(":orphan:\n\n")
-        _write_api_page(rst_file, source_path.stem, "automodule", module_name)
+        title = (
+            module_name if source_path.parent == SOURCE_PACKAGE else source_path.stem
+        )
+        _write_api_page(rst_file, title, "automodule", module_name)
 
 
 def _write_hidden_pages():
@@ -146,7 +149,7 @@ def _write_package_index(source_path):
         else "api_contents.rst"
     )
     output_path = output_directory / index_name
-    title = source_path.name if relative_path.parts else PACKAGE_NAME
+    title = package_name if len(relative_path.parts) <= 1 else source_path.name
 
     with output_path.open("w", encoding="utf8") as rst_file:
         if package_name == "ansys.fluent.core.meshing":
@@ -183,8 +186,10 @@ def _write_package_index(source_path):
             rst_file.write(
                 ".. _ref_ansys_fluent_core_solver:\n\n"
                 f"{package_name}\n{'=' * len(package_name)}\n\n"
-                "Start at the :ref:`solver settings root <ref_root>`. A solver "
-                "session exposes this hierarchy as ``solver_session.settings``. "
+                "Start at the :ref:`solver settings root <ref_root>`. Each solver "
+                "session object exposes this hierarchy through its ``settings`` "
+                "attribute. For example, if your session is named ``solver_session``, "
+                "use ``solver_session.settings``. "
                 "Use it to set up a case, run a calculation, and inspect results.\n\n"
                 "To start Fluent, choose a :ref:`solver session "
                 "<ref_ansys_fluent_core_solver_session>`. For a worked introduction, "
@@ -203,6 +208,15 @@ def _write_package_index(source_path):
                     f".. automodule:: {package_name}\n"
                 )
                 _write_common_options(detail, package_name)
+        elif package_name in {
+            "ansys.fluent.core.meshing.session",
+            "ansys.fluent.core.solver.session",
+        }:
+            rst_file.write(
+                f".. _ref_{package_name.replace('.', '_')}:\n\n"
+                f"{title}\n{'=' * len(title)}\n\n"
+                f".. automodule:: {package_name}\n    :no-members:\n"
+            )
         else:
             _write_api_page(rst_file, title, "automodule", package_name)
         rst_file.write("\n.. toctree::\n")
@@ -247,14 +261,18 @@ def _write_api_index():
             "in the sidebar or start with one of the interfaces below.\n\n"
             "Meshing mode\n"
             "------------\n\n"
-            "Choose a :ref:`meshing session <ref_ansys_fluent_core_meshing>` and "
+            "Choose a :ref:`meshing session <ref_ansys_fluent_core_meshing_session>` "
+            "(``Meshing`` or ``PureMeshing``) and "
             "follow the :ref:`meshing workflows guide <ref_meshing_guide>` to "
             "generate a mesh. For mesh queries, see the "
             ":ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>`.\n\n"
             "Solution mode\n"
             "-------------\n\n"
-            "The solver :ref:`settings API <ref_root>` is the main interface for "
-            "controlling and running the solver.\n\n"
+            "Choose a :ref:`solver session <ref_ansys_fluent_core_solver_session>`, "
+            "such as ``Solver`` for a standard calculation or ``PrePost`` for setup "
+            "and postprocessing. Use its :ref:`settings root <ref_root>` to configure "
+            "the case. See the :ref:`solver settings guide <ref_solver_settings_guide>` "
+            "for examples.\n\n"
             ".. toctree::\n"
             "    :maxdepth: 2\n"
             "    :hidden:\n\n"
