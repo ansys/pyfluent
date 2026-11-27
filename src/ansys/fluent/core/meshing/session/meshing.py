@@ -32,7 +32,7 @@ Inheritance
         └── Meshing          ← this class
 """
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
@@ -53,13 +53,16 @@ class Meshing(BaseMeshing):
     and must not be used.
     """
 
-    def switch_to_solver(self) -> Any:
-        """Switch to solver mode and return a solver session object. Deactivate this
-        object's public interface and streaming services.
+    def switch_to_solver(self) -> Solver:
+        """Switch the running Fluent process from meshing to solution mode.
+
+        Use the returned session for all further operations. The meshing session
+        is no longer usable after the switch.
 
         Returns
         -------
-        Solver
+        :class:`~ansys.fluent.core.solver.session.solver.Solver`
+            Solver session connected to the same Fluent process.
         """
         for cb in self._fluent_connection.finalizer_cbs:
             cb()

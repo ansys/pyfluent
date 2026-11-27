@@ -32,6 +32,7 @@ Meshing workflows use the underlying meshing workflow object. See the
 :ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` for details.
 """
 
+from typing import TYPE_CHECKING
 import warnings
 
 from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
@@ -39,6 +40,10 @@ from ansys.fluent.core.execution import using
 from ansys.fluent.core.meshing.session import Meshing, PureMeshing
 from ansys.fluent.core.meshing.session.meshing import BaseMeshing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.meshing import meshing_workflow as current
+    from ansys.fluent.core.meshing import meshing_workflow_old as legacy_workflows
 
 
 def _validate_meshing_session(session: BaseMeshing) -> bool:
@@ -130,7 +135,7 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
 
 
 class WatertightMeshing:
-    """Provides watertight meshing specialization of the workflow wrapper.
+    """Start a workflow for generating a volume mesh from watertight CAD geometry.
 
     See the :ref:`Watertight geometry workflow example
     <ref_watertight_meshing_workflow_example>` for a sample usage example.
@@ -149,7 +154,9 @@ class WatertightMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> (
+        "current.WatertightMeshingWorkflow | legacy_workflows.WatertightMeshingWorkflow"
+    ):
         """Initialize WatertightMeshing.
 
         Parameters
@@ -174,7 +181,7 @@ class WatertightMeshing:
 
 
 class FaultTolerantMeshing:
-    """Provides fault tolerant meshing specialization of the workflow wrapper.
+    """Start a workflow for meshing CAD geometry with gaps or overlaps.
 
     See the :ref:`Fault-tolerant workflow example
     <ref_fault_tolerant_meshing_workflow_example>` for a sample usage example.
@@ -193,7 +200,7 @@ class FaultTolerantMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.FaultTolerantMeshingWorkflow | legacy_workflows.FaultTolerantMeshingWorkflow":
         """Initialize FaultTolerantMeshing.
 
         Parameters
@@ -218,7 +225,7 @@ class FaultTolerantMeshing:
 
 
 class TwoDimensionalMeshing:
-    """Provides 2D meshing specialization of the workflow wrapper.
+    """Start a workflow for meshing two-dimensional geometry.
 
     See the :ref:`2D workflow example
     <ref_two_dimensional_meshing_workflow_example>` for a sample usage example.
@@ -237,7 +244,7 @@ class TwoDimensionalMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.TwoDimensionalMeshingWorkflow | legacy_workflows.TwoDimensionalMeshingWorkflow":
         """Initialize TwoDimensionalMeshing.
 
         Parameters
@@ -262,7 +269,7 @@ class TwoDimensionalMeshing:
 
 
 class TopologyBasedMeshing:
-    """Provides topology based meshing specialization of the workflow wrapper.
+    """Start the topology-based meshing workflow (beta).
 
     Parameters
     ----------
@@ -278,7 +285,7 @@ class TopologyBasedMeshing:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.TopologyBasedMeshingWorkflow | legacy_workflows.TopologyBasedMeshingWorkflow":
         """Initialize TopologyBasedMeshing.
 
         Parameters
@@ -303,7 +310,7 @@ class TopologyBasedMeshing:
 
 
 class CreateMeshingWorkflow:
-    """Provides a specialization of the workflow wrapper for a newly created workflow.
+    """Create an empty workflow to populate with meshing tasks.
 
     See the :ref:`create workflow example <ref_create_meshing_workflow_example>`
     for a sample usage example.
@@ -322,7 +329,7 @@ class CreateMeshingWorkflow:
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.CreatedWorkflow | legacy_workflows.CreatedWorkflow":
         """Initialize CreateMeshingWorkflow.
 
         Parameters
@@ -347,7 +354,7 @@ class CreateMeshingWorkflow:
 
 
 class LoadMeshingWorkflow:
-    """Provides a specialization of the workflow wrapper for a loaded workflow.
+    """Load a saved meshing workflow to reuse its tasks and settings.
 
     See the :ref:`load workflow example <ref_load_meshing_workflow_example>` for
     a sample usage example.
@@ -369,7 +376,7 @@ class LoadMeshingWorkflow:
         session: PureMeshing | Meshing,
         file_path: str,
         initialize: bool = True,
-    ) -> None:
+    ) -> "current.LoadedWorkflow | legacy_workflows.LoadedWorkflow":
         """Initialize LoadMeshingWorkflow.
 
         Parameters

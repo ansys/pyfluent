@@ -22,13 +22,14 @@
 
 """Solver session classes for full, add-on, and specialized Fluent workflows.
 
-The :class:`Solver` session provides the standard Fluent solver API and
-inherits from :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
-The :class:`SolverAero`, :class:`SolverIcing`, :class:`SolverLite`, and
-:class:`PrePost` session classes specialize ``Solver`` for their respective
-workflows. These concrete session classes are re-exported by
-:mod:`ansys.fluent.core.execution.session` and the top-level
-``ansys.fluent.core`` package.
+Import the session class from ``ansys.fluent.core.solver.session``. Use
+:class:`~ansys.fluent.core.solver.session.solver.Solver` for standard Fluent
+calculations, or choose a specialized session:
+
+* :class:`~ansys.fluent.core.solver.session.solver_aero.SolverAero` for Fluent Aero.
+* :class:`~ansys.fluent.core.solver.session.solver_icing.SolverIcing` for Fluent Icing.
+* :class:`~ansys.fluent.core.solver.session.solver_lite.SolverLite` for a lightweight solver session.
+* :class:`~ansys.fluent.core.solver.session.solver_pre_post.PrePost` for setup and postprocessing without solving.
 """
 
 from ansys.fluent.core.solver.session.solver import Solver
