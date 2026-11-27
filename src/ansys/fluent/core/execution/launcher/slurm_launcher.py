@@ -429,7 +429,7 @@ class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
     This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
     """
     py: bool | None
-    """Pass ``-py`` to request Python mode only when ``True``."""
+    """Pass ``True`` to request Python mode. By default, the launcher deactivates the mode."""
     cwd: "PathType | None"
     """Working directory for the Fluent client."""
     fluent_path: "PathType | None"
