@@ -64,6 +64,7 @@ from ansys.fluent.core.services.object_model_utilities import (
     false_if_none,
     true_if_none,
 )
+from ansys.fluent.core.utils.deprecate import _warn_state_assignment
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
@@ -629,6 +630,7 @@ class PyMenu(PyStateContainer):
             state
         """
         if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
+            _warn_state_assignment(name)
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
@@ -1357,7 +1359,18 @@ class PyCommand(PyAction):
                 self.after_execute(value)
 
 
-class PyArgumentsSubItem(PyCallableStateObject):
+class _PyArgumentsSetattrMixin:
+    def __setattr__(self, key: str, value: ValueT) -> None:
+        if isinstance(value, PyArgumentsSubItem):
+            super().__setattr__(key, value)
+        else:
+            attr = getattr(self, key)
+            set_state = attr.set_state
+            _warn_state_assignment(key)
+            set_state(value)
+
+
+class PyArgumentsSubItem(_PyArgumentsSetattrMixin, PyCallableStateObject):
     """Class representing command argument in datamodel."""
 
     def __init__(
@@ -1410,14 +1423,8 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     getAttribValue = get_attr
 
-    def __setattr__(self, key: str, value: ValueT) -> None:
-        if isinstance(value, PyArgumentsSubItem):
-            super().__setattr__(key, value)
-        else:
-            getattr(self, key).set_state(value)
 
-
-class PyArguments(PyStateContainer):
+class PyArguments(_PyArgumentsSetattrMixin, PyStateContainer):
     """Class representing command arguments in datamodel."""
 
     def __init__(
@@ -1469,12 +1476,6 @@ class PyArguments(PyStateContainer):
             Value of the attribute.
         """
         return self._get_remote_attr(attrib)
-
-    def __setattr__(self, key: str, value: ValueT) -> None:
-        if isinstance(value, PyArgumentsSubItem):
-            super().__setattr__(key, value)
-        else:
-            getattr(self, key).set_state(value)
 
 
 class PyArgumentsTextualSubItem(PyArgumentsSubItem, PyTextual):

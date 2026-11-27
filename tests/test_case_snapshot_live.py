@@ -62,10 +62,10 @@ def test_settings_outside_the_settings_api_are_applied_to_several_sessions(
     source, target = new_solver_session, new_solver_session_wo_exit
     try:
         source.settings.file.read_case(file_name=_elbow_case())
-        source.settings.setup.models.viscous.model = "laminar"
+        source.settings.setup.models.viscous.model.set_state("laminar")
         _set_marker(source, 42)
         snapshot = pyfluent.CaseSnapshot.from_session(source)
-        source.settings.setup.models.viscous.model = "k-epsilon"
+        source.settings.setup.models.viscous.model.set_state("k-epsilon")
         _set_marker(source, 7)
 
         # Applying to the source session too brings it back to the captured state.
@@ -88,7 +88,7 @@ def test_include_mesh_false_keeps_the_mesh_of_the_session(
         if "replace" not in target.settings.mesh.command_names:
             pytest.skip("This Fluent version cannot replace a mesh.")
         # A turbulence model: file.replace_mesh crashes Fluent 2027 R1 with one.
-        source.settings.setup.models.viscous.model = "k-epsilon"
+        source.settings.setup.models.viscous.model.set_state("k-epsilon")
         target.settings.mesh.scale(x_scale=2, y_scale=2, z_scale=2)
         scaled_area = _outlet_area(target)
 
@@ -146,7 +146,7 @@ def test_applying_to_a_resilient_session_can_be_rolled_back(
         (standby,) = target.resilient.pool.standbys
         for solver in (source, target):
             solver.settings.file.read_case(file_name=_elbow_case())
-        source.settings.setup.models.viscous.model = "laminar"
+        source.settings.setup.models.viscous.model.set_state("laminar")
         snapshot = pyfluent.CaseSnapshot.from_session(source)
 
         with warnings.catch_warnings(record=True) as caught:

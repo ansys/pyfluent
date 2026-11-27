@@ -359,9 +359,9 @@ using the field data streaming mechanism:
   >>> meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
   >>> # Import the geometry into the workflow
-  >>> meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Arguments.set_state({
   >>>    "FileName": import_file_name,
   >>>    "LengthUnit": "in",
-  >>> }
+  >>> })
 
   >>> meshing_session.workflow.TaskObject["Import Geometry"].Execute()

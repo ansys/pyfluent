@@ -126,13 +126,17 @@ graphics = Graphics(solver)
 mesh = Mesh(solver, new_instance_name="mesh-1")
 boundary_conditions = BoundaryConditions(solver)
 
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
 all_walls = mesh.surfaces_list.allowed_values()
 
-mesh.surfaces_list = all_walls
-mesh.options.edges = True
+mesh.surfaces_list.set_state(all_walls)
+mesh.options.edges.set_state(True)
 mesh.display()
 
 graphics.views.auto_scale()
@@ -148,12 +152,14 @@ graphics.picture.save_picture(file_name="modeling_solidification_1.png")
 # ----------------
 solver_general_settings = General(solver)
 
-solver_general_settings.solver.two_dim_space = "swirl"
+solver_general_settings.solver.two_dim_space.set_state("swirl")
 
-solver_general_settings.operating_conditions.gravity = {
-    "enable": True,
-    "components": [-9.81],
-}
+solver_general_settings.operating_conditions.gravity.set_state(
+    {
+        "enable": True,
+        "components": [-9.81],
+    }
+)
 
 # %%
 # Enable models
@@ -164,7 +170,7 @@ solver_general_settings.operating_conditions.gravity = {
 
 setup = Setup(solver)
 
-setup.models.viscous.model = "laminar"
+setup.models.viscous.model.set_state("laminar")
 
 # Enable the Solidification/Melting
 solver.tui.define.models.solidification_melting(
@@ -207,16 +213,16 @@ setup.cell_zone_conditions.fluid["fluid"] = {"general": {"material": "liquid-met
 # Inlet: liquid injection
 inlet = VelocityInlet(solver, name="inlet")
 
-inlet.momentum.velocity_magnitude.value = 0.00101  # m/s
-inlet.thermal.temperature.value = 1300  # K
+inlet.momentum.velocity_magnitude.value.set_state(0.00101)  # m/s
+inlet.thermal.temperature.value.set_state(1300)  # K
 
 # Outlet: solid pull-out (velocity inlet with axial + swirl)
 outlet = VelocityInlet(solver, name="outlet")
 
-outlet.momentum.velocity_specification_method = "Components"
-outlet.momentum.swirl_angular_velocity = 1  # rad/s
-outlet.momentum.velocity_components = [0.001, 0, 0]  # Axial = 0.001 m/s
-outlet.thermal.temperature.value = 500  # K
+outlet.momentum.velocity_specification_method.set_state("Components")
+outlet.momentum.swirl_angular_velocity.set_state(1)  # rad/s
+outlet.momentum.velocity_components.set_state([0.001, 0, 0])  # Axial = 0.001 m/s
+outlet.thermal.temperature.value.set_state(500)  # K
 
 
 conditions = BoundaryConditions(solver)
@@ -259,16 +265,16 @@ conditions.wall["solid-wall"] = {
 # ----------------
 methods = Methods(solver)
 
-methods.p_v_coupling.flow_scheme = "Coupled"
-methods.spatial_discretization.discretization_scheme = {"pressure": "presto!"}
-methods.pseudo_time_method.formulation = {"coupled_solver": "global-time-step"}
+methods.p_v_coupling.flow_scheme.set_state("Coupled")
+methods.spatial_discretization.discretization_scheme.set_state({"pressure": "presto!"})
+methods.pseudo_time_method.formulation.set_state({"coupled_solver": "global-time-step"})
 
 # %%
 # Disable flow equations
 # ----------------------
 controls = Controls(solver)
 
-controls.equations = {"flow": False, "w-swirl": False}
+controls.equations.set_state({"flow": False, "w-swirl": False})
 
 
 # %%
@@ -312,10 +318,12 @@ initialize.patch.calculate_patch(
 # %%
 # Pseudo-transient settings
 # -------------------------
-solver.settings.solution.run_calculation.pseudo_time_settings.time_step_method = {
-    "time_step_method": "user-specified",
-    "auto_time_size_calc_solid_zone": False,
-}
+solver.settings.solution.run_calculation.pseudo_time_settings.time_step_method.set_state(
+    {
+        "time_step_method": "user-specified",
+        "auto_time_size_calc_solid_zone": False,
+    }
+)
 
 
 calculation = RunCalculation(solver)
@@ -326,8 +334,8 @@ calculation.iterate(iter_count=20)
 # ---------------
 temp_contour = Contour(solver, new_instance_name="temperature_contour")
 
-temp_contour.coloring.option = "banded"
-temp_contour.field = "temperature"
+temp_contour.coloring.option.set_state("banded")
+temp_contour.field.set_state("temperature")
 temp_contour.display()
 
 graphics.views.restore_view(view_name="front")
@@ -341,12 +349,14 @@ graphics.picture.save_picture(file_name="modeling_solidification_2.png")
 
 
 mushy_temp = Contour(solver, new_instance_name="temperature-mushy")
-mushy_temp.coloring.option = "banded"
-mushy_temp.field = "temperature"
-mushy_temp.range_option = {
-    "option": "auto-range-off",
-    "auto_range_off": {"clip_to_range": True, "minimum": 1100, "maximum": 1200},
-}
+mushy_temp.coloring.option.set_state("banded")
+mushy_temp.field.set_state("temperature")
+mushy_temp.range_option.set_state(
+    {
+        "option": "auto-range-off",
+        "auto_range_off": {"clip_to_range": True, "minimum": 1100, "maximum": 1200},
+    }
+)
 mushy_temp.display()
 
 graphics.views.restore_view(view_name="front")
@@ -366,25 +376,27 @@ solver.settings.file.write_case_data(file_name="steady_state")
 # %%
 # Enable transient flow and heat transfer
 # ---------------------------------------
-solver_general_settings.solver.time = "unsteady-1st-order"  # First-order implicit
+solver_general_settings.solver.time.set_state(
+    "unsteady-1st-order"
+)  # First-order implicit
 
-controls.equations = {"flow": True, "w-swirl": True}
+controls.equations.set_state({"flow": True, "w-swirl": True})
 
-controls.under_relaxation = {"delh": 0.1}
+controls.under_relaxation.set_state({"delh": 0.1})
 
 # %%
 # Transient controls
 # ------------------
 solutions = Solution(solver)
 
-solutions.run_calculation.transient_controls.time_step_count = 2
-solutions.run_calculation.transient_controls.time_step_size = 0.1  # s
+solutions.run_calculation.transient_controls.time_step_count.set_state(2)
+solutions.run_calculation.transient_controls.time_step_size.set_state(0.1)  # s
 solutions.run_calculation.calculate()
 
 # Liquid fraction at t = 0.2 s
 liquid_fraction_contour = Contour(solver, new_instance_name="liquid-fraction")
 
-liquid_fraction_contour.field = "liquid-fraction"
+liquid_fraction_contour.field.set_state("liquid-fraction")
 liquid_fraction_contour.display()
 
 graphics.views.auto_scale()
@@ -396,14 +408,14 @@ graphics.picture.save_picture(file_name="modeling_solidification_4.png")
 #    :alt: Liquid Fraction at t = 0.2 s
 
 # Continue to t = 5.0 s (48 more steps)
-solutions.run_calculation.transient_controls.time_step_count = 48
+solutions.run_calculation.transient_controls.time_step_count.set_state(48)
 
 solutions.run_calculation.calculate()
 
 # Liquid fraction at t = 5.0 s
 liquid_fraction_contour_t_5_sec = Contour(solver, new_instance_name="liquid-fraction")
 
-liquid_fraction_contour_t_5_sec.field = "liquid-fraction"
+liquid_fraction_contour_t_5_sec.field.set_state("liquid-fraction")
 liquid_fraction_contour_t_5_sec.display()
 
 graphics.views.auto_scale()

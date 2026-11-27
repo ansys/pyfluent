@@ -108,9 +108,11 @@ solver.settings.file.read_case(file_name=mesh_file)
 # ----------------------------------------
 
 velocity_inlet = VelocityInlet(solver, name="velocity_inlet")
-velocity_inlet.momentum.velocity_magnitude = 100.0  # High-speed inlet flow (m/s)
-velocity_inlet.turbulence.turbulent_viscosity_ratio = (
-    5  # Dimensionless, typically 1-10 for moderate turbulence
+velocity_inlet.momentum.velocity_magnitude.set_state(
+    100.0
+)  # High-speed inlet flow (m/s)
+velocity_inlet.turbulence.turbulent_viscosity_ratio.set_state(
+    (5)  # Dimensionless, typically 1-10 for moderate turbulence
 )
 
 # %%
@@ -128,8 +130,12 @@ calculation.iterate(iter_count=100)
 # ---------------
 
 graphics = Graphics(solver)
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
 graphics.contour["contour-vel"] = {
     "field": "velocity-magnitude",
@@ -155,7 +161,7 @@ graphics.picture.save_picture(file_name="fsi_1way_2.png")
 # Linear Elasticity Structural model is chosen
 
 setup = Setup(solver)
-setup.models.structure.model = "linear-elasticity"
+setup.models.structure.model.set_state("linear-elasticity")
 
 # Copy materials from the database and assign to solid zone
 
@@ -208,7 +214,7 @@ wall_boundary.wall["fsisurface-solid"] = {
 # Fluent uses gauge pressure for fluid-structure interaction force calculations.
 # By setting  ``include_pop_in_fsi_force`` to  ``True``, Fluent uses absolute pressure.
 
-setup.models.structure.expert.include_pop_in_fsi_force = True
+setup.models.structure.expert.include_pop_in_fsi_force.set_state(True)
 
 # %%
 # Configure flow settings
@@ -233,8 +239,8 @@ calculation.iterate(iter_count=2)
 
 displacement_contour = Contour(solver, new_instance_name="displacement_contour")
 
-displacement_contour.field = "total-displacement"
-displacement_contour.surfaces_list = ["fsisurface-solid"]
+displacement_contour.field.set_state("total-displacement")
+displacement_contour.surfaces_list.set_state(["fsisurface-solid"])
 
 displacement_contour.display()
 graphics.views.restore_view(view_name="isometric")

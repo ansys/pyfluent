@@ -238,7 +238,7 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     # Step 2: Generate mesh from geometry with default workflow settings
     meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geo_import = meshing_session.workflow.TaskObject["Import Geometry"]
-    geo_import.Arguments = dict(FileName=mixing_elbow_geometry_filename)
+    geo_import.Arguments.set_state(dict(FileName=mixing_elbow_geometry_filename))
     geo_import.Execute()
     meshing_session.workflow.TaskObject["Generate the Volume Mesh"].Execute()
     meshing_session.meshing.CheckMesh()

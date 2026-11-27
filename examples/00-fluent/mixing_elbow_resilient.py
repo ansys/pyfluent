@@ -79,17 +79,17 @@ cold_turbulence = cold_inlet.turbulence
 turbulent_intensity = cold_turbulence.turbulent_intensity
 hot_turbulence = hot_inlet.turbulence
 
-energy.enabled = True
-cold_inlet.momentum.velocity_magnitude.value = 0.4
-cold_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+energy.enabled.set_state(True)
+cold_inlet.momentum.velocity_magnitude.value.set_state(0.4)
+cold_turbulence.turbulence_specification.set_state("Intensity and Hydraulic Diameter")
 turbulent_intensity.set_state(0.05)
-cold_turbulence.hydraulic_diameter = "4 [in]"
-cold_inlet.thermal.temperature.value = 293.15
+cold_turbulence.hydraulic_diameter.set_state("4 [in]")
+cold_inlet.thermal.temperature.value.set_state(293.15)
 
-hot_inlet.momentum.velocity_magnitude.value = 1.2
-hot_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-hot_turbulence.hydraulic_diameter = "1 [in]"
-hot_inlet.thermal.temperature.value = 313.15
+hot_inlet.momentum.velocity_magnitude.value.set_state(1.2)
+hot_turbulence.turbulence_specification.set_state("Intensity and Hydraulic Diameter")
+hot_turbulence.hydraulic_diameter.set_state("1 [in]")
+hot_inlet.thermal.temperature.value.set_state(313.15)
 
 # %%
 # Undo and redo a settings change

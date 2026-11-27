@@ -46,12 +46,20 @@ HIDDEN_MODULES = {
 }
 
 
-def _write_common_options(rst_file):
+def _write_common_options(rst_file, module_name):
+    excluded = "__weakref__, __dict__"
+    if module_name in {
+        "ansys.fluent.core.execution.session.session",
+        "ansys.fluent.core.meshing",
+        "ansys.fluent.core.solver",
+    }:
+        # Document the using() aliases only at their canonical execution entry.
+        excluded += ", using"
     rst_file.write(
         "    :members:\n"
         "    :show-inheritance:\n"
         "    :undoc-members:\n"
-        "    :exclude-members: __weakref__, __dict__\n"
+        f"    :exclude-members: {excluded}\n"
         "    :special-members: __init__, __new__\n"
         "    :autosummary:\n"
     )
@@ -62,7 +70,7 @@ def _write_api_page(rst_file, title, directive, module_name):
     rst_file.write(f"{title}\n")
     rst_file.write(f"{'=' * len(title)}\n\n")
     rst_file.write(f".. {directive}:: {module_name}\n")
-    _write_common_options(rst_file)
+    _write_common_options(rst_file, module_name)
 
 
 def _module_name(source_path):

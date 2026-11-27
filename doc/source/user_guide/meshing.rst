@@ -24,6 +24,10 @@ PyFluent provides pre-built workflows (Watertight Geometry, Fault-tolerant, and 
 as well as the ability to create custom workflows. You can insert and duplicate tasks, save your workflow to file,
 and load previously saved workflows for reuse.
 
+Set workflow argument state with ``set_state()``. Assigning state through an
+attribute, such as ``task.file_name = path``, is deprecated and emits a warning.
+Indexed assignments remain supported.
+
 Built-in meshing workflows
 --------------------------
 PyFluent ships with three ready-to-use workflows that cover the most common
@@ -50,8 +54,8 @@ Import geometry
     )
     watertight = WatertightMeshing(session=meshing_session)
     import_geometry = watertight.import_geometry
-    import_geometry.file_name = import_file_name
-    import_geometry.length_unit = "in"
+    import_geometry.file_name.set_state(import_file_name)
+    import_geometry.length_unit.set_state("in")
     import_geometry()
 
 Add local sizing
@@ -69,7 +73,7 @@ Generate surface mesh
 .. code:: python
 
     create_surface_mesh = watertight.create_surface_mesh
-    create_surface_mesh.cfd_surface_mesh_controls.max_size = 0.3
+    create_surface_mesh.cfd_surface_mesh_controls.max_size.set_state(0.3)
     create_surface_mesh()
 
 Describe geometry
@@ -79,7 +83,7 @@ Describe geometry
 
     describe_geometry = watertight.describe_geometry
     describe_geometry.update_child_tasks(setup_type_changed=False)
-    describe_geometry.setup_type = "fluid"
+    describe_geometry.setup_type.set_state("fluid")
     describe_geometry.update_child_tasks(setup_type_changed=True)
     describe_geometry()
 
@@ -89,11 +93,11 @@ Update boundaries
 .. code:: python
 
     update_boundaries = watertight.update_boundaries
-    update_boundaries.boundary_zone_list = ["wall-inlet"]
-    update_boundaries.boundary_label_list = ["wall-inlet"]
-    update_boundaries.boundary_label_type_list = ["wall"]
-    update_boundaries.old_boundary_label_list = ["wall-inlet"]
-    update_boundaries.old_boundary_label_type_list = ["velocity-inlet"]
+    update_boundaries.boundary_zone_list.set_state(["wall-inlet"])
+    update_boundaries.boundary_label_list.set_state(["wall-inlet"])
+    update_boundaries.boundary_label_type_list.set_state(["wall"])
+    update_boundaries.old_boundary_label_list.set_state(["wall-inlet"])
+    update_boundaries.old_boundary_label_type_list.set_state(["velocity-inlet"])
     update_boundaries()
 
 Update regions
@@ -109,7 +113,7 @@ Add boundary layers
 .. code:: python
 
     add_boundary_layers = watertight.add_boundary_layers
-    add_boundary_layers.control_name = "smooth-transition_1"
+    add_boundary_layers.control_name.set_state("smooth-transition_1")
     add_boundary_layers.insert_compound_child_task()
     watertight.add_boundary_layers_child_1()
 
@@ -119,8 +123,8 @@ Generate volume mesh
 .. code:: python
 
     create_volume_mesh = watertight.create_volume_mesh_wtm
-    create_volume_mesh.volume_fill = "poly-hexcore"
-    create_volume_mesh.volume_fill_controls.hex_max_cell_length = 0.3
+    create_volume_mesh.volume_fill.set_state("poly-hexcore")
+    create_volume_mesh.volume_fill_controls.hex_max_cell_length.set_state(0.3)
     create_volume_mesh()
 
 Switch to solution mode
@@ -164,13 +168,13 @@ Import CAD and part management
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
         ]
     )
-    fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per = "part"
+    fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per.set_state("part")
 
-    fault_tolerant.import_cad_and_part_management.context = 0
-    fault_tolerant.import_cad_and_part_management.create_object_per = "Custom"
-    fault_tolerant.import_cad_and_part_management.fmd_file_name = import_file_name
-    fault_tolerant.import_cad_and_part_management.file_loaded = True
-    fault_tolerant.import_cad_and_part_management.object_setting = "DefaultObjectSetting"
+    fault_tolerant.import_cad_and_part_management.context.set_state(0)
+    fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
+    fault_tolerant.import_cad_and_part_management.fmd_file_name.set_state(import_file_name)
+    fault_tolerant.import_cad_and_part_management.file_loaded.set_state(True)
+    fault_tolerant.import_cad_and_part_management.object_setting.set_state("DefaultObjectSetting")
     fault_tolerant.import_cad_and_part_management()
 
 Describe geometry and flow
@@ -179,12 +183,12 @@ Describe geometry and flow
 .. code:: python
 
     describe_geometry = fault_tolerant.describe_geometry_and_flow
-    describe_geometry.add_enclosure = False
-    describe_geometry.close_caps = True
+    describe_geometry.add_enclosure.set_state(False)
+    describe_geometry.close_caps.set_state(True)
     geom_options = describe_geometry.describe_geometry_and_flow_options
-    geom_options.advanced_options = True
-    geom_options.extract_edge_features = True
-    describe_geometry.flow_type = "Internal flow through the object"
+    geom_options.advanced_options.set_state(True)
+    geom_options.extract_edge_features.set_state(True)
+    describe_geometry.flow_type.set_state("Internal flow through the object")
     describe_geometry.update_child_tasks(setup_type_changed=False)
     describe_geometry()
 
@@ -193,31 +197,31 @@ Enclose fluid regions (capping)
 
 .. code:: python
 
-    fault_tolerant.capping.create_patch_preferences.show_in_gui = False
+    fault_tolerant.capping.create_patch_preferences.show_in_gui.set_state(False)
 
     enclose_fluid_regions = fault_tolerant.capping
-    enclose_fluid_regions.patch_name = "inlet-1"
-    enclose_fluid_regions.selection_type = "zone"
-    enclose_fluid_regions.zone_selection_list = ["inlet.1"]
+    enclose_fluid_regions.patch_name.set_state("inlet-1")
+    enclose_fluid_regions.selection_type.set_state("zone")
+    enclose_fluid_regions.zone_selection_list.set_state(["inlet.1"])
     enclose_fluid_regions.insert_compound_child_task()
     fault_tolerant.capping_child_1()
 
-    enclose_fluid_regions.patch_name = "inlet-2"
-    enclose_fluid_regions.selection_type = "zone"
-    enclose_fluid_regions.zone_selection_list = ["inlet.2"]
+    enclose_fluid_regions.patch_name.set_state("inlet-2")
+    enclose_fluid_regions.selection_type.set_state("zone")
+    enclose_fluid_regions.zone_selection_list.set_state(["inlet.2"])
     enclose_fluid_regions.insert_compound_child_task()
     fault_tolerant.capping_child_2()
 
-    enclose_fluid_regions.patch_name = "inlet-3"
-    enclose_fluid_regions.selection_type = "zone"
-    enclose_fluid_regions.zone_selection_list = ["inlet"]
+    enclose_fluid_regions.patch_name.set_state("inlet-3")
+    enclose_fluid_regions.selection_type.set_state("zone")
+    enclose_fluid_regions.zone_selection_list.set_state(["inlet"])
     enclose_fluid_regions.insert_compound_child_task()
     fault_tolerant.capping_child_3()
 
-    enclose_fluid_regions.patch_name = "outlet-1"
-    enclose_fluid_regions.selection_type = "zone"
-    enclose_fluid_regions.zone_selection_list = ["outlet"]
-    enclose_fluid_regions.zone_type = "pressure-outlet"
+    enclose_fluid_regions.patch_name.set_state("outlet-1")
+    enclose_fluid_regions.selection_type.set_state("zone")
+    enclose_fluid_regions.zone_selection_list.set_state(["outlet"])
+    enclose_fluid_regions.zone_type.set_state("pressure-outlet")
     enclose_fluid_regions.insert_compound_child_task()
     fault_tolerant.capping_child_4()
 
@@ -227,9 +231,9 @@ Extract edge features
 .. code:: python
 
     edge_features = fault_tolerant.extract_edge_features
-    edge_features.extract_edges_name = "edge-group-1"
-    edge_features.extract_method_type = "Intersection Loops"
-    edge_features.object_selection_list = ["flow_pipe", "main"]
+    edge_features.extract_edges_name.set_state("edge-group-1")
+    edge_features.extract_method_type.set_state("Intersection Loops")
+    edge_features.object_selection_list.set_state(["flow_pipe", "main"])
     edge_features.insert_compound_child_task()
     fault_tolerant.extract_edge_features_child_1()
 
@@ -239,24 +243,24 @@ Identify regions
 .. code:: python
 
     identify_regions = fault_tolerant.identify_regions
-    identify_regions.show_coordinates = True
-    identify_regions.material_points_name = "fluid-region-1"
-    identify_regions.selection_type = "zone"
-    identify_regions.x = 377.322045740589
-    identify_regions.y = -176.800676988458
-    identify_regions.z = -37.0764628583475
-    identify_regions.zone_selection_list = ["main.1"]
+    identify_regions.show_coordinates.set_state(True)
+    identify_regions.material_points_name.set_state("fluid-region-1")
+    identify_regions.selection_type.set_state("zone")
+    identify_regions.x.set_state(377.322045740589)
+    identify_regions.y.set_state(-176.800676988458)
+    identify_regions.z.set_state(-37.0764628583475)
+    identify_regions.zone_selection_list.set_state(["main.1"])
     identify_regions.insert_compound_child_task()
     fault_tolerant.identify_regions_child_1()
 
-    identify_regions.show_coordinates = True
-    identify_regions.material_points_name = "void-region-1"
-    identify_regions.new_region_type = "void"
-    identify_regions.selection_type = "object"
-    identify_regions.object_selection_list = ["inlet-1", "inlet-2", "inlet-3", "main"]
-    identify_regions.x = 374.722045740589
-    identify_regions.y = -278.9775145640143
-    identify_regions.z = -161.1700719416913
+    identify_regions.show_coordinates.set_state(True)
+    identify_regions.material_points_name.set_state("void-region-1")
+    identify_regions.new_region_type.set_state("void")
+    identify_regions.selection_type.set_state("object")
+    identify_regions.object_selection_list.set_state(["inlet-1", "inlet-2", "inlet-3", "main"])
+    identify_regions.x.set_state(374.722045740589)
+    identify_regions.y.set_state(-278.9775145640143)
+    identify_regions.z.set_state(-161.1700719416913)
     identify_regions.insert_compound_child_task()
     fault_tolerant.identify_regions_child_2()
 
@@ -266,11 +270,11 @@ Define leakage threshold
 .. code:: python
 
     leakage_threshold = fault_tolerant.define_leakage_threshold
-    leakage_threshold.add_child = True
-    leakage_threshold.flip_direction = True
-    leakage_threshold.leakage_name = "leakage-1"
-    leakage_threshold.plane_direction = "X"
-    leakage_threshold.region_selection_single = "void-region-1"
+    leakage_threshold.add_child.set_state(True)
+    leakage_threshold.flip_direction.set_state(True)
+    leakage_threshold.leakage_name.set_state("leakage-1")
+    leakage_threshold.plane_direction.set_state("X")
+    leakage_threshold.region_selection_single.set_state("void-region-1")
     leakage_threshold.insert_compound_child_task()
     fault_tolerant.define_leakage_threshold_child_1()
 
@@ -280,11 +284,11 @@ Update regions settings
 .. code:: python
 
     update_region = fault_tolerant.update_region_settings
-    update_region.all_region_filter_categories = ["2"] * 5 + ["1"] * 2
-    update_region.all_region_leakage_size_list = ["none"] * 6 + ["6.4"]
-    update_region.all_region_linked_construction_surface_list = ["n/a"] * 6 + ["no"]
-    update_region.all_region_mesh_method_list = ["none"] * 6 + ["wrap"]
-    update_region.all_region_name_list = [
+    update_region.all_region_filter_categories.set_state(["2"] * 5 + ["1"] * 2)
+    update_region.all_region_leakage_size_list.set_state(["none"] * 6 + ["6.4"])
+    update_region.all_region_linked_construction_surface_list.set_state(["n/a"] * 6 + ["no"])
+    update_region.all_region_mesh_method_list.set_state(["none"] * 6 + ["wrap"])
+    update_region.all_region_name_list.set_state([
                 "main",
                 "flow_pipe",
                 "outpipe3",
@@ -292,24 +296,24 @@ Update regions settings
                 "object1",
                 "void-region-1",
                 "fluid-region-1",
-            ]
-    update_region.all_region_overset_component_list = ["no"] * 7
-    update_region.all_region_source_list = ["object"] * 5 + ["mpt"] * 2
-    update_region.all_region_type_list = ["void"] * 6 + ["fluid"]
-    update_region.all_region_volume_fill_list = ["none"] * 6 + ["tet"]
-    update_region.filter_category = "Identified Regions"
-    update_region.all_region_leakage_size_list = [""]
-    update_region.all_region_mesh_method_list = ["wrap"]
-    update_region.all_region_name_list = ["fluid-region-1"]
-    update_region.all_region_overset_component_list = ["no"]
-    update_region.all_region_type_list = ["fluid"]
-    update_region.all_region_volume_fill_list = ["hexcore"]
-    update_region.all_region_leakage_size_list = [""]
-    update_region.all_region_mesh_method_list = ["wrap"]
-    update_region.all_region_name_list = ["fluid-region-1"]
-    update_region.all_region_overset_component_list = ["no"]
-    update_region.all_region_type_list = ["fluid"]
-    update_region.all_region_volume_fill_list = ["tet"]
+            ])
+    update_region.all_region_overset_component_list.set_state(["no"] * 7)
+    update_region.all_region_source_list.set_state(["object"] * 5 + ["mpt"] * 2)
+    update_region.all_region_type_list.set_state(["void"] * 6 + ["fluid"])
+    update_region.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
+    update_region.filter_category.set_state("Identified Regions")
+    update_region.all_region_leakage_size_list.set_state([""])
+    update_region.all_region_mesh_method_list.set_state(["wrap"])
+    update_region.all_region_name_list.set_state(["fluid-region-1"])
+    update_region.all_region_overset_component_list.set_state(["no"])
+    update_region.all_region_type_list.set_state(["fluid"])
+    update_region.all_region_volume_fill_list.set_state(["hexcore"])
+    update_region.all_region_leakage_size_list.set_state([""])
+    update_region.all_region_mesh_method_list.set_state(["wrap"])
+    update_region.all_region_name_list.set_state(["fluid-region-1"])
+    update_region.all_region_overset_component_list.set_state(["no"])
+    update_region.all_region_type_list.set_state(["fluid"])
+    update_region.all_region_volume_fill_list.set_state(["tet"])
     update_region()
 
 Choose mesh control options
@@ -318,21 +322,21 @@ Choose mesh control options
 .. code:: python
 
     mesh_control = fault_tolerant.setup_size_controls
-    mesh_control.local_settings_name = "default-curvature"
-    mesh_control.local_size_control_parameters.sizing_type = "curvature"
-    mesh_control.object_selection_list = [
+    mesh_control.local_settings_name.set_state("default-curvature")
+    mesh_control.local_size_control_parameters.sizing_type.set_state("curvature")
+    mesh_control.object_selection_list.set_state([
         "inlet-1",
         "inlet-2",
         "inlet-3",
-    ]
+    ])
     mesh_control.add_child_and_update(defer_update=False)
-    mesh_control.local_settings_name = "default-proximity"
-    mesh_control.local_size_control_parameters.sizing_type = "proximity"
-    mesh_control.object_selection_list = [
+    mesh_control.local_settings_name.set_state("default-proximity")
+    mesh_control.local_size_control_parameters.sizing_type.set_state("proximity")
+    mesh_control.object_selection_list.set_state([
         "inlet-1",
         "inlet-2",
         "inlet-3",
-    ]
+    ])
     mesh_control.add_child_and_update(defer_update=False)
     fault_tolerant.choose_mesh_control_options()
 
@@ -356,7 +360,7 @@ Add boundary layers
 .. code:: python
 
     add_boundary_layer = fault_tolerant.add_boundary_layers
-    add_boundary_layer.control_name = "aspect-ratio_1"
+    add_boundary_layer.control_name.set_state("aspect-ratio_1")
     add_boundary_layer.insert_compound_child_task()
     fault_tolerant.add_boundary_layers_child_1()
 
@@ -366,7 +370,7 @@ Generate volume mesh
 .. code:: python
 
     create_volume_mesh = fault_tolerant.create_volume_mesh_ftm
-    create_volume_mesh.all_region_name_list = [
+    create_volume_mesh.all_region_name_list.set_state([
                 "main",
                 "flow_pipe",
                 "outpipe3",
@@ -374,9 +378,9 @@ Generate volume mesh
                 "object1",
                 "void-region-1",
                 "fluid-region-1",
-            ]
-    create_volume_mesh.all_region_size_list = ["11.33375"] * 7
-    create_volume_mesh.all_region_volume_fill_list = ["none"] * 6 + ["tet"]
+            ])
+    create_volume_mesh.all_region_size_list.set_state(["11.33375"] * 7)
+    create_volume_mesh.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
     create_volume_mesh()
 
 Switch to solution mode
@@ -406,9 +410,9 @@ Import geometry
     two_dim_mesh = TwoDimensionalMeshing(session=meshing_session)
 
     load_cad = two_dim_mesh.load_cad_geometry
-    load_cad.file_name = import_file_name
-    load_cad.length_unit = "mm"
-    load_cad.refaceting.refacet = False
+    load_cad.file_name.set_state(import_file_name)
+    load_cad.length_unit.set_state("mm")
+    load_cad.refaceting.refacet.set_state(False)
     load_cad()
 
 Set regions and boundaries
@@ -417,7 +421,7 @@ Set regions and boundaries
 .. code:: python
 
     update_boundaries = two_dim_mesh.update_boundaries
-    update_boundaries.selection_type = "zone"
+    update_boundaries.selection_type.set_state("zone")
     update_boundaries()
 
 Define global sizing
@@ -426,10 +430,10 @@ Define global sizing
 .. code:: python
 
     global_sizing = two_dim_mesh.define_global_sizing
-    global_sizing.curvature_normal_angle = 20
-    global_sizing.max_size = 2000.0
-    global_sizing.min_size = 5.0
-    global_sizing.size_functions = "Curvature"
+    global_sizing.curvature_normal_angle.set_state(20)
+    global_sizing.max_size.set_state(2000.0)
+    global_sizing.min_size.set_state(5.0)
+    global_sizing.size_functions.set_state("Curvature")
     global_sizing()
 
 Adding BOI
@@ -438,13 +442,13 @@ Adding BOI
 .. code:: python
 
     add_local_sizing = two_dim_mesh.add_local_sizing_wtm
-    add_local_sizing.add_child = True
-    add_local_sizing.boi_control_name = "boi_1"
-    add_local_sizing.boi_execution = "Body Of Influence"
-    add_local_sizing.boi_face_label_list = ["boi"]
-    add_local_sizing.boi_size = 50.0
-    add_local_sizing.boi_zoneor_label = "label"
-    add_local_sizing.draw_size_control = True
+    add_local_sizing.add_child.set_state(True)
+    add_local_sizing.boi_control_name.set_state("boi_1")
+    add_local_sizing.boi_execution.set_state("Body Of Influence")
+    add_local_sizing.boi_face_label_list.set_state(["boi"])
+    add_local_sizing.boi_size.set_state(50.0)
+    add_local_sizing.boi_zoneor_label.set_state("label")
+    add_local_sizing.draw_size_control.set_state(True)
     add_local_sizing.add_child_and_update(defer_update=False)
 
 Set edge sizing
@@ -452,13 +456,13 @@ Set edge sizing
 
 .. code:: python
 
-    add_local_sizing.add_child = True
-    add_local_sizing.boi_control_name = "edgesize_1"
-    add_local_sizing.boi_execution = "Edge Size"
-    add_local_sizing.boi_size = 5.0
-    add_local_sizing.boi_zoneor_label = "label"
-    add_local_sizing.draw_size_control = True
-    add_local_sizing.edge_label_list = ["airfoil-te"]
+    add_local_sizing.add_child.set_state(True)
+    add_local_sizing.boi_control_name.set_state("edgesize_1")
+    add_local_sizing.boi_execution.set_state("Edge Size")
+    add_local_sizing.boi_size.set_state(5.0)
+    add_local_sizing.boi_zoneor_label.set_state("label")
+    add_local_sizing.draw_size_control.set_state(True)
+    add_local_sizing.edge_label_list.set_state(["airfoil-te"])
     add_local_sizing.add_child_and_update(defer_update=False)
 
 Set curvature sizing
@@ -466,16 +470,16 @@ Set curvature sizing
 
 .. code:: python
 
-    add_local_sizing.add_child = True
-    add_local_sizing.boi_control_name = "curvature_1"
-    add_local_sizing.boi_curvature_normal_angle = 10
-    add_local_sizing.boi_execution = "Curvature"
-    add_local_sizing.boi_max_size = 2
-    add_local_sizing.boi_min_size = 1.5
-    add_local_sizing.boi_scope_to = "edges"
-    add_local_sizing.boi_zoneor_label = "label"
-    add_local_sizing.draw_size_control = True
-    add_local_sizing.edge_label_list = ["airfoil"]
+    add_local_sizing.add_child.set_state(True)
+    add_local_sizing.boi_control_name.set_state("curvature_1")
+    add_local_sizing.boi_curvature_normal_angle.set_state(10)
+    add_local_sizing.boi_execution.set_state("Curvature")
+    add_local_sizing.boi_max_size.set_state(2)
+    add_local_sizing.boi_min_size.set_state(1.5)
+    add_local_sizing.boi_scope_to.set_state("edges")
+    add_local_sizing.boi_zoneor_label.set_state("label")
+    add_local_sizing.draw_size_control.set_state(True)
+    add_local_sizing.edge_label_list.set_state(["airfoil"])
     add_local_sizing.add_child_and_update(defer_update=False)
 
 Add boundary layer
@@ -484,10 +488,10 @@ Add boundary layer
 .. code:: python
 
     add_boundary_layers = two_dim_mesh.add_2d_boundary_layers
-    add_boundary_layers.add_child = True
-    add_boundary_layers.control_name = "aspect-ratio_1"
-    add_boundary_layers.number_of_layers = 4
-    add_boundary_layers.offset_method_type = "aspect-ratio"
+    add_boundary_layers.add_child.set_state(True)
+    add_boundary_layers.control_name.set_state("aspect-ratio_1")
+    add_boundary_layers.number_of_layers.set_state(4)
+    add_boundary_layers.offset_method_type.set_state("aspect-ratio")
     add_boundary_layers.add_child_and_update(defer_update=False)
 
 Generate surface mesh
@@ -497,20 +501,20 @@ Generate surface mesh
 
     generate_surface_mesh = two_dim_mesh.generate_initial_surface_mesh
     mesh_preferences = two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences
-    mesh_preferences.merge_edge_zones_based_on_labels = False
-    mesh_preferences.merge_face_zones_based_on_labels = False
+    mesh_preferences.merge_edge_zones_based_on_labels.set_state(False)
+    mesh_preferences.merge_face_zones_based_on_labels.set_state(False)
     generate_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
-    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = True
-    two_dim_mesh.add_2d_boundary_layers_child_1.control_name = "uniform_1"
-    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
-    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
-    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child.set_state(True)
+    two_dim_mesh.add_2d_boundary_layers_child_1.control_name.set_state("uniform_1")
+    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height.set_state(2)
+    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers.set_state(4)
+    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type.set_state("uniform")
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
-    mesh_preferences.merge_edge_zones_based_on_labels = False
-    mesh_preferences.merge_face_zones_based_on_labels = False
+    mesh_preferences.merge_edge_zones_based_on_labels.set_state(False)
+    mesh_preferences.merge_face_zones_based_on_labels.set_state(False)
     generate_surface_mesh()
 
 Switch to solution mode
@@ -548,8 +552,8 @@ Insert first task
 .. code:: python
 
     custom_workflow.insertable_tasks.import_geometry.insert()
-    custom_workflow.import_geometry.file_name = import_file_name
-    custom_workflow.import_geometry.length_unit = 'in'
+    custom_workflow.import_geometry.file_name.set_state(import_file_name)
+    custom_workflow.import_geometry.length_unit.set_state('in')
     custom_workflow.import_geometry()
 
 Saving a workflow

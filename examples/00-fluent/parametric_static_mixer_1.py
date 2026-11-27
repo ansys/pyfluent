@@ -69,7 +69,7 @@ solver_session.settings.file.read_case(file_name=import_filename)
 # ~~~~~~~~~~~~~~
 # Set the number of iterations to 100.
 
-solver_session.settings.solution.run_calculation.parameters.iter_count = 100
+solver_session.settings.solution.run_calculation.parameters.iter_count.set_state(100)
 
 ############################################################################
 # Create input parameters
@@ -80,7 +80,7 @@ solver_session.settings.solution.run_calculation.parameters.iter_count = 100
 # Inlet1: velocity (inlet1_vel) 0.5 m/s and temperature (inlet1_temp) at 300 K
 # Inlet2: velocity (inlet2_vel) 0.5 m/s and temperature (inlet2_temp) at 350 K
 
-solver_session.settings.parameters.enable_in_tui = True
+solver_session.settings.parameters.enable_in_tui.set_state(True)
 
 solver_session.settings.setup.named_expressions["inlet1_vel"] = {
     "output_parameter": False,
@@ -151,24 +151,24 @@ solver_session.settings.setup.boundary_conditions.velocity_inlet["inlet2"] = {
 solver_session.settings.solution.report_definitions.surface["outlet-temp-avg"] = {}
 solver_session.settings.solution.report_definitions.surface[
     "outlet-temp-avg"
-].report_type = "surface-areaavg"
-solver_session.settings.solution.report_definitions.surface["outlet-temp-avg"].field = (
-    "temperature"
-)
+].report_type.set_state("surface-areaavg")
 solver_session.settings.solution.report_definitions.surface[
     "outlet-temp-avg"
-].surface_names = ["outlet"]
+].field.set_state(("temperature"))
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-temp-avg"
+].surface_names.set_state(["outlet"])
 
 solver_session.settings.solution.report_definitions.surface["outlet-vel-avg"] = {}
 solver_session.settings.solution.report_definitions.surface[
     "outlet-vel-avg"
-].report_type = "surface-areaavg"
-solver_session.settings.solution.report_definitions.surface["outlet-vel-avg"].field = (
-    "velocity-magnitude"
-)
+].report_type.set_state("surface-areaavg")
 solver_session.settings.solution.report_definitions.surface[
     "outlet-vel-avg"
-].surface_names = ["outlet"]
+].field.set_state(("velocity-magnitude"))
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-vel-avg"
+].surface_names.set_state(["outlet"])
 
 solver_session.settings.parameters.output_parameters.report_definitions[
     "parameter-5"
@@ -189,7 +189,9 @@ solver_session.settings.parameters.output_parameters.report_definitions[
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enable the convergence condition check.
 
-solver_session.settings.solution.monitor.residual.options.criterion_type = "absolute"
+solver_session.settings.solution.monitor.residual.options.criterion_type.set_state(
+    "absolute"
+)
 
 ###########################################################################
 # Write case
@@ -217,12 +219,14 @@ solver_session.settings.parametric_studies.initialize(project_filename="project_
 
 solver_session.settings.parametric_studies["Static_Mixer_main-Solve"].design_points[
     "Base DP"
-].input_parameters = {
-    "inlet1_temp": 300,
-    "inlet2_temp": 350,
-    "inlet2_vel": 1,
-    "inlet1_vel": 0.5,
-}
+].input_parameters.set_state(
+    {
+        "inlet1_temp": 300,
+        "inlet2_temp": 350,
+        "inlet2_vel": 1,
+        "inlet1_vel": 0.5,
+    }
+)
 
 ###########################################################################
 # Update current design point
@@ -244,12 +248,14 @@ solver_session.settings.parametric_studies[
 
 solver_session.settings.parametric_studies["Static_Mixer_main-Solve"].design_points[
     "DP1"
-].input_parameters = {
-    "inlet1_vel": 1,
-    "inlet2_vel": 1,
-    "inlet1_temp": 500,
-    "inlet2_temp": 350,
-}
+].input_parameters.set_state(
+    {
+        "inlet1_vel": 1,
+        "inlet2_vel": 1,
+        "inlet1_temp": 500,
+        "inlet2_temp": 350,
+    }
+)
 
 ##########################################################################
 # Duplicate design point
