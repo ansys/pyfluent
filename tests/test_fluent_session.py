@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+﻿# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,14 +22,19 @@
 # SOFTWARE.
 
 import os
+import socket
 import subprocess
 import threading
 import time
+from types import SimpleNamespace
+from unittest.mock import MagicMock
 
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.connectivity import fluent_connection as fluent_connection_module
 from ansys.fluent.core.connectivity.fluent_connection import (
+    FluentConnection,
     WaitTypeError,
     _pid_exists,
     get_container,
@@ -353,3 +358,45 @@ def test_wait_process_finished_from_standalone_launcher():
     session_1.exit()
     assert session_1.wait_process_finished(wait=120)
     assert not session_1.is_active()
+
+
+def _run_force_exit(monkeypatch, tmp_path, returncodes, pid_exists):
+    host, pid = socket.gethostname(), 1234
+    ext = "bat" if os.name == "nt" else "sh"
+    (tmp_path / f"cleanup-fluent-{host}-{pid}.{ext}").write_text("")
+    connection = SimpleNamespace(
+        connection_properties=SimpleNamespace(
+            inside_container=False,
+            cortex_pwd=str(tmp_path),
+            fluent_host_pid=pid,
+            cortex_host=host,
+        ),
+        _compose_config=SimpleNamespace(is_compose=False),
+        _remote_instance=None,
+        _slurm_job_id=None,
+    )
+    run = MagicMock(
+        side_effect=[
+            subprocess.CompletedProcess([], rc, stdout="", stderr="")
+            for rc in returncodes
+        ]
+    )
+    monkeypatch.setattr(fluent_connection_module.subprocess, "run", run)
+    monkeypatch.setattr(fluent_connection_module, "_pid_exists", lambda _: pid_exists)
+    FluentConnection.force_exit(connection)
+    return run
+
+
+def test_force_exit_stale_pid_does_not_raise(monkeypatch, tmp_path):
+    run = _run_force_exit(monkeypatch, tmp_path, [1], pid_exists=False)
+    run.assert_called_once()
+
+
+def test_force_exit_kill_fallback(monkeypatch, tmp_path):
+    run = _run_force_exit(monkeypatch, tmp_path, [1, 0], pid_exists=True)
+    assert run.call_count == 2
+
+
+def test_force_exit_raises_if_process_survives(monkeypatch, tmp_path):
+    with pytest.raises(subprocess.CalledProcessError):
+        _run_force_exit(monkeypatch, tmp_path, [1, 1], pid_exists=True)
