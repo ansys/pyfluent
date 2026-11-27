@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-StateType = (
+type StateType = (
     bool
     | int
     | float
@@ -44,9 +44,14 @@ StateType = (
     | list[int]
     | list[float]
     | list[str]
-    | list["StateType"]
-    | dict[str, "StateType"]
+    | list[StateType]
+    | dict[str, StateType]
 )
+"""Recursive type alias for cached state values in the datamodel.
+
+Supports primitives and nested collections. Both static checkers and
+beartype see this same recursive definition.
+"""
 
 
 class NameKey(Enum):

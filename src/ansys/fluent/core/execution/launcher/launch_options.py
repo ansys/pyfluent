@@ -29,13 +29,13 @@ from typing import TYPE_CHECKING, TypeVar
 import warnings
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.meshing.session.meshing import Meshing
     from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
     from ansys.fluent.core.solver.session.solver import Solver
     from ansys.fluent.core.solver.session.solver_aero import SolverAero
     from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.diagnostics.exceptions import (
     DisallowedValuesError,
@@ -402,6 +402,7 @@ def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | Non
 LauncherArgsT = TypeVar("LauncherArgsT", bound=LauncherArgsBase)
 
 
+@no_runtime_type_check
 def _get_argvals_and_session(
     argvals: LauncherArgsT,
 ) -> tuple[

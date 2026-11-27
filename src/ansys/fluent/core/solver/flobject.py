@@ -72,6 +72,7 @@ from typing import (
     NewType,
     NoReturn,
     TextIO,
+    TypeAliasType,
     TypeVar,
     Union,
     _eval_type,
@@ -562,7 +563,14 @@ from ansys.fluent.core._tools.settings.state_types import (  # noqa: E402, F401
 
 
 def check_type(val: Any, tp: Any) -> bool:
-    """Check type of object."""
+    """Check type of object.
+
+    Handles PEP 695 TypeAliasType and validates values against recursive type definitions.
+    """
+    # Handle TypeAliasType (PEP 695 `type` statements)
+    if isinstance(tp, TypeAliasType):
+        return check_type(val, tp.__value__)
+
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
     if isinstance(tp, str):
@@ -1862,7 +1870,9 @@ class WildcardPath(Group):
         except KeyError as ex:
             raise AttributeError(
                 allowed_name_error_message(
-                    context=self._state_cls._python_name,
+                    # class attr, so fall back like the python_name property does
+                    context=getattr(self._state_cls, "_python_name", None)
+                    or self._state_cls.__name__,
                     trial_name=name,
                     allowed_values=self.get_active_child_names(),
                 )
@@ -3456,6 +3466,7 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
+@no_runtime_type_check
 def get_root(
     flproxy: Any,
     version: str = "",

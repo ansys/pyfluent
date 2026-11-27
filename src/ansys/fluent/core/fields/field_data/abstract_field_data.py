@@ -27,6 +27,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
+
 if TYPE_CHECKING:
     import numpy as np
     import numpy.typing as npt
@@ -52,6 +54,9 @@ __all__ = (
 )
 
 
+@no_runtime_type_check
+# These field-data contracts use annotations imported only under TYPE_CHECKING, such as SurfaceFieldDataRequest and npt.NDArray. They remain available to static checkers, but beartype cannot resolve those names at runtime.
+# That is why these contracts opt out; abstract classes do not generally need an exemption.
 class BaseFieldDataSource(ABC):
     """Abstract contract for a user-facing field-data source.
 
@@ -111,6 +116,7 @@ class FieldDataSource(BaseFieldDataSource, ABC):
         pass
 
 
+@no_runtime_type_check
 class FieldBatch(ABC):
     """Abstract contract for collecting and executing field-data requests.
 
@@ -162,6 +168,7 @@ class FieldBatch(ABC):
         pass
 
 
+@no_runtime_type_check
 class AbstractFieldData(ABC):
     """Abstract base class for the field data service."""
 
