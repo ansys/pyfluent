@@ -11,7 +11,7 @@
         :widths: auto
 
 {% for text, values in sections[""][category].items() %}
-        * - {{ text }}
+        * - {{ text | indent(12) }}
           - {{ values|join(', ') }}
 
 {% endfor %}

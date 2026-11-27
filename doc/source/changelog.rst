@@ -50,8 +50,8 @@ This document contains the release notes for the project.
           - `#5623 <https://github.com/ansys/pyfluent/pull/5623>`_
 
         * - Fix callback self-unregistration to release its active solver hold without
-  disrupting event streaming. Add interrupt/resume iteration-count tests and
-  run-control guidance.
+              disrupting event streaming. Add interrupt/resume iteration-count tests and
+              run-control guidance.
           - `#5639 <https://github.com/ansys/pyfluent/pull/5639>`_
 
         * - Support solver callback self-unregistration and interrupt/resume

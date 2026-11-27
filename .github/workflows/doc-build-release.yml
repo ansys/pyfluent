@@ -106,7 +106,7 @@ jobs:
     name: "Deploy Release Documentation"
     runs-on: public-ubuntu-latest-8-cores
     needs: [build_release_docs]
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/release/0.45')
     permissions:
       contents: write # Required to push release documentation updates to the target repository/branch.
       pull-requests: write # Required when deployment action creates or updates pull requests.
@@ -120,3 +120,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+          independent-patch-release-docs: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/release/0.45' }}
