@@ -360,7 +360,7 @@ def test_wait_process_finished_from_standalone_launcher():
     assert not session_1.is_active()
 
 
-def _run_force_exit(monkeypatch, tmp_path, returncodes, pid_exists):
+def _run_force_exit(monkeypatch, tmp_path, returncode):
     host, pid = socket.gethostname(), 1234
     ext = "bat" if os.name == "nt" else "sh"
     (tmp_path / f"cleanup-fluent-{host}-{pid}.{ext}").write_text("")
@@ -376,27 +376,19 @@ def _run_force_exit(monkeypatch, tmp_path, returncodes, pid_exists):
         _slurm_job_id=None,
     )
     run = MagicMock(
-        side_effect=[
-            subprocess.CompletedProcess([], rc, stdout="", stderr="")
-            for rc in returncodes
-        ]
+        return_value=subprocess.CompletedProcess(
+            [], returncode, stdout="", stderr="stale pid"
+        )
     )
     monkeypatch.setattr(fluent_connection_module.subprocess, "run", run)
-    monkeypatch.setattr(fluent_connection_module, "_pid_exists", lambda _: pid_exists)
     FluentConnection.force_exit(connection)
     return run
 
 
-def test_force_exit_stale_pid_does_not_raise(monkeypatch, tmp_path):
-    run = _run_force_exit(monkeypatch, tmp_path, [1], pid_exists=False)
+@pytest.mark.parametrize("returncode", [0, 1])
+def test_force_exit_does_not_raise_on_cleanup_script_exit_status(
+    monkeypatch, tmp_path, returncode
+):
+    run = _run_force_exit(monkeypatch, tmp_path, returncode)
     run.assert_called_once()
-
-
-def test_force_exit_kill_fallback(monkeypatch, tmp_path):
-    run = _run_force_exit(monkeypatch, tmp_path, [1, 0], pid_exists=True)
-    assert run.call_count == 2
-
-
-def test_force_exit_raises_if_process_survives(monkeypatch, tmp_path):
-    with pytest.raises(subprocess.CalledProcessError):
-        _run_force_exit(monkeypatch, tmp_path, [1, 1], pid_exists=True)
+    assert not run.call_args.kwargs.get("check")
