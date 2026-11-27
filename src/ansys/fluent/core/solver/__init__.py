@@ -21,44 +21,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Direct access to key solver settings.
+"""Solver settings and session classes.
 
-The solver is configured through a large hierarchy of settings objects. This
-package provides the most commonly used of those settings as classes you can
-create directly, without navigating the hierarchy to find them. For example,
-``Viscous()`` gives you the viscous model settings, and
-``VelocityInlet("hot-inlet")`` gives you the settings for a velocity inlet
-boundary condition named "hot-inlet".
+Use the hierarchical Python settings API to configure and run the Fluent
+solver. Start at the :ref:`settings root <ref_root>` to navigate the full
+hierarchy.
 
-Use :func:`using` to say which solver session these objects belong to:
+Solver sessions are created and managed through session objects
+( See :ref:`session <ref_ansys_fluent_core_solver_session>` ).
 
-.. code-block:: python
+Import commonly used settings classes such as ``Viscous`` and
+``VelocityInlet`` directly from this package, rather than navigating
+the hierarchy to find them.
 
-   >>> from ansys.fluent.core.solver import Viscous, using
-
-   >>> with using(solver):
-   >>>     viscous = Viscous()
-   >>>     viscous.model = viscous.model.K_EPSILON
-
-Without :func:`using`, the object is created for the session passed explicitly
-as its ``settings_source`` argument.
-
-Related topics:
-
-- Solver sessions are created and managed through session objects. See
-  :ref:`session <ref_ansys_fluent_core_solver_session>`.
-
-- Every session exposes the full settings hierarchy through its settings
-  object, the root of the API for configuring and running the solver. See
-  :ref:`settings root <ref_root>`.
-
-The classes available for direct access are listed below.
 """
 
 from importlib import import_module
 import logging
 
-from ansys.fluent.core import using  # noqa: F401
+from ansys.fluent.core.execution import using
 
 logger = logging.getLogger("pyfluent.general")
 

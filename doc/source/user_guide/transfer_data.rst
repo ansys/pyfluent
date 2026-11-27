@@ -28,7 +28,7 @@ remotely through a file transfer service. Solution data is not included.
   >>> case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> source = Solver.from_install()
   >>> source.settings.file.read_case(file_name=case_file_name)
-  >>> source.settings.setup.models.viscous.model = "laminar"
+  >>> source.settings.setup.models.viscous.model.set_state("laminar")
 
   >>> snapshot = CaseSnapshot.from_session(source)
   >>> workers = [Solver.from_install() for _ in range(2)]

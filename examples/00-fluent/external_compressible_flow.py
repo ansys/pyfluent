@@ -93,7 +93,7 @@ meshing_session = pyfluent.launch_fluent(
 print(meshing_session.get_fluent_version())
 
 tmpdir = tempfile.mkdtemp()
-meshing_session.preferences.MeshingWorkflow.TempFolder = tmpdir
+meshing_session.preferences.MeshingWorkflow.TempFolder.set_state(tmpdir)
 
 ###############################################################################
 # Initialize workflow
@@ -276,8 +276,8 @@ solver_session.settings.mesh.check()
 
 viscous = solver_session.settings.setup.models.viscous
 
-viscous.model = "k-omega"
-viscous.k_omega_model = "sst"
+viscous.model.set_state("k-omega")
+viscous.k_omega_model.set_state("sst")
 
 ###############################################################################
 # Define materials
@@ -293,17 +293,17 @@ viscous.k_omega_model = "sst"
 
 air = solver_session.settings.setup.materials.fluid["air"]
 
-air.density.option = "ideal-gas"
+air.density.option.set_state("ideal-gas")
 
-air.viscosity.option = "sutherland"
+air.viscosity.option.set_state("sutherland")
 
-air.viscosity.sutherland.option = "three-coefficient-method"
+air.viscosity.sutherland.option.set_state("three-coefficient-method")
 
-air.viscosity.sutherland.reference_viscosity = 1.716e-05
+air.viscosity.sutherland.reference_viscosity.set_state(1.716e-05)
 
-air.viscosity.sutherland.reference_temperature = 273.11
+air.viscosity.sutherland.reference_temperature.set_state(273.11)
 
-air.viscosity.sutherland.effective_temperature = 110.56
+air.viscosity.sutherland.effective_temperature.set_state(110.56)
 
 ###############################################################################
 # Boundary Conditions
@@ -324,19 +324,19 @@ pressure_farfield = (
     ]
 )
 
-pressure_farfield.momentum.gauge_pressure = 0
+pressure_farfield.momentum.gauge_pressure.set_state(0)
 
-pressure_farfield.momentum.mach_number = 0.8395
+pressure_farfield.momentum.mach_number.set_state(0.8395)
 
-pressure_farfield.thermal.temperature = 255.56
+pressure_farfield.thermal.temperature.set_state(255.56)
 
 pressure_farfield.momentum.flow_direction[0] = 0.998574
 
 pressure_farfield.momentum.flow_direction[2] = 0.053382
 
-pressure_farfield.turbulence.turbulent_intensity = 0.05
+pressure_farfield.turbulence.turbulent_intensity.set_state(0.05)
 
-pressure_farfield.turbulence.turbulent_viscosity_ratio = 10
+pressure_farfield.turbulence.turbulent_viscosity_ratio.set_state(10)
 
 ###############################################################################
 # Operating Conditions
@@ -345,7 +345,9 @@ pressure_farfield.turbulence.turbulent_viscosity_ratio = 10
 
 # operating pressure : 80600 [Pa]
 
-solver_session.settings.setup.general.operating_conditions.operating_pressure = 80600
+solver_session.settings.setup.general.operating_conditions.operating_pressure.set_state(
+    80600
+)
 
 ###############################################################################
 # Initialize flow field

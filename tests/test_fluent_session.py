@@ -256,7 +256,7 @@ def test_fluent_freeze_kill(
 
 def test_interrupt(static_mixer_case_session):
     solver = static_mixer_case_session
-    solver.setup.general.solver.time = "unsteady-2nd-order"
+    solver.setup.general.solver.time.set_state("unsteady-2nd-order")
     solver.solution.initialization.standard_initialize()
     asynchronous(solver.solution.run_calculation.dual_time_iterate)(
         time_step_count=100, max_iter_per_step=20

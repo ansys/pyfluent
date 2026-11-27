@@ -43,7 +43,7 @@ A simple example
   >>> from ansys.fluent.core import FluentVersion, Meshing, examples
   >>> meshing_session = Meshing.from_install(product_version=FluentVersion.v251)
   >>> watertight = meshing_session.watertight()
-  >>> watertight.import_geometry.file_name = examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
+  >>> watertight.import_geometry.file_name.set_state(examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow"))
   >>> watertight.import_geometry()
   >>> watertight.create_volume_mesh()
   >>> solver_session = meshing_session.switch_to_solver()

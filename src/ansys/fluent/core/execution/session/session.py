@@ -21,17 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Base implementation and active-session context manager for Fluent sessions.
+"""Base implementation for Fluent sessions.
 
 :class:`~ansys.fluent.core.execution.session.session.BaseSession` is an internal base class; use the concrete session classes
-exposed by :mod:`ansys.fluent.core.execution.session`. The module-level
-:func:`using` context manager makes a session active for top-level settings
-objects and is re-exported as ``ansys.fluent.core.using`` for compatibility.
+exposed by :mod:`ansys.fluent.core.execution.session`.
 """
 
-from collections.abc import Callable, Iterator
-from contextlib import contextmanager
-from contextvars import ContextVar
+from collections.abc import Callable
 from enum import Enum
 from functools import cached_property
 import json
@@ -46,6 +42,7 @@ from deprecated.sphinx import deprecated
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.execution import using
 from ansys.fluent.core.execution.launcher.launch_options import FluentMode
 from ansys.fluent.core.fields.field_data.abstract_field_data import (
     AbstractFieldData,
@@ -56,36 +53,6 @@ from ansys.fluent.core.fields.field_data.live_field_data import (
     ZoneInfo,
     _FieldInfo,
 )
-
-_active_session: ContextVar["BaseSession | None"] = ContextVar(
-    "active_session", default=None
-)
-
-
-def _get_active_session():
-    return _active_session.get()
-
-
-@contextmanager
-def using(session: "BaseSession") -> Iterator[None]:
-    """Make a Fluent session active within a ``with`` block.
-
-    Top-level settings objects use this session when no ``settings_source`` is
-    provided. The previous active session is restored when the block exits,
-    including when an exception is raised.
-
-    Examples
-    --------
-    >>> from ansys.fluent.core import using
-    >>> with using(solver_session):
-    ...     Viscous().model.set_state("laminar")
-    """
-    token = _active_session.set(session)
-    try:
-        yield
-    finally:
-        _active_session.reset(token)
-
 
 if TYPE_CHECKING:
     from ansys.fluent.core.execution.launcher.standalone_launcher import (

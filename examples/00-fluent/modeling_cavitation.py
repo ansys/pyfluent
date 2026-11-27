@@ -96,22 +96,24 @@ solver_session.settings.mesh.check()
 ###############################################################################
 # Specify an axisymmetric model.
 
-solver_session.settings.setup.general.solver.two_dim_space = "axisymmetric"
+solver_session.settings.setup.general.solver.two_dim_space.set_state("axisymmetric")
 
 ###############################################################################
 # Enable the multiphase mixture model.
 
-solver_session.settings.setup.models.multiphase.models = "mixture"
+solver_session.settings.setup.models.multiphase.models.set_state("mixture")
 
 solver_session.tui.define.models.multiphase.mixture_parameters("no", "implicit")
 
 ###############################################################################
 # Enable the k-ω SST turbulence model.
 
-solver_session.settings.setup.models.viscous = {
-    "model": "k-omega",
-    "k_omega_model": "sst",
-}
+solver_session.settings.setup.models.viscous.set_state(
+    {
+        "model": "k-omega",
+        "k_omega_model": "sst",
+    }
+)
 
 ###############################################################################
 # Define materials
@@ -235,7 +237,9 @@ outlet["vapor"] = {
 # ~~~~~~~~~~~~~~~~~~~~
 # Set the operating pressure to 0.
 
-solver_session.settings.setup.general.operating_conditions.operating_pressure = 0
+solver_session.settings.setup.general.operating_conditions.operating_pressure.set_state(
+    0
+)
 
 ###############################################################################
 # Solution
@@ -246,13 +250,15 @@ solver_session.settings.setup.general.operating_conditions.operating_pressure = 
 
 methods = solver_session.settings.solution.methods
 
-methods.discretization_scheme = {
-    "k": "first-order-upwind",
-    "mom": "quick",
-    "mp": "quick",
-    "omega": "first-order-upwind",
-    "pressure": "presto!",
-}
+methods.discretization_scheme.set_state(
+    {
+        "k": "first-order-upwind",
+        "mom": "quick",
+        "mp": "quick",
+        "omega": "first-order-upwind",
+        "pressure": "presto!",
+    }
+)
 
 ###############################################################################
 # For the pressure velocity coupling scheme choose 'Coupled'. Set the pseudo
@@ -260,11 +266,11 @@ methods.discretization_scheme = {
 # Then, set the explicit relaxation factor for 'Volume Fraction' to
 # 0.3.
 
-methods.p_v_coupling.flow_scheme = "Coupled"
+methods.p_v_coupling.flow_scheme.set_state("Coupled")
 
-methods.pseudo_time_method.formulation.coupled_solver = "global-time-step"
+methods.pseudo_time_method.formulation.coupled_solver.set_state("global-time-step")
 
-methods.high_order_term_relaxation.enable = True
+methods.high_order_term_relaxation.enable.set_state(True)
 
 solver_session.settings.solution.controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo_relax[
     "mp"
@@ -277,17 +283,17 @@ solver_session.settings.solution.controls.pseudo_time_explicit_relaxation_factor
 
 resid_eqns = solver_session.settings.solution.monitor.residual.equations
 
-resid_eqns["continuity"].absolute_criteria = 1e-5
-resid_eqns["x-velocity"].absolute_criteria = 1e-5
-resid_eqns["y-velocity"].absolute_criteria = 1e-5
-resid_eqns["k"].absolute_criteria = 1e-5
-resid_eqns["omega"].absolute_criteria = 1e-5
-resid_eqns["vf-vapor"].absolute_criteria = 1e-5
+resid_eqns["continuity"].absolute_criteria.set_state(1e-5)
+resid_eqns["x-velocity"].absolute_criteria.set_state(1e-5)
+resid_eqns["y-velocity"].absolute_criteria.set_state(1e-5)
+resid_eqns["k"].absolute_criteria.set_state(1e-5)
+resid_eqns["omega"].absolute_criteria.set_state(1e-5)
+resid_eqns["vf-vapor"].absolute_criteria.set_state(1e-5)
 
 initialization = solver_session.settings.solution.initialization
 
-initialization.initialization_type = "hybrid"
-initialization.hybrid_init_options.general_settings.initial_pressure = True
+initialization.initialization_type.set_state("hybrid")
+initialization.hybrid_init_options.general_settings.initial_pressure.set_state(True)
 initialization.hybrid_initialize()
 
 ###############################################################################
@@ -312,10 +318,10 @@ solver_session.settings.file.write_case_data(file_name="cav.cas.h5")
 graphics = solver_session.settings.results.graphics
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
-graphics.picture.x_resolution = 1920
-graphics.picture.y_resolution = 1440
+graphics.picture.x_resolution.set_state(1920)
+graphics.picture.y_resolution.set_state(1440)
 
 ###############################################################################
 # Create contour plots
@@ -338,7 +344,9 @@ graphics.contour["contour_static_pressure"] = {
 ###############################################################################
 # Mirror the display around the symmetry plane to show the full model.
 
-solver_session.settings.results.graphics.views.mirror_zones = ["symm_2", "symm_1"]
+solver_session.settings.results.graphics.views.mirror_zones.set_state(
+    ["symm_2", "symm_1"]
+)
 
 graphics.contour["contour_static_pressure"].display()
 

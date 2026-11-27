@@ -165,7 +165,7 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
         chapter(1, "Undo and redo", auto)
         step("Switch the viscous model to laminar, then undo, redo and undo again.")
         show("viscous model", viscous.model())
-        viscous.model = "laminar"
+        viscous.model.set_state("laminar")
         show("viscous model", viscous.model())
         resilient.undo()
         show("after undo", viscous.model())
@@ -181,16 +181,20 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
             "1.2 m/s and 313.15 K at the hot inlet. The settings API takes the "
             "turbulent intensity as a fraction, so 5 % is 0.05."
         )
-        energy.enabled = True
-        cold_velocity.value = 0.4
-        cold_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-        cold_turbulence.turbulent_intensity = 0.05
-        cold_turbulence.hydraulic_diameter = "4 [in]"
-        cold_inlet.thermal.temperature.value = 293.15
-        hot_velocity.value = 1.2
-        hot_turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-        hot_turbulence.hydraulic_diameter = "1 [in]"
-        hot_inlet.thermal.temperature.value = 313.15
+        energy.enabled.set_state(True)
+        cold_velocity.value.set_state(0.4)
+        cold_turbulence.turbulence_specification.set_state(
+            "Intensity and Hydraulic Diameter"
+        )
+        cold_turbulence.turbulent_intensity.set_state(0.05)
+        cold_turbulence.hydraulic_diameter.set_state("4 [in]")
+        cold_inlet.thermal.temperature.value.set_state(293.15)
+        hot_velocity.value.set_state(1.2)
+        hot_turbulence.turbulence_specification.set_state(
+            "Intensity and Hydraulic Diameter"
+        )
+        hot_turbulence.hydraulic_diameter.set_state("1 [in]")
+        hot_inlet.thermal.temperature.value.set_state(313.15)
         show(
             "cold inlet",
             f"{cold_velocity.value():g} m/s, turbulent intensity "
@@ -210,7 +214,7 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
             "Change the cold-inlet velocity to 0.6 and iterate. Iterating cannot be "
             "undone, so resilient mode writes a checkpoint first."
         )
-        cold_velocity.value = 0.6
+        cold_velocity.value.set_state(0.6)
         run_calculation.iterate(iter_count=20)
         show("checkpoints", [c.name for c in resilient.checkpoints])
         step("Roll back to 'initialized'.")
@@ -225,7 +229,7 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
                 "background. Change the cold-inlet velocity to 0.5, then wait until "
                 "the standby has applied it too."
             )
-            cold_velocity.value = 0.5
+            cold_velocity.value.set_state(0.5)
             show("standby up to date", resilient.wait_for_standbys())
             (standby,) = resilient.pool.standbys
             standby_inlet = pyfluent.solver.VelocityInlet(
@@ -248,7 +252,7 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
             show("cold-inlet velocity", cold_velocity.value())
             show("served by the standby", resilient.active_session is standby)
             step("Change the hot-inlet velocity. The standby applies it.")
-            hot_velocity.value = 1.0
+            hot_velocity.value.set_state(1.0)
             show("hot-inlet velocity", hot_velocity.value())
             step("Iterate on the standby.")
             run_calculation.iterate(iter_count=10)
@@ -283,9 +287,11 @@ def setup_solidification(solver) -> None:
     # Aliasing reused objects:
     outlet_momentum = outlet.momentum
 
-    general.solver.two_dim_space = "swirl"
-    general.operating_conditions.gravity = {"enable": True, "components": [-9.81]}
-    viscous.model = "laminar"
+    general.solver.two_dim_space.set_state("swirl")
+    general.operating_conditions.gravity.set_state(
+        {"enable": True, "components": [-9.81]}
+    )
+    viscous.model.set_state("laminar")
     solver.tui.define.models.solidification_melting(
         "yes", "constant", "100000", "yes", "no"
     )
@@ -302,13 +308,13 @@ def setup_solidification(solver) -> None:
         "tsolidus": {"value": 1150.0},
         "tliqidus": {"value": 1150.0},
     }
-    fluid.general.material = "liquid-metal"
-    inlet.momentum.velocity_magnitude.value = 0.00101
-    inlet.thermal.temperature.value = 1300
-    outlet_momentum.velocity_specification_method = "Components"
-    outlet_momentum.swirl_angular_velocity = 1
-    outlet_momentum.velocity_components = [0.001, 0, 0]
-    outlet.thermal.temperature.value = 500
+    fluid.general.material.set_state("liquid-metal")
+    inlet.momentum.velocity_magnitude.value.set_state(0.00101)
+    inlet.thermal.temperature.value.set_state(1300)
+    outlet_momentum.velocity_specification_method.set_state("Components")
+    outlet_momentum.swirl_angular_velocity.set_state(1)
+    outlet_momentum.velocity_components.set_state([0.001, 0, 0])
+    outlet.thermal.temperature.value.set_state(500)
     walls = {
         "bottom-wall": {
             "thermal": {"thermal_condition": "Temperature", "temperature": 1300}
@@ -338,10 +344,14 @@ def setup_solidification(solver) -> None:
     }
     for name, state in walls.items():
         pyfluent.solver.WallBoundary(settings_source=solver, name=name).set_state(state)
-    methods.p_v_coupling.flow_scheme = "Coupled"
-    methods.spatial_discretization.discretization_scheme = {"pressure": "presto!"}
-    methods.pseudo_time_method.formulation = {"coupled_solver": "global-time-step"}
-    controls.equations = {"flow": False, "w-swirl": False}
+    methods.p_v_coupling.flow_scheme.set_state("Coupled")
+    methods.spatial_discretization.discretization_scheme.set_state(
+        {"pressure": "presto!"}
+    )
+    methods.pseudo_time_method.formulation.set_state(
+        {"coupled_solver": "global-time-step"}
+    )
+    controls.equations.set_state({"flow": False, "w-swirl": False})
     initialization.hybrid_initialize()
     results.custom_field_functions.create(
         name="omegar", custom_field_function="1 * radial_coordinate"
@@ -357,10 +367,12 @@ def setup_solidification(solver) -> None:
         if value is not None:
             patch["value"] = value
         initialization.patch.calculate_patch(**patch)
-    run_calculation.pseudo_time_settings.time_step_method = {
-        "time_step_method": "user-specified",
-        "auto_time_size_calc_solid_zone": False,
-    }
+    run_calculation.pseudo_time_settings.time_step_method.set_state(
+        {
+            "time_step_method": "user-specified",
+            "auto_time_size_calc_solid_zone": False,
+        }
+    )
     run_calculation.iterate(iter_count=20)
 
 
@@ -385,11 +397,11 @@ def solidification(ui_mode: str, auto: bool) -> None:
         # Aliasing reused objects:
         transient_controls = run_calculation.transient_controls
 
-        general.solver.time = "unsteady-1st-order"
-        controls.equations = {"flow": True, "w-swirl": True}
-        controls.under_relaxation = {"delh": 0.1}
-        transient_controls.time_step_size = 0.1
-        transient_controls.time_step_count = 50
+        general.solver.time.set_state("unsteady-1st-order")
+        controls.equations.set_state({"flow": True, "w-swirl": True})
+        controls.under_relaxation.set_state({"delh": 0.1})
+        transient_controls.time_step_size.set_state(0.1)
+        transient_controls.time_step_count.set_state(50)
 
         step(
             "Solve to 5 s with a time step of 0.1 s. The time step is too large, so "
@@ -401,9 +413,9 @@ def solidification(ui_mode: str, auto: bool) -> None:
             show("Fluent error", first_line(error))
             show("rolled back", solver.resilient.last_outcome.rolled_back)
             step("Retry from the restored steady state with a time step of 1 ms.")
-            controls.under_relaxation = {"delh": 0.02}
-            transient_controls.time_step_size = 0.001
-            transient_controls.time_step_count = 5
+            controls.under_relaxation.set_state({"delh": 0.02})
+            transient_controls.time_step_size.set_state(0.001)
+            transient_controls.time_step_count.set_state(5)
             run_calculation.calculate()
             show("retry", "completed")
         else:
