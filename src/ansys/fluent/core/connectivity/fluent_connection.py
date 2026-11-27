@@ -730,13 +730,18 @@ class FluentConnection:
                 logger.debug(f"Cleanup command list = {cmd_list}")
                 result = subprocess.run(
                     cmd_list,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
                     timeout=120,
-                    check=True,
+                    text=True,
                 )
                 if result.returncode != 0:
-                    raise subprocess.CalledProcessError(result.returncode, cmd_list)
+                    # Cleanup script targets multiple pids (cortex, host, nodes); any of
+                    # them can already be stale, so a nonzero exit here isn't necessarily fatal.
+                    logger.debug(
+                        f"Cleanup script exited with status {result.returncode}: "
+                        f"{result.stderr or result.stdout}"
+                    )
             elif self._slurm_job_id:
                 logger.debug("Fluent running inside Slurm, closing Slurm session...")
                 self._close_slurm()

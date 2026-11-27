@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+﻿# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,14 +22,19 @@
 # SOFTWARE.
 
 import os
+import socket
 import subprocess
 import threading
 import time
+from types import SimpleNamespace
+from unittest.mock import MagicMock
 
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.connectivity import fluent_connection as fluent_connection_module
 from ansys.fluent.core.connectivity.fluent_connection import (
+    FluentConnection,
     WaitTypeError,
     _pid_exists,
     get_container,
@@ -353,3 +358,37 @@ def test_wait_process_finished_from_standalone_launcher():
     session_1.exit()
     assert session_1.wait_process_finished(wait=120)
     assert not session_1.is_active()
+
+
+def _run_force_exit(monkeypatch, tmp_path, returncode):
+    host, pid = socket.gethostname(), 1234
+    ext = "bat" if os.name == "nt" else "sh"
+    (tmp_path / f"cleanup-fluent-{host}-{pid}.{ext}").write_text("")
+    connection = SimpleNamespace(
+        connection_properties=SimpleNamespace(
+            inside_container=False,
+            cortex_pwd=str(tmp_path),
+            fluent_host_pid=pid,
+            cortex_host=host,
+        ),
+        _compose_config=SimpleNamespace(is_compose=False),
+        _remote_instance=None,
+        _slurm_job_id=None,
+    )
+    run = MagicMock(
+        return_value=subprocess.CompletedProcess(
+            [], returncode, stdout="", stderr="stale pid"
+        )
+    )
+    monkeypatch.setattr(fluent_connection_module.subprocess, "run", run)
+    FluentConnection.force_exit(connection)
+    return run
+
+
+@pytest.mark.parametrize("returncode", [0, 1])
+def test_force_exit_does_not_raise_on_cleanup_script_exit_status(
+    monkeypatch, tmp_path, returncode
+):
+    run = _run_force_exit(monkeypatch, tmp_path, returncode)
+    run.assert_called_once()
+    assert not run.call_args.kwargs.get("check")
