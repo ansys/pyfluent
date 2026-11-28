@@ -81,16 +81,16 @@ class TextInterface(AbstractTextInterface):
         """
         return self.service.get_attribute_value(path, attribute, include_unavailable)
 
-    def execute_command(self, path: str, *args, **kwargs) -> ValueT:
+    def execute_command(self, path: str, *args: ValueT, **kwargs: ValueT) -> ValueT:
         """Execute a command at a path with positional or keyword arguments.
 
         Parameters
         ----------
         path : str
             Path to the menu.
-        *args
+        *args : ValueT
             Positional arguments of the command.
-        **kwargs
+        **kwargs : ValueT
             Keyword arguments of the command.
 
         Returns
@@ -100,16 +100,16 @@ class TextInterface(AbstractTextInterface):
         """
         return self.service.execute_command(path, *args, **kwargs)
 
-    def execute_query(self, path: str, *args, **kwargs) -> ValueT:
+    def execute_query(self, path: str, *args: ValueT, **kwargs: ValueT) -> ValueT:
         """Execute a query at a path with positional or keyword arguments.
 
         Parameters
         ----------
         path : str
             Path to the menu.
-        *args
+        *args : ValueT
             Positional arguments of the query.
-        **kwargs
+        **kwargs : ValueT
             Keyword arguments of the query.
 
         Returns
@@ -187,7 +187,7 @@ class PyMenu:
         Get docstring for a menu.
     """
 
-    def __init__(self, service, version, mode, path: Path | str) -> None:
+    def __init__(self, service: Any, version: str, mode: str, path: Path | str) -> None:
         """__init__ method of PyMenu class."""
         self._service = service
         self._version = version
@@ -209,14 +209,14 @@ class PyMenu:
         """
         return self._service.get_child_names(self._path, include_unavailable)
 
-    def execute(self, *args, **kwargs) -> ValueT:
+    def execute(self, *args: ValueT, **kwargs: ValueT) -> ValueT:
         """Execute a command or query at a path with positional or keyword arguments.
 
         Parameters
         ----------
-        *args
+        *args : ValueT
             Positional arguments of the command or qyery.
-        **kwargs
+        **kwargs : ValueT
             Keyword arguments of the command or query.
 
         Returns
@@ -294,14 +294,14 @@ class TUIMethod:
     Methods like ___repr__ are inserted at PyConsole side.
     """
 
-    def __init__(self, service, version, mode, path):
+    def __init__(self, service: Any, version: str, mode: str, path: Any) -> None:
         """Initialize TUIMethod."""
         self._service = service
         self._version = version
         self._mode = mode
         self._path = path
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: ValueT, **kwargs: ValueT) -> ValueT:
         return PyMenu(self._service, self._version, self._mode, self._path).execute(
             *args, **kwargs
         )
@@ -310,7 +310,7 @@ class TUIMethod:
 class TUIMenu:
     """Base class for the generated menu classes."""
 
-    def __init__(self, service, version, mode, path) -> None:
+    def __init__(self, service: Any, version: str, mode: str, path: Any) -> None:
         """__init__ method of TUIMenu class."""
         self._service = service
         self._version = version
@@ -326,7 +326,7 @@ class TUIMenu:
             if x not in ["exit", "switch_to_meshing_mode"]
         ]
 
-    def __getattribute__(self, name) -> Any:
+    def __getattribute__(self, name: str) -> Any:
         if name in ["exit"] and not self._path:
             raise AttributeError(
                 f"'{self.__class__.__name__}' object has no attribute '{name}'"
@@ -358,7 +358,7 @@ class TUIMenu:
 class TUICommand(TUIMenu):
     """Generic command class for when the explicit menu classes aren't available."""
 
-    def __call__(self, *args, **kwargs) -> ValueT:
+    def __call__(self, *args: ValueT, **kwargs: ValueT) -> ValueT:
         return PyMenu(self._service, self._version, self._mode, self._path).execute(
             *args, **kwargs
         )

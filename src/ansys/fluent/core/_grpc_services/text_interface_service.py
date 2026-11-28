@@ -22,13 +22,17 @@
 
 """Wrapper over the text interface gRPC service of Fluent (v1 proto API)."""
 
-from typing import Any
+from collections.abc import Sequence
+from typing import Any, cast
 
 from google.protobuf.json_format import MessageToDict
+import grpc
 
 from ansys.api.fluent.v1 import text_interface_pb2, text_interface_pb2_grpc
 from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.services._protocols import ServiceProtocol
+
+ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 
 
 class TextInterfaceService(ServiceProtocol):
@@ -36,7 +40,7 @@ class TextInterfaceService(ServiceProtocol):
 
     def __init__(
         self,
-        intercept_channel,
+        intercept_channel: grpc.Channel,
         metadata: list[tuple[str, str]],
     ) -> None:
         """__init__ method of TextInterfaceService class."""
@@ -50,7 +54,7 @@ class TextInterfaceService(ServiceProtocol):
 
     def get_attribute_value(
         self, path: str, attribute: str, include_unavailable: bool
-    ) -> Any:
+    ) -> ValueT:
         """Get the attribute value."""
         request = text_interface_pb2.GetAttributeValueRequest()
         request.path = path
@@ -74,7 +78,9 @@ class TextInterfaceService(ServiceProtocol):
         """SetState RPC of DataModel service."""
         return self._stub.SetState(request, metadata=self._metadata)
 
-    def execute_command(self, path: str, *args, **kwargs) -> Any:
+    def execute_command(
+        self, path: str, *args: ValueT, **kwargs: ValueT
+    ) -> text_interface_pb2.ExecuteCommandResponse:
         """Execute the command."""
         request = text_interface_pb2.ExecuteCommandRequest()
         request.path = path
@@ -85,13 +91,19 @@ class TextInterfaceService(ServiceProtocol):
             _convert_value_to_gvalue(args, request.args.fields["tui_args"])
         return self._stub.ExecuteCommand(request, metadata=self._metadata)
 
-    def execute_query(self, path: str, *args, **kwargs) -> Any:
+    def execute_query(
+        self,
+        path: str,
+        # v1 ExecuteQueryRequest carries no arguments; v0 forwards them.
+        *args: ValueT,  # pyright: ignore[reportUnusedParameter]
+        **kwargs: ValueT,  # pyright: ignore[reportUnusedParameter]
+    ) -> text_interface_pb2.ExecuteQueryResponse:
         """Execute the query."""
         request = text_interface_pb2.ExecuteQueryRequest()
         request.path = path
         return self._stub.ExecuteQuery(request, metadata=self._metadata)
 
-    def get_static_info(self, path: str):
+    def get_static_info(self, path: str) -> dict[str, Any]:
         """GetStaticInfo RPC of DataModel service."""
         request = text_interface_pb2.GetSchemaRequest()
         request.path = path
@@ -106,17 +118,19 @@ class TextInterfaceService(ServiceProtocol):
         attribute = text_interface_pb2.Attribute.Name(
             text_interface_pb2.Attribute.ATTRIBUTE_CHILD_NAMES
         ).lower()
-        return self.get_attribute_value(path, attribute, include_unavailable)
+        return cast(
+            list[str], self.get_attribute_value(path, attribute, include_unavailable)
+        )
 
     def get_doc_string(self, path: str, include_unavailable: bool = False) -> str:
         """Get docstring for a menu."""
         attribute = text_interface_pb2.Attribute.Name(
             text_interface_pb2.Attribute.ATTRIBUTE_HELP_STRING
         ).lower()
-        return self.get_attribute_value(path, attribute, include_unavailable)
+        return cast(str, self.get_attribute_value(path, attribute, include_unavailable))
 
 
-def _convert_value_to_gvalue(val: Any, gval: Variant) -> None:
+def _convert_value_to_gvalue(val: ValueT, gval: Variant) -> None:
     """Convert Python datatype to Value type of google/protobuf/struct.proto."""
     if isinstance(val, bool):
         gval.bool_value = val
@@ -136,7 +150,7 @@ def _convert_value_to_gvalue(val: Any, gval: Variant) -> None:
             _convert_value_to_gvalue(v, gval.struct_value.fields[k])
 
 
-def _convert_gvalue_to_value(gval: Variant) -> Any:
+def _convert_gvalue_to_value(gval: Variant) -> ValueT:
     """Convert Value type of google/protobuf/struct.proto to Python datatype."""
     if gval.HasField("bool_value"):
         return gval.bool_value

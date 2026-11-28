@@ -22,9 +22,9 @@
 
 """Wrapper over the datamodel gRPC service of Fluent (v0 proto API)."""
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Generator, Sequence
 import logging
-from threading import RLock
+from threading import Event, RLock
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -52,7 +52,7 @@ class EventSubscription:
     def __init__(
         self,
         service,
-        path,
+        path: str,
         request_dict: dict[str, Any],
     ) -> None:
         """Subscribe to a datamodel event.
@@ -93,9 +93,9 @@ class EventSubscription:
 class SubscriptionList:
     """Stores subscription objects by tag."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SubscriptionList."""
-        self._subscriptions = {}
+        self._subscriptions: dict[str, EventSubscription] = {}
         self._lock = RLock()
 
     def __contains__(self, tag: str) -> bool:
@@ -166,7 +166,7 @@ class SubscriptionList:
 class SubscribeEventError(RuntimeError):
     """Raised when server fails to subscribe from event."""
 
-    def __init__(self, request):
+    def __init__(self, request: dict[str, Any]) -> None:
         """Initialize SubscribeEventError."""
         super().__init__(f"Failed to subscribe event: {request}!")
 
@@ -174,7 +174,7 @@ class SubscribeEventError(RuntimeError):
 class UnsubscribeEventError(RuntimeError):
     """Raised when server fails to unsubscribe from event."""
 
-    def __init__(self, request):
+    def __init__(self, request: str) -> None:
         """Initialize UnsubscribeEventError."""
         super().__init__(f"Failed to unsubscribe event: {request}!")
 
@@ -186,7 +186,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def __init__(
         self,
-        intercept_channel,
+        intercept_channel: grpc.Channel,
         metadata: list[tuple[str, str]],
     ) -> None:
         """__init__ method of DatamodelService class."""
@@ -359,7 +359,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             use_integers_for_enums=True,
         )
 
-    def subscribe_events(self, request_dict: dict[str, Any]) -> dict[str, Any]:
+    def subscribe_events(self, request_dict: dict[str, Any]) -> list[dict[str, Any]]:
         """Subscribe events."""
         request = datamodel_se_pb2.SubscribeEventsRequest()
         ParseDict(request_dict, request)
@@ -370,7 +370,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             ).response
         ]
 
-    def unsubscribe_events(self, tags: list[str]) -> dict[str, Any]:
+    def unsubscribe_events(self, tags: list[str]) -> list[dict[str, Any]]:
         """Unsubscribe events."""
         request = datamodel_se_pb2.UnsubscribeEventsRequest()
         request.tag[:] = tags
@@ -566,15 +566,15 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def _process_streaming(
         self,
-        id,
-        stream_begin_method,
-        started_evt,
-        rules,
-        datamodel_return_state_changes,
-        no_commands_diff_state,
-        *args,
-        **kwargs,
-    ):
+        id: str,
+        stream_begin_method: str,
+        started_evt: Event,
+        rules: str,
+        datamodel_return_state_changes: bool,
+        no_commands_diff_state: bool,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Generator[Any, None, None]:
         """Processes events streaming."""
         data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
         data_model_request.rules = rules
@@ -588,7 +588,9 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             stream_begin_method=stream_begin_method,
         )
 
-    def parse_streaming_response(self, response):
+    def parse_streaming_response(
+        self, response: datamodel_se_pb2.DataModelResponse
+    ) -> tuple[Variant, Sequence[str]]:
         """Parse v0 streaming response into canonical (state, deleted_paths) form."""
         return response.state, response.deletedpaths
 
@@ -598,7 +600,9 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     _event_stream_begin_method = "BeginEventStreaming"
     _event_streaming_rpc_path = "/grpcRemoting.DataModel/BeginEventStreaming"
 
-    def _process_event_streaming(self, id, started_evt, *args, **kwargs):
+    def _process_event_streaming(
+        self, id: str, started_evt: Event, *args: Any, **kwargs: Any
+    ) -> Generator[Any, None, None]:
         """Begin v0 event streaming."""
         request = datamodel_se_pb2.EventRequest(*args, **kwargs)
         return self.begin_streaming(
@@ -608,7 +612,9 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             stream_begin_method=self._event_stream_begin_method,
         )
 
-    def parse_event_response(self, response):
+    def parse_event_response(
+        self, response: datamodel_se_pb2.EventResponse
+    ) -> tuple[str | None, tuple[ValueT, ...]]:
         """Parse a v0 event streaming response into (event_type, cb_args) form."""
         if response.HasField("createdEventResponse"):
             return "created", (
