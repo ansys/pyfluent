@@ -37,7 +37,6 @@ from warnings import warn
 from typing_extensions import Required, Unpack, assert_never
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
-from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.execution.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
@@ -786,15 +785,18 @@ def connect_to_fluent(
         if insecure_mode:
             raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE)
 
-    if address is None:
-        values = _get_server_info(server_info_file_name, ip, port, password)
-        if len(values) == 2:
-            address, password = values
-            ip, port = None, None
-        else:
-            ip, port, password = values
+    from ansys.fluent.core.execution.session.session import (
+        _create_fluent_connection,
+        _create_session_from_connection,
+    )
 
-    fluent_connection = FluentConnection(
+    server_info = (
+        _get_server_info(server_info_file_name, ip, port, password)
+        if address is None
+        else None
+    )
+    fluent_connection, ip, port, password = _create_fluent_connection(
+        server_info=server_info,
         ip=ip,
         port=port,
         password=password,
@@ -804,8 +806,6 @@ def connect_to_fluent(
         insecure_mode=insecure_mode,
         cleanup_on_exit=cleanup_on_exit,
     )
-    # Map the mode detected from the running server to its session class
-    # (e.g. Meshing, PureMeshing, Solver); it is instantiated below.
     new_session = fluent_connection._mode.get_fluent_value()
 
     start_watchdog = _confirm_watchdog_start(
@@ -826,10 +826,9 @@ def connect_to_fluent(
                 inside_container=fluent_connection.connection_properties.inside_container,
             )
 
-    session = new_session(
-        fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection.scheme_eval,
+    return _create_session_from_connection(
+        fluent_connection,
+        session_type=new_session,
         start_transcript=start_transcript,
         file_transfer_service=file_transfer_service,
     )
-    return session

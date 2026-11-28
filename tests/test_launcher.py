@@ -39,6 +39,7 @@ from ansys.fluent.core.diagnostics.exceptions import (
 )
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher import server_info, standalone_launcher
 from ansys.fluent.core.execution.launcher.container_launcher import (
     DockerLauncher,
 )
@@ -83,8 +84,196 @@ from ansys.fluent.core.execution.launcher.slurm_launcher import (
 from ansys.fluent.core.execution.launcher.standalone_launcher import (
     StandaloneLauncher,
 )
+from ansys.fluent.core.execution.session import session as session_module
+from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
+
+
+class _MockLauncherSession(BaseSession):
+    def __init__(
+        self,
+        fluent_connection,
+        scheme_eval,
+        file_transfer_service=None,
+        start_transcript=True,
+        launcher_args=None,
+    ):
+        self._fluent_connection = fluent_connection
+        self.scheme = scheme_eval
+        self._file_transfer_service = file_transfer_service
+        self._start_transcript = start_transcript
+        self._launcher_args = launcher_args
+
+
+class _MockDetectedSession(_MockLauncherSession):
+    pass
+
+
+@pytest.mark.parametrize(
+    "server_address, expected_ip, expected_port",
+    [("127.0.0.1:5000", "127.0.0.1", 5000), ("unix:/fluent.sock", None, None)],
+)
+def test_standalone_and_connect_share_connection_setup(
+    tmp_path, monkeypatch, server_address, expected_ip, expected_port
+):
+    server_file = tmp_path / "server-info.txt"
+    server_file.write_text(f"{server_address}\nsecret\n", encoding="utf-8")
+    connection = Mock()
+    connection._mode.get_fluent_value.return_value = _MockDetectedSession
+    connection.connection_properties.inside_container = False
+    create_connection = Mock(return_value=connection)
+    monkeypatch.setattr(session_module, "FluentConnection", create_connection)
+    monkeypatch.setattr(server_info, "_check_ip_port", Mock())
+    launch_watchdog = Mock()
+    monkeypatch.setattr(standalone_launcher.watchdog, "launch", launch_watchdog)
+    file_transfer = Mock()
+
+    connected = pyfluent.connect_to_fluent(
+        server_info_file_name=str(server_file),
+        file_transfer_service=file_transfer,
+        start_transcript=False,
+        start_watchdog=True,
+    )
+    assert type(connected) is _MockDetectedSession
+    assert connected._launcher_args is None
+    assert connected._file_transfer_service is file_transfer
+    assert connected._start_transcript is False
+    connect_args = create_connection.call_args.kwargs
+    assert connect_args["cleanup_on_exit"] is False
+    assert "inside_container" not in connect_args
+    assert "file_transfer_service" not in connect_args
+
+    monkeypatch.setattr(
+        standalone_launcher,
+        "_get_server_info_file_names",
+        lambda: (str(server_file), str(server_file)),
+    )
+    monkeypatch.setattr(
+        standalone_launcher, "_generate_launch_string", lambda *a: "fluent"
+    )
+    monkeypatch.setattr(
+        standalone_launcher, "_get_standalone_launch_fluent_version", lambda *a: None
+    )
+    monkeypatch.setattr(standalone_launcher, "_await_fluent_launch", Mock())
+    process = Mock(pid=1234)
+    monkeypatch.setattr(
+        standalone_launcher.subprocess, "Popen", Mock(return_value=process)
+    )
+    disable_guard = Mock()
+    monkeypatch.setattr(
+        StandaloneLauncher, "_disable_idle_timeout_guard", disable_guard
+    )
+    launcher = StandaloneLauncher(
+        mode=FluentMode.SOLVER,
+        fluent_path="fluent",
+        py=False,
+        cleanup_on_exit=True,
+        start_transcript=False,
+        start_watchdog=True,
+        file_transfer_service=file_transfer,
+    )
+    launcher.new_session = _MockLauncherSession
+    launched = launcher()
+
+    assert type(launched) is _MockLauncherSession
+    assert launched._fluent_connection is connection
+    assert launched._launcher_args is launcher.argvals
+    assert launched._file_transfer_service is file_transfer
+    assert launched._start_transcript is False
+    assert launched._process is process
+    disable_guard.assert_called_once_with(launched)
+    launch_args = create_connection.call_args.kwargs
+    assert launch_args["cleanup_on_exit"] is True
+    assert launch_args["inside_container"] is False
+    assert launch_args["file_transfer_service"] is file_transfer
+    for args in (connect_args, launch_args):
+        assert (args["ip"], args["port"], args["password"]) == (
+            expected_ip,
+            expected_port,
+            "secret",
+        )
+        assert args["address"] == (server_address if expected_ip is None else None)
+    assert launch_watchdog.call_count == (2 if expected_ip else 0)
+    if expected_ip:
+        assert launch_watchdog.call_args_list[0].args[1:] == (
+            expected_port,
+            "secret",
+            expected_ip,
+        )
+        assert launch_watchdog.call_args_list[0].kwargs == {
+            "allow_remote_host": False,
+            "certificates_folder": None,
+            "insecure_mode": False,
+            "inside_container": False,
+        }
+        assert launch_watchdog.call_args_list[1].args[1:] == (
+            expected_port,
+            "secret",
+            expected_ip,
+        )
+        assert launch_watchdog.call_args_list[1].kwargs == {"inside_container": False}
+    assert not server_file.exists()
+
+
+def test_connect_to_fluent_preserves_explicit_remote_address(monkeypatch):
+    connection = Mock()
+    connection._mode.get_fluent_value.return_value = _MockDetectedSession
+    connection.connection_properties.inside_container = False
+    create_connection = Mock(return_value=connection)
+    monkeypatch.setattr(session_module, "FluentConnection", create_connection)
+    launch_watchdog = Mock()
+    monkeypatch.setattr(standalone_launcher.watchdog, "launch", launch_watchdog)
+
+    session = pyfluent.connect_to_fluent(
+        address="remote.example:5000",
+        allow_remote_host=True,
+        certificates_folder="certificates",
+        password="secret",
+        start_transcript=False,
+        start_watchdog=True,
+    )
+
+    assert type(session) is _MockDetectedSession
+    create_connection.assert_called_once_with(
+        ip=None,
+        port=None,
+        password="secret",
+        address="remote.example:5000",
+        allow_remote_host=True,
+        certificates_folder="certificates",
+        insecure_mode=False,
+        cleanup_on_exit=False,
+    )
+    launch_watchdog.assert_not_called()
+
+
+def test_connection_error_preserves_launcher_cleanup(tmp_path, monkeypatch):
+    error = RuntimeError("connection failed")
+    monkeypatch.setattr(session_module, "FluentConnection", Mock(side_effect=error))
+    with pytest.raises(RuntimeError, match="connection failed") as exc:
+        pyfluent.connect_to_fluent(address="unix:/fluent.sock")
+    assert exc.value is error
+
+    server_file = tmp_path / "server-info.txt"
+    server_file.write_text("unix:/fluent.sock\nsecret\n", encoding="utf-8")
+    monkeypatch.setattr(standalone_launcher, "_await_fluent_launch", Mock())
+    monkeypatch.setattr(
+        standalone_launcher.subprocess, "Popen", Mock(return_value=Mock(pid=1234))
+    )
+    launcher = StandaloneLauncher.__new__(StandaloneLauncher)
+    launcher.argvals = {"cleanup_on_exit": True}
+    launcher.new_session = _MockLauncherSession
+    launcher.file_transfer_service = None
+    launcher._launch_cmd = "fluent"
+    launcher._kwargs = {}
+    launcher._server_info_file_name = str(server_file)
+    launcher._sifile_last_mtime = 0
+
+    with pytest.raises(LaunchFluentError) as exc:
+        launcher()
+    assert exc.value.__cause__ is error
+    assert not server_file.exists()
 
 
 def test_gpu_version_error():
