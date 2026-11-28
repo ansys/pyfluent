@@ -34,7 +34,7 @@ import json
 import logging
 import os
 from types import TracebackType
-from typing import TYPE_CHECKING, Any, Literal, overload
+from typing import TYPE_CHECKING, Any, Literal, TypeVar, overload
 import warnings
 import weakref
 
@@ -81,8 +81,10 @@ logger = logging.getLogger("pyfluent.general")
 
 __all__ = ("BaseSession", "using")
 
+_SessionT = TypeVar("_SessionT", bound="BaseSession")
 
-def _parse_server_info_file(file_name: str):
+
+def _parse_server_info_file(file_name: str) -> tuple[str, str] | tuple[str, int, str]:
     """Parse server info file.
     Returns (ip, port, password) or (unix_socket, password)"""
     with open(file_name, encoding="utf-8") as f:
@@ -96,6 +98,50 @@ def _parse_server_info_file(file_name: str):
         ip = ip_and_port[0]
         port = int(ip_and_port[1])
         return ip, port, password
+
+
+def _create_fluent_connection(
+    *,
+    server_info: tuple[str, str] | tuple[str, int, str] | None = None,
+    ip: str | None = None,
+    port: int | None = None,
+    password: str | None = None,
+    address: str | None = None,
+    **connection_kwargs,
+) -> tuple[FluentConnection, str | None, int | None, str | None]:
+    """Create a connection and return the resolved watchdog credentials."""
+    if server_info is not None:
+        if len(server_info) == 2:
+            address, password = server_info
+            ip, port = None, None
+        else:
+            ip, port, password = server_info
+            address = None
+    connection = FluentConnection(
+        ip=ip,
+        port=port,
+        password=password,
+        address=address,
+        **connection_kwargs,
+    )
+    return connection, ip, port, password
+
+
+def _create_session_from_connection(
+    fluent_connection: FluentConnection,
+    session_type: type[_SessionT],
+    file_transfer_service: FileTransferStrategy | None = None,
+    start_transcript: bool = True,
+    launcher_args: dict[str, Any] | None = None,
+) -> _SessionT:
+    """Create a session of the requested type from a connection."""
+    return session_type(
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection.scheme_eval,
+        file_transfer_service=file_transfer_service,
+        start_transcript=start_transcript,
+        launcher_args=launcher_args,
+    )
 
 
 class BaseSession:
@@ -375,29 +421,18 @@ class BaseSession:
         Session
             Session instance
         """
-        values = _parse_server_info_file(server_info_file_name)
-        if len(values) == 2:
-            address, password = values
-            ip, port = None, None
-        else:
-            ip, port, password = values
-            address = None
-        fluent_connection = FluentConnection(
-            ip=ip,
-            port=port,
-            password=password,
-            address=address,
+        fluent_connection, _, _, _ = _create_fluent_connection(
+            server_info=_parse_server_info_file(server_info_file_name),
             file_transfer_service=file_transfer_service,
             **connection_kwargs,
         )
-        session = cls(
-            fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection.scheme_eval,
+        return _create_session_from_connection(
+            fluent_connection,
+            session_type=cls,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
         )
-        return session
 
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
