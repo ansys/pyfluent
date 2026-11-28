@@ -359,6 +359,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
 
 
 @pytest.mark.nightly
+@pytest.mark.fluent_version(">=27.2")
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
