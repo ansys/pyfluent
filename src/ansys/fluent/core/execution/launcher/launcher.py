@@ -187,7 +187,10 @@ class LaunchFluentArgsNoContainer(LauncherArgsBase, TypedDict, total=False):
     This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
     """
     py: bool | None
-    """If True, Fluent will run in Python mode. Default is None."""
+    """Request Python mode. Standalone launches default to it for known Fluent versions
+    2025 R1 and later. Container and Slurm launches require an explicit ``True`` to activate
+    the mode. PIM launches ignore this option.
+    """
     cwd: str | None
     """Working directory for the Fluent client."""
     fluent_path: str | None
@@ -470,7 +473,10 @@ def launch_fluent(
         Valid string options include ``"meshing"``, ``"pure-meshing"``, and
         ``"solver"``.
     py : bool, optional
-        If True, Fluent will run in Python mode. Default is None.
+        Run Fluent in Python mode. For standalone launches, omitting this option or
+        passing ``None`` enables Python mode for Fluent 2025 R1 and later and
+        disables it for earlier or unknown versions. Container and Slurm launches
+        activate the mode only when this option is ``True``. PIM launches ignore it.
     gpu : bool or list, optional
         This option will start Fluent with the GPU Solver. A list of GPU IDs can be
         passed to use specific GPUs. If True is passed, the number of GPUs used will be

@@ -102,7 +102,7 @@ class StandaloneArgsWithoutDryRunMode(
     replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
     """
     py: bool | None
-    """If True, runs Fluent in Python mode. Defaults to None."""
+    """Run Fluent in Python mode. Launches default to Python mode for known Fluent versions 2025 R1 and later."""
     cwd: str | None
     """Working directory for the Fluent client."""
     fluent_path: str | None
@@ -198,7 +198,8 @@ class StandaloneLauncher:
             If True, runs in lightweight mode where mesh settings are read into a background solver session,
             replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
         py : bool, optional
-            If True, runs Fluent in Python mode. Defaults to None.
+            Run Fluent in Python mode. If omitted or ``None``, the mode is enabled
+            for Fluent 2025 R1 and later and disabled for earlier or unknown versions.
         gpu : bool, optional
             If True, starts Fluent with GPU Solver enabled.
         cwd : :class:`os.PathLike` or str, optional
@@ -257,14 +258,11 @@ class StandaloneLauncher:
             warnings.warn(warning_msg, UserWarning)
             self.argvals["lightweight_mode"] = False
 
-        fluent_version = _get_standalone_launch_fluent_version(self.argvals)
-
-        if (
-            fluent_version
-            and fluent_version >= FluentVersion.v251
-            and self.argvals.get("py") is None
-        ):
-            self.argvals["py"] = True
+        if self.argvals.get("py") is None:
+            fluent_version = _get_standalone_launch_fluent_version(self.argvals)
+            self.argvals["py"] = (
+                fluent_version is not None and fluent_version >= FluentVersion.v251
+            )
 
         if pyfluent.config.fluent_debug:
             self.argvals["fluent_debug"] = True
