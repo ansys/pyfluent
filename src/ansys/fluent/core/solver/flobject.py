@@ -48,6 +48,7 @@ from collections.abc import (
     ItemsView,
     Iterator,
     KeysView,
+    Sequence,
     ValuesView,
 )
 from contextlib import contextmanager, nullcontext, suppress
@@ -77,6 +78,7 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
+    overload,
 )
 import warnings
 import weakref
@@ -1911,7 +1913,7 @@ class NamedObjectWildcardPath(WildcardPath):
         self[name].set_state(value)
 
 
-ChildTypeT = TypeVar("ChildTypeT")
+ChildTypeT = TypeVar("ChildTypeT", bound="SettingsBase")
 
 
 class _NamedObjectCommandMixin:
@@ -2285,7 +2287,7 @@ def _convert_to_target_units(path, state, quantity, target_units):
 
 
 @no_runtime_type_check
-class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
+class ListObject(SettingsBase[ListStateType], Sequence[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
 
@@ -2384,10 +2386,18 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         """
         return self.flproxy.get_list_size(self.path)
 
-    def __getitem__(self, index: int) -> ChildTypeT:
+    @overload
+    def __getitem__(self, index: int) -> ChildTypeT: ...
+
+    @overload
+    def __getitem__(self, index: slice) -> list[ChildTypeT]: ...
+
+    def __getitem__(self, index: int | slice) -> ChildTypeT | list[ChildTypeT]:
         size = self.get_size()
-        if index >= size:
-            raise IndexError(index)
+        if isinstance(index, int):
+            if index >= size:
+                raise IndexError(index)
+
         if len(self._objects) != size:
             self._update_objects()
         return self._objects[index]
