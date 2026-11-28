@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -73,24 +68,25 @@ material degradation.
 
 from pathlib import Path
 
-from ansys.units import VariableCatalog
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
+    BoundaryCondition,
+    CellZoneConditions,
     Models,
     Monitor,
     ReportDefinitions,
+    ReportPlot,
     SolidCellZone,
     SolidMaterial,
     Solution,
-    WallBoundary,BoundaryCondition,
-    ReportPlot,CellZoneConditions,
+    WallBoundary,
     initialize,
     iterate,
     write_case,
     write_case_data,
 )
+from ansys.units import VariableCatalog
 from ansys.units.common import J, K, W, kg, m
 
 headlamp_spaceclaim_file, headlamp_pmdb_file = [
@@ -290,7 +286,6 @@ meshing.tui.mesh.check_mesh()
 # Save the mesh file (``headlamp.msh.h5``).
 
 meshing.meshing.File.WriteMesh(FileName="headlamp.msh.h5")
-watertight.application.file.write_mesh
 ###############################################################################
 # Solve and postprocess
 # ---------------------
@@ -439,7 +434,7 @@ rad_input_bc.thermal.temperature.value = 298.15 * K
 rad_input_bc.radiation.boundary_source = True
 rad_input_bc.radiation.direct_irradiation_settings.direct_irradiation[
     "Full-spectrum"
-] = 1200 * W / m**2
+] = (1200 * W / m**2)
 rad_input_bc.radiation.direct_irradiation_settings.beam_direction = (
     -0.848,
     0,

@@ -7,7 +7,7 @@ Solver settings objects
 
 Solver settings objects provide a natural way to access and modify Fluent solver
 settings and issue commands to be executed.
-An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
+An appropriate call to the :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent`
 function returns an object whose interface directly exposes the :ref:`ref_root` of the solver settings hierarchy.
 
 .. vale Google.Spacing = YES
@@ -26,9 +26,9 @@ Example usage
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = Solver.from_install()
   >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
 
 
@@ -51,6 +51,75 @@ Accessing solver settings
   >>> results = solver_session.settings.results
 
 
+Exposure levels
+---------------
+
+Every solver settings object, command, query, and command/query argument has an
+assigned exposure level: alpha, beta, or stable. You can query an exposed settings
+object's assigned exposure level with the ``exposure_level`` attribute.
+
+.. code-block:: python
+
+  >>> solver_session.settings.setup.exposure_level
+  <ExposureLevel.STABLE: 'stable'>
+
+By default, only stable objects are exposed. Use ``settings.set_exposure_level()`` on
+the settings root to expose beta or alpha objects.
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core import ExposureLevel
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.STABLE)
+
+The available levels are:
+
+- ``ExposureLevel.STABLE``: Shows only stable objects.
+- ``ExposureLevel.BETA``: Shows stable and beta objects.
+- ``ExposureLevel.ALPHA``: Shows stable, beta, and alpha objects.
+
+.. note::
+  Exposure level settings are strictly session-based: they are not retained or
+  carried over from one session to the next, and each new session defaults to
+  exposing only stable items unless a different exposure level is explicitly
+  configured for that session.
+
+Show beta objects
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core import ExposureLevel
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
+
+After enabling beta exposure, beta settings objects, commands, queries, and
+command/query arguments become accessible.
+
+Show alpha objects
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.ALPHA)
+
+This also keeps beta objects visible.
+
+.. note::
+
+  - ``set_exposure_level()`` is available only on the settings root.
+
+  .. code-block:: python
+
+    >>> from ansys.fluent.core import ExposureLevel
+    >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
+    >>> solver_session.settings.setup.set_exposure_level(ExposureLevel.BETA)
+    Traceback (most recent call last):
+    ...
+    AttributeError: ...
+
+  - If you try to access a hidden object before enabling the required exposure
+    level, an ``AttributeError`` is raised.
+
+
 Types of settings objects
 -------------------------
 
@@ -64,14 +133,13 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 :obj:`~ansys.fluent.core.solver.flobject.NamedObject`, and
 :obj:`~ansys.fluent.core.solver.flobject.ListObject`.
 
-- The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
-  can be accessed as attributes. For example, using the expression ``solver_session.settings.setup.models.energy``,
-  which resolves to :obj:`~ansys.fluent.core.generated.solver.settings_232.energy.energy`,
-  which is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.models_1.models`,
-  which itself is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`, and each of those
-  three objects is a ``Group``.
-  The names of the child objects of a group can be accessed
-  via ``<Group>.child_names``.
+- A :obj:`~ansys.fluent.core.solver.flobject.Group` is a static container with predefined child objects
+  accessed as attributes. For example, ``solver_session.settings.setup.models.energy``
+  accesses energy settings through three nested ``Group`` objects:
+  :obj:`~ansys.fluent.core.generated.v261.solver.settings.setup`,
+  :obj:`~ansys.fluent.core.generated.v261.solver.settings.models_1`, and
+  :obj:`~ansys.fluent.core.generated.v261.solver.settings.energy`.
+  Use ``<Group>.child_names`` to list the names of its child objects.
 
 - The :obj:`~ansys.fluent.core.solver.flobject.NamedObject` type is a container holding dynamically
   created named objects. For
@@ -122,24 +190,23 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
   10.0
 
 
-To modify the state of any object, you can assign the corresponding attribute
-in its parent object. This assignment can be done at any level. For ``Group``
-and ``NamedObject`` types, the state value is a dictionary. For the
-``ListObject`` type, the state value is a list.
+To modify an object's state, call its ``set_state()`` method. For ``Group`` and
+``NamedObject`` types, the state value is a dictionary. For the ``ListObject``
+type, the state value is a list. Attribute assignment to set state is deprecated
+and emits a warning. Indexed assignment remains supported.
 
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Energy, VelocityInlet, Viscous
   >>> viscous = Viscous(settings_source=solver_session)
-  >>> viscous.model = 'laminar'
+  >>> viscous.model.set_state('laminar')
   >>> energy = Energy(settings_source=solver_session)
-  >>> energy.enabled = False
+  >>> energy.enabled.set_state(False)
   >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet1")
-  >>> inlet1.vmag.constant = 14
+  >>> inlet1.vmag.constant.set_state(14)
 
 
-You can also access the state of an object with the ``get_state()`` method and
-modify it with the ``set_state()`` method.
+You can also access the state of an object with the ``get_state()`` method.
 
 ``Real`` and ``RealList`` settings objects can incorporate units alongside values. If an object
 supports units, you can retrieve its value and units as an ``ansys.units.Quantity`` object using
@@ -290,12 +357,11 @@ in a single solver session:
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver, examples
   >>> from ansys.fluent.core.solver import Viscous, VelocityInlet
-  >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = Solver.from_install()
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
@@ -306,18 +372,7 @@ in a single solver session:
   False
   >>> viscous.model.default_value()
   >>> pprint(viscous.model.allowed_values(), width=1)
-  ['inviscid',
-   'laminar',
-   'k-epsilon',
-   'k-omega',
-   'mixing-length',
-   'spalart-allmaras',
-   'k-kl-w',
-   'transition-sst',
-   'reynolds-stress',
-   'scale-adaptive-simulation',
-   'detached-eddy-simulation',
-   'large-eddy-simulation']
+  ['inviscid', 'laminar', 'k-omega', ...]  # plus additional models
   >>> cold_inlet = VelocityInlet(settings_source=solver_session, name="cold-inlet")
   >>> cold_inlet.turb_intensity.min()
   0
@@ -363,9 +418,17 @@ Also, when you have one or more velocity inlets with "inlet" in their names::
   {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
   'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
 
+Wildcards can also be used in the arguments of commands. For instance, you can
+change the type of every cell zone whose name starts with "solid" by passing a
+wildcard pattern to the ``zone_list`` argument of the ``set_zone_type`` command::
+
+  >>> from ansys.fluent.core.solver import CellZoneConditions
+  >>> cell_zone_conditions = CellZoneConditions(settings_source=solver_session)
+  >>> cell_zone_conditions.set_zone_type(zone_list="solid*", new_type=cell_zone_conditions.set_zone_type.new_type.SOLID)
+
 For string lists with allowed values, for instance::
 
-  >>> solver_session.settings.results.graphics.contour['contour-1'].surfaces_list = 'in*'
+  >>> solver_session.settings.results.graphics.contour['contour-1'].surfaces_list.set_state('in*')
 
 sets ``surfaces_list`` to all matches of surface names starting with ``in``, so when you prompt for the
 list of surfaces::
@@ -379,7 +442,7 @@ The following list summarizes common wildcards:
   only items starting with "in" such as in1 and in2, whereas *in* lists only items that have
   the string "in" within the name.
 
-- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list "grey" and "gray".
+- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list ``grey`` and ``gray``.
 
 - ``[]`` indicates a range of numbers or characters at the beginning of a string. For example,
   ``'[to]'`` would match anything starting with "t" and anything starting with "o" in the name. Using
@@ -387,19 +450,20 @@ The following list summarizes common wildcards:
   using ``'[0-9]'`` would match the initial character with any number between "0" and "9" inclusively.
 
 - ``^`` indicates a Boolean NOT function, or negation. For example, ``'^*in*'`` would list anything
-  not containing "in".
+  not containing ``in``.
 
 - ``|`` indicates a Boolean OR function. For example, ``'*part*|*solid*'`` would list anything
-  containing either "part" or "solid" such as "part2-solid-1", "part2-solid-2", "part-3",
-  "solid", and "solid-1".
+  containing either ``part`` or ``solid`` such as ``part2-solid-1``, ``part2-solid-2``, ``part-3``,
+  ``solid``, and ``solid-1``.
 
 - ``&`` indicates a Boolean AND function. For example, ``'*part*&*solid*'`` would list anything
-  containing both "part" and "solid" such as "part2-solid-1" and "part2-solid-2".
+  containing both ``part`` and ``solid`` such as ``part2-solid-1`` and ``part2-solid-2``.
 
 
 .. toctree::
    :maxdepth: 1
    :hidden:
 
-   set_up/set_up_contents
+   set_up/setup_contents
    solution
+   run_control

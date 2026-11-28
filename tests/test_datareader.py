@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,8 +22,8 @@
 # SOFTWARE.
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.data_file import DataFile
+from ansys.fluent.core.offline.case_file import CaseFile
+from ansys.fluent.core.offline.data_file import DataFile
 
 
 def test_data_reader_for_single_phase():

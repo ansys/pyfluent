@@ -18,11 +18,10 @@ callback mechanism to perform a simple tabulation of monitored values per iterat
 .. code-block:: python
 
   >>> # get started with case and data loaded
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core import examples
+  >>> from ansys.fluent.core import Solver, examples
   >>> import pandas as pd
   >>> from tabulate import tabulate
-  >>> solver_session = pyfluent.launch_fluent(start_transcript=False)
+  >>> solver_session = Solver.from_install(start_transcript=False)
   >>> import_case = examples.download_file(
   >>>     file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
   >>> )

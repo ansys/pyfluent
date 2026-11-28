@@ -1,6 +1,6 @@
-.. _ref_field_data_guide:
-
 .. vale Google.Spacing = NO
+
+.. _ref_field_data_guide:
 
 Field data
 ==========
@@ -15,9 +15,9 @@ You can do this either by loading both case and data files or by reading a case 
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import Solver
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = Solver.from_install()
   >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
   >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
   >>> solver_session.settings.file.read_case_data(file_name=case_path)
@@ -260,31 +260,53 @@ and ``surface_ids``. It returns the set of accessible object names or IDs.
   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
+Allowed variables
+~~~~~~~~~~~~~~~~~~
+The ``allowed_variables()`` method is provided on the ``scalar_fields`` and
+``vector_fields`` objects of field data. It returns the allowed fields as ``VariableDescriptor``
+objects rather than as name strings. Fields that do not have a corresponding
+``VariableDescriptor`` are excluded, and a warning is issued listing them.
+
+.. code-block:: python
+
+  >>> field_data.vector_fields.allowed_values()
+  ['velocity', 'relative-velocity']
+  >>> field_data.vector_fields.allowed_variables()
+  UserWarning: The following variables are available but do not have corresponding descriptors: relative-velocity
+  [VectorVariableDescriptor(dimension={'LENGTH': 1.0, 'TIME': -1.0}, name='velocity')]
+
+
 Active status
 ~~~~~~~~~~~~~
 
 The ``is_active()`` method checks whether a particular variable is available.
+Variables are strongly typed by tensor kind, so passing a scalar variable to
+``vector_fields`` (or a vector variable to ``scalar_fields``) raises a
+``TypeError``.
 
 .. code-block:: python
 
   >>> from ansys.units import VariableCatalog
   >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY)
   True
-  >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
-  False
   >>> field_data.scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
   True
+  >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+  TypeError: field_name must be a `VectorVariableDescriptor`.
 
 
 Value ranges
 ~~~~~~~~~~~~
 
 The ``range()`` method returns the numeric range of values for a given variable.
+The field can be provided as a string or as a scalar ``VariableDescriptor``.
 
 .. code-block:: python
 
   >>> field_data.scalar_fields.range("cell-weight")
-  [8.0, 24.0]
+  [6.0, 26.0]
+  >>> field_data.scalar_fields.range(VariableCatalog.mesh.CELL_WEIGHT)
+  [6.0, 26.0]
 
 
 Field data streaming
@@ -296,18 +318,17 @@ field data streaming callback mechanism with visualization
 tools from the Python ecosystem, making it easy to visualize the data of interest.
 
 .. note::
-   In **Meshing mode**, only 'field_data_streaming' provides a valid interface as of now.
+   In **Meshing mode**, only ``field_data_streaming`` provides a valid interface as of now.
    Other methods currently return an empty array when used in Meshing mode.
 
-   The 'field_data_streaming' is available only for the **Meshing mode**.
+   The ``field_data_streaming`` is available only for the **Meshing mode**.
 
 The following example demonstrates how to update mesh data in **Meshing mode**
 using the field data streaming mechanism:
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core import examples
+  >>> from ansys.fluent.core import Meshing, examples
 
   >>> # Download example geometry file
   >>> import_file_name = examples.download_file(
@@ -315,7 +336,7 @@ using the field data streaming mechanism:
   >>> )
 
   >>> # Launch Fluent in Meshing mode
-  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = Meshing.from_install()
 
   >>> # Dictionary to store mesh data
   >>> mesh_data = {}
@@ -338,9 +359,9 @@ using the field data streaming mechanism:
   >>> meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
   >>> # Import the geometry into the workflow
-  >>> meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Arguments.set_state({
   >>>    "FileName": import_file_name,
   >>>    "LengthUnit": "in",
-  >>> }
+  >>> })
 
   >>> meshing_session.workflow.TaskObject["Import Geometry"].Execute()

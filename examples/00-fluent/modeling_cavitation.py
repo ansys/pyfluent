@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -296,10 +291,10 @@ write_case_data(solver, file_name="cav.cas.h5")
 graphics = Graphics(solver)
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
-graphics.picture.x_resolution = 1920
-graphics.picture.y_resolution = 1440
+graphics.picture.x_resolution.set_state(1920)
+graphics.picture.y_resolution.set_state(1440)
 
 ###############################################################################
 # Create contour plots

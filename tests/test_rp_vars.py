@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,11 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 
 from ansys.fluent.core.examples import download_file, path
-from ansys.fluent.core.filereader.casereader import CaseReader
-from ansys.fluent.core.rpvars import RPVarType
+from ansys.fluent.core.offline.case_file import CaseFile
+from ansys.fluent.core.rpvars import RPVars, RPVarType
 
 
 def test_get_and_set_rp_vars(new_solver_session) -> None:
@@ -90,12 +92,11 @@ def test_get_all_rp_vars(new_solver_session) -> None:
     assert len(all_vars) == pytest.approx(9000, 20)
 
     # CaseFile comparison, note that the PyFluent work dir is not necessarily the same as the Fluent work dir
-    case = CaseReader(case_file_name=path(case_path))
+    case = CaseFile(case_file_name=path(case_path))
     case_vars = case.rp_vars()
     assert len(case_vars) == pytest.approx(9000, 450)
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
     rp_vars = solver.rp_vars
@@ -108,7 +109,6 @@ def test_rp_vars_allowed_values(new_solver_session) -> None:
     assert "number-of-iterations" in rp_vars.allowed_values()
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_boolean(new_solver_session) -> None:
     solver = new_solver_session
 
@@ -122,6 +122,28 @@ def test_rp_vars_boolean(new_solver_session) -> None:
         var_val = not var_val
         rp_vars(var_name, var_val)
         assert rp_vars(var_name) == var_val
+
+
+def test_create_rp_var_name_length_limit():
+    calls = []
+
+    def _eval_fn(cmd):
+        calls.append(cmd)
+        return "()"
+
+    rp_vars = RPVars(_eval_fn)
+    too_long_name = "x" * 63
+
+    with pytest.raises(ValueError, match="maximum allowed length of 62"):
+        rp_vars.create(name=too_long_name, value=1, var_type=int)
+
+    assert calls == []
+
+    long_name = "x" * 62
+    rp_vars.create(name=long_name, value=1, var_type=int)
+
+    # Validation happens before any Fluent command is issued.
+    assert calls != []
 
 
 @pytest.mark.fluent_version(">=25.1")

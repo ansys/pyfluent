@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -300,11 +295,11 @@ viscous.k_omega_model = viscous.k_omega_model.SST
 
 air = FluidMaterial.get(solver, name="air")
 
-air.density.option = "ideal-gas"
+air.density.option.set_state("ideal-gas")
 
-air.viscosity.option = "sutherland"
+air.viscosity.option.set_state("sutherland")
 
-air.viscosity.sutherland.option = "three-coefficient-method"
+air.viscosity.sutherland.option.set_state("three-coefficient-method")
 
 air.viscosity.sutherland.reference_viscosity = 1.716e-05 * kg / (m * s)
 

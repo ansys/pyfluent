@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -64,6 +59,11 @@ Modeling One-Way Fluid-Structure Interaction
 # .. image:: ../../_static/fsi_1way_1.png
 #    :align: center
 #    :alt: One-Way Fluid-Structure Interaction Model
+
+# %%
+# Dependencies
+# ------------
+# ansys-fluent-core
 
 # %%
 # Import modules
@@ -138,8 +138,12 @@ iterate(solver, iter_count=100)
 # ---------------
 
 graphics = Graphics(solver)
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
 contour_vel = Contour(solver).create(
     name="contour-vel",
@@ -270,6 +274,7 @@ solver.exit()
 # References:
 # =====================================================================================
 # .. _Reference:
+#
 # [1] Modeling One-Way Fluid-Structure Interaction (FSI) Within Fluent, `Ansys Fluent documentation​ <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_fsi_1way.html>`_.
 
 # sphinx_gallery_thumbnail_path = '_static/fsi_1way_2.png'

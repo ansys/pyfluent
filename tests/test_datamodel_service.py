@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +22,9 @@
 # SOFTWARE.
 
 import gc
+import inspect
 from time import sleep
+import warnings
 
 from conftest import SKIP_INVESTIGATING
 from google.protobuf.json_format import MessageToDict
@@ -32,19 +35,37 @@ from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core._grpc_services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
+from ansys.fluent.core._grpc_services.object_model_service import (
+    _convert_variant_to_value,
+)
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_value_to_variant,
+)
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_variant_to_value as _convert_variant_to_value_v0,
+)
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
+from ansys.fluent.core.services.object_model import (
     PyArguments,
     PyArgumentsSingletonSubItem,
+    PyArgumentsSubItem,
     PyArgumentsTextualSubItem,
     PyCommand,
+    PyMenu,
+    PyNamedObject,
+    PyNamedObjectContainer,
     PyNumerical,
     PyQuery,
+    PyStateContainer,
     ReadOnlyObjectError,
-    _convert_value_to_variant,
-    _convert_variant_to_value,
     convert_path_to_se_path,
 )
-from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
+from ansys.fluent.core.services.streaming_services.datamodel_streaming import (
+    DatamodelStream,
+)
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -68,11 +89,124 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 def test_convert_value_to_variant_to_value(value, expected):
     variant = Variant()
     _convert_value_to_variant(value, variant)
-    assert expected == _convert_variant_to_value(variant)
+    assert expected == _convert_variant_to_value_v0(variant)
+
+
+def test_pyarguments_registers_and_releases_command_arguments():
+    class DummyService:
+        def __init__(self):
+            self.registered = []
+            self.released = []
+
+        def register_command_arguments(self, rules, path, command, commandid):
+            self.registered.append((rules, path, command, commandid))
+
+        def release_command_arguments(self, rules, path, command, commandid):
+            self.released.append((rules, path, command, commandid))
+
+    service = DummyService()
+    arguments = PyArguments(service, "workflow", "ImportGeometry", [], "cmd-id")
+
+    assert service.registered == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+    del arguments
+    gc.collect()
+
+    assert service.released == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+
+def test_state_assignment_deprecation(mocker):
+    service = mocker.Mock()
+    menu = PyMenu(service, "test")
+    child = PyStateContainer(service, "test")
+    object.__setattr__(menu, "child", child)
+    set_state = mocker.patch.object(PyStateContainer, "set_state", autospec=True)
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        line = inspect.currentframe().f_lineno + 1
+        menu.child = 3
+        assert len(captured) == 1
+        assert captured[0].lineno == line
+        assert captured[0].filename == __file__
+        assert "child.set_state(value)" in str(captured[0].message)
+        set_state.assert_called_once_with(child, 3)
+
+        menu.local_attribute = 4
+        assert len(captured) == 1
+        assert menu.local_attribute == 4
+
+
+@pytest.mark.parametrize("leaf_type", [PyArgumentsSubItem, PyArgumentsTextualSubItem])
+def test_command_argument_assignment_deprecation(mocker, leaf_type):
+    service = mocker.Mock()
+    arguments = PyArguments(service, "test", "command", [], "id")
+    nested = PyArgumentsSingletonSubItem(arguments, "nested", service, "test", [])
+    leaf = leaf_type(nested, "leaf", service, "test", [])
+    set_state = mocker.patch.object(PyArgumentsSubItem, "set_state", autospec=True)
+
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        arguments.nested = nested
+        nested.leaf = leaf
+        assert not captured
+
+        line = inspect.currentframe().f_lineno + 1
+        arguments.nested = {"leaf": "first"}
+        nested.leaf = "second"
+        assert len(captured) == 2
+        assert all(w.category is PyFluentDeprecationWarning for w in captured)
+        assert [w.filename for w in captured] == [__file__, __file__]
+        assert [w.lineno for w in captured] == [line, line + 1]
+        assert set_state.call_args_list == [
+            mocker.call(nested, {"leaf": "first"}),
+            mocker.call(leaf, "second"),
+        ]
+
+
+def test_named_object_index_assignment_is_not_deprecated(mocker):
+    service = mocker.Mock()
+    container = PyNamedObjectContainer(service, "test", [("objects", "")])
+    set_state = mocker.patch.object(PyMenu, "set_state", autospec=True)
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        container["item"] = {}
+    assert not captured
+    assert set_state.call_args.args[1] == {
+        "PyNamedObjectContainer:item": {"_name_": "item"}
+    }
+
+
+def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
+    class DummyService(CommandArgumentsCleanupMixin):
+        def __init__(self):
+            super().__init__()
+            self.deleted = []
+
+        def _delete_command_arguments_rpc(self, rules, path, command, commandid):
+            self.deleted.append((rules, path, command, commandid))
+
+    service = DummyService()
+    key = ("workflow", "", "ImportGeometry", "cmd-id")
+
+    service.register_command_arguments(*key)
+    service.delete_command_arguments(*key)
+
+    assert service.deleted == [key]
+    assert service._command_arguments == set()
+
+    service.register_command_arguments(*key)
+    service.delete_all_command_arguments()
+    service.release_command_arguments(*key)
+
+    assert service.deleted == [key, key]
 
 
 @pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_event_subscription(new_meshing_session):
     session = new_meshing_session
     session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -130,8 +264,6 @@ def test_event_subscription(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_child_created(new_meshing_session):
     meshing = new_meshing_session
     child_paths = []
@@ -149,8 +281,6 @@ def test_add_on_child_created(new_meshing_session):
     assert child_paths == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_deleted(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -164,8 +294,6 @@ def test_add_on_deleted(new_meshing_session):
     assert len(data) > 0
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_changed(new_meshing_session):
     meshing = new_meshing_session
     task_list = meshing.workflow.Workflow.TaskList
@@ -185,8 +313,6 @@ def test_add_on_changed(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_affected(new_meshing_session):
     meshing = new_meshing_session
     data = []
@@ -207,15 +333,15 @@ def test_add_on_affected(new_meshing_session):
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
     assert "FileName" not in import_geom.Arguments()
     assert wt.import_geometry.command_arguments()["FileName"] is None
-    import_geom.Arguments = {"FileName": geom}
+    import_geom.Arguments.set_state({"FileName": geom})
     assert import_geom.Arguments()["FileName"] == geom
     assert wt.import_geometry.command_arguments()["FileName"] == geom
     sleep(1)
     assert calls == [True]
-    import_geom.Arguments = {"FileName": "dummy"}
+    import_geom.Arguments.set_state({"FileName": "dummy"})
     sleep(1)
     assert calls == 2 * [True]
-    import_geom.Arguments = {"FileName": geom}
+    import_geom.Arguments.set_state({"FileName": geom})
     sleep(1)
     assert calls == 3 * [True]
     execute_state = [meshing.workflow()]
@@ -239,8 +365,6 @@ def test_add_on_affected(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_affected_at_type_path(new_meshing_session):
     meshing = new_meshing_session
     data = []
@@ -259,8 +383,6 @@ def test_add_on_affected_at_type_path(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_command_executed(new_meshing_session):
     meshing = new_meshing_session
     data = []
@@ -291,8 +413,6 @@ def test_add_on_command_executed(new_meshing_session):
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
 # https://github.com/ansys/pyfluent/issues/2999
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -303,7 +423,10 @@ def test_datamodel_streaming_full_diff_state(
 
     def cb(state, deleted_paths):
         if state:
-            state = _convert_variant_to_value(state)
+            if meshing.get_fluent_version() < FluentVersion.v271:
+                state = _convert_variant_to_value_v0(state)
+            else:
+                state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []
@@ -319,8 +442,6 @@ def test_datamodel_streaming_full_diff_state(
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -331,7 +452,10 @@ def test_datamodel_streaming_no_commands_diff_state(
 
     def cb(state, deleted_paths):
         if state:
-            state = _convert_variant_to_value(state)
+            if meshing.get_fluent_version() < FluentVersion.v271:
+                state = _convert_variant_to_value_v0(state)
+            else:
+                state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []
@@ -347,8 +471,6 @@ def test_datamodel_streaming_no_commands_diff_state(
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=24.2")
-@pytest.mark.codegen_required
 def test_get_object_names_wtm(new_meshing_session):
     meshing = new_meshing_session
 
@@ -373,8 +495,6 @@ def test_get_object_names_wtm(new_meshing_session):
     assert meshing.workflow.TaskObject.get_object_names() == child_object_names
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
     meshing = new_meshing_session
 
@@ -405,7 +525,6 @@ def _is_internal_name(name: str, prefix: str) -> bool:
     return name.startswith(prefix) and name.removeprefix(prefix).isdigit()
 
 
-@pytest.mark.codegen_required
 def test_task_object_keys_are_display_names(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -414,7 +533,6 @@ def test_task_object_keys_are_display_names(new_meshing_session):
     assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_named_object_specific_methods(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -448,15 +566,12 @@ def test_named_object_specific_methods(new_meshing_session):
     assert TaskObject.get_state() == TaskObject.getState() == TaskObject()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_command_creation_inside_singleton(new_meshing_session):
     meshing = new_meshing_session
     read_mesh = meshing.meshing.File.ReadMesh.create_instance()
     assert read_mesh.FileName is not None
 
 
-@pytest.mark.codegen_required
 def test_read_only_set_state(new_meshing_session):
     meshing = new_meshing_session
     meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
@@ -493,7 +608,6 @@ test_rules = (
 )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_child_created_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -513,7 +627,6 @@ def test_on_child_created_lifetime(new_solver_session):
     assert "/test/created/A:A1/B-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_deleted_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -536,7 +649,6 @@ def test_on_deleted_lifetime(new_solver_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_changed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -556,7 +668,6 @@ def test_on_changed_lifetime(new_solver_session):
     assert "/test/modified/A:A1/X-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -576,7 +687,6 @@ def test_on_affected_lifetime(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_at_type_path_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -596,7 +706,6 @@ def test_on_affected_at_type_path_lifetime(new_solver_session):
     assert "/test/affected/A:A1/B-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_command_executed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -623,7 +732,6 @@ def test_on_command_executed_lifetime(new_solver_session):
         assert tag not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_attribute_changed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -645,7 +753,6 @@ def test_on_attribute_changed_lifetime(new_solver_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_command_attribute_changed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -681,13 +788,12 @@ def test_on_command_attribute_changed_lifetime(new_solver_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     solver = new_solver_session
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logger.enable()
+    pyfluent.diagnostics.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -702,13 +808,12 @@ def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     solver = new_solver_session
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logger.enable()
+    pyfluent.diagnostics.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -723,7 +828,6 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_set_command_args_and_sub_args(new_meshing_session):
     meshing = new_meshing_session
     ig = meshing.meshing.ImportGeometry.create_instance()
@@ -803,7 +907,6 @@ def test_field_level_help(new_meshing_session):
         )
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_py_query(new_meshing_session):
     meshing_session = new_meshing_session
@@ -845,3 +948,103 @@ def test_py_query(new_meshing_session):
             "face_zone_id_list": [],
             "face_zone_name_pattern": "",
         }
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_get_completer_info(new_meshing_session):
+    meshing = new_meshing_session
+
+    # singleton
+    assert {
+        "ImportGeometry",
+        "getAttribValue",
+        "getState",
+    } < set([x[0] for x in meshing.meshing.get_completer_info()])
+    assert {"application", "general", "task_object", "parts", "parts_files"} < set(
+        [x[0] for x in meshing.meshing_workflow.get_completer_info()]
+    )
+    assert {
+        "import_geometry",
+        "add_2d_boundary_layers",
+        "add_boundary_layers",
+    } < set([x[0] for x in meshing.meshing_workflow.application.get_completer_info()])
+
+    # command
+    assert {
+        "before_execute",
+        "command",
+        "create_instance",
+    } < set(
+        [
+            x[0]
+            for x in meshing.meshing_workflow.application.import_geometry.get_completer_info()
+        ]
+    )
+
+    meshing.meshing_workflow.general.initialize_workflow(
+        workflow_type="Watertight Geometry"
+    )
+
+    # named-object
+    assert {
+        "get_object_names",
+        "getState",
+    } < set(
+        [
+            x[0]
+            for x in meshing.meshing_workflow.task_object.import_geometry.get_completer_info()
+        ]
+    )
+
+    # parameter
+    assert {
+        "is_active",
+        "is_read_only",
+        "allowed_values",
+    } < set(
+        [
+            x[0]
+            for x in meshing.meshing_workflow.task_object.import_geometry[
+                "Import Geometry"
+            ].arguments.file_name.get_completer_info()
+        ]
+    )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_py_named_object_methods_in_meshing_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    watertight = meshing.watertight()
+
+    assert isinstance(
+        meshing.meshing_workflow.task_object.import_geometry["Import Geometry"],
+        PyNamedObject,
+    )
+    assert isinstance(
+        meshing.meshing_workflow.task_object.import_geometry, PyNamedObjectContainer
+    )
+    assert isinstance(meshing.meshing_workflow.task_object, PyMenu)
+    assert isinstance(meshing.meshing_workflow, PyMenu)
+
+    assert "rename" in dir(
+        meshing.meshing_workflow.task_object.import_geometry["Import Geometry"]
+    )
+    assert "rename" not in dir(meshing.meshing_workflow)
+    assert "rename" not in dir(meshing.meshing_workflow.task_object.import_geometry)
+
+    assert "rename" in dir(watertight.import_geometry)
+    assert "rename" not in dir(watertight)
+
+
+def test_py_named_object_methods_in_workflow(new_meshing_session):
+    meshing = new_meshing_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert "rename" not in dir(meshing.workflow)
+    assert "rename" not in dir(meshing.workflow.TaskObject)
+    assert "rename" in dir(meshing.workflow.TaskObject["Import Geometry"])
+
+    assert isinstance(meshing.workflow, PyMenu)
+    assert isinstance(meshing.workflow.TaskObject, PyNamedObjectContainer)
+    assert isinstance(meshing.workflow.TaskObject["Import Geometry"], PyNamedObject)

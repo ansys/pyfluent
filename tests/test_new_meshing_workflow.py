@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,19 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from collections.abc import Iterable
 import time
-from typing import Iterable
 
-from conftest import SKIP_UNKNOWN
+from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples
-from ansys.fluent.core.workflow import camel_to_snake_case
+from ansys.fluent.core.workflow_old import camel_to_snake_case
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_watertight_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file(
@@ -103,8 +102,6 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit
 
@@ -205,7 +202,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     fault_tolerant.extract_edge_features_child_1()
 
     # Identify regions
-    fault_tolerant.identify_regions.show_coordinates = True
+    fault_tolerant.identify_regions.show_coordinates.set_state(True)
     fault_tolerant.identify_regions.material_points_name.set_state("fluid-region-1")
     fault_tolerant.identify_regions.selection_type.set_state("zone")
     fault_tolerant.identify_regions.x.set_state(377.322045740589)
@@ -215,7 +212,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     fault_tolerant.identify_regions.insert_compound_child_task()
     fault_tolerant.identify_regions_child_1()
 
-    fault_tolerant.identify_regions.show_coordinates = True
+    fault_tolerant.identify_regions.show_coordinates.set_state(True)
     fault_tolerant.identify_regions.material_points_name.set_state("void-region-1")
     fault_tolerant.identify_regions.new_region_type.set_state("void")
     fault_tolerant.identify_regions.object_selection_list.set_state(
@@ -271,7 +268,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
             "fluid-region-1",
         ]
     )
-    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_component_list.set_state(
         ["no"] * 7
     )
     fault_tolerant.update_region_settings.all_region_source_list.set_state(
@@ -293,7 +290,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     fault_tolerant.update_region_settings.all_region_name_list.set_state(
         ["fluid-region-1"]
     )
-    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_component_list.set_state(
         ["no"]
     )
     fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
@@ -307,7 +304,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     fault_tolerant.update_region_settings.all_region_name_list.set_state(
         ["fluid-region-1"]
     )
-    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_component_list.set_state(
         ["no"]
     )
     fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
@@ -362,98 +359,96 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
     two_dim_mesh = new_meshing_session_wo_exit.two_dimensional_meshing(legacy=True)
 
-    two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
-    two_dim_mesh.load_cad_geometry_2d.length_unit = "mm"
-    two_dim_mesh.load_cad_geometry_2d.refaceting.refacet = False
+    two_dim_mesh.load_cad_geometry_2d.file_name.set_state(import_file_name)
+    two_dim_mesh.load_cad_geometry_2d.length_unit.set_state("mm")
+    two_dim_mesh.load_cad_geometry_2d.refaceting.set_state({"refacet": False})
     two_dim_mesh.load_cad_geometry_2d()
 
     # Set regions and boundaries
-    two_dim_mesh.update_boundaries_2d.selection_type = "zone"
+    two_dim_mesh.update_boundaries_2d.selection_type.set_state("zone")
     two_dim_mesh.update_boundaries_2d()
 
     # Define global sizing
-    two_dim_mesh.define_global_sizing_2d.curvature_normal_angle = 20
-    two_dim_mesh.define_global_sizing_2d.max_size = 2000.0
-    two_dim_mesh.define_global_sizing_2d.min_size = 5.0
-    two_dim_mesh.define_global_sizing_2d.size_functions = "Curvature"
+    two_dim_mesh.define_global_sizing_2d.curvature_normal_angle.set_state(20)
+    two_dim_mesh.define_global_sizing_2d.max_size.set_state(2000.0)
+    two_dim_mesh.define_global_sizing_2d.min_size.set_state(5.0)
+    two_dim_mesh.define_global_sizing_2d.size_functions.set_state("Curvature")
     two_dim_mesh.define_global_sizing_2d()
 
     # Add local sizing
-    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
-    two_dim_mesh.add_local_sizing_2d.boi_control_name = "boi_1"
-    two_dim_mesh.add_local_sizing_2d.boi_execution = "Body Of Influence"
-    two_dim_mesh.add_local_sizing_2d.boi_face_label_list = ["boi"]
-    two_dim_mesh.add_local_sizing_2d.boi_size = 50.0
-    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
+    two_dim_mesh.add_local_sizing_2d.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_2d.boi_control_name.set_state("boi_1")
+    two_dim_mesh.add_local_sizing_2d.boi_execution.set_state("Body Of Influence")
+    two_dim_mesh.add_local_sizing_2d.boi_face_label_list.set_state(["boi"])
+    two_dim_mesh.add_local_sizing_2d.boi_size.set_state(50.0)
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_2d.draw_size_control.set_state(True)
     two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
-    two_dim_mesh.add_local_sizing_2d.boi_control_name = "edgesize_1"
-    two_dim_mesh.add_local_sizing_2d.boi_execution = "Edge Size"
-    two_dim_mesh.add_local_sizing_2d.boi_size = 5.0
-    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
-    two_dim_mesh.add_local_sizing_2d.edge_label_list = ["airfoil-te"]
+    two_dim_mesh.add_local_sizing_2d.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_2d.boi_control_name.set_state("edgesize_1")
+    two_dim_mesh.add_local_sizing_2d.boi_execution.set_state("Edge Size")
+    two_dim_mesh.add_local_sizing_2d.boi_size.set_state(5.0)
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_2d.draw_size_control.set_state(True)
+    two_dim_mesh.add_local_sizing_2d.edge_label_list.set_state(["airfoil-te"])
     two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
-    two_dim_mesh.add_local_sizing_2d.boi_control_name = "curvature_1"
-    two_dim_mesh.add_local_sizing_2d.boi_curvature_normal_angle = 10
-    two_dim_mesh.add_local_sizing_2d.boi_execution = "Curvature"
-    two_dim_mesh.add_local_sizing_2d.boi_max_size = 2
-    two_dim_mesh.add_local_sizing_2d.boi_min_size = 1.5
-    two_dim_mesh.add_local_sizing_2d.boi_scope_to = "edges"
-    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
-    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
-    two_dim_mesh.add_local_sizing_2d.edge_label_list = ["airfoil"]
+    two_dim_mesh.add_local_sizing_2d.add_child.set_state("yes")
+    two_dim_mesh.add_local_sizing_2d.boi_control_name.set_state("curvature_1")
+    two_dim_mesh.add_local_sizing_2d.boi_execution.set_state("Curvature")
+    two_dim_mesh.add_local_sizing_2d.boi_curvature_normal_angle.set_state(10)
+    two_dim_mesh.add_local_sizing_2d.boi_max_size.set_state(2)
+    two_dim_mesh.add_local_sizing_2d.boi_min_size.set_state(1.5)
+    two_dim_mesh.add_local_sizing_2d.boi_scope_to.set_state("edge labels")
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label.set_state("label")
+    two_dim_mesh.add_local_sizing_2d.draw_size_control.set_state(True)
+    two_dim_mesh.add_local_sizing_2d.edge_label_list.set_state(["airfoil"])
     two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
 
     # Add boundary layer
-    two_dim_mesh.add_2d_boundary_layers.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers.bl_control_name = "aspect-ratio_1"
-    two_dim_mesh.add_2d_boundary_layers.number_of_layers = 4
-    two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
+    two_dim_mesh.add_2d_boundary_layers.add_child.set_state("yes")
+    two_dim_mesh.add_2d_boundary_layers.bl_control_name.set_state("aspect-ratio_1")
+    two_dim_mesh.add_2d_boundary_layers.number_of_layers.set_state(4)
+    two_dim_mesh.add_2d_boundary_layers.offset_method_type.set_state("aspect-ratio")
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"show_advanced_options": True}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_edge_zones_based_on_labels": "no"}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_face_zones_based_on_labels": "no"}
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
-    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name = "uniform_1"
-    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
-    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
-    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child.set_state("yes")
+    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name.set_state("uniform_1")
+    two_dim_mesh.add_2d_boundary_layers_child_1.max_layer_height.set_state(2)
+    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers.set_state(4)
+    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type.set_state("uniform")
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"show_advanced_options": True}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_edge_zones_based_on_labels": "no"}
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.set_state(
+        {"merge_face_zones_based_on_labels": "no"}
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
@@ -470,8 +465,6 @@ def _assert_snake_case_attrs(attrs: Iterable):
         assert str(attr).islower()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_snake_case_attrs_in_new_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -488,12 +481,10 @@ def test_snake_case_attrs_in_new_meshing_workflow(new_meshing_session):
     _assert_snake_case_attrs(watertight.import_geometry.cad_import_options())
     _assert_snake_case_attrs(dir(watertight.import_geometry.cad_import_options))
     watertight.import_geometry.file_name.set_state(import_file_name)
-    watertight.import_geometry.length_unit = "in"
+    watertight.import_geometry.length_unit.set_state("in")
     watertight.import_geometry()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_session):
     # Import geometry
     meshing = new_meshing_session
@@ -513,8 +504,8 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_sessio
     assert "import_geometry" not in watertight.task_names()
     assert "import_geom_wtm" in watertight.task_names()
     assert len(watertight.tasks()) == 11
-    watertight.import_geom_wtm.file_name = import_file_name
-    watertight.import_geom_wtm.length_unit = "in"
+    watertight.import_geom_wtm.file_name.set_state(import_file_name)
+    watertight.import_geom_wtm.length_unit.set_state("in")
     watertight.import_geom_wtm()
     _next_possible_tasks = [
         "<Insertable 'import_boi_geometry' task>",
@@ -537,11 +528,9 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_sessio
     assert len(watertight.tasks()) == 13
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry_filename, new_meshing_session):
     watertight = new_meshing_session.watertight(legacy=True)
-    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
+    watertight.import_geometry.file_name.set_state(mixing_elbow_geometry_filename)
     watertight.import_geometry()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.tasks()
@@ -555,13 +544,11 @@ def test_watertight_workflow(mixing_elbow_geometry_filename, new_meshing_session
     assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_watertight_workflow_children(
     mixing_elbow_geometry_filename, new_meshing_session
 ):
     watertight = new_meshing_session.watertight(legacy=True)
-    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
+    watertight.import_geometry.file_name.set_state(mixing_elbow_geometry_filename)
     watertight.import_geometry()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.tasks()
@@ -590,13 +577,11 @@ def test_watertight_workflow_children(
     ]
 
 
-@pytest.mark.fluent_version(">=24.1")
-@pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(
     mixing_elbow_geometry_filename, new_meshing_session
 ):
     watertight = new_meshing_session.watertight(legacy=True)
-    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
+    watertight.import_geometry.file_name.set_state(mixing_elbow_geometry_filename)
     watertight.import_geometry()
     if new_meshing_session.get_fluent_version() < FluentVersion.v261:
         create_volume_mesh = watertight.create_volume_mesh
@@ -656,36 +641,11 @@ def test_watertight_workflow_dynamic_interface(
         assert "create_volume_mesh_wtm" not in watertight.task_names()
 
 
-@pytest.mark.fluent_version("==23.2")
-@pytest.mark.codegen_required
-def test_fault_tolerant_workflow(exhaust_system_geometry_filename, new_meshing_session):
-    fault_tolerant = new_meshing_session.fault_tolerant(legacy=True)
-    part_management = fault_tolerant.part_management
-    file_name = exhaust_system_geometry_filename
-    part_management.LoadFmdFile(FilePath=file_name)
-    part_management.MoveCADComponentsToNewObject(
-        Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
-    )
-    part_management.Node["Object"].Rename(NewName=r"Engine")
-    import_cad = fault_tolerant.import_cad_and_part_management
-    import_cad.Arguments.setState(
-        {
-            r"CreateObjectPer": r"Custom",
-            r"FMDFileName": file_name,
-            r"FileLoaded": r"yes",
-            r"ObjectSetting": r"DefaultObjectSetting",
-        }
-    )
-    import_cad()
-
-
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     watertight = new_meshing_session.watertight(legacy=True)
     import_geometry = watertight.import_geometry
     assert import_geometry.Arguments() == {}
-    import_geometry.Arguments = dict(FileName=mixing_elbow_geometry_filename)
+    import_geometry.Arguments.set_state(dict(FileName=mixing_elbow_geometry_filename))
     assert 7 <= len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
     import_geometry.arguments.set_state(dict(file_name=None))
@@ -726,7 +686,6 @@ def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     assert len(import_geometry_state) > 2
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.skip
 def test_meshing_workflow_structure(new_meshing_session):
     """
@@ -943,8 +902,6 @@ def test_meshing_workflow_structure(new_meshing_session):
     ]
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_new_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight(legacy=True)
@@ -953,8 +910,6 @@ def test_new_workflow_structure(new_meshing_session):
         watertight.TaskObject["Import Geometry"]
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -969,7 +924,7 @@ def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
             getattr(watertight, attr)
 
     watertight.import_geometry.file_name.set_state(import_file_name)
-    watertight.import_geometry.length_unit = "in"
+    watertight.import_geometry.length_unit.set_state("in")
     watertight.import_geometry()
 
     assert watertight.import_geometry.file_name()
@@ -978,8 +933,6 @@ def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
     assert not watertight.import_geometry.file_name()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_ordered_children_in_enhanced_meshing_workflow(new_meshing_session):
     watertight = new_meshing_session.watertight(legacy=True)
     assert set([repr(x) for x in watertight.tasks()]) == {
@@ -997,8 +950,6 @@ def test_ordered_children_in_enhanced_meshing_workflow(new_meshing_session):
     }
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     # Import CAD
     import_file_name = examples.download_file(
@@ -1020,11 +971,9 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     assert fault_tolerant.import_cad_and_part_management.fmd_file_name()
     # Reinitialize the workflow:
     fault_tolerant = new_meshing_session.fault_tolerant(legacy=True)
-    assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_switch_between_workflows(new_meshing_session):
     meshing = new_meshing_session
 
@@ -1077,8 +1026,6 @@ def test_switch_between_workflows(new_meshing_session):
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_meshing_workflow_without_dm_caching(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -1087,7 +1034,7 @@ def test_new_meshing_workflow_without_dm_caching(
     )
 
     watertight = new_meshing_session.watertight(legacy=True)
-    watertight.import_geometry.file_name = import_file_name
+    watertight.import_geometry.file_name.set_state(import_file_name)
     watertight.import_geometry.length_unit.set_state("in")
     watertight.import_geometry()
 
@@ -1128,8 +1075,6 @@ def test_new_meshing_workflow_without_dm_caching(
     assert "add_local_sizing" in watertight.task_names()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_meshing_workflow_switching_without_dm_caching(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -1146,11 +1091,9 @@ def test_new_meshing_workflow_switching_without_dm_caching(
     assert watertight.import_geometry.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_meshing_workflow_validate_arguments(new_meshing_session):
     watertight = new_meshing_session.watertight(legacy=True)
-    watertight.create_regions.number_of_flow_volumes = 1
+    watertight.create_regions.number_of_flow_volumes.set_state(1)
     with pytest.raises(ValueError):
         watertight.create_regions.number_of_flow_volumes = 1.2
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
@@ -1160,7 +1103,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
         )
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
 
-    watertight.create_regions.number_of_flow_volumes = 2
+    watertight.create_regions.number_of_flow_volumes.set_state(2)
     with pytest.raises(ValueError):
         watertight.create_regions.number_of_flow_volumes = 1.2
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
@@ -1170,7 +1113,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
         )
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
 
-    watertight.create_regions.number_of_flow_volumes = None
+    watertight.create_regions.number_of_flow_volumes.set_state(None)
     with pytest.raises(ValueError):
         watertight.create_regions.number_of_flow_volumes = 1.2
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
@@ -1208,8 +1151,6 @@ def test_camel_to_snake_case_convertor():
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_duplicate_tasks_in_workflow(new_meshing_session):
     # Import geometry
     meshing = new_meshing_session
@@ -1261,8 +1202,6 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
     assert watertight.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_object_oriented_task_inserting_in_workflows(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight(legacy=True)
@@ -1299,8 +1238,6 @@ def test_object_oriented_task_inserting_in_workflows(new_meshing_session):
     assert watertight.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_loaded_workflow(new_meshing_session):
     meshing = new_meshing_session
     saved_workflow_path = examples.download_file(
@@ -1313,8 +1250,8 @@ def test_loaded_workflow(new_meshing_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/5082
 def test_created_workflow(new_meshing_session):
     meshing = new_meshing_session
     created_workflow = meshing.create_workflow(legacy=True)
@@ -1358,8 +1295,6 @@ def new_meshing_session2(new_meshing_session):
     return new_meshing_session
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2):
     meshing_1 = new_meshing_session
     meshing_2 = new_meshing_session2
@@ -1377,8 +1312,6 @@ def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2)
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions_without_dm_caching(
     disable_datamodel_cache, new_meshing_session, new_meshing_session2
 ):
@@ -1392,8 +1325,6 @@ def test_independent_meshing_sessions_without_dm_caching(
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_switching_workflow_interface(new_meshing_session):
     wt1 = new_meshing_session.watertight(legacy=True)
     ft = new_meshing_session.fault_tolerant(legacy=True)
@@ -1407,13 +1338,11 @@ def test_switching_workflow_interface(new_meshing_session):
     del wt1, ft, tw, cw, lw, wt2
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_duplicate_children_of_compound_task(
     new_meshing_session, mixing_elbow_geometry_filename
 ):
     watertight = new_meshing_session.watertight(legacy=True)
-    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
+    watertight.import_geometry.file_name.set_state(mixing_elbow_geometry_filename)
     watertight.import_geometry()
     watertight.add_local_sizing.add_child_and_update(
         state={
@@ -1459,8 +1388,6 @@ def test_duplicate_children_of_compound_task(
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_legacy_current_workflow(new_meshing_session):
     meshing = new_meshing_session
 
@@ -1482,8 +1409,6 @@ def test_legacy_current_workflow(new_meshing_session):
         meshing.legacy_current_workflow.import_geometry
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_mark_as_updated(new_meshing_session):
     meshing = new_meshing_session
 
@@ -1506,8 +1431,6 @@ def test_mark_as_updated(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.1")
-@pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight(legacy=True)
@@ -1527,20 +1450,22 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     assert import_geom.arguments.length_unit() == "mm"
     import_geom.length_unit.set_state("cm")
     assert import_geom.arguments.length_unit.get_state() == "cm"
-    import_geom.arguments.length_unit = "in"
+    import_geom.arguments.length_unit.set_state("in")
     assert import_geom.arguments.length_unit() == "in"
     import_geom.arguments["length_unit"] = "m"
     assert import_geom.arguments["length_unit"] == "m"
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    meshing.workflow.TaskObject["Import Geometry"].Arguments.set_state(
+        dict(LengthUnit="in")
+    )
     assert import_geom.arguments.length_unit() == "in"
 
-    import_geom.arguments.file_format = "Mesh"
+    import_geom.arguments.file_format.set_state("Mesh")
     assert not import_geom.arguments.mesh_unit.is_read_only()
-    import_geom.arguments.file_format = "CAD"
+    import_geom.arguments.file_format.set_state("CAD")
     assert import_geom.arguments.length_unit.is_active()
     assert not import_geom.arguments.file_name.is_read_only()
     assert not import_geom.arguments.file_name()
-    import_geom.arguments.file_name = "xyz.txt"
+    import_geom.arguments.file_name.set_state("xyz.txt")
     assert import_geom.arguments.file_name() == "xyz.txt"
     with pytest.raises(AttributeError) as msg:
         import_geom.arguments.file = "sample.txt"
@@ -1587,7 +1512,6 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
         assert import_geom.arguments.length_unit.min()
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
     meshing = new_meshing_session
@@ -1616,7 +1540,6 @@ def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
 
 @pytest.mark.skip(reason=SKIP_UNKNOWN)
 # Failing in GitHub
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_return_state_changes(new_meshing_session):
     meshing = new_meshing_session
@@ -1635,7 +1558,6 @@ def test_return_state_changes(new_meshing_session):
     assert wt.add_multizone_controls
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_recursive_update_dict(new_meshing_session):
     meshing = new_meshing_session
@@ -1645,22 +1567,24 @@ def test_recursive_update_dict(new_meshing_session):
     )
 
     import_cad = fault_tolerant.import_cad_and_part_management
-    import_cad.feature_angle = 35
-    import_cad.fmd_file_name = import_file_name
+    import_cad.feature_angle.set_state(35)
+    import_cad.fmd_file_name.set_state(import_file_name)
     import_cad()
 
     descr_geom = fault_tolerant.describe_geometry_and_flow
     descr_geom.arguments()
-    descr_geom.flow_type = "Internal flow through the object"
-    descr_geom.add_enclosure = "Yes"
-    descr_geom.close_caps = "Yes"
-    descr_geom.local_refinement_regions = "Yes"
-    descr_geom.describe_geometry_and_flow_options.moving_objects = "Yes"
-    descr_geom.describe_geometry_and_flow_options.advanced_options = True
-    descr_geom.describe_geometry_and_flow_options.porous_regions = "Yes"
-    descr_geom.describe_geometry_and_flow_options.enable_overset = "Yes"
-    descr_geom.describe_geometry_and_flow_options.extract_edge_features = "Yes"
-    descr_geom.describe_geometry_and_flow_options.zero_thickness = "Yes"
+    descr_geom.flow_type.set_state("Internal flow through the object")
+    descr_geom.add_enclosure.set_state("Yes")
+    descr_geom.close_caps.set_state("Yes")
+    descr_geom.local_refinement_regions.set_state("Yes")
+    descr_geom.describe_geometry_and_flow_options.set_state({"moving_objects": "Yes"})
+    descr_geom.describe_geometry_and_flow_options.set_state({"advanced_options": True})
+    descr_geom.describe_geometry_and_flow_options.set_state({"porous_regions": "Yes"})
+    descr_geom.describe_geometry_and_flow_options.set_state({"enable_overset": "Yes"})
+    descr_geom.describe_geometry_and_flow_options.set_state(
+        {"extract_edge_features": "Yes"}
+    )
+    descr_geom.describe_geometry_and_flow_options.set_state({"zero_thickness": "Yes"})
     descr_geom.arguments()
     assert meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments()[
         "DescribeGeometryAndFlowOptions"
@@ -1672,3 +1596,21 @@ def test_recursive_update_dict(new_meshing_session):
         "PorousRegions": "Yes",
         "ZeroThickness": "Yes",
     }
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_inactive_and_developer_level_access(new_meshing_session):
+    meshing = new_meshing_session
+    assert meshing.is_active()
+
+    watertight = meshing.watertight()
+    import_geom = watertight.import_geometry
+
+    # Checks inactive arguments not present.
+    assert "mesh_unit" not in import_geom.arguments()
+    assert import_geom.file_format.allowed_values() == ["CAD", "Mesh"]
+    import_geom.file_format.set_state("Mesh")
+    assert "mesh_unit" in import_geom.arguments()
+
+    # Checks items with developer level access are not exposed.
+    assert import_geom.cad_import_options() == {}

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,12 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from typing import Callable
+from collections.abc import Callable
 
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core._data_model_cache import DataModelCache
 from ansys.fluent.core.examples import download_file
 
 
@@ -82,8 +83,8 @@ def mixing_elbow_watertight_pure_meshing_session(globals):
     meshing = new_pure_meshing_session(globals)
     geometry_filename = mixing_elbow_geometry_filename(globals)
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=geometry_filename, LengthUnit="in"
+    meshing.workflow.TaskObject["Import Geometry"].Arguments.set_state(
+        dict(FileName=geometry_filename, LengthUnit="in")
     )
     return meshing
 

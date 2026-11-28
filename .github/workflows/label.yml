@@ -40,7 +40,7 @@ jobs:
     steps:
       # Label based on modified files
       - name: Label based on changed files
-        uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
+        uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: false
@@ -131,10 +131,10 @@ jobs:
       pull-requests: write # Required when the changelog action updates pull request metadata.
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/doc-changelog@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+      - uses: ansys/actions/doc-changelog@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          use-conventional-commits: true
+          use-pull-request-title: true
           use-default-towncrier-config: true

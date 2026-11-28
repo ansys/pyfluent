@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -86,7 +87,6 @@ from ansys.fluent.core.solver import (
     Contour,
     Controls,
     FluidCellZone,
-    write_case_data,
     FluidMaterial,
     General,
     Graphics,
@@ -94,13 +94,14 @@ from ansys.fluent.core.solver import (
     Materials,
     Mesh,
     Methods,
+    Models,
     Results,
     RunCalculation,
     Setup,
     Solution,
     VelocityInlet,
     WallBoundary,
-    Models,
+    write_case_data,
 )
 from ansys.units import VariableCatalog
 from ansys.units.common import J, K, N, Pa, W, kg, m, radian, s
@@ -131,13 +132,17 @@ solver.settings.file.read_mesh(file_name=mesh_file)
 graphics = Graphics(solver)
 mesh = Mesh.create(solver)
 
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
 all_walls = mesh.surfaces_list.all()
 
-mesh.surfaces_list = all_walls
-mesh.options.edges = True
+mesh.surfaces_list.set_state(all_walls)
+mesh.options.edges.set_state(True)
 mesh.display()
 
 graphics.views.auto_scale()
@@ -167,7 +172,7 @@ general.operating_conditions.gravity.components = [-9.81 * m / s**2]
 
 setup = Setup(solver)
 
-setup.models.viscous.model = "laminar"
+setup.models.viscous.model.set_state("laminar")
 
 solver.tui.define.models.solidification_melting(
     "yes",  # Enable Solidification/Melting model
@@ -182,7 +187,9 @@ Models(solver)
 # %%
 # Define material
 # ---------------
-Materials(solver).database.copy_by_name(type="fluid", name="air", new_name="liquid-metal")
+Materials(solver).database.copy_by_name(
+    type="fluid", name="air", new_name="liquid-metal"
+)
 
 liquid_metal = FluidMaterial(
     solver,
@@ -383,8 +390,8 @@ controls.under_relaxation["delh"] = 0.1
 # ------------------
 solutions = Solution(solver)
 
-solutions.run_calculation.transient_controls.time_step_count = 2
-solutions.run_calculation.transient_controls.time_step_size = 0.1  # s
+solutions.run_calculation.transient_controls.time_step_count.set_state(2)
+solutions.run_calculation.transient_controls.time_step_size.set_state(0.1)  # s
 solutions.run_calculation.calculate()
 
 # Liquid fraction at t = 0.2 s
@@ -402,7 +409,7 @@ graphics.picture.save_picture(file_name="modeling_solidification_4.png")
 #    :alt: Liquid Fraction at t = 0.2 s
 
 # Continue to t = 5.0 s (48 more steps)
-solutions.run_calculation.transient_controls.time_step_count = 48
+solutions.run_calculation.transient_controls.time_step_count.set_state(48)
 
 solutions.run_calculation.calculate()
 

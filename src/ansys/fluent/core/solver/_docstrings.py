@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -232,7 +233,7 @@ if __name__ == "__main__":
     api_version = args.api_version
 
     mod = importlib.import_module(
-        name=f"ansys.fluent.core.generated.solver.settings_{api_version}"
+        name=f"ansys.fluent.core.generated.v{api_version}.solver.settings"
     )
     cls = getattr(mod, api_cls)
 

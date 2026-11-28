@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -173,10 +168,10 @@ mesh.display()
 graphics = Graphics(solver)
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
-graphics.picture.x_resolution = 3840
-graphics.picture.y_resolution = 2880
+graphics.picture.x_resolution.set_state(3840)
+graphics.picture.y_resolution.set_state(2880)
 graphics.picture.save_picture(file_name="mesh.png")
 
 # %%
@@ -252,7 +247,7 @@ species.print_state()
 # %%
 # Enable volumetric reactions.
 
-species.reactions.enable_volumetric_reactions = True
+species.reactions.enable_volumetric_reactions.set_state(True)
 
 # %%
 # Set the material to methane-air.
@@ -271,7 +266,7 @@ species.model.material = mixture_material
 #
 # *The eddy-dissipation model computes the rate of reaction under the assumption that chemical kinetics are fast compared to the rate at which reactants are mixed by turbulent fluctuations (eddies).*
 
-species.turb_chem_interaction_model = "eddy-dissipation"
+species.turb_chem_interaction_model.set_state("eddy-dissipation")
 
 # %%
 # Inspect the species model settings after the changes.
@@ -488,7 +483,7 @@ contour1.surfaces_list = contour1.surfaces_list.allowed_values()
 contour1.colorings.banded = True
 contour1.display()
 graphics.views.auto_scale()
-# graphics.picture.save_picture(file_name="contour-temp.png")
+graphics.picture.save_picture(file_name="contour-temp.png")
 
 # %%
 # .. figure:: /_static/species_transport/contour-temp.png
@@ -510,7 +505,7 @@ vector1.vector_opt.fixed_length = True
 # *The fixed length option is useful when the vector magnitude varies dramatically.
 # With fixed length vectors, the velocity magnitude is described only by color instead of by both vector length and color.*
 
-vector1.vector_opt.scale_head = 0.1
+vector1.vector_opt.scale_head.set_state(0.1)
 vector1.display()
 graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="vector-vel.png")

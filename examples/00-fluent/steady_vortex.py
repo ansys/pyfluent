@@ -1,12 +1,6 @@
-# /// script
-# dependencies = [
-#   "imageio",
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -75,6 +69,12 @@ Simulation of Steady Vortex in a Stirred Tank
 # Import some direct settings classes which will be used in the following sections.
 # These classes allow straightforward access to various settings without the need to
 # navigate through the settings hierarchy.
+
+#######################################################################################
+# Dependencies
+# -------------------------------------------------------------------------------------
+# ansys-fluent-core
+# imageio
 
 # sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
 # sphinx_gallery_thumbnail_path = '_static/steady_vortex/steady_vortex_setup.png'
@@ -173,13 +173,13 @@ mesh.display()
 graphics = Graphics(solver)
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
-graphics.picture.color_mode = "mono"
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
+graphics.picture.color_mode.set_state("mono")
 graphics.picture.save_picture(file_name="mesh.png")
 
 # %%
@@ -263,8 +263,8 @@ solution_methods = Methods(solver)
 solution_methods.multiphase_numerics.solution_stabilization.execute_settings_optimization = (
     True
 )
-solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization = (
-    True
+solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization.set_state(
+    (True)
 )
 
 # Change phase names
@@ -363,16 +363,16 @@ dry_wall_comp_mesh.surfaces_list()
 # wet wall
 wet_wall_comp_mesh = Mesh.create(solver, name="wetwall", surfaces_list=[wet_wall])
 wet_wall_comp_mesh.surfaces_list()
-wet_wall_comp_mesh.coloring.option = "manual"
-wet_wall_comp_mesh.coloring.manual.faces = "pastel cyan"
+wet_wall_comp_mesh.coloring.option.set_state("manual")
+wet_wall_comp_mesh.coloring.manual.faces.set_state("pastel cyan")
 
 # liquid level
 liquidlevel_comp_mesh = Mesh.create(
     solver, name="liquidlevel", surfaces_list=[free_surface]
 )
 liquidlevel_comp_mesh.surfaces_list()
-liquidlevel_comp_mesh.coloring.option = "manual"
-liquidlevel_comp_mesh.coloring.manual.faces = "pastel cyan"
+liquidlevel_comp_mesh.coloring.option.set_state("manual")
+liquidlevel_comp_mesh.coloring.manual.faces.set_state("pastel cyan")
 
 
 # Scenes
@@ -425,10 +425,10 @@ volume_fraction_contour.display()
 
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
-graphics.picture.color_mode = "color"
-graphics.picture.use_window_resolution = False
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
+graphics.picture.color_mode.set_state("color")
+graphics.picture.use_window_resolution.set_state(False)
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
 graphics.picture.save_picture(file_name="contour.png")
 
 # %%
@@ -439,7 +439,7 @@ graphics.picture.save_picture(file_name="contour.png")
 #     Velocity Vectors
 #
 # *The velocity vectors illustrate the flow patterns within the tank, highlighting the
-#  complex interactions between the liquid and gas phases.*
+# complex interactions between the liquid and gas phases.*
 
 
 # Animation Setup
@@ -479,9 +479,9 @@ lic_visualization.display()
 
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
-graphics.picture.use_window_resolution = False
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
+graphics.picture.use_window_resolution.set_state(False)
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
 graphics.picture.save_picture(file_name="lic-1.png")
 
 # %%
@@ -503,9 +503,9 @@ vortex_scene.display()
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
 
-graphics.picture.use_window_resolution = False
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
+graphics.picture.use_window_resolution.set_state(False)
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
 graphics.picture.save_picture(file_name="vortex.png")
 
 # %%

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,6 +24,7 @@
 from collections import namedtuple
 import time
 
+import numpy as np
 import pytest
 
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
@@ -38,6 +40,29 @@ def test_timeout_exec():
     assert ret is False
     ret = timeout_exec(time.sleep, timeout=0.5, args=(0.25,))
     assert ret is True
+
+
+@pytest.mark.parametrize(
+    "result",
+    [
+        pytest.param(False, id="false"),
+        pytest.param(True, id="true"),
+        pytest.param(0, id="zero-int"),
+        pytest.param(0.0, id="zero-float"),
+        pytest.param("", id="empty-string"),
+        pytest.param([], id="empty-list"),
+        pytest.param({}, id="empty-dict"),
+        pytest.param((), id="empty-tuple"),
+        pytest.param(set(), id="empty-set"),
+        pytest.param(42, id="nonzero-int"),
+        pytest.param("result", id="nonempty-string"),
+        pytest.param([1], id="nonempty-list"),
+        pytest.param(np.array([0.0]), id="numpy-zero"),
+        pytest.param(np.array([1.0, 2.0]), id="numpy-multiple-values"),
+    ],
+)
+def test_timeout_exec_preserves_return_value(result):
+    assert timeout_exec(lambda: result, timeout=2) is result
 
 
 def test_timeout_loop():

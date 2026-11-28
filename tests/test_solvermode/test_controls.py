@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,18 +28,20 @@ import pytest
 @pytest.mark.fluent_version("latest")
 def test_controls(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    solver.setup.models.multiphase.models = "vof"
+    solver.setup.models.multiphase.models.set_state("vof")
     assert solver.setup.models.multiphase.models() == "vof"
-    solver.setup.general.operating_conditions.gravity = {
-        "enable": True,
-        "components": [0.0, 0.0, -9.81],
-    }
+    solver.setup.general.operating_conditions.gravity.set_state(
+        {
+            "enable": True,
+            "components": [0.0, 0.0, -9.81],
+        }
+    )
     assert solver.setup.general.operating_conditions.gravity.components() == [
         0,
         0,
         -9.81,
     ]
-    solver.setup.general.solver.time = "steady"
+    solver.setup.general.solver.time.set_state("steady")
     assert solver.setup.general.solver.time() == "steady"
     param_coarsening = (
         solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters
@@ -85,12 +88,12 @@ def test_controls(mixing_elbow_settings_session):
         "post_sweeps": 2,
         "max_cycle": 350,
     }
-    solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"
+    solver.solution.methods.p_v_coupling.flow_scheme.set_state("Coupled")
     assert solver.solution.methods.p_v_coupling.flow_scheme() == "Coupled"
-    solver.solution.methods.p_v_coupling.coupled_form = True
+    solver.solution.methods.p_v_coupling.coupled_form.set_state(True)
     assert solver.solution.methods.p_v_coupling.coupled_form() is True
-    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type = (
-        "Gauss-Seidel"
+    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type.set_state(
+        ("Gauss-Seidel")
     )
     assert (
         solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type()
@@ -107,9 +110,9 @@ def test_controls(mixing_elbow_settings_session):
             "temperature": 0.75,
         }
     }
-    solver.solution.controls.pseudo_time_explicit_relaxation_factor = {
-        "global_dt_pseudo_relax": {"turb-viscosity": 0.9, "body-force": 0.8}
-    }
+    solver.solution.controls.pseudo_time_explicit_relaxation_factor.set_state(
+        {"global_dt_pseudo_relax": {"turb-viscosity": 0.9, "body-force": 0.8}}
+    )
     assert solver.solution.controls.pseudo_time_explicit_relaxation_factor() == {
         "global_dt_pseudo_relax": {
             "turb-viscosity": 0.9,
@@ -121,9 +124,9 @@ def test_controls(mixing_elbow_settings_session):
             "temperature": 0.75,
         }
     }
-    solver.solution.methods.p_v_coupling.flow_scheme = "SIMPLE"
-    solver.solution.controls.under_relaxation = {"pressure": 0.9}
-    solver.solution.controls.under_relaxation = {"density": 0.9}
+    solver.solution.methods.p_v_coupling.flow_scheme.set_state("SIMPLE")
+    solver.solution.controls.under_relaxation.set_state({"pressure": 0.9})
+    solver.solution.controls.under_relaxation.set_state({"density": 0.9})
     assert solver.solution.controls.under_relaxation() == {
         "mom": 0.7,
         "turb-viscosity": 1,
@@ -135,11 +138,13 @@ def test_controls(mixing_elbow_settings_session):
         "k": 0.8,
         "temperature": 1.0,
     }
-    solver.solution.controls.under_relaxation = {
-        "body-force": 0.7,
-        "density": 0.75,
-        "mom": 0.8,
-    }
+    solver.solution.controls.under_relaxation.set_state(
+        {
+            "body-force": 0.7,
+            "density": 0.75,
+            "mom": 0.8,
+        }
+    )
     assert solver.solution.controls.under_relaxation() == {
         "mom": 0.8,
         "turb-viscosity": 1,

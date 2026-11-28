@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,48 +22,112 @@
 # SOFTWARE.
 
 import ast
+from copy import deepcopy
 import importlib
+import importlib.util
+from io import StringIO
 from pathlib import Path
 import pickle
+import pydoc
 import shutil
 import sys
 import tempfile
+import types
+from typing import Generic, TypeVar
 
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen import (
+    StaticInfoType,
+    allapigen,
+    get_codegen_datamodel_dir,
+    get_codegen_tui_dir,
+    settingsgen,
+)
+from ansys.fluent.core.codegen.api_tree import get_api_tree_file_name
+from ansys.fluent.core.codegen.builtin_settingsgen import (
+    _generate_pyi_file,
+    _get_builtin_settings_paths,
+)
 from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
-from ansys.fluent.core.search import get_api_tree_file_name
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 
 
-@pytest.mark.codegen_required
+def test_builtin_settings_generation_paths_and_imports(monkeypatch, tmp_path):
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+
+    py_file, pyi_file = _get_builtin_settings_paths()
+    assert py_file == tmp_path / "solver" / "settings_builtin.py"
+    assert pyi_file == tmp_path / "solver" / "settings_builtin.pyi"
+
+    _generate_pyi_file(FluentVersion.v271)
+    pyi_contents = pyi_file.read_text(encoding="utf-8")
+    assert (
+        "ansys.fluent.core.generated.v271.solver.settings import root" in pyi_contents
+    )
+
+
 def test_allapigen_files(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
-    importlib.import_module(f"ansys.fluent.core.generated.fluent_version_{version}")
-    importlib.import_module(f"ansys.fluent.core.generated.meshing.tui_{version}")
-    importlib.import_module(f"ansys.fluent.core.generated.solver.tui_{version}")
-    importlib.import_module(f"ansys.fluent.core.generated.datamodel_{version}.meshing")
-    importlib.import_module(f"ansys.fluent.core.generated.datamodel_{version}.workflow")
+    version_dir = pyfluent.codegen.get_codegen_version_dir(
+        version, pyfluent.config.codegen_outdir
+    )
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.fluent_version")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.meshing.tui")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.solver.tui")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.meshing.meshing")
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.preferences"
+        f"ansys.fluent.core.generated.v{version}.object_model.workflow"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.part_management"
+        f"ansys.fluent.core.generated.v{version}.meshing.meshing_utilities"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.pm_file_management"
+        f"ansys.fluent.core.generated.v{version}.object_model.preferences"
     )
-    importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
+    importlib.import_module(
+        f"ansys.fluent.core.generated.v{version}.meshing.part_management"
+    )
+    importlib.import_module(
+        f"ansys.fluent.core.generated.v{version}.meshing.pm_file_management"
+    )
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.solver.settings")
+    assert get_codegen_tui_dir(version_dir, "meshing").name == "meshing"
+
+
+@pytest.mark.parametrize(
+    "module_name,expected_dir",
+    [
+        ("meshing", "meshing"),
+        ("meshing_workflow", "meshing"),
+        ("part_management", "meshing"),
+        ("pm_file_management", "meshing"),
+        ("meshing_utilities", "meshing"),
+        ("workflow", "object_model"),
+        ("preferences", "object_model"),
+    ],
+)
+def test_codegen_datamodel_directory_routing(tmp_path, module_name, expected_dir):
+    assert get_codegen_datamodel_dir(tmp_path, module_name) == tmp_path / expected_dir
+
+
+def test_api_tree_data_path_is_shared(tmp_path, monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    from ansys.fluent.core.codegen.api_tree import get_api_tree_data_file_path
+
+    assert get_api_tree_data_file_path() == tmp_path / "api_tree" / "api_objects.json"
 
 
 @pytest.mark.fluent_version(">=26.1")
-@pytest.mark.codegen_required
 def test_settings_allowed_values(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
     module = importlib.import_module(
-        f"ansys.fluent.core.generated.solver.settings_{version}"
+        f"ansys.fluent.core.generated.v{version}.solver.settings"
     )
 
     file_type_1 = getattr(module, "file_type_1")
@@ -81,7 +146,7 @@ def test_codegen_with_no_static_info(monkeypatch):
     allapigen.generate(version, {})
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle"}
+    assert set(p.name for p in generated_paths) == {f"v{version}"}
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
@@ -109,7 +174,7 @@ def _get_expected_tui_api_output(mode):
 #
 # pylint: disable=line-too-long
 
-from ansys.fluent.core.services.datamodel_tui import PyMenu, TUIMenu, TUIMethod
+from ansys.fluent.core.services.text_interface import PyMenu, TUIMenu, TUIMethod
 
 
 
@@ -171,13 +236,15 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
         "help": "Root",
     }
     allapigen.generate(version, static_infos)
-    generated_paths = list(codegen_outdir.iterdir())
+    version_dir = codegen_outdir / f"v{version}"
+    generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle", mode}
-    solver_paths = list((codegen_outdir / mode).iterdir())
+    output_dir = mode
+    assert set(p.name for p in generated_paths) == {"api_tree.pickle", output_dir}
+    solver_paths = list((version_dir / output_dir).iterdir())
     assert len(solver_paths) == 1
-    assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
-    with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
+    assert set(p.name for p in solver_paths) == {"tui.py"}
+    with open(version_dir / output_dir / "tui.py", "r") as f:
         assert f.read().strip() == _get_expected_tui_api_output(mode)
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
@@ -227,8 +294,9 @@ _expected_datamodel_api_output = '''#
 #
 # pylint: disable=line-too-long
 
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyMenu,
+    PyNamedObject,
     PyParameter,
     PyTextual,
     PyNumerical,
@@ -247,7 +315,7 @@ from ansys.fluent.core.services.datamodel_se import (
 
 class Root(PyMenu):
     """
-    Singleton Root.
+    Root group.
     """
     def __init__(self, service, rules, path):
         self.N1 = self.__class__.N1(service, rules, path + [("N1", "")])
@@ -260,9 +328,9 @@ class Root(PyMenu):
         """
         .
         """
-        class _N1(PyMenu):
+        class _N1(PyNamedObject):
             """
-            Singleton _N1.
+            _N1 group.
             """
             def __init__(self, service, rules, path):
                 self.S3 = self.__class__.S3(service, rules, path + [("S3", "")])
@@ -270,7 +338,7 @@ class Root(PyMenu):
 
             class S3(PyMenu):
                 """
-                Singleton S3.
+                S3 group.
                 """
                 def __init__(self, service, rules, path):
                     super().__init__(service, rules, path)
@@ -280,7 +348,7 @@ class Root(PyMenu):
 
     class S1(PyMenu):
         """
-        Singleton S1.
+        S1 group.
         """
         def __init__(self, service, rules, path):
             self.S2 = self.__class__.S2(service, rules, path + [("S2", "")])
@@ -290,7 +358,7 @@ class Root(PyMenu):
 
         class S2(PyMenu):
             """
-            Singleton S2.
+            S2 group.
             """
             def __init__(self, service, rules, path):
                 super().__init__(service, rules, path)
@@ -303,7 +371,7 @@ class Root(PyMenu):
 
         class C2(PyCommand):
             """
-            Command C2.
+            C2 command.
 
 
             Parameters
@@ -337,7 +405,7 @@ class Root(PyMenu):
 
     class C1(PyCommand):
         """
-        Command C1.
+        C1 command.
 
 
         Parameters
@@ -400,20 +468,23 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
         "help": "Root",
     }
     allapigen.generate(version, static_infos)
-    generated_paths = list(codegen_outdir.iterdir())
+    version_dir = codegen_outdir / f"v{version}"
+    output_dir = get_codegen_datamodel_dir(version_dir, datamodel_file_name_map[rules])
+    generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
     assert set(p.name for p in generated_paths) == {
-        f"api_tree_{version}.pickle",
-        f"datamodel_{version}",
+        "api_tree.pickle",
+        output_dir.name,
     }
-    datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
+    datamodel_paths = list(output_dir.iterdir())
     assert len(datamodel_paths) == 1 or 2
     assert set(p.name for p in datamodel_paths) == {
         f"{datamodel_file_name_map[rules]}.py"
     } or {f"{datamodel_file_name_map[rules]}.pyi"}
     with open(
         codegen_outdir
-        / f"datamodel_{version}"
+        / f"v{version}"
+        / output_dir.name
         / f"{datamodel_file_name_map[rules]}.py",
         "r",
     ) as f:
@@ -462,7 +533,7 @@ def _get_group_settings_static_info(name, children, commands, queries):
 def _get_named_object_settings_static_info(name, object_type, children):
     return {
         name: {
-            "object-type": object_type,
+            "object_type": object_type,
             "children": children,
             "type": "named-object",
             "help": f"{name} help",
@@ -527,13 +598,14 @@ from ansys.fluent.core.solver.flobject import (
     ExposureLevel,
     _ChildNamedObjectAccessorMixin,
     _NonCreatableNamedObjectMixin,
+    _NamedObjectCommandBase,
+    _merge_named_object_child_classes,
+    _merge_named_object_command_names,
     _InputFile,
     _OutputFile,
     _InOutFile,
     _FlStringConstant,
 )
-
-SHASH = "855b05953087d440471b35817227cb48708938415a9d3cc7eaa5ae71fb305d19"
 
 class P3(Integer):
     """
@@ -647,16 +719,16 @@ class P4(String):
     fluent_name = 'P4'
     _python_name = 'P4'
 
-class N1_child(Group):
+class N1_item(Group):
     """
     'child_object_type' of N1.
     """
     _version = '251'
     exposure_level = ExposureLevel.ALPHA
     fluent_name = 'child-object-type'
-    _python_name = 'N1_child'
+    _python_name = 'N1_item'
 
-class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
+class N1(NamedObject[N1_item], _NonCreatableNamedObjectMixin[N1_item]):
     """
     N1 help.
     """
@@ -668,7 +740,7 @@ class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     _child_classes = dict(
         P4=P4,
     )
-    child_object_type = N1_child
+    child_object_type = N1_item
 
 class A1(String):
     """
@@ -742,23 +814,19 @@ def test_codegen_with_settings_static_info(monkeypatch):
     static_infos = {}
     static_infos[StaticInfoType.SETTINGS] = _settings_static_info
     allapigen.generate(version, static_infos)
-    generated_paths = list(codegen_outdir.iterdir())
+    version_dir = codegen_outdir / f"v{version}"
+    generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
     assert set(p.name for p in generated_paths) == {
-        f"api_tree_{version}.pickle",
+        "api_tree.pickle",
         "solver",
     }
-    assert {p.name for p in (codegen_outdir / "solver").glob("*.py*")} == {
-        f"settings_{version}.py",
-        f"settings_{version}.pyi",
+    assert {p.name for p in (version_dir / "solver").glob("*.py*")} == {
+        "settings.py",
+        "settings.pyi",
     }
-    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+    with open(version_dir / "solver" / "settings.py", "r") as f:
         expected_settings_api_output = _expected_settings_api_output
-        if sys.version_info >= (3, 14):
-            expected_settings_api_output = expected_settings_api_output.replace(
-                'SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"',
-                'SHASH = "54828595751f83d80abe11673952397862edb1f6f1ff3c23b2c133b483561345"',
-            )
         assert f.read().strip() == expected_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
@@ -780,6 +848,392 @@ def test_codegen_with_settings_static_info(monkeypatch):
     api_tree_expected["<solver_session>"] = settings_tree
     assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))
+
+
+def test_settings_command_stub_generates_command_objects(monkeypatch, tmp_path):
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    settings_static_info = {
+        "children": _get_group_settings_static_info(
+            "file",
+            {},
+            _get_command_settings_static_info(
+                "read_case",
+                [("file_name", "file"), ("pdf_file_name", "file")],
+            )
+            | _get_command_settings_static_info(
+                "rename", [("old", "string"), ("new", "string")]
+            ),
+            _get_query_settings_static_info("status", [("name", "string")]),
+        ),
+        "commands": {},
+        "queries": {},
+        "type": "group",
+    }
+
+    settingsgen.generate("271", {StaticInfoType.SETTINGS: settings_static_info})
+    stub = (tmp_path / "v271" / "solver" / "settings.pyi").read_text(encoding="utf-8")
+    ast.parse(stub)
+
+    assert "class read_case(Command):" in stub
+    assert "    file_name: file_name\n" in stub
+    assert "    pdf_file_name: pdf_file_name\n" in stub
+    assert (
+        "    def __call__(self, *, file_name: str = ..., "
+        "pdf_file_name: str = ...) -> StateType | None: ...\n"
+    ) in stub
+    assert "class rename(CommandWithPositionalArgs):" in stub
+    assert (
+        "    def __call__(self, old: str = ..., new: str = ...) "
+        "-> StateType | None: ...\n"
+    ) in stub
+    assert "    read_case: read_case\n" in stub
+    assert "    rename: rename\n" in stub
+    assert "    def status(self, name: str):\n" in stub
+
+
+@pytest.mark.parametrize("version", ["242", "251", "261"])
+def test_named_object_commands_share_generated_bases(
+    monkeypatch, tmp_path, mocker, version
+):
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    commands = (
+        _get_command_settings_static_info("create", [("name", "string")])
+        | _get_command_settings_static_info("delete", [("name-list", "string-list")])
+        | _get_command_settings_static_info(
+            "rename", [("old", "string"), ("new", "string")]
+        )
+        | _get_command_settings_static_info("list", [])
+        | _get_command_settings_static_info(
+            "list-properties", [("object-name", "string")]
+        )
+        | _get_command_settings_static_info(
+            "make-a-copy", [("from", "string"), ("to", "string")]
+        )
+    )
+
+    def named_object(commands, creatable=True):
+        return {
+            "type": "named-object",
+            "user_creatable": creatable,
+            "object_type": {"type": "group"},
+            "commands": deepcopy(commands),
+        }
+
+    special_commands = commands | _get_command_settings_static_info("display", [])
+    variant_commands = commands | _get_command_settings_static_info(
+        "create", [("name", "string"), ("volume", "string")]
+    )
+    non_prefix_commands = _get_command_settings_static_info("display", []) | commands
+    hidden_commands = deepcopy(commands)
+    hidden_commands["make-a-copy"]["api_exposure_level"] = "beta"
+    static_info = {
+        "type": "group",
+        "children": {
+            "first": named_object(commands),
+            "second": named_object(special_commands),
+            "variant": named_object(variant_commands),
+            "fixed": named_object(commands, creatable=False),
+            "non-prefix": named_object(non_prefix_commands),
+            "hidden": named_object(hidden_commands),
+        },
+    }
+    static_info["children"]["non-prefix"]["children"] = {"detail": {"type": "string"}}
+    static_info["children"]["non-prefix"]["queries"] = _get_query_settings_static_info(
+        "status", []
+    )
+    dynamic_root, _ = flobject.get_cls("", deepcopy(static_info), version=version)
+    settingsgen.generate(version, {StaticInfoType.SETTINGS: deepcopy(static_info)})
+    directory = tmp_path / f"v{version}" / "solver"
+    source = (directory / "settings.py").read_text(encoding="utf-8")
+    stub = (directory / "settings.pyi").read_text(encoding="utf-8")
+    ast.parse(source)
+    ast.parse(stub)
+    spec = importlib.util.spec_from_file_location(
+        "test_generated_settings", directory / "settings.py"
+    )
+    generated = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generated)
+
+    first = generated.root._child_classes["first"]
+    second = generated.root._child_classes["second"]
+    variant = generated.root._child_classes["variant"]
+    fixed = generated.root._child_classes["fixed"]
+    assert first.__bases__[0] is second.__bases__[0]
+    assert variant.__bases__[0] is not first.__bases__[0]
+    assert fixed.__bases__[0] is not first.__bases__[0]
+    for root_cls in (dynamic_root, generated.root):
+        for container_name in ("first", "second", "fixed", "variant"):
+            container = root_cls._child_classes[container_name]
+            command_base = container.__bases__[0]
+            assert issubclass(command_base, flobject._NamedObjectCommandBase)
+            for name in command_base.command_names:
+                assert name not in vars(container)
+                assert vars(command_base)[name] is container._child_classes[name]
+        assert "create" not in vars(root_cls._child_classes["fixed"].__bases__[0])
+    class_node = next(
+        node
+        for node in ast.parse(source).body
+        if isinstance(node, ast.ClassDef) and node.name == first.__name__
+    )
+    assigned = {
+        target.id
+        for node in class_node.body
+        if isinstance(node, ast.Assign)
+        for target in node.targets
+        if isinstance(target, ast.Name)
+    }
+    assert "command_names" not in assigned
+    assert "_child_classes" not in assigned
+    assert first.command_names is not second.command_names
+    assert first._child_classes is not second._child_classes
+    subclass = type("subclass", (first,), {})
+    assert subclass.command_names is first.command_names
+    assert subclass._child_classes is first._child_classes
+    assert "display" in vars(second)["_child_classes"]
+    assert "create" not in fixed.command_names
+    create_name = next(
+        name
+        for name in variant.command_names
+        if variant._child_classes[name].fluent_name == "create"
+    )
+    assert variant._child_classes[create_name].argument_names == ["name", "volume"]
+    non_prefix = generated.root._child_classes["non_prefix"]
+    assert non_prefix.__bases__[0] is first.__bases__[0]
+    assert non_prefix.command_names[0] == "display"
+    assert list(non_prefix._child_classes) == [
+        "detail",
+        *non_prefix.command_names,
+        "status",
+    ]
+
+    for root_cls in (dynamic_root, generated.root):
+        root = root_cls()
+        proxy = mocker.Mock()
+        proxy.get_attrs.return_value = {}
+        proxy.get_object_names.return_value = []
+        proxy.execute_cmd.return_value = None
+        proxy.is_interactive_mode.return_value = False
+        root.set_flproxy(proxy)
+        obj = root.second
+        assert obj.command_names == list(obj._child_classes)
+        assert obj.get_active_command_names() == obj.command_names
+        if version == "242":
+            assert obj.create("created").obj_name == "created"
+            proxy.create.assert_called_with("second", "created")
+        else:
+            obj.create("created")
+            proxy.execute_cmd.assert_called_with("second", "create", name="created")
+        obj.rename("old-name", "new-name")
+        proxy.execute_cmd.assert_called_with(
+            "second", "rename", old="old-name", new="new-name"
+        )
+        obj.display()
+        proxy.execute_cmd.assert_called_with("second", "display")
+        obj.delete(["old-name"])
+        proxy.execute_cmd.assert_called_with(
+            "second", "delete", **{"name-list": ["old-name"]}
+        )
+        obj.list()
+        proxy.execute_cmd.assert_called_with("second", "list")
+        obj.list_properties(object_name="old-name")
+        proxy.execute_cmd.assert_called_with(
+            "second", "list-properties", **{"object-name": "old-name"}
+        )
+        obj.make_a_copy(from_="old-name", to="new-name")
+        proxy.execute_cmd.assert_called_with(
+            "second", "make-a-copy", **{"from": "old-name", "to": "new-name"}
+        )
+        assert "make_a_copy" not in root.hidden.get_active_command_names()
+        with pytest.raises(AttributeError):
+            root.hidden.make_a_copy
+
+    if version == "251":
+        monkeypatch.syspath_prepend(str(Path(__file__).parents[1] / "doc"))
+        settings_rstgen = importlib.import_module("settings_rstgen")
+        monkeypatch.setattr(settings_rstgen, "rst_list", [])
+        monkeypatch.setattr(settings_rstgen, "parents_dict", {})
+        rst_dir = tmp_path / "rst"
+        rst_dir.mkdir()
+        settings_rstgen._populate_parents_list(generated.root)
+        settings_rstgen._populate_rst_from_settings(rst_dir, generated.root, version)
+        container_page = (rst_dir / f"{second.__name__}.rst").read_text()
+        base_page = (rst_dir / f"{second.__bases__[0].__name__}.rst").read_text()
+        assert ":show-inheritance:" in container_page
+        assert ".. rubric:: Base class" not in container_page
+        assert ":ref:`display <" in container_page
+        assert ":ref:`create <" not in container_page
+        assert ":ref:`delete <" not in container_page
+        assert ":ref:`create <" in base_page
+        assert ":ref:`delete <" in base_page
+        assert ":ref:`display <" not in base_page
+
+
+def test_named_object_command_base_rendered_docs(monkeypatch, tmp_path):
+    sphinx = pytest.importorskip("sphinx.application")
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    monkeypatch.syspath_prepend(str(Path(__file__).parents[1] / "doc"))
+    settings_rstgen = importlib.import_module("settings_rstgen")
+    monkeypatch.setattr(settings_rstgen, "rst_list", [])
+    monkeypatch.setattr(settings_rstgen, "parents_dict", {})
+    commands = (
+        _get_command_settings_static_info("create", [("name", "string")])
+        | _get_command_settings_static_info("delete", [("name", "string")])
+        | _get_command_settings_static_info("display", [])
+    )
+    info = {
+        "type": "group",
+        "children": {
+            "container": {
+                "type": "named-object",
+                "user_creatable": True,
+                "object_type": {"type": "group"},
+                "commands": commands,
+            }
+        },
+    }
+    settingsgen.generate("271", {StaticInfoType.SETTINGS: info})
+    module_name = "ansys.fluent.core.generated.v271.solver.settings"
+    parent = pyfluent
+    for package_name in (
+        "ansys.fluent.core.generated",
+        "ansys.fluent.core.generated.v271",
+        "ansys.fluent.core.generated.v271.solver",
+    ):
+        package = types.ModuleType(package_name)
+        package.__path__ = []
+        monkeypatch.setitem(sys.modules, package_name, package)
+        monkeypatch.setattr(
+            parent, package_name.rsplit(".", 1)[-1], package, raising=False
+        )
+        parent = package
+    spec = importlib.util.spec_from_file_location(
+        module_name, tmp_path / "v271" / "solver" / "settings.py"
+    )
+    generated = importlib.util.module_from_spec(spec)
+    monkeypatch.setitem(sys.modules, module_name, generated)
+    monkeypatch.setattr(parent, "settings", generated, raising=False)
+    spec.loader.exec_module(generated)
+    container = generated.root._child_classes["container"]
+    child_type = container.child_object_type
+    child_type.__name__ = "container_1_item"
+    generated.container_1_item = child_type
+    source = tmp_path / "docs"
+    source.mkdir()
+    settings_rstgen._populate_parents_list(generated.root)
+    settings_rstgen._populate_rst_from_settings(source, generated.root, "271")
+    container_rst = (source / f"{container.__name__}.rst").read_text()
+    assert (
+        "organised like a Python dictionary holding objects of type "
+        ":ref:`container_item <container_1_item>` by name."
+    ) in container_rst
+    (source / "conf.py").write_text(
+        "extensions = ['sphinx.ext.autodoc']\nmaster_doc = 'index'\n",
+        encoding="utf-8",
+    )
+    pages = sorted(path.stem for path in source.glob("*.rst"))
+    (source / "index.rst").write_text(
+        "Test\n====\n\n.. toctree::\n\n" + "".join(f"   {page}\n" for page in pages),
+        encoding="utf-8",
+    )
+    warnings = StringIO()
+    app = sphinx.Sphinx(
+        str(source),
+        str(source),
+        str(tmp_path / "html"),
+        str(tmp_path / "doctrees"),
+        "html",
+        status=StringIO(),
+        warning=warnings,
+        warningiserror=True,
+        freshenv=True,
+    )
+    app.connect("autodoc-process-bases", settings_rstgen._process_autodoc_bases)
+    app.build()
+    assert app.statuscode == 0, warnings.getvalue()
+    base = container.__bases__[0]
+    container_html = (tmp_path / "html" / f"{container.__name__}.html").read_text(
+        encoding="utf-8"
+    )
+    base_html = (tmp_path / "html" / f"{base.__name__}.html").read_text(
+        encoding="utf-8"
+    )
+    container_html = container_html.split('role="main">', 1)[1].split("</section>", 1)[
+        0
+    ]
+    base_html = base_html.split('role="main">', 1)[1].split("</section>", 1)[0]
+    bases_line = container_html.split("Bases:", 1)[1].split("</p>", 1)[0]
+    assert '<span class="pre">NamedObject</span>' in bases_line
+    assert '<span class="pre">CreatableNamedObjectMixin</span>' in bases_line
+    assert '<span class="pre">container_item</span>' in bases_line
+    assert '<span class="pre">container_1_item</span>' not in bases_line
+    assert "container_1_item.html" in bases_line
+    assert "display.html" in container_html
+    assert "create.html" not in container_html
+    assert "delete.html" not in container_html
+    assert "create.html" in base_html
+    assert "delete.html" in base_html
+
+
+def test_process_autodoc_bases_uses_short_names(monkeypatch):
+    monkeypatch.syspath_prepend(str(Path(__file__).parents[1] / "doc"))
+    settings_rstgen = importlib.import_module("settings_rstgen")
+    item_type = TypeVar("item_type")
+
+    class Item:
+        _python_name = "named_item"
+
+    class NamedObject(Generic[item_type]):
+        pass
+
+    class Container:
+        child_object_type = Item
+
+    bases = [NamedObject[Item]]
+    settings_rstgen._process_autodoc_bases(None, "", Container, None, bases)
+
+    assert bases == [
+        f":py:class:`NamedObject <{NamedObject.__module__}.{NamedObject.__qualname__}>`\\ "
+        f"[:py:class:`named_item <{Item.__module__}.{Item.__name__}>`\\ ]"
+    ]
+
+
+def test_settings_codegen_argument_docs_use_callable_names(monkeypatch, tmp_path):
+    from ansys.fluent.core.solver import flobject
+
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    monkeypatch.setattr(flobject, "_bases_by_class", {})
+    static_info = {
+        "type": "group",
+        "commands": {
+            "write-case": {
+                "type": "command",
+                "help": "Write a case.",
+                "arguments": {"file-name": {"type": "file", "file_purpose": "output"}},
+            },
+            "read-case": {
+                "type": "command",
+                "help": "Read a case.",
+                "arguments": {
+                    "file-name": {"type": "file", "file_purpose": "input"},
+                    "part-2": {"type": "string"},
+                },
+            },
+        },
+    }
+
+    settingsgen.generate("271", {StaticInfoType.SETTINGS: static_info})
+    path = tmp_path / "v271" / "solver" / "settings.py"
+    module = pyfluent.utils.load_module("test_settings_argument_docs", path)
+    command = module.root._child_classes["read_case"]
+
+    assert command.argument_names == ["file_name", "part_2"]
+    assert command._child_classes["file_name"].__name__ != "file_name"
+    assert "    file_name : str\n" in command.__doc__
+    assert "    file_name_1 : str\n" not in command.__doc__
+    assert "    part_2 : str\n" in command.__doc__
+    help_text = pydoc.render_doc(command, renderer=pydoc.plaintext)
+    assert "file_name : str" in help_text
+    assert "file_name_1 : str" not in help_text
 
 
 _settings_static_info_duplicate_parameters = {
@@ -881,7 +1335,7 @@ def test_codegen_with_settings_static_info_edge_cases(
     static_infos = {}
     static_infos[StaticInfoType.SETTINGS] = settings_static_info
     allapigen.generate(version, static_infos)
-    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+    with open(codegen_outdir / f"v{version}" / "solver" / "settings.py", "r") as f:
         module_def = ast.parse(f.read())
         class_names_from_file = [
             x.name for x in module_def.body if isinstance(x, ast.ClassDef)

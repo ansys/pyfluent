@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -53,6 +54,6 @@ def create_root_using_datamodelgen(service, app_name):
             datamodelgen.generate(
                 version, static_infos={StaticInfoType.DATAMODEL_WORKFLOW: static_info}
             )
-            gen_file = Path(temp_dir) / f"datamodel_{version}" / "workflow.py"
+            gen_file = Path(temp_dir) / f"v{version}" / "object_model" / "workflow.py"
             module = load_module("datamodel", gen_file)
             return module.Root(service, app_name, [])

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,15 +21,53 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import copy
+import pickle
+
 import numpy as np
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.diagnostics.exceptions import (
+    IncompleteSolutionVariableDataError,
+    _format_bytes,
+)
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.units.variable_descriptor import VariableCatalog
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.parametrize(
+    ("num_bytes", "expected"),
+    [
+        (0, "0 B"),
+        (1023, "1023 B"),
+        (1024, "1.00 KiB"),
+        (1000 * 8, f"{1000 * 8 / 1024:.2f} KiB"),
+        (1024**2, "1.00 MiB"),
+    ],
+)
+def test_format_bytes(num_bytes, expected):
+    assert _format_bytes(num_bytes) == expected
+
+
+@pytest.mark.parametrize("item_size", [None, 8])
+def test_incomplete_solution_variable_error_copy_and_pickle(item_size):
+    error = IncompleteSolutionVariableDataError(12, 1000, item_size)
+    assert "received 12 of 1,000 expected elements" in str(error)
+    if item_size is not None:
+        assert f"~{_format_bytes(error.expected * item_size)} requested" in str(error)
+    else:
+        assert "requested)" not in str(error)
+
+    for restored in (copy.copy(error), pickle.loads(pickle.dumps(error))):
+        assert str(restored) == str(error)
+        assert (restored.received, restored.expected, restored.item_size) == (
+            12,
+            1000,
+            item_size,
+        )
+
+
 def test_solution_variables(new_solver_session):
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -38,8 +77,6 @@ def test_solution_variables(new_solver_session):
 
     solution_variable_info = solver.fields.solution_variable_info
     solution_variable_data = solver.fields.solution_variable_data
-    assert solution_variable_info == solver.svar_info
-    assert solution_variable_data == solver.svar_data
 
     solver.file.read_case_data(file_name=import_file_name)
 
@@ -141,7 +178,6 @@ def test_solution_variables(new_solver_session):
     assert updated_sv_p_data["elbow-fluid"][-1] == 600.0
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_solution_variables_single_precision(new_solver_session_sp):
     solver = new_solver_session_sp
     import_file_name = examples.download_file(
@@ -151,8 +187,6 @@ def test_solution_variables_single_precision(new_solver_session_sp):
 
     solution_variable_info = solver.fields.solution_variable_info
     solution_variable_data = solver.fields.solution_variable_data
-    assert solution_variable_info == solver.svar_info
-    assert solution_variable_data == solver.svar_data
 
     solver.file.read_case_data(file_name=import_file_name)
 
@@ -221,7 +255,6 @@ def test_solution_variables_single_precision(new_solver_session_sp):
     assert str(fluid_press.dtype) == "float32"
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_solution_variable_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

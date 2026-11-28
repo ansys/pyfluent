@@ -1,0 +1,291 @@
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Wrapper over the settings gRPC service of Fluent (v0 proto API)."""
+
+import collections.abc
+from typing import Any
+
+from ansys.api.fluent.v0 import settings_pb2, settings_pb2_grpc
+from ansys.fluent.core.services._protocols import ServiceProtocol
+
+
+def _get_request_instance_for_path(request_class, path: str) -> Any:
+    request = request_class()
+    request.path_info.path = path
+    request.path_info.root = "fluent"
+    return request
+
+
+# Mapping from v0 optional-attrs keys (hyphenated / question-mark suffixed) to the
+# v1-compatible underscore keys that flobject.py consumes via ``info.get(...)``.
+_V0_ATTRS_KEY_MAP: dict[str, str] = {
+    "allowed-values": "allowed_values",
+    "has-migration-adapter?": "has_migration_adapter",
+    "deprecated-version": "deprecated_version",
+    "api-exposure-level": "api_exposure_level",
+    "file-purpose": "file_purpose",
+    "return-type": "return_type",
+    "child-aliases": "child_aliases",
+    "command-aliases": "command_aliases",
+    "query-aliases": "query_aliases",
+    "arguments-aliases": "arguments_aliases",
+}
+
+# Nested schema-map fields; getattr is used in the loop so that proto versions
+# that do not yet expose a field (e.g. 'queries' on older v0 servers) are
+# skipped silently rather than raising AttributeError.
+_V0_SCHEMA_MAP_FIELDS: tuple[str, ...] = (
+    "children",
+    "commands",
+    "queries",
+    "arguments",
+)
+
+
+class SettingsService(ServiceProtocol):
+    """Class wrapping the settings gRPC service of Fluent (v0 proto API)."""
+
+    def __init__(
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
+    ) -> None:
+        """Initialize SettingsService."""
+        self._stub = settings_pb2_grpc.SettingsStub(intercept_channel)
+        self._metadata = metadata
+
+    def _set_state_from_value(self, state: settings_pb2.Value, value: Any):
+        if value is None:
+            return
+        if isinstance(value, bool):
+            state.boolean = value
+        elif isinstance(value, int):
+            state.integer = value
+        elif isinstance(value, float):
+            state.real = value
+        elif isinstance(value, str):
+            state.string = value
+        elif isinstance(value, collections.abc.Mapping):
+            for k, v in value.items():
+                self._set_state_from_value(state.value_map.m[k], v)
+        elif isinstance(value, collections.abc.Iterable):
+            for v in value:
+                self._set_state_from_value(getattr(state.value_list, "lst").add(), v)
+        else:  # fall back to string (for example, pathlib.Path)
+            state.string = str(value)
+
+    def _get_state_from_value(self, state: settings_pb2.Value) -> Any:
+        t = state.WhichOneof("value")
+        if t == "boolean":
+            return state.boolean
+        elif t == "integer":
+            return state.integer
+        elif t == "real":
+            return state.real
+        elif t == "string":
+            return state.string
+        elif t == "value_list":
+            return [
+                self._get_state_from_value(v) for v in getattr(state.value_list, "lst")
+            ]
+        elif t == "value_map":
+            return {
+                k: self._get_state_from_value(v)
+                for k, v in sorted(state.value_map.m.items())
+            }
+        else:
+            return None
+
+    def set_var(self, path: str, value: Any) -> None:
+        """Set the value for the given path."""
+        request = _get_request_instance_for_path(settings_pb2.SetVarRequest, path)
+        self._set_state_from_value(request.value, value)
+        self._stub.SetVar(request, metadata=self._metadata)
+
+    def get_var(self, path: str) -> Any:
+        """Get the value for the given path."""
+        request = _get_request_instance_for_path(settings_pb2.GetVarRequest, path)
+        response = self._stub.GetVar(request, metadata=self._metadata)
+        return self._get_state_from_value(response.value)
+
+    def rename(self, path: str, new: str, old: str) -> None:
+        """Rename the object at the given path."""
+        request = _get_request_instance_for_path(settings_pb2.RenameRequest, path)
+        request.old_name = old
+        request.new_name = new
+        self._stub.Rename(request, metadata=self._metadata)
+
+    def create(self, path: str, name: str) -> None:
+        """Create a named object child for the given path."""
+        request = _get_request_instance_for_path(settings_pb2.CreateRequest, path)
+        request.name = name
+        self._stub.Create(request, metadata=self._metadata)
+
+    def delete(self, path: str, name: str) -> None:
+        """Delete the object with the given name at the given path."""
+        request = _get_request_instance_for_path(settings_pb2.DeleteRequest, path)
+        request.name = name
+        self._stub.Delete(request, metadata=self._metadata)
+
+    def get_object_names(self, path: str) -> list[str]:
+        """Get a list of named objects."""
+        request = _get_request_instance_for_path(
+            settings_pb2.GetObjectNamesRequest, path
+        )
+        return self._stub.GetObjectNames(request, metadata=self._metadata).names
+
+    def get_list_size(self, path: str) -> int:
+        """Get the number of elements in a list object."""
+        request = _get_request_instance_for_path(settings_pb2.GetListSizeRequest, path)
+        return self._stub.GetListSize(request, metadata=self._metadata).size
+
+    def resize_list_object(self, path: str, size: int) -> None:
+        """Resize a list object."""
+        request = _get_request_instance_for_path(
+            settings_pb2.ResizeListObjectRequest, path
+        )
+        request.size = size
+        self._stub.ResizeListObject(request, metadata=self._metadata)
+
+    def get_static_info(self) -> dict[str, Any]:
+        """Get static-info for settings.
+
+        Raises
+        ------
+        RuntimeError
+            If type is empty.
+        """
+        request = settings_pb2.GetStaticInfoRequest()
+        request.root = "fluent"
+        # Request the full set of optional attrs so that v0 servers which support
+        # them can return the data; servers that do not support a given attr simply
+        # omit it from the response attrs map.
+        request.optional_attrs.extend(
+            [
+                "allowed-values",
+                "has-migration-adapter?",
+                "deprecated-version",
+                "api-exposure-level",
+                "file-purpose",
+                "return-type",
+                "child-aliases",
+                "command-aliases",
+                "query-aliases",
+                "arguments-aliases",
+            ]
+        )
+        response = self._stub.GetStaticInfo(request, metadata=self._metadata)
+        # The RPC calls no longer raise an exception. Force an exception if
+        # type is empty
+        if not response.info.type:
+            raise RuntimeError
+        return self._extract_static_info(response.info)
+
+    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+        """Execute a given command with the provided keyword arguments."""
+        request = _get_request_instance_for_path(
+            settings_pb2.ExecuteCommandRequest, path
+        )
+        request.command = command
+        self._set_state_from_value(request.args, kwds)
+
+        response = self._stub.ExecuteCommand(request, metadata=self._metadata)
+        return self._get_state_from_value(response.reply)
+
+    def execute_query(self, path: str, query: str, **kwds) -> Any:
+        """Execute a given query with the provided keyword arguments."""
+        request = _get_request_instance_for_path(settings_pb2.ExecuteQueryRequest, path)
+        request.query = query
+        self._set_state_from_value(request.args, kwds)
+
+        response = self._stub.ExecuteQuery(request, metadata=self._metadata)
+        return self._get_state_from_value(response.reply)
+
+    def _parse_attrs(self, response: settings_pb2.GetAttrsResponse) -> dict[str, Any]:
+        ret = {}
+        ret["attrs"] = self._get_state_from_value(response.values)
+        if response.group_children:
+            ret["children"] = {
+                child.name: self._parse_attrs(child.value)
+                for child in response.group_children
+            }
+        return ret
+
+    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+        """Return values of given attributes."""
+        request = _get_request_instance_for_path(settings_pb2.GetAttrsRequest, path)
+        request.attrs[:] = attrs
+        request.recursive = recursive
+
+        response = self._stub.GetAttrs(request, metadata=self._metadata)
+        if recursive:
+            return self._parse_attrs(response)
+        return self._get_state_from_value(response.values)
+
+    def _extract_static_info(self, info) -> dict[str, Any]:
+        ret = {}
+        ret["type"] = info.type
+
+        # Map v0 optional-attrs (hyphenated / question-mark keys) to the
+        # v1-compatible underscore keys expected by flobject.get_cls().
+        # Use sorted() to guarantee deterministic insertion order so that
+        # repeated calls produce an identical dict (required for hash stability).
+        for key, value in sorted(info.attrs.items()):
+            if key in _V0_ATTRS_KEY_MAP.values():
+                mapped_key = key
+            else:
+                mapped_key = _V0_ATTRS_KEY_MAP.get(key)
+            if mapped_key is not None:
+                ret[mapped_key] = self._get_state_from_value(value)
+
+        if info.has_allowed_values:
+            ret["has_allowed_values"] = info.has_allowed_values
+
+        # Nested schema maps; getattr handles proto versions that may lack a field.
+        for field in _V0_SCHEMA_MAP_FIELDS:
+            collection = getattr(info, field, None)
+            if collection:
+                ret[field] = {
+                    child.name: self._extract_static_info(child.value)
+                    for child in collection
+                }
+
+        if info.HasField("object_type"):
+            ret["object_type"] = self._extract_static_info(info.object_type)
+        if info.help:
+            ret["help"] = info.help
+
+        # Fields that may not exist on older proto versions; skip silently if absent.
+        for field in ("include_child_named_objects", "list_size"):
+            value = getattr(info, field, None)
+            if value:
+                ret[field] = value
+
+        # user_creatable defaults to True on proto versions that do not expose the field.
+        try:
+            if info.user_creatable:
+                ret["user_creatable"] = info.user_creatable
+        except AttributeError:
+            ret["user_creatable"] = True
+
+        return ret

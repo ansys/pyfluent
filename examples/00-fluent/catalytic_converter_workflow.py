@@ -1,12 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "ansys-fluent-visualization",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -95,12 +89,18 @@ Modeling Flow Through Porous Media - Catalytic Converter
 # sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
 # sphinx_gallery_thumbnail_path = '_static/catalytic_converter/catalytic_converter_cad_geo.png'
 
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# ansys-fluent-visualization
+
 from pathlib import Path
 import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
+import ansys.fluent.core.meshing.meshing_workflow as mesh_wf_new
 from ansys.fluent.core.solver import (  # noqa: E402
     CellZoneConditions,
     Energy,
@@ -308,12 +308,12 @@ out = Path("out").mkdir(exist_ok=True)
 graphics = Graphics(solver)
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
 graphics.views.restore_view(view_name="isometric")
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
-graphics.picture.color_mode = "color"
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
+graphics.picture.color_mode.set_state("color")
 
 # Define and display the mesh
 # First, get all wall boundary names and create a mesh object for visualization context
@@ -323,7 +323,7 @@ mesh = Mesh(solver).create(surfaces_list=all_walls)
 mesh.options.edges = True
 mesh.display()
 graphics.picture.save_picture(file_name="out/catalytic_converter_mesh.png")
-mesh.options.edges = False  # Turn off edges after saving the picture
+mesh.options.edges.set_state(False)  # Turn off edges after saving the picture
 
 # %%
 # .. figure:: /_static/catalytic_converter/catalytic_converter_mesh.png
@@ -464,7 +464,7 @@ solution_initialization.compute_defaults(
 
 # Set initialization method and initialize
 
-solution_initialization.initialization_type = "standard"
+solution_initialization.initialization_type.set_state("standard")
 solution_initialization.standard_initialize()
 
 # %%
@@ -673,6 +673,8 @@ solver.exit()
 # References
 # ----------
 # .. _References_1:
-# .. [1] `ANSYS Fluent User's Guide, ANSYS, Inc. <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent&prodver=25.2&lang=en>`_.
+#
+# 1. `ANSYS Fluent User's Guide, ANSYS, Inc. <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent&prodver=25.2&lang=en>`_.
 # .. _References_2:
-# .. [2] `Modeling Flow Through Porous Media <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_tut_catalytic_converter.html>`_.
+#
+# 2. `Modeling Flow Through Porous Media <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_tut_catalytic_converter.html>`_.

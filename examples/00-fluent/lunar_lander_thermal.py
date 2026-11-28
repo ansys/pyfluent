@@ -1,14 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "matplotlib",
-#   "numpy",
-#   "pandas",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -75,11 +67,17 @@ reference [2_]. Validation data for the regolith temperatures are taken from
 measurements conducted by the Apollo 17 mission to the Moon [3_].
 """
 
-# sphinx_gallery_thumbnail_path = '_static/lunar_lander_thermal_thumbnail.png'
-
 ###############################################################################
 # .. image:: ../../_static/lunar_lander_thermal_setup.png
 #   :align: center
+
+#######################################################################################
+# Dependencies
+# -------------------------------------------------------------------------------------
+# ansys-fluent-core
+# matplotlib
+# numpy
+# pandas
 
 ###############################################################################
 # Preliminary Setup
@@ -94,14 +92,14 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 
 # flake8: noqa: E402
 
+# sphinx_gallery_thumbnail_path = '_static/lunar_lander_thermal_thumbnail.png'
 from itertools import chain
 from pathlib import Path
 
 import numpy as np
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import examples
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core import ScalarFieldDataRequest, Solver, examples
 from ansys.fluent.core.solver import (
     BoundaryCondition,
     CellZoneCondition,
@@ -258,21 +256,15 @@ def get_surf_mean_temp(
     solver: Solver,
 ) -> float:
     """Calculate mean surface temperature."""
-    # Get surface IDs
-    surfs = solver.field_info.get_surfaces_info()
-    surf_ids_ = [surfs[surf_name]["surface_id"] for surf_name in surf_names]
-
-    # Flatten surf_ids nested list
-    surf_ids = list(chain(*surf_ids_))
-
-    # Get temperature data
-    temp_data = solver.field_data.get_scalar_field_data(
+    # Get temperature data on the requested surfaces
+    temp_request = ScalarFieldDataRequest(
         field_name="temperature",
-        surfaces=surf_ids,
+        surfaces=surf_names,
     )
+    temp_data = solver.fields.field_data.get_field_data(temp_request)
 
-    # Calculate mean temperature across surfaces
-    return float(np.mean(list(temp_data.values())))
+    # Calculate mean temperature across all surfaces
+    return float(np.mean(np.concatenate(list(temp_data.values()))))
 
 
 ###############################################################################
@@ -687,9 +679,9 @@ for i in range(n_steps):
         "thermal-ir"
     ]
     if rad_mean_temp < 273:
-        radiation_emission.value = 0.09
+        radiation_emission.value.set_state(0.09)
     else:
-        radiation_emission.value = 0.70
+        radiation_emission.value.set_state(0.70)
 
     # Run simulation for 1 timestep
     calculate(solver)
@@ -873,7 +865,7 @@ plt.show()
 # [2] R. J. Christie, D. W. Plachta, and M. M. Yasan, “Transient Thermal Model
 # and Analysis of the Lunar Surface and Regolith for Cryogenic Fluid Storage,”
 # NASA Glenn Research Center, Cleveland, Ohio, NASA Technical Report
-# TM-2008-215300, Aug. 2008. [Online]. Available:
+# TM-2008 - 215300, Aug. 2008. [Online]. Available:
 # https://ntrs.nasa.gov/citations/20080039640
 #
 # .. _3:
@@ -887,5 +879,5 @@ plt.show()
 #
 # [4] L. Kauder, “Spacecraft Thermal Control Coatings References,” Goddard
 # Space Flight Center, Greenbelt, MD 20771, NASA Technical Report
-# NASA/TP-2005-212792, Dec. 2005. [Online]. Available:
+# NASA/TP-2005 - 212792, Dec. 2005. [Online]. Available:
 # https://ntrs.nasa.gov/citations/20070014757

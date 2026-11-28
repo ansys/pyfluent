@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +22,7 @@
 # SOFTWARE.
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.parametric import LocalParametricStudy
+from ansys.fluent.core.offline.parametric_study import LocalParametricStudy
 
 
 def test_local_parametric_setup():

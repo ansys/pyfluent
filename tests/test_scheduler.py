@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,21 +24,20 @@
 """Provide a module to test the algorithms which parse job scheduler environments for
 machines to run on."""
 
-from builtins import range
 import os
 import socket
 import tempfile
 import unittest
 
-from ansys.fluent.core.scheduler import build_parallel_options
-from ansys.fluent.core.scheduler.load_machines import (
+from ansys.fluent.core.execution.scheduler import build_parallel_options
+from ansys.fluent.core.execution.scheduler.load_machines import (
     _construct_machine_list_slurm,
     _parse_host_info,
     _parse_machine_data,
     _restrict_machines_to_core_count,
     load_machines,
 )
-from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
+from ansys.fluent.core.execution.scheduler.machine_list import Machine, MachineList
 
 
 class TestMachine(unittest.TestCase):
@@ -56,6 +56,20 @@ class TestMachine(unittest.TestCase):
         self.assertEqual(machine.number_of_cores, 20)
         self.assertEqual(machine.queue_name, None)
         self.assertEqual(machine.core_list, None)
+
+    def test_repr_without_queue(self):
+        machine = Machine("machine", 20)
+        expected = "Hostname:machine, Cores: 20, Queue: None"
+        self.assertEqual(repr(machine), expected)
+        self.assertEqual(str(machine), expected)
+
+    def test_repr_with_queue(self):
+        machine = Machine("machine", 20, "allq")
+        self.assertEqual(repr(machine), "Hostname:machine, Cores: 20, Queue: allq")
+
+    def test_repr_with_empty_queue(self):
+        machine = Machine("machine", 20, "")
+        self.assertEqual(repr(machine), "Hostname:machine, Cores: 20, Queue: ")
 
     def test_modify_host(self):
         """Test that a Machine can be modified."""
@@ -178,6 +192,14 @@ class TestLoadMachines(unittest.TestCase):
 
     def tearDown(self):
         self._machineList.reset()
+
+    def test_loaded_machines_repr(self):
+        machine_list = load_machines(host_info="M0:2,M1:3")
+        self.assertEqual(
+            repr(machine_list.machines),
+            "[Hostname:M0, Cores: 2, Queue: None, "
+            "Hostname:M1, Cores: 3, Queue: None]",
+        )
 
     def test_machine_info(self):
         info = [

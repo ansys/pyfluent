@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +30,9 @@ from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.connectivity.file_transfer_service import (
+    ContainerFileTransferStrategy,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -69,7 +72,7 @@ def test_parametric_workflow():
         inside_container = False
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
     solver_session.file.read_case(file_name=import_file_name)
-    solver_session.solution.run_calculation.iter_count = 100
+    solver_session.solution.run_calculation.iter_count.set_state(100)
     solver_session.tui.define.parameters.enable_in_TUI("yes")
 
     velocity_inlet = solver_session.tui.define.boundary_conditions.set.velocity_inlet
@@ -255,7 +258,6 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_parameters_list_function(static_mixer_settings_session):
     solver = static_mixer_settings_session
     solver.tui.define.parameters.enable_in_TUI("yes")
@@ -290,10 +292,17 @@ def test_parameters_list_function(static_mixer_settings_session):
     unitless_quantity.field = "temperature"
     unitless_quantity.surface_names = ["outlet"]
     unitless_quantity.output_parameter = True
-
-    input_parameters_list = solver.parameters.input_parameters.list()
-    output_parameters_list = solver.parameters.output_parameters.list()
     fluent_version = solver.get_fluent_version()
+    input_parameters_list = (
+        solver.settings.parameter_workspace.parameters.input_parameters.list()
+        if fluent_version >= FluentVersion.v271
+        else solver.settings.parameters.input_parameters.list()
+    )
+    output_parameters_list = (
+        solver.settings.parameter_workspace.parameters.output_parameters.list()
+        if fluent_version >= FluentVersion.v271
+        else solver.settings.parameters.output_parameters.list()
+    )
     if fluent_version >= FluentVersion.v261:
         assert input_parameters_list == {
             "inlet1_temp": [

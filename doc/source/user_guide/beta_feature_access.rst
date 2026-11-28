@@ -23,15 +23,15 @@ Example usage:
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.launch_fluent(mode="meshing")
+  >>> from ansys.fluent.core import Meshing
+  >>> meshing_session = Meshing.from_install()
 
   >>> # Feature is available before enabling beta features, but unusable and raises 'BetaFeaturesNotEnabled'
   >>> assert hasattr(meshing_session, "topology_based")
   >>> assert "topology_based" in dir(meshing_session)
 
   >>> topo_meshing = meshing_session.topology_based()
-  ansys.fluent.core.exceptions.BetaFeaturesNotEnabled: The feature 'topology_based' requires 'enable_beta_features' flag to be enabled.
+  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: The feature 'topology_based' requires 'enable_beta_features' flag to be enabled.
 
   >>> # Enable beta features
   >>> meshing_session.enable_beta_features()
@@ -45,29 +45,11 @@ Example usage:
 Solver Session
 --------------
 
-In solver mode, the ability to **switch to meshing mode** is available as a beta feature.
-Similar to the meshing session, the method is present on the session object but raises
-``BetaFeaturesNotEnabled`` until beta features are enabled.
+.. note::
 
-Example usage:
+   The ability to **switch to meshing mode** (via ``switch_to_meshing()``) is now a stable feature. It is available in Ansys Fluent 2025 R2 and later.
 
-.. code-block:: python
-
-  >>> solver_session = pyfluent.launch_fluent()
-
-  >>> # Method available before enabling beta features, but unusable and raises 'BetaFeaturesNotEnabled'
-  >>> assert hasattr(solver_session, "switch_to_meshing")
-
-  >>> switched_meshing_session = solver_session.switch_to_meshing()
-  ansys.fluent.core.exceptions.BetaFeaturesNotEnabled: The feature 'switch_to_meshing' requires 'enable_beta_features' flag to be enabled.
-
-  >>> # Enable beta features
-  >>> solver_session.enable_beta_features()
-
-  >>> # Method is now usable
-  >>> switched_meshing_session = solver_session.switch_to_meshing()
-  >>> assert switched_meshing_session.is_active()
-  >>> assert not solver_session.is_active()
+For information on using the ``switch_to_meshing()`` method, see the :ref:`ref_switching_between_solver_and_meshing_sessions` section in the session documentation.
 
 
 .. note::

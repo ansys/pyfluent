@@ -1,7 +1,10 @@
 (?i)Ansys
 (?i)gRPC
 (?i)PyAnsys
+[Bb]oolean
+[Ff]ailover
 [Ff]luent
+[Jj]ournaled
 [Jj]ournaling
 [Mm]atplotlib
 [Pp]athlines
@@ -88,3 +91,12 @@ discoverability
 NGons
 config
 user_guide_variables
+_user_guide_variables
+Synopsys
+synopsys
+subpackage
+beartype
+beartype's
+namespace
+descriptor's
+proxying

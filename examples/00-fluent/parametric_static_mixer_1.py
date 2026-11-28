@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -88,7 +83,7 @@ read_case(solver, file_name=import_filename)
 # Set the number of iterations to 100.
 
 run_calc = RunCalculation(solver)
-run_calc.iter_count = 100
+run_calc.parameters.iter_count = 100
 
 ############################################################################
 # Create input parameters
@@ -289,7 +284,7 @@ parametric_studies.duplicate(copy_design_points=True)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Rename the newly created parametric study.
 
-parametric_studies.rename(new="New Study", old="Static_Mixer_main-1-Solve")
+parametric_studies.rename(new="New Study", old="Static_Mixer_main-Solve")
 
 #########################################################################
 # Delete old parametric study

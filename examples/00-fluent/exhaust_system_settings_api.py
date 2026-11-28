@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -77,6 +72,7 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
+    Contour,
     Graphics,
     Initialization,
     IsoSurface,
@@ -485,7 +481,7 @@ update_region.Arguments.set_state(
             "void-region-1",
             "fluid-region-1",
         ],
-        "AllRegionOversetComponenList": ["no"] * 7,
+        "AllRegionOversetComponentList": ["no"] * 7,
         "AllRegionSourceList": ["object"] * 5 + ["mpt"] * 2,
         "AllRegionTypeList": ["void"] * 6 + ["fluid"],
         "AllRegionVolumeFillList": ["none"] * 6 + ["tet"],
@@ -493,13 +489,13 @@ update_region.Arguments.set_state(
         "OldRegionLeakageSizeList": [""],
         "OldRegionMeshMethodList": ["wrap"],
         "OldRegionNameList": ["fluid-region-1"],
-        "OldRegionOversetComponenList": ["no"],
+        "OldRegionOversetComponentList": ["no"],
         "OldRegionTypeList": ["fluid"],
         "OldRegionVolumeFillList": ["hexcore"],
         "RegionLeakageSizeList": [""],
         "RegionMeshMethodList": ["wrap"],
         "RegionNameList": ["fluid-region-1"],
-        "RegionOversetComponenList": ["no"],
+        "RegionOversetComponentList": ["no"],
         "RegionTypeList": ["fluid"],
         "RegionVolumeFillList": ["tet"],
     }
@@ -663,12 +659,14 @@ write_case_data(
 # picture files. Edit the picture settings to use a custom resolution so that
 # the images are large enough.
 
+graphics = Graphics(solver)
+
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
-graphics.picture.x_resolution = 1920
-graphics.picture.y_resolution = 1440
+graphics.picture.x_resolution.set_state(1920)
+graphics.picture.y_resolution.set_state(1440)
 
 ###############################################################################
 # Create path lines
@@ -719,7 +717,6 @@ IsoSurface.create(
 #   :width: 500pt
 #   :align: center
 
-graphics = Graphics(solver)
 vel_contour = Contour.create(
     solver,
     name="contour-velocity",

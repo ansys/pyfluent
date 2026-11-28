@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +30,7 @@ from conftest import SKIP_BLOCKED, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import (
+from ansys.fluent.core.connectivity.file_transfer_service import (
     ContainerFileTransferStrategy,
     StandaloneFileTransferStrategy,
 )
@@ -39,14 +40,47 @@ def _get_certs_folder():
     return os.path.join(os.getcwd(), "certs")
 
 
+@pytest.mark.parametrize(
+    "shared_index",
+    [None, 0, 1, 2],
+    ids=["all-copies", "same-first", "same-middle", "same-last"],
+)
+@pytest.mark.parametrize(
+    "explicit_directory", [False, True], ids=["default-dir", "explicit-dir"]
+)
+def test_standalone_download_continues_after_same_file(
+    tmp_path, monkeypatch, shared_index, explicit_directory
+):
+    server, client = tmp_path / "server", tmp_path / "client"
+    server.mkdir()
+    client.mkdir()
+    monkeypatch.chdir(client)
+    names = ["sample.cas.h5", "sample.dat.h5", "run.trn"]
+    contents = {name: f"contents for {name}".encode() for name in names}
+    for name in names:
+        (server / name).write_bytes(contents[name])
+    if shared_index is not None:
+        name = names[shared_index]
+        os.link(server / name, client / name)
+
+    strategy = StandaloneFileTransferStrategy(server_cwd=str(server))
+    strategy.download(
+        names, local_directory=str(client) if explicit_directory else None
+    )
+
+    for name in names:
+        assert (client / name).read_bytes() == contents[name]
+    if shared_index is not None:
+        name = names[shared_index]
+        assert (client / name).samefile(server / name)
+
+
 @pytest.mark.skip(reason=SKIP_UNKNOWN)
 # Root cause is unknown - works fine locally and on Test Custom Run workflow, fails on CI.
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container():
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
-    from ansys.fluent.core.utils.file_transfer_service import (
+    from ansys.fluent.core.connectivity.file_transfer_service import (
         ContainerFileTransferStrategy,
     )
 
@@ -126,7 +160,7 @@ def test_datamodel_execute():
     )
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
-    import_geom.Arguments = {"FileName": "geom"}
+    import_geom.Arguments.set_state({"FileName": "geom"})
 
     with pytest.raises(RuntimeError):
         import_geom.Execute()

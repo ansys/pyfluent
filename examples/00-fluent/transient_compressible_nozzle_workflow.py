@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -63,6 +58,11 @@ Modeling Transient Compressible Flow
 # .. image:: ../../_static/transient_compressible_1.png
 #    :align: center
 #    :alt: Transient Compressible Flow Model
+
+# %%
+# Dependencies
+# ------------
+# ansys-fluent-core
 
 # %%
 # Import modules
@@ -129,7 +129,9 @@ geometry_filename = examples.download_file(
 meshing.upload(geometry_filename)
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
+workflow.TaskObject["Import Geometry"].Arguments.set_state(
+    {"FileName": geometry_filename}
+)
 workflow.TaskObject["Import Geometry"].Execute()
 
 workflow.TaskObject["Add Local Sizing"].Execute()
@@ -163,7 +165,7 @@ workflow.TaskObject["Describe Geometry"].Execute()
 
 # %%
 # Update boundaries and region
-# ---------------------------
+# ----------------------------
 
 boundary_condition = {
     "BoundaryLabelList": ["inlet"],
@@ -224,8 +226,12 @@ graphics = Graphics(solver)
 mesh = Mesh.create(solver, name="mesh-1")
 boundary_conditions = BoundaryCondition(solver)
 
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
 mesh.surfaces_list = mesh.surfaces_list.allowed_values()
 mesh.options.edges = True
@@ -249,8 +255,8 @@ solver_general_settings.units.set_units(
     units_name="atm",
 )
 # density-based solver for compressible flow to capture shock behavior accurately.
-solver_general_settings.solver.type = "density-based-implicit"
-solver_general_settings.operating_conditions.operating_pressure = 0
+solver_general_settings.solver.type.set_state("density-based-implicit")
+solver_general_settings.operating_conditions.operating_pressure.set_state(0)
 
 setup = Setup(solver)
 
@@ -269,7 +275,7 @@ inlet.momentum.gauge_total_pressure = 91192.5 * Pa
 inlet.momentum.supersonic_or_initial_gauge_pressure = 74666.3925 * Pa
 
 # Low turbulent intensity of 1.5% for smooth inlet flow, typical for nozzle simulations.
-inlet.turbulence.turbulent_intensity = 0.015
+inlet.turbulence.turbulent_intensity.set_state(0.015)
 
 outlet.momentum.gauge_pressure = 74666.3925 * Pa
 outlet.turbulence.backflow_turbulent_intensity = 0.015
@@ -279,7 +285,7 @@ outlet.turbulence.backflow_turbulent_intensity = 0.015
 # ---------------------
 # Higher Courant number balances fast convergence and stability in density-based solver
 controls = Controls(solver)
-controls.courant_number = 25
+controls.courant_number.set_state(25)
 
 # %%
 # Define report definition
@@ -384,7 +390,7 @@ write_case(solver, file_name="steady_state_nozzle.cas.h5")
 # Enabling time dependence and setting transient conditions
 # ---------------------------------------------------------
 
-solver_general_settings.solver.time = "unsteady-1st-order"
+solver_general_settings.solver.time.set_state("unsteady-1st-order")
 
 # Sinusoidal pressure variation at 2200 Hz simulates pulsating flow, with mean pressure of 0.737 atm.
 outlet.momentum.gauge_pressure = "(0.12*sin(2200[Hz]*t)+0.737)*101325.0[Pa]"

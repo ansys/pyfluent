@@ -1,14 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "ansys-fluent-visualization",
-#   "matplotlib",
-#   "pyvista",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -50,12 +42,19 @@ Conjugate Heat Transfer
 # * Use a convective thermal boundary condition to represent heat transfer.
 # * Examine and understand the relationship between flow and temperature.
 
-# sphinx_gallery_thumbnail_path = '_static/cht_xy_pressure.png'
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# ansys-fluent-visualization
+# matplotlib
+# pyvista
 
 ###################################
 # Import required libraries/modules
 # =================================
 
+# sphinx_gallery_thumbnail_path = '_static/cht_xy_pressure.png'
 import csv
 from pathlib import Path
 import platform
@@ -65,7 +64,7 @@ import pyvista as pv
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
+import ansys.fluent.core.meshing.meshing_workflow as mesh_wf_new
 from ansys.fluent.core.solver import (
     BoundaryCondition,
     CellZoneCondition,
@@ -621,7 +620,7 @@ p.add_scalar_bar(
 # Create Iso-Surface of X=0.012826 m
 # ==================================
 
-IsoSurface.create(
+iso_x = IsoSurface.create(
     solver,
     name="x=0.012826",
     field="x-coordinate",
@@ -636,7 +635,7 @@ vector1 = Vector(
     solver=solver,
     field="velocity",
     color_by="x-velocity",
-    surfaces=[iso_x.name],
+    surfaces=[iso_x.name()],
     scale=2.0,
     skip=5,
 )
@@ -671,7 +670,7 @@ p.add_scalar_bar(
 
 p1 = XYPlot(
     solver=solver,
-    surfaces=[iso_x.name],
+    surfaces=[iso_x.name()],
     y_axis_function="pressure",
     x_axis_function="direction-vector",
     direction_vector=[0, 1, 0],

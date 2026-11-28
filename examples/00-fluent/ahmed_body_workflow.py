@@ -1,12 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "ansys-fluent-visualization",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -56,6 +50,11 @@ Ahmed Body External Aerodynamics Simulation
 #    :align: center
 #    :alt: Ahmed Body Model
 
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# ansys-fluent-visualization
 
 #######################################################################################
 # Import required libraries/modules
@@ -66,9 +65,8 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
+import ansys.fluent.core.meshing.meshing_workflow as mesh_wf_new
+from ansys.fluent.core.meshing.session import PureMeshing
 from ansys.fluent.core.solver import (
     FluidMaterial,
     Initialization,
@@ -85,6 +83,7 @@ from ansys.fluent.core.solver import (
     iterate,
     write_case,
 )
+from ansys.fluent.core.solver.session import Solver
 from ansys.fluent.visualization import Contour, GraphicsWindow
 from ansys.units import VariableCatalog
 from ansys.units.common import kg, m, s

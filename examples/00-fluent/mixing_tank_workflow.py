@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,6 +26,7 @@
 Mixing Tank Workflow
 -------------------------------------------
 """
+
 #############################################################################################################
 # Overview
 # ===========================================================================================================
@@ -80,7 +76,7 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
+import ansys.fluent.core.meshing.meshing_workflow as mesh_wf_new
 from ansys.fluent.core.solver import (
     BoundaryCondition,
     BoundaryConditions,
@@ -171,7 +167,7 @@ y_mid_plane.display()
 # Access the graphics object
 graphics = Graphics(solver)
 # Set the hardcopy format for saving the image
-graphics.picture.driver_options.hardcopy_format = "png"
+graphics.picture.driver_options.hardcopy_format.set_state("png")
 
 # View settings
 geom_view = graphics.views.display_states.create(
@@ -186,8 +182,8 @@ filtered_walls_to_display = [wall for wall in all_walls if "mrf" not in wall]
 mesh_object = Mesh(solver).create(surfaces_list=filtered_walls_to_display)
 mesh_object.options.edges = False
 
-mesh_object.display_state_name = geom_view.name()
-mesh_object.coloring.option = "manual"
+mesh_object.display_state_name.set_state(geom_view.name())
+mesh_object.coloring.option.set_state("manual")
 mesh_object.display()
 graphics.views.auto_scale()
 
@@ -197,8 +193,8 @@ graphics.picture.save_picture(
 )
 
 
-mesh_object.surfaces_list = y_mid_plane.name()
-mesh_object.options.edges = True
+mesh_object.surfaces_list.set_state(y_mid_plane.name())
+mesh_object.options.edges.set_state(True)
 mesh_object.display()
 graphics.views.auto_scale()
 
@@ -206,14 +202,14 @@ graphics.picture.save_picture(
     file_name="mixing_tank_mesh.png",
 )
 
-geom_view.front_faces_transparent = "disable"
+geom_view.front_faces_transparent.set_state("disable")
 
 # %%
 # .. image:: ../../_static/mixing_tank_mesh.png
 #    :align: center
 #    :scale: 60%
 #    :alt: Mixing Tank Mesh
-#############################################################################################################
+#
 # Define Constants
 # ===========================================================================================================
 g = 9.81 * m / s**2
@@ -433,7 +429,7 @@ write_case_data(solver, file_name="mixing_tank_final.cas.h5")
 #############################################################################################################
 # Close the session
 # ===========================================================================================================
-meshing.exit()
+solver.exit()
 
 
 # sphinx_gallery_thumbnail_path = '_static/mixing_tank_velocity_contour.png'

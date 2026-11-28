@@ -1,12 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "ansys-fluent-visualization",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -60,22 +54,33 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 #
 # The example demonstrates the following:
 #
-# *Overview & Problem description
-# *Launching Fluent in solver mode.
-# *Downloading a mesh files from the examples repository.
-# *Initial setup
-# *Mesh configuration
-# *Model selection & Material definition
-# *Defining cell zone conditions & boundary conditions
-# *Turbomachinery configuration
-# *Solver settings
-# *Report definitions
-# *Initialization
-# *Running the simulation
-# *Post-processing the results
-# *Visualizing the results
-# *Saving the case file
-# *Closing the solver
+# * Overview & Problem description
+# * Launching Fluent in solver mode.
+# * Downloading a mesh files from the examples repository.
+# * Initial setup
+# * Mesh configuration
+# * Model selection & Material definition
+# * Defining cell zone conditions & boundary conditions
+# * Turbomachinery configuration
+# * Solver settings
+# * Report definitions
+# * Initialization
+# * Running the simulation
+# * Post-processing the results
+# * Visualizing the results
+# * Saving the case file
+# * Closing the solver
+
+# .. note::
+# This example has been verified and validated using Ansys Fluent 2025 R2.
+# It requires Ansys Fluent version 2025 R2 or later, as it uses features that are not available in
+# earlier versions.
+
+################################################################################################################
+# Dependencies
+# ==============================================================================================================
+# ansys-fluent-core
+# ansys-fluent-visualization
 
 ################################################################################################################
 # Import required libraries/modules
@@ -193,7 +198,7 @@ mesh_object.options.edges = True
 
 
 # Set the hardcopy format for saving the image
-graphics.picture.driver_options.hardcopy_format = "png"
+graphics.picture.driver_options.hardcopy_format.set_state("png")
 
 graphics.views.restore_view(view_name="front")
 mesh_object.display()
@@ -253,13 +258,15 @@ walls = WallBoundary(solver)
 
 impeller_hub = walls.get(name="impeller-hub")
 impeller_hub.momentum.wall_motion = impeller_hub.momentum.wall_motion.MOVING_WALL
-impeller_hub.momentum.relative = True
+impeller_hub.momentum.relative = (
+    impeller_hub.momentum.relative.RELATIVE_TO_ADJACENT_CELL_ZONE
+)
 impeller_hub.momentum.velocity_spec = impeller_hub.momentum.velocity_spec.ROTATIONAL
 
 inblock_shroud = walls.get(name="inblock-shroud")
 inblock_shroud.momentum.wall_motion = inblock_shroud.momentum.wall_motion.MOVING_WALL
-inblock_shroud.momentum.relative = False
-inblock_shroud.momentum.velocity_spec = inblock_shroud.momentum.velocity_spec.ROTATION
+inblock_shroud.momentum.relative = inblock_shroud.momentum.relative.ABSOLUTE
+inblock_shroud.momentum.velocity_spec = inblock_shroud.momentum.velocity_spec.ROTATIONAL
 
 ################################################################################################################
 # Define Boundary Conditions
@@ -353,7 +360,7 @@ inlet_pressure_report_def = report_definitions.surface.create(
 # Pump Head
 pump_head_report_def = report_definitions.single_valued_expression.create("pump-head")
 
-pump_head_report_def.definition = "head"
+pump_head_report_def.definition.set_state("head")
 
 # report plot
 pump_head_report_plot = report_plots.create(

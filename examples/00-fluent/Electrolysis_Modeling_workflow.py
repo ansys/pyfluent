@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -73,6 +68,11 @@ Electrolysis Modeling
 #    :alt: Schematic of the Electrolyzer Problem.
 
 # %%
+# Dependencies
+# ------------
+# ansys-fluent-core
+
+# %%
 # Import modules
 # --------------
 #
@@ -133,13 +133,17 @@ graphics = Graphics(solver)
 mesh = Mesh(solver).create(name="mesh-1")
 
 
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
 all_walls = mesh.surfaces_list.all()
 
-mesh.surfaces_list = all_walls
-mesh.options.edges = True
+mesh.surfaces_list.set_state(all_walls)
+mesh.options.edges.set_state(True)
 mesh.display()
 
 graphics.picture.save_picture(file_name="Electrolysis_Modeling_1.png")
@@ -214,9 +218,7 @@ electrical_tab.cathode_tab = ["cathode_tab", "cathode_tab.1", "cathode_tab.1.1"]
 materials = Materials(solver)
 
 solid_material = SolidMaterial(solver)
-solid_material.create(
-    name="collector-default", electric_conductivity=20000 * S / m
-)
+solid_material.create(name="collector-default", electric_conductivity=20000 * S / m)
 solid_material.create(name="porous-default", electric_conductivity=20000 * S / m)
 
 solid_material.create(
@@ -225,9 +227,7 @@ solid_material.create(
     dual_electric_conductivity=4.5 * S / m,
 )
 
-solid_material.create(
-    name="electrolyte-default", dual_electric_conductivity=11 * S / m
-)
+solid_material.create(name="electrolyte-default", dual_electric_conductivity=11 * S / m)
 
 # %%
 # Boundary conditions

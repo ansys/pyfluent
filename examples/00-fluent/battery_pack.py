@@ -1,12 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "ansys-fluent-visualization",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -70,6 +64,12 @@ Simulating a 1P3S Battery Pack Using the Battery Model
 # .. image:: ../../_static/battery_pack_schematic.png
 #    :align: center
 #    :alt: Battery Pack Schematic
+
+# %%
+# Dependencies
+# ------------
+# ansys-fluent-core
+# ansys-fluent-visualization
 
 # %%
 # Import modules
@@ -141,8 +141,12 @@ solver.settings.file.read_mesh(file_name=mesh_file)
 graphics = Graphics(solver)
 mesh = Mesh(solver).create(name="mesh-1")
 
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+graphics.picture.x_resolution.set_state(
+    650
+)  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution.set_state(
+    450
+)  # Vertical resolution matching typical aspect ratio
 
 all_walls = mesh.surfaces_list.all()
 mesh.surfaces_list = all_walls
@@ -183,12 +187,14 @@ battery_model.eload_condition.eload_settings.eload_type = "specified-system-powe
 battery_model.eload_condition.eload_settings.power_value = 200 * W  # Total pack power
 
 # Conductive zones
-battery_model.zone_assignment.active_zone = "cell_*"  # Active cells
-battery_model.zone_assignment.passive_zone = "*bar*|*tabzone*"  # Bars zones + tab zones
+battery_model.zone_assignment.active_zone.set_state("cell_*")  # Active cells
+battery_model.zone_assignment.passive_zone.set_state(
+    "*bar*|*tabzone*"
+)  # Bars zones + tab zones
 
 # External electrical contacts
-battery_model.zone_assignment.negative_tab = ["tab_n"]  # Negative terminal
-battery_model.zone_assignment.positive_tab = ["tab_p"]  # Positive terminal
+battery_model.zone_assignment.negative_tab.set_state(["tab_n"])  # Negative terminal
+battery_model.zone_assignment.positive_tab.set_state(["tab_p"])  # Positive terminal
 
 # %%
 # Define materials
@@ -248,8 +254,8 @@ controls.equations["kw"] = False
 
 solution = Solution(solver)
 
-solution.monitor.residual.options.criterion_type = (
-    "none"  # No automatic convergence check
+solution.monitor.residual.options.criterion_type.set_state(
+    ("none")  # No automatic convergence check
 )
 
 # %%

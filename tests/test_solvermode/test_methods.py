@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,12 +28,14 @@ import pytest
 @pytest.mark.fluent_version("latest")
 def test_methods(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    solver.setup.models.multiphase.models = "vof"
-    solver.setup.general.operating_conditions.gravity = {
-        "enable": True,
-        "components": [0.0, 0.0, -9.81],
-    }
-    solver.setup.general.solver.time = "steady"
+    solver.setup.models.multiphase.models.set_state("vof")
+    solver.setup.general.operating_conditions.gravity.set_state(
+        {
+            "enable": True,
+            "components": [0.0, 0.0, -9.81],
+        }
+    )
+    solver.setup.general.solver.time.set_state("steady")
 
     p_v_coupling = solver.solution.methods.p_v_coupling
     p_v_coupling.flow_scheme = "Coupled"
@@ -41,7 +44,7 @@ def test_methods(mixing_elbow_settings_session):
         "flow_scheme": "Coupled",
         "coupled_form": False,
     }
-    solver.solution.methods.discretization_scheme = {"pressure": "presto!"}
+    solver.solution.methods.discretization_scheme.set_state({"pressure": "presto!"})
     assert solver.solution.methods.discretization_scheme() == {
         "mom": "second-order-upwind",
         "omega": "second-order-upwind",
@@ -50,26 +53,30 @@ def test_methods(mixing_elbow_settings_session):
         "k": "second-order-upwind",
         "temperature": "second-order-upwind",
     }
-    solver.solution.methods.gradient_scheme = "least-square-cell-based"
+    solver.solution.methods.gradient_scheme.set_state("least-square-cell-based")
     assert solver.solution.methods.gradient_scheme() == "least-square-cell-based"
 
     enable_warped_face = solver.solution.methods.warped_face_gradient_correction
     enable_warped_face(enable=True, mode="fast")
     enable_warped_face(enable=False, mode="fast")
 
-    solver.solution.methods.expert.numerics_pbns.velocity_formulation = "relative"
+    solver.solution.methods.expert.numerics_pbns.velocity_formulation.set_state(
+        "relative"
+    )
     assert (
         solver.solution.methods.expert.numerics_pbns.velocity_formulation()
         == "relative"
     )
-    solver.solution.methods.expert.numerics_pbns = {
-        "implicit_bodyforce_treatment": True,
-        "velocity_formulation": "absolute",
-        "physical_velocity_formulation": True,
-        "disable_rhie_chow_flux": True,
-        "presto_pressure_scheme": False,
-        "first_to_second_order_blending": 1.0,
-    }
+    solver.solution.methods.expert.numerics_pbns.set_state(
+        {
+            "implicit_bodyforce_treatment": True,
+            "velocity_formulation": "absolute",
+            "physical_velocity_formulation": True,
+            "disable_rhie_chow_flux": True,
+            "presto_pressure_scheme": False,
+            "first_to_second_order_blending": 1.0,
+        }
+    )
     assert solver.solution.methods.expert.numerics_pbns() == {
         "implicit_bodyforce_treatment": True,
         "velocity_formulation": "absolute",
@@ -78,9 +85,9 @@ def test_methods(mixing_elbow_settings_session):
         "presto_pressure_scheme": False,
         "first_to_second_order_blending": 1.0,
     }
-    solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme = True
+    solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme.set_state(True)
     assert solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme() is True
-    solver.solution.methods.gradient_scheme = "green-gauss-node-based"
+    solver.solution.methods.gradient_scheme.set_state("green-gauss-node-based")
     assert solver.solution.methods.gradient_scheme() == "green-gauss-node-based"
     solver.solution.methods.warped_face_gradient_correction(
         enable=True, mode="memory-saving"
