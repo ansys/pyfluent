@@ -22,15 +22,17 @@
 # SOFTWARE.
 
 from typing import Any
+from unittest.mock import Mock
 
+import numpy as np
 import pytest
 
 from ansys.fluent.core import FluentVersion
 from ansys.fluent.core._grpc_services.reduction_service import _locn_names_and_objs
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.solver.function import reduction
-from ansys.fluent.core.solver.function.reduction import Weight
+from ansys.fluent.core.fields.reduction import Reduction, Weight
+from ansys.fluent.core.fields.reduction import functional as reduction
 from ansys.units import VariableCatalog
 
 
@@ -370,8 +372,8 @@ def _test_moment(solver):
 def _test_sum(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions["test_expr_1"].definition = (
-        "Sum(AbsolutePressure, ['inlet1'], Weight=Area)"
+    solver.setup.named_expressions["test_expr_1"].definition.set_state(
+        ("Sum(AbsolutePressure, ['inlet1'], Weight=Area)")
     )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert isinstance(expr_val, float) and expr_val != 0.0
@@ -389,8 +391,8 @@ def _test_sum(solver):
 def _test_sum_if(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions["test_expr_1"].definition = (
-        "SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)"
+    solver.setup.named_expressions["test_expr_1"].definition.set_state(
+        ("SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)")
     )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert isinstance(expr_val, float) and expr_val != 0.0
@@ -426,6 +428,63 @@ def _test_centroid_2_sources(solver1, solver2):
 @pytest.fixture
 def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
+
+
+def test_functional_reduction_import_compatibility(monkeypatch):
+    from ansys.fluent.core.solver.function import reduction as legacy
+
+    assert legacy.Weight is Weight
+    assert all(
+        getattr(legacy, name) is getattr(reduction, name) for name in legacy.__all__
+    )
+    solver1 = object()
+    solver2 = object()
+    monkeypatch.setattr(
+        reduction,
+        "_locns",
+        lambda locations, ctxt: [(solver1, ["a"]), (solver2, ["b"])],
+    )
+    values = iter([10.0, 2.0, 20.0, 3.0])
+    monkeypatch.setattr(
+        reduction, "_eval_reduction", lambda *args, **kwargs: next(values)
+    )
+
+    assert reduction.area_average("Pressure", ["a", "b"]) == 16.0
+
+
+@pytest.mark.parametrize(
+    "method_name,args",
+    [("area", ()), ("area_average", ("AbsolutePressure",)), ("centroid", ())],
+)
+@pytest.mark.parametrize("ctxt", [None, object()], ids=["implicit", "explicit"])
+def test_reduction_empty_locations(method_name, args, ctxt):
+    service = Mock()
+    client = Reduction(service)
+
+    with pytest.raises(ValueError, match=r"^No locations specified\.$"):
+        getattr(client, method_name)(*args, locations=[], ctxt=ctxt)
+
+    assert not service.mock_calls
+
+
+@pytest.mark.parametrize(
+    "method_name,args",
+    [("area", ()), ("area_average", ("AbsolutePressure",)), ("centroid", ())],
+)
+@pytest.mark.parametrize("ctxt", [None, object()], ids=["implicit", "explicit"])
+@pytest.mark.parametrize(
+    "locations",
+    [["inlet1"], ("inlet1",), np.array(["inlet1"])],
+    ids=["list", "tuple", "array"],
+)
+def test_reduction_nonempty_locations(method_name, args, ctxt, locations):
+    service = Mock()
+    result = object()
+    getattr(service, method_name).return_value = result
+    client = Reduction(service)
+
+    assert getattr(client, method_name)(*args, locations=locations, ctxt=ctxt) is result
+    getattr(service, method_name).assert_called_once_with(*args, locations, ctxt)
 
 
 def test_reductions(
@@ -514,26 +573,26 @@ def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
 
     assert solver.fields.reduction.area(locations=["inlet1"])
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.area(locations=[], ctxt=solver)
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.area_average(
             expression="AbsolutePressure", locations=[], ctxt=solver
         )
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match=r"^No locations specified\.$"):
         assert reduction.centroid(locations=[], ctxt=solver)
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError, match=r"^No locations specified\.$"):
         assert solver.fields.reduction.area(locations=[])
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError, match=r"^No locations specified\.$"):
         assert solver.fields.reduction.area_average(
             expression="AbsolutePressure", locations=[]
         )
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError, match=r"^No locations specified\.$"):
         assert solver.fields.reduction.centroid(locations=[])
 
 

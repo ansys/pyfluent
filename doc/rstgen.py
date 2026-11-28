@@ -1,12 +1,9 @@
 """Provides a module for generating Fluent Datamodel and TUI RST files."""
 
-import fnmatch
 import os
 import pathlib
 from pathlib import Path
 import re
-
-from doc_utils import get_display_name as _format_display_name
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 
@@ -24,12 +21,11 @@ def _get_attribute_classes(menu: type):
     attribute_classes: list
         Attributes of ``menu``.
     """
-    attribute_classes = []
-    attributes_dict = dict(vars(menu))
-    for attr_name, attr_value in attributes_dict.items():
-        if not attr_name.startswith("__"):
-            attribute_classes.append(attributes_dict[attr_name])
-    return attribute_classes
+    return [
+        attr_value
+        for attr_name, attr_value in dict(vars(menu)).items()
+        if not attr_name.startswith("__")
+    ]
 
 
 def _get_attribute_classes_with_and_without_members(menu: type):
@@ -115,6 +111,7 @@ def _process_datamodel_path(full_name: str):
     """
     path_string = re.findall("core.*", full_name)
     path = path_string[0].replace("core.generated.", "")
+    path = re.sub(r"^v\d+\.(?:meshing|object_model)\.", "", path)
     path = re.sub(r"\d+(?![A-Za-z])", "", path)
     path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")
@@ -206,35 +203,11 @@ def _get_path(mode: str, is_datamodel: bool | None = None):
     -------
         Datamodel or TUI path.
     """
-    if is_datamodel:
-        return os.path.normpath(
-            os.path.join(
-                _THIS_DIRNAME,
-                "..",
-                "src",
-                "ansys",
-                "fluent",
-                "core",
-                "generated",
-            )
-        )
-    else:
-        return os.path.normpath(
-            os.path.join(
-                _THIS_DIRNAME,
-                "..",
-                "src",
-                "ansys",
-                "fluent",
-                "core",
-                "generated",
-                f"{mode}",
-            )
-        )
+    return pathlib.Path(_THIS_DIRNAME).parent / "src/ansys/fluent/core/generated"
 
 
 def _get_file_or_folder(mode: str, is_datamodel: bool):
-    """Get datamodel_* folder or tui_*.py file name.
+    """Get the latest generated version containing modules for the mode.
 
     Parameters
     ----------
@@ -247,11 +220,15 @@ def _get_file_or_folder(mode: str, is_datamodel: bool):
     -------
         Datamodel or TUI file name.
     """
-    for file in os.listdir(_get_path(mode, is_datamodel)):
-        if is_datamodel and fnmatch.fnmatch(file, "datamodel_*"):
-            return pathlib.Path(file).stem
-        if not is_datamodel and fnmatch.fnmatch(file, "tui_*.py"):
-            return pathlib.Path(file).stem
+    generated_dir = _get_path(mode, is_datamodel)
+    from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+    for version in FluentVersion:
+        version_dir = generated_dir / f"v{version.number}"
+        if is_datamodel and (version_dir / "object_model").is_dir():
+            return version_dir.name
+        if not is_datamodel and (version_dir / mode / "tui.py").is_file():
+            return version_dir.name
 
 
 def _get_sorted_members(members: list):
@@ -284,9 +261,6 @@ def _write_datamodel_index_doc(datamodels: list, mode: str):
         f.write(f".. _ref_{mode}_datamodel:\n\n")
         f.write(f"{datamodel_mode}\n")
         f.write(f"{'=' * len(datamodel_mode)}\n\n")
-        f.write(".. automodule:: ansys.fluent.core.datamodel\n")
-        f.write("   :autosummary:\n\n")
-        f.write("   :autosummary-members:\n\n")
         f.write(".. toctree::\n")
         f.write("   :hidden:\n\n")
         for datamodel in datamodels:
@@ -320,6 +294,12 @@ def _get_reference(menu: type, menu_path: str, mode: str, is_datamodel: bool):
     return reference
 
 
+def _get_datamodel_display_name(menu: type):
+    """Display ``_<container>`` member classes as ``<container>_item``."""
+    name = menu.__name__
+    return f"{name[1:]}_item" if name.startswith("_") else name
+
+
 def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
     """Get title for RST.
 
@@ -335,12 +315,27 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
         Whether the menu is of datamodel.
     """
     if is_datamodel:
-        title = menu_path if menu["name"].__name__ == "Root" else menu["name"].__name__
+        if menu["name"].__name__ == "Root":
+            title = menu_path
+        else:
+            title = _get_datamodel_display_name(menu["name"])
     else:
         title = "tui" if menu["name"].__name__ == "main_menu" else menu["name"].__name__
-    if title and menu["name"].__name__ != "Root":
-        title = _format_display_name(title)
     return title
+
+
+def _get_named_object_member(menu: dict):
+    """Return the named-object member class of a container menu, if any.
+
+    A datamodel named-object container (``PyNamedObjectContainer`` subclass)
+    exposes its member type as a nested ``_<container>`` class.
+    """
+    from ansys.fluent.core.services.object_model import PyNamedObjectContainer
+
+    container = menu["name"]
+    if isinstance(container, type) and issubclass(container, PyNamedObjectContainer):
+        return getattr(container, f"_{container.__name__}", None)
+    return None
 
 
 def _write_doc(menu: type, mode: str, is_datamodel: bool):
@@ -362,6 +357,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     index_file = folder / f"{folder.name}_contents.rst"
     title = _get_title(mode, menu_path, menu, is_datamodel)
     with open(index_file, "w", encoding="utf8") as f:
+        if is_datamodel and menu["name"].__name__.startswith("_"):
+            f.write(":html_theme.sidebar_secondary.remove:\n\n")
         f.write(_get_reference(menu, menu_path, mode, is_datamodel))
         f.write(f"{title}\n")
         f.write(f"{'=' * len(title)}\n\n")
@@ -376,10 +373,42 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         f.write("   :autosummary:\n")
         f.write("   :autosummary-members:\n\n")
 
+        # Surface the named-object member type (mirrors the settings docs), but
+        # only when it has its own generated page (i.e. it has sub-members).
+        named_object_member = _get_named_object_member(menu) if is_datamodel else None
+        if (
+            named_object_member is not None
+            and named_object_member in menu["with_members"]
+        ):
+            member_label = _get_datamodel_display_name(named_object_member)
+            _, member_path = _get_menu_name_path(named_object_member, True)
+            member_ref = (
+                f"ref_{mode}_datamodel_{member_path.rstrip('/').replace('/', '_')}"
+            )
+            f.write(".. rubric:: Named object type\n\n")
+            f.write(f":ref:`{member_label} <{member_ref}>`\n\n")
+            member_ref_role = f":ref:`{member_label} <{member_ref}>`"
+            f.write(
+                f"``{menu['name'].__name__}`` is organised like a Python "
+                f"dictionary holding objects of type {member_ref_role} by name. "
+                f"You can access them using "
+                f"``{menu['name'].__name__}['<name>']``, or use methods such "
+                f"as ``get()``, ``keys()`` and ``values()``.\n\n\n"
+            )
+        else:
+            named_object_member = None
+
         if menu["with_members"]:
             f.write(".. toctree::\n")
             f.write("   :hidden:\n\n")
+            named_member_name = (
+                named_object_member.__name__
+                if named_object_member is not None
+                else None
+            )
             for member in _get_sorted_members(menu["with_members"]):
+                if member.startswith("_") and member != named_member_name:
+                    continue
                 f.write(f"   {member}/{member}_contents\n")
 
 

@@ -21,41 +21,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Batch RPC service (v0 proto API)."""
+"""Wrapper over the batch operations gRPC service of Fluent (v0 proto API)."""
 
 import inspect
 import logging
 import sys
 from types import ModuleType
 
-import grpc
-
-import ansys.api.fluent.v0 as api
-from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import GrpcErrorInterceptor
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
 class BatchOpsService(ServiceProtocol):
-    """Class wrapping the batch RPC service of Fluent (v0 proto API)."""
-
-    _api_module = api
-    _proto_module = batch_ops_pb2
+    """Class wrapping the batch operations service of Fluent (v0 proto API)."""
 
     def __init__(
         self,
-        channel: grpc.Channel,
+        intercept_channel,
         metadata: list[tuple[str, str]],
-        fluent_error_state=None,
     ) -> None:
         """__init__ method of BatchOpsService class."""
-        del fluent_error_state  # unused
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-        )
+        from ansys.api.fluent.v0 import batch_ops_pb2_grpc
+
         self._stub = batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
         self._metadata = metadata
         self._proto_files: list[ModuleType] | None = None
@@ -63,11 +51,13 @@ class BatchOpsService(ServiceProtocol):
 
     def _ensure_proto_files(self) -> None:
         """Lazily populate the list of all known proto file descriptors."""
+        import ansys.api.fluent.v0 as api_module
+
         if self._proto_files is not None:
             return
         owner_proto_files = [
             mod
-            for _, mod in inspect.getmembers(self._api_module, inspect.ismodule)
+            for _, mod in inspect.getmembers(api_module, inspect.ismodule)
             if hasattr(mod, "DESCRIPTOR")
         ]
         loaded_proto_files = [
@@ -127,8 +117,10 @@ class BatchOpsService(ServiceProtocol):
         stream of ``ExecuteResponse`` messages.  Each response is deserialized
         into the appropriate proto message type before being returned.
         """
+        from ansys.api.fluent.v0 import batch_ops_pb2
+
         requests = (
-            self._proto_module.ExecuteRequest(
+            batch_ops_pb2.ExecuteRequest(
                 package=op._package,
                 service=op._service_name,
                 method=op._method,

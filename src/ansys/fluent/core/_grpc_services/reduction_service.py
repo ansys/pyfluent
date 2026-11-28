@@ -24,23 +24,16 @@
 
 from typing import Any
 
-import grpc
-
 from ansys.api.fluent.v1 import reduction_pb2, reduction_pb2_grpc
 from ansys.fluent.core._grpc_services.object_model_service import (
     _convert_variant_to_value,
 )
-from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
-from ansys.fluent.core.solver.function.reduction import Weight
-from ansys.fluent.core.variable_strategies import (
+from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.diagnostics.exceptions import BadReductionRequest
+from ansys.fluent.core.fields.reduction.functional import Weight
+from ansys.fluent.core.services._protocols import ServiceProtocol
 
 Path = list[tuple[str, str]]
 
@@ -48,17 +41,8 @@ Path = list[tuple[str, str]]
 class ReductionService(ServiceProtocol):
     """Reduction gRPC service wrapper (v1 proto API)."""
 
-    def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
-    ):
+    def __init__(self, intercept_channel, metadata: list[tuple[str, str]]):
         """Initialize ReductionService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = reduction_pb2_grpc.ReductionStub(intercept_channel)
         self._metadata = metadata
         self._to_str = naming_strategy().to_string
@@ -200,7 +184,7 @@ class ReductionService(ServiceProtocol):
 
     def volume_average(self, expression, locations, ctxt=None) -> Any:
         """Get volume average."""
-        request = self._make_request("VolumeRequest", locations, ctxt, expression)
+        request = self._make_request("VolumeAveRequest", locations, ctxt, expression)
         response = self._stub.VolumeAve(request, metadata=self._metadata)
         return _convert_variant_to_value(response.value)
 
@@ -231,14 +215,6 @@ class ReductionService(ServiceProtocol):
         )
         response = self._stub.SumIf(request, metadata=self._metadata)
         return _convert_variant_to_value(response.value)
-
-
-class BadReductionRequest(Exception):
-    """Raised on an attempt to make a bad reduction request."""
-
-    def __init__(self, err):
-        """Initialize BadReductionRequest."""
-        super().__init__(f"Could not complete reduction function request: {err}")
 
 
 def _validate_locn_list(locn_list, ctxt):

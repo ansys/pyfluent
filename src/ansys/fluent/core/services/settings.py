@@ -56,6 +56,7 @@ Class hierarchy
 from functools import wraps
 from typing import Any
 
+from ansys.fluent.core._tools.settings.state_types import StateType
 from ansys.fluent.core.services.abstract_settings import AbstractSettings
 
 trace: bool = False
@@ -91,12 +92,12 @@ class BaseSettings(AbstractSettings):
         self.service = service
 
     @_trace
-    def set_var(self, path: str, value: Any) -> None:
+    def set_var(self, path: str, value: StateType) -> None:
         """Set the value for the given path."""
         self.service.set_var(path, value)
 
     @_trace
-    def get_var(self, path: str) -> Any:
+    def get_var(self, path: str) -> StateType:
         """Get the value for the given path."""
         return self.service.get_var(path)
 
@@ -142,19 +143,26 @@ class BaseSettings(AbstractSettings):
         return self.service.get_static_info()
 
     @_trace
-    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+    def execute_cmd(self, path: str, command: str, **kwds) -> StateType:
         """Execute a given command with the provided keyword arguments."""
         return self.service.execute_cmd(path, command, **kwds)
 
     @_trace
-    def execute_query(self, path: str, query: str, **kwds) -> Any:
+    def execute_query(self, path: str, query: str, **kwds) -> StateType:
         """Execute a given query with the provided keyword arguments."""
         return self.service.execute_query(path, query, **kwds)
 
     @_trace
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+    def get_attrs(
+        self, path: str, attrs: list[str], recursive: bool = False
+    ) -> dict[str, StateType]:
         """Return values of given attributes."""
         return self.service.get_attrs(path, attrs, recursive)
+
+    @_trace
+    def is_interactive_mode(self) -> bool:
+        """Checks whether commands can be executed interactively."""
+        return False
 
 
 class SettingsV251(BaseSettings):
@@ -184,11 +192,6 @@ class SettingsV251(BaseSettings):
         return self._scheme_interpreter_is_defined(
             "has-fnmatch-wild-card?"
         ) and self.is_wildcard(name)
-
-    @_trace
-    def is_interactive_mode(self) -> bool:
-        """Checks whether commands can be executed interactively."""
-        return False
 
 
 class SettingsV261(BaseSettings):
@@ -220,11 +223,6 @@ class SettingsV261(BaseSettings):
             "has-fnmatch-wild-card?"
         ) and self.is_wildcard(name)
 
-    @_trace
-    def is_interactive_mode(self) -> bool:
-        """Checks whether commands can be executed interactively."""
-        return False
-
 
 class Settings(BaseSettings):
     """Service for accessing and modifying Fluent settings since Fluent 27R1."""
@@ -232,11 +230,6 @@ class Settings(BaseSettings):
     def __init__(self, service) -> None:
         """__init__ method of Settings class."""
         super().__init__(service)
-
-    @_trace
-    def is_interactive_mode(self) -> bool:
-        """Checks whether commands can be executed interactively."""
-        return False
 
     @_trace
     def is_wildcard(self, input: str | None = None) -> bool:

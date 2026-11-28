@@ -91,7 +91,7 @@ def _safe_get_properties(settings_obj):
     return props
 
 
-def _render_widget_from_props_generic(
+def _render_widget_from_props_generic(  # noqa: C901
     settings_obj, label: str, props: dict, parent_widget
 ):
     """

@@ -30,7 +30,9 @@ def print_fluent_version(application_runtime):
     """Write Fluent version information to file."""
     version = application_runtime.get_product_version().number
     build_info = application_runtime.get_build_info()
-    version_file = (config.codegen_outdir / f"fluent_version_{version}.py").resolve()
+    version_dir = config.codegen_outdir / f"v{version}"
+    version_dir.mkdir(parents=True, exist_ok=True)
+    version_file = (version_dir / "fluent_version.py").resolve()
     with open(version_file, "w", encoding="utf8") as f:
         f.write(f'FLUENT_VERSION = "{version}"\n')
         f.write(f'FLUENT_BUILD_TIME = "{build_info.build_time}"\n')

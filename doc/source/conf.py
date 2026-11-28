@@ -7,11 +7,15 @@ import inspect
 import os
 import platform
 import subprocess
+import sys
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
 
 from ansys.fluent.core import __version__
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from settings_rstgen import _process_autodoc_bases  # noqa: E402
 
 # -- Project information -----------------------------------------------------
 
@@ -61,6 +65,19 @@ intersphinx_mapping = {
 numpydoc_use_plots = True
 numpydoc_show_class_members = False
 numpydoc_xref_param_type = True
+numpydoc_xref_aliases = {
+    "FluentMode": "ansys.fluent.core.execution.launcher.launch_options.FluentMode",
+    "UIMode": "ansys.fluent.core.execution.launcher.launch_options.UIMode",
+    "Dimension": "ansys.fluent.core.execution.launcher.launch_options.Dimension",
+    "Precision": "ansys.fluent.core.execution.launcher.launch_options.Precision",
+    "FluentWindowsGraphicsDriver": (
+        "ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver"
+    ),
+    "FluentLinuxGraphicsDriver": (
+        "ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver"
+    ),
+    "FluentVersion": "ansys.fluent.core.execution.launcher.FluentVersion",
+}
 numpydoc_validate = True
 numpydoc_validation_checks = {
     "GL06",  # Found unknown section
@@ -77,13 +94,13 @@ numpydoc_validation_checks = {
     # type, unless multiple values are being returned"
 }
 numpydoc_validation_exclude = {
-    "ansys.fluent.core.generated.solver.settings_231.",
-    "ansys.fluent.core.generated.solver.settings_232.",
-    "ansys.fluent.core.generated.solver.settings_241.",
-    "ansys.fluent.core.generated.solver.settings_242.",
-    "ansys.fluent.core.generated.solver.settings_251.",
-    "ansys.fluent.core.generated.solver.settings_252.",
-    "ansys.fluent.core.generated.solver.settings_261.",
+    "ansys.fluent.core.generated.v231.solver.settings.",
+    "ansys.fluent.core.generated.v232.solver.settings.",
+    "ansys.fluent.core.generated.v241.solver.settings.",
+    "ansys.fluent.core.generated.v242.solver.settings.",
+    "ansys.fluent.core.generated.v251.solver.settings.",
+    "ansys.fluent.core.generated.v252.solver.settings.",
+    "ansys.fluent.core.generated.v261.solver.settings.",
     "ansys.fluent.core.services.batch_ops.BatchOps.__init__",
 }
 
@@ -197,6 +214,10 @@ html_theme_options = {
     },
     "navigation_depth": -1,
     "collapse_navigation": True,
+    "mcp_server": {
+        "url": "https://github.com/ansys/pyfluent-mcp",
+        "project_name": "PyFluent-MCP",
+    },
 }
 
 if os.getenv("PYFLUENT_DOC_SKIP_CHEATSHEET") != "1":
@@ -303,6 +324,7 @@ def skip(app, what, name, obj, would_skip, options):
 def setup(app):
     """Setup function for Sphinx builder."""
     app.connect("autodoc-skip-member", skip)
+    app.connect("autodoc-process-bases", _process_autodoc_bases)
 
 
 # PyAnsys tags configuration

@@ -28,13 +28,13 @@ import pytest
 from ansys.fluent.core import config
 
 
-@pytest.mark.fluent_version("==25.2")
+@pytest.mark.fluent_version("==26.1")
 def test_settings_stub():
     # The type-stub files, which are generated for settings API, are parsed by the
     # intellisense engine while typing in editors like vscode. This test validates the
     # information contained in a type-stub file.
-    version = "252"
-    stub_file = config.codegen_outdir / "solver" / f"settings_{version}.pyi"
+    version = "261"
+    stub_file = config.codegen_outdir / f"v{version}" / "solver" / "settings.pyi"
     assert stub_file.exists()
     with open(stub_file) as f:
         module_def = ast.parse(f.read())
@@ -54,6 +54,22 @@ def test_settings_stub():
     ]:
         print(class_attr)
         assert any(x.target.id == class_attr for x in assigns)
-    fn_def = next(x for x in class_def.body if isinstance(x, ast.FunctionDef))
-    assert ast.get_docstring(fn_def)
-    assert all(x.annotation for x in fn_def.args.args[1:])
+    command_call_defs = [
+        method
+        for cls in module_def.body
+        if isinstance(cls, ast.ClassDef)
+        and any(
+            isinstance(base, ast.Name)
+            and base.id in {"Command", "CommandWithPositionalArgs"}
+            for base in cls.bases
+        )
+        for method in cls.body
+        if isinstance(method, ast.FunctionDef) and method.name == "__call__"
+    ]
+    assert command_call_defs
+    assert any(fn.args.args[1:] or fn.args.kwonlyargs for fn in command_call_defs)
+    assert all(
+        arg.annotation
+        for fn in command_call_defs
+        for arg in [*fn.args.args[1:], *fn.args.kwonlyargs]
+    )

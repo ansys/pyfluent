@@ -25,9 +25,10 @@ import logging
 import os
 from pathlib import Path
 
-from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
+from deprecated_apis import PYFLUENT_DEPRECATED_DATA
 
 from ansys.fluent.core import config
+from ansys.fluent.core.solver.flobject import ListObject, _NamedObjectCommandBase
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
@@ -70,164 +71,238 @@ def _generate_table_for_rst(r, data_dict=None):
     r.write(f'{"="*key_max}{" "*col_gap}{"="*val_max}\n\n')
 
 
+def _register_parent(child_cls_name, cls):
+    """Register cls as a parent of the child identified by child_cls_name."""
+    if not parents_dict.get(child_cls_name):
+        parents_dict[child_cls_name] = []
+    if cls not in parents_dict[child_cls_name]:
+        parents_dict[child_cls_name].append(cls)
+
+
+# Ordered list of attribute names that hold iterable child collections.
+_CHILD_LIST_ATTRS = ("child_names", "command_names", "argument_names")
+
+
 def _populate_parents_list(cls):
-    if hasattr(cls, "child_names"):
-        for child in cls.child_names:
-            child_cls = cls._child_classes[child]
-            child_cls_name = child_cls.__name__
-            if not parents_dict.get(child_cls_name):
-                parents_dict[child_cls_name] = []
-            if cls not in parents_dict[child_cls_name]:
-                parents_dict[child_cls_name].append(cls)
-
-    if hasattr(cls, "command_names"):
-        for child in cls.command_names:
-            child_cls = cls._child_classes[child]
-            child_cls_name = child_cls.__name__
-            if not parents_dict.get(child_cls_name):
-                parents_dict[child_cls_name] = []
-            if cls not in parents_dict[child_cls_name]:
-                parents_dict[child_cls_name].append(cls)
-
-    if hasattr(cls, "argument_names"):
-        for child in cls.argument_names:
-            child_cls = cls._child_classes[child]
-            child_cls_name = child_cls.__name__
-            if not parents_dict.get(child_cls_name):
-                parents_dict[child_cls_name] = []
-            if cls not in parents_dict[child_cls_name]:
-                parents_dict[child_cls_name].append(cls)
+    # Phase 1: register cls as a parent of each immediate child.
+    for attr in _CHILD_LIST_ATTRS:
+        if hasattr(cls, attr):
+            for child in getattr(cls, attr):
+                _register_parent(cls._child_classes[child].__name__, cls)
 
     if hasattr(cls, "child_object_type"):
-        child_cls = getattr(cls, "child_object_type")
-        child_cls_name = child_cls.__name__
-        if not parents_dict.get(child_cls_name):
-            parents_dict[child_cls_name] = []
-        if cls not in parents_dict[child_cls_name]:
-            parents_dict[child_cls_name].append(cls)
+        member = getattr(cls, "child_object_type")
+        _register_parent(member.__name__, cls)
 
-    if hasattr(cls, "child_names"):
-        for child in cls.child_names:
-            _populate_parents_list(cls._child_classes[child])
-
-    if hasattr(cls, "command_names"):
-        for child in cls.command_names:
-            _populate_parents_list(cls._child_classes[child])
-
-    if hasattr(cls, "argument_names"):
-        for child in cls.argument_names:
-            _populate_parents_list(cls._child_classes[child])
+    # Phase 2: recurse into each immediate child.
+    for attr in _CHILD_LIST_ATTRS:
+        if hasattr(cls, attr):
+            for child in getattr(cls, attr):
+                _populate_parents_list(cls._child_classes[child])
 
     if hasattr(cls, "child_object_type"):
         _populate_parents_list(getattr(cls, "child_object_type"))
 
 
-def _write_common(initial_param, r, cls, attr):
+def _write_common(initial_param, r, cls, attr, names=None):
     # TODO Add clarifying comments here
     data_dict = {initial_param: "Summary"}
-    for child in getattr(cls, attr):
+    for child in getattr(cls, attr) if names is None else names:
         child_cls = cls._child_classes[child]
         ref_string = f":ref:`{child} <{child_cls.__name__}>`"
         data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
     _generate_table_for_rst(r, data_dict)
 
 
-def _populate_rst_from_settings(rst_dir, cls, version, path=""):
-    # Build the current path
-    current_path = f"{path}.{cls._python_name}" if path else cls._python_name
+def _named_object_command_base(cls):
+    return next(
+        (
+            base
+            for base in cls.__bases__
+            if base is not _NamedObjectCommandBase
+            and issubclass(base, _NamedObjectCommandBase)
+        ),
+        None,
+    )
+
+
+def _process_autodoc_bases(app, name, obj, options, bases):
+    child_type = getattr(obj, "child_object_type", None)
+    if child_type is None:
+        return
+
+    child_name = getattr(child_type, "_python_name", None)
+    if not child_name:
+        return
+
+    child_ref = f"{child_type.__module__}.{child_type.__name__}"
+    for index, base in enumerate(bases):
+        if child_type not in getattr(base, "__args__", ()):
+            continue
+        origin = getattr(base, "__origin__", None)
+        if origin is None:
+            continue
+        origin_ref = f"{origin.__module__}.{origin.__qualname__}"
+        bases[index] = (
+            f":py:class:`{origin.__name__} <{origin_ref}>`\\ "
+            f"[:py:class:`{child_name} <{child_ref}>`\\ ]"
+        )
+
+
+def _write_rst_header(
+    r,
+    cls,
+    cls_name,
+    cls_orig_name,
+    version,
+    current_path,
+    display_title=None,
+):
     istr1 = _get_indent_str(1)
+    # ``display_title`` lets named/list members present their clean instance
+    # name (for example ``velocity_inlet_item``) instead of the internal class
+    # name, which carries a disambiguating ``_n`` suffix.
+    title = display_title or cls_orig_name
+    r.write(":orphan:\n")
+    # Hide the right-hand "On this page" secondary sidebar on settings pages.
+    r.write(":html_theme.sidebar_secondary.remove:\n\n")
+    # ``root`` used to create a hyperlink for settings API
+    if cls_orig_name == "root":
+        r.write(f".. _ref_{cls_name}:\n\n")
+    else:
+        r.write(f".. _{cls_name}:\n\n")
+    r.write(f"{title}\n")
+    r.write(f'{"="*(len(title))}\n\n')
+    deprecated = getattr(cls, "_deprecated_version", None)
+    if deprecated:
+        try:
+            pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
+        except AnsysVersionNotFound as ex:
+            logger.debug(ex)
+            pyfluent_fluent_version = FluentVersion.minimum_supported()
+            logger.debug(
+                f"Using minimum supported version {pyfluent_fluent_version} instead of {cls._deprecated_version} for deprecated class {cls_name}."
+            )
+        release_version = str(pyfluent_fluent_version)
+        r.write(f".. deprecated:: {release_version}\n\n")
+        deprecated_class_version.update({current_path: (cls_name, release_version)})
+    r.write(
+        f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
+    )
+    if not hasattr(cls, "child_object_type") or _named_object_command_base(cls):
+        r.write(f"{istr1}:show-inheritance:\n")
+    r.write("\n")
+
+
+def _write_rst_body(r, cls, cls_name):
+    has_children = hasattr(cls, "child_names") and len(cls.child_names) > 0
+    command_base = _named_object_command_base(cls)
+    shared_commands = set(command_base.command_names) if command_base else set()
+    commands = [
+        name
+        for name in getattr(cls, "command_names", [])
+        if name not in shared_commands
+    ]
+    has_arguments = hasattr(cls, "argument_names") and len(cls.argument_names) > 0
+    if has_children:
+        r.write(".. rubric:: Attributes\n\n")
+        _write_common("Attribute", r, cls, "child_names")
+    if commands:
+        r.write(".. rubric:: Methods\n\n")
+        _write_common("Method", r, cls, "command_names", commands)
+    if has_arguments:
+        r.write(".. rubric:: Arguments\n\n")
+        _write_common("Argument", r, cls, "argument_names")
+    if hasattr(cls, "child_object_type"):
+        child_cls = getattr(cls, "child_object_type")
+        instance_label = child_cls._python_name
+        r.write(".. rubric:: Named object type\n\n")
+        r.write(f":ref:`{instance_label} <{child_cls.__name__}>`\n\n")
+        instance_ref = f":ref:`{instance_label} <{child_cls.__name__}>`"
+        if issubclass(cls, ListObject):
+            access_example = f"{cls._python_name}[<index>]"
+            r.write(
+                f"Access each {instance_ref} by index using "
+                f"``{access_example}``.\n\n\n"
+            )
+        else:
+            access_example = f"{cls._python_name}['<name>']"
+            r.write(
+                f"``{cls._python_name}`` is organised like a Python dictionary "
+                f"holding objects of type {instance_ref} by name. "
+                f"You can access them using ``{access_example}``, or use "
+                f"methods such as ``get()``, ``keys()`` and ``values()``.\n\n\n"
+            )
+    if parents_dict.get(cls_name):
+        r.write(".. rubric:: Included in:\n\n")
+        data_dict = {"Parent": "Summary"}
+        for parent in parents_dict.get(cls_name):
+            parent_ref = parent.__name__
+            if parent_ref == "root":
+                parent_ref = "ref_root"
+            # Display the friendly ``_python_name`` (never the internal,
+            # possibly ``_n``-suffixed class name); keep the class name as the
+            # link target so the cross-reference still resolves.
+            ref_string = f":ref:`{parent._python_name} <{parent_ref}>`"
+            data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
+        _generate_table_for_rst(r, data_dict)
+
+
+def _recurse_rst_children(rst_dir, cls, version, current_path):
+    base = _named_object_command_base(cls)
+    if base:
+        rstpath = os.path.normpath(os.path.join(rst_dir, base.__name__ + ".rst"))
+        if rstpath not in rst_list:
+            with open(rstpath, "w") as r:
+                r.write(f":orphan:\n\n.. _named_object_commands_{base.__name__}:\n\n")
+                r.write("Common named-object methods\n===========================\n\n")
+                r.write(
+                    f".. autoclass:: ansys.fluent.core.generated.v{version}."
+                    f"solver.settings.{base.__name__}\n\n"
+                )
+                r.write(".. rubric:: Methods\n\n")
+                _write_common("Method", r, base, "command_names")
+            rst_list.append(rstpath)
+    for attr in _CHILD_LIST_ATTRS:
+        if hasattr(cls, attr):
+            for child in getattr(cls, attr):
+                child_cls = cls._child_classes[child]
+                _populate_rst_from_settings(rst_dir, child_cls, version, current_path)
+    if hasattr(cls, "child_object_type"):
+        child_cls = getattr(cls, "child_object_type")
+        instance_label = child_cls._python_name
+        _populate_rst_from_settings(
+            rst_dir,
+            child_cls,
+            version,
+            current_path,
+            display_title=instance_label,
+        )
+
+
+def _populate_rst_from_settings(rst_dir, cls, version, path="", display_title=None):
+    current_path = f"{path}.{cls._python_name}" if path else cls._python_name
     cls_name = cls.__name__
     cls_orig_name = cls._python_name
     rstpath = os.path.normpath(os.path.join(rst_dir, cls_name + ".rst"))
-    has_children = hasattr(cls, "child_names") and len(cls.child_names) > 0
-    has_commands = hasattr(cls, "command_names") and len(cls.command_names) > 0
-    has_arguments = hasattr(cls, "argument_names") and len(cls.argument_names) > 0
-    has_named_object = hasattr(cls, "child_object_type")
     with open(rstpath, "w") as r:
-        # Populate initial rst
-        r.write(":orphan:\n\n")
-        # ``root`` used to create a hyperlink for settings API
-        if cls_orig_name == "root":
-            r.write(f".. _ref_{cls_name}:\n\n")
-        else:
-            r.write(f".. _{cls_name}:\n\n")
-        r.write(f"{cls_orig_name}\n")
-        r.write(f'{"="*(len(cls_orig_name))}\n\n')
-        deprecated = getattr(cls, "_deprecated_version", None)
-        if deprecated:
-            try:
-                pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
-            except AnsysVersionNotFound as ex:
-                logger.debug(ex)
-                pyfluent_fluent_version = FluentVersion.minimum_supported()
-                logger.debug(
-                    f"Using minimum supported version {pyfluent_fluent_version} instead of {cls._deprecated_version} for deprecated class {cls_name}."
-                )
-            release_version = str(pyfluent_fluent_version)
-            r.write(f".. deprecated:: {release_version}\n\n")
-            deprecated_class_version.update({current_path: (cls_name, release_version)})
-        r.write(
-            f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{cls_name}\n"
+        _write_rst_header(
+            r,
+            cls,
+            cls_name,
+            cls_orig_name,
+            version,
+            current_path,
+            display_title,
         )
-        r.write(f"{istr1}:show-inheritance:\n\n")
-
-        if has_children:
-            r.write(".. rubric:: Attributes\n\n")
-            _write_common("Attribute", r, cls, "child_names")
-
-        if has_commands:
-            r.write(".. rubric:: Methods\n\n")
-            _write_common("Method", r, cls, "command_names")
-
-        if has_arguments:
-            r.write(".. rubric:: Arguments\n\n")
-            _write_common("Argument", r, cls, "argument_names")
-
-        if has_named_object:
-            child_cls = getattr(cls, "child_object_type")
-            ref_string = f":ref:`{child_cls.__name__} <{child_cls.__name__}>`"
-            r.write(".. rubric:: Named object type\n\n")
-            r.write(f"{ref_string}\n\n\n")
-
-        if parents_dict.get(cls_name):
-            r.write(".. rubric:: Included in:\n\n")
-            data_dict = {"Parent": "Summary"}
-            for parent in parents_dict.get(cls_name):
-                parent_ref = parent.__name__
-                if parent_ref == "root":
-                    parent_ref = "ref_root"
-                ref_string = f":ref:`{parent.__name__} <{parent_ref}>`"
-                data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
-            _generate_table_for_rst(r, data_dict)
-
+        _write_rst_body(r, cls, cls_name)
     if rstpath not in rst_list:
         rst_list.append(rstpath)
-        if has_children:
-            for child in cls.child_names:
-                _populate_rst_from_settings(
-                    rst_dir, cls._child_classes[child], version, current_path
-                )
-
-        if has_commands:
-            for child in cls.command_names:
-                _populate_rst_from_settings(
-                    rst_dir, cls._child_classes[child], version, current_path
-                )
-
-        if has_arguments:
-            for child in cls.argument_names:
-                _populate_rst_from_settings(
-                    rst_dir, cls._child_classes[child], version, current_path
-                )
-
-        if has_named_object:
-            _populate_rst_from_settings(
-                rst_dir, getattr(cls, "child_object_type"), version, current_path
-            )
+        _recurse_rst_children(rst_dir, cls, version, current_path)
 
 
 def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
-    deprecated_rst = (Path(rst_dir).parents[2] / "deprecated_apis.rst").resolve()
+    deprecated_rst = (Path(rst_dir).parents[3] / "deprecated_apis.rst").resolve()
     if deprecated_rst.exists():
         deprecated_rst.unlink()
     else:
@@ -242,28 +317,41 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
 
     for class_path, deprecated_name_and_version in deprecated_class_version.items():
         cls_name, deprecated_version = deprecated_name_and_version
-        settings_with_ref = (
-            f":ref:`{class_path.replace('root.', 'solver.settings.')} <{cls_name}>`"
+        # Zero-width spaces let the long dotted path wrap inside the table cell
+        # instead of forcing a page-wide horizontal scrollbar; the reference
+        # target (<cls_name>) is left untouched so the link still resolves.
+        display_path = class_path.replace("root.", "solver.settings.").replace(
+            ".", ".\u200b"
         )
+        settings_with_ref = f":ref:`{display_path} <{cls_name}>`"
         deprecated_data.append((settings_with_ref, deprecated_version))
 
     with open(deprecated_rst, "w", encoding="utf-8") as f:
         f.write(":orphan:\n\n")
         f.write(f"{name}\n")
         f.write(f'{"="*(len(name))}\n\n')
+        f.write(
+            "This page lists PyFluent and Ansys Fluent settings APIs that "
+            "are deprecated, along with the release each was deprecated "
+            "in. For deprecated PyFluent APIs, an alternative API to use "
+            "instead is provided.\n\n"
+        )
 
         f.write(f"{pyfluent_name}\n")
         f.write(f'{"-"*(len(pyfluent_name))}\n\n')
-        f.write(".. list-table:: Deprecated PyFluent APIs\n")
-        f.write("   :header-rows: 1\n\n")
+        f.write(".. list-table::\n")
+        f.write("   :header-rows: 1\n")
+        f.write("   :widths: 45 15 40\n\n")
         f.write("   * - " + "\n     - ".join(pyflunet_header) + "\n")
         for row in PYFLUENT_DEPRECATED_DATA:
             f.write("   * - " + "\n     - ".join(row) + "\n")
+        f.write("\n")
 
         f.write(f"{fluent_name}\n")
         f.write(f'{"-"*(len(fluent_name))}\n\n')
-        f.write(".. list-table:: Deprecated Ansys Fluent APIs\n")
-        f.write("   :header-rows: 1\n\n")
+        f.write(".. list-table::\n")
+        f.write("   :header-rows: 1\n")
+        f.write("   :widths: 75 25\n\n")
         f.write("   * - " + "\n     - ".join(fluent_header) + "\n")
         sorted_data = sorted(deprecated_data, key=lambda x: len(x[0]))
         for row in sorted_data:
@@ -292,7 +380,7 @@ if __name__ == "__main__":
     print("Selecting Fluent version:", version)
     print("Set the environment variable FLUENT_IMAGE_TAG to change the version.")
     settings = importlib.import_module(
-        f"ansys.fluent.core.generated.solver.settings_{version}"
+        f"ansys.fluent.core.generated.v{version}.solver.settings"
     )
     _populate_parents_list(settings.root)
     _populate_rst_from_settings(rst_dir, settings.root, version)

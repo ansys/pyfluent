@@ -24,13 +24,16 @@
 """Unit tests for flobject module."""
 
 from collections.abc import MutableMapping
+import inspect
 import io
+import warnings
 import weakref
 
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
 from ansys.fluent.core import ExposureLevel
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 from ansys.fluent.core.solver import flobject
@@ -216,7 +219,7 @@ class NamedObject(Setting, MutableMapping):
         ret = {"type": cls.objtype}
         if cls.__doc__:
             ret["help"] = cls.__doc__
-        ret["object-type"] = cls.child_object_type.get_static_info()
+        ret["object_type"] = cls.child_object_type.get_static_info()
         if cls.commands:
             ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
         try:
@@ -280,7 +283,7 @@ class ListObject(Setting):
         ret = {"type": cls.objtype}
         if cls.__doc__:
             ret["help"] = cls.__doc__
-        ret["object-type"] = cls.child_object_type.get_static_info()
+        ret["object_type"] = cls.child_object_type.get_static_info()
         if cls.commands:
             ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
         return ret
@@ -466,31 +469,62 @@ class Proxy:
 
 def test_primitives():
     r = flobject.get_root(Proxy())
-    r.g_1.r_1 = 3.2
+    r.g_1.r_1.set_state(3.2)
     assert r.g_1.r_1() == 3.2
-    r.g_1.i_2 = -3
+    r.g_1.i_2.set_state(-3)
     assert r.g_1.i_2() == -3
-    r.g_1.b_3 = True
+    r.g_1.b_3.set_state(True)
     assert r.g_1.b_3() is True
-    r.g_1.b_3 = False
+    r.g_1.b_3.set_state(False)
     assert r.g_1.b_3() is False
-    r.g_1.s_4 = "foo"
+    r.g_1.s_4.set_state("foo")
     assert r.g_1.s_4() == "foo"
+
+
+def test_state_assignment_deprecation():
+    with warnings.catch_warnings(record=True) as captured:
+        warnings.simplefilter("always", PyFluentDeprecationWarning)
+        r = flobject.get_root(Proxy())
+        r.g_1.r_1.set_state(1.0)
+        r.n_1["n1"] = {}
+        assert not captured
+
+        line = inspect.currentframe().f_lineno + 1
+        r.g_1.r_1 = 3.2
+        assert len(captured) == 1
+        assert captured[0].category is PyFluentDeprecationWarning
+        assert "r_1.set_state(value)" in str(captured[0].message)
+        assert captured[0].filename == __file__
+        assert captured[0].lineno == line
+        assert r.g_1.r_1.get_state() == 3.2
+
+        r.g_1 = {"i_2": 4}
+        assert len(captured) == 2
+        assert r.g_1.i_2.get_state() == 4
+
+
+def test_command_argument_assignment_deprecation(mocker):
+    r = flobject.get_root(Proxy())
+    arg = r.c_1.a_1
+    set_state = mocker.patch.object(type(arg), "set_state", autospec=True)
+    with pytest.warns(PyFluentDeprecationWarning, match="a_1.set_state"):
+        r.c_1.a_1 = 2.0
+    set_state.assert_called_once_with(arg, 2.0)
 
 
 def test_group():
     r = flobject.get_root(Proxy())
-    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state({"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"})
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
-    r.g_1 = {"s_4": "bar"}
+    r.g_1.set_state({"s_4": "bar"})
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
-    r.g_1.i_2 = 4
+    r.g_1.i_2.set_state(4)
     assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
 
 
 def test_settings_input_set_state():
     r = flobject.get_root(Proxy())
-    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state({"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"})
     r.g_1.set_state(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1.set_state(s_4="bar")
@@ -501,7 +535,7 @@ def test_settings_input_set_state():
 
 def test_settings_input():
     r = flobject.get_root(Proxy())
-    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state({"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"})
     r.g_1(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1(s_4="bar")
@@ -522,7 +556,7 @@ def test_named_object():
     assert r.n_1.get_object_names() == ["n2", "n4"]
     r.n_1["n1"] = {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
     assert r.n_1["n1"]() == {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
-    r.n_1 = {"n5": {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}}
+    r.n_1.set_state({"n5": {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}})
     assert r.n_1.get_object_names() == ["n2", "n4", "n1", "n5"]
     assert r.n_1["n5"]() == {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}
 
@@ -530,11 +564,13 @@ def test_named_object():
 def test_list_object():
     r = flobject.get_root(Proxy())
     assert r.l_1.get_size() == 0
-    r.l_1 = [
-        {"il_1": None, "bl_1": None},
-        {"il_1": None, "bl_1": None},
-    ]
-    r.l_1[1].il_1 = [1, 2]
+    r.l_1.set_state(
+        [
+            {"il_1": None, "bl_1": None},
+            {"il_1": None, "bl_1": None},
+        ]
+    )
+    r.l_1[1].il_1.set_state([1, 2])
     assert r.l_1() == [
         {"il_1": None, "bl_1": None},
         {"il_1": [1, 2], "bl_1": None},
@@ -543,16 +579,18 @@ def test_list_object():
     assert r.l_1[0:1][0].il_1() is None
     assert r.l_1[1:2][0].il_1() == [1, 2]
 
-    r.l_1 = [{"il_1": [3], "bl_1": [True, False]}]
+    r.l_1.set_state([{"il_1": [3], "bl_1": [True, False]}])
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
 
-    r.l_1 = [
-        {"il_1": [1], "bl_1": None},
-        {"il_1": None, "bl_1": None},
-        {"il_1": [2], "bl_1": None},
-        {"il_1": None, "bl_1": None},
-        {"il_1": [3], "bl_1": None},
-    ]
+    r.l_1.set_state(
+        [
+            {"il_1": [1], "bl_1": None},
+            {"il_1": None, "bl_1": None},
+            {"il_1": [2], "bl_1": None},
+            {"il_1": None, "bl_1": None},
+            {"il_1": [3], "bl_1": None},
+        ]
+    )
     assert [inner.il_1() for inner in r.l_1[::2]] == [[1], [2], [3]]
 
 
@@ -590,7 +628,7 @@ def test_list_object_set_state_with_quantity_values():
 
 def test_command():
     r = flobject.get_root(Proxy())
-    r.g_1.r_1 = 2.4
+    r.g_1.r_1.set_state(2.4)
     r.c_1._setattr("_version", FluentVersion.v261)
     r.c_1()
     assert r.g_1.r_1() == 2.4 + 2.3
@@ -615,10 +653,241 @@ def test_attrs():
     r._setattr("_version", "251")
     assert r.g_1.s_4.get_attr("active?")
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
-    r.g_1.b_3 = True
+    r.g_1.b_3.set_state(True)
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError):
         r.g_1.s_4.get_attr("allowed-values")
+
+
+def test_get_cls_base_resolution_and_fallback(caplog):
+    cls, _ = flobject.get_cls("create", {"type": "command"}, version="271")
+    assert issubclass(cls, flobject.CommandWithPositionalArgs)
+
+    dict_cls, _ = flobject.get_cls("state", {"type": "dict"}, version="271")
+    assert issubclass(dict_cls, flobject.Dict)
+    assert dict_cls._state_type == flobject.DictStateType
+
+    command_cls, _ = flobject.get_cls(
+        "restore-topology",
+        {"type": "command", "arguments": {"state": {"type": "dict"}}},
+        version="271",
+    )
+    assert "state" in command_cls.argument_names
+
+    with caplog.at_level("WARNING", logger="pyfluent.settings_api"):
+        fallback_cls, _ = flobject.get_cls(
+            "unknown", {"type": "unknown-type"}, version="271"
+        )
+    assert issubclass(fallback_cls, flobject.String)
+    assert "Falling back to String." in caplog.text
+
+
+def test_get_cls_named_object_mixins_and_command_filtering():
+    creatable_info = {
+        "type": "named-object",
+        "user_creatable": True,
+        "object_type": {"type": "group"},
+        "commands": {
+            "create": {"type": "command"},
+            "delete": {"type": "command"},
+            "exit": {"type": "command"},
+        },
+    }
+
+    cls_old, _ = flobject.get_cls("n-1", creatable_info, version="242")
+    assert issubclass(cls_old, flobject.CreatableNamedObjectMixinOld)
+    assert any(name.startswith("create") for name in cls_old.command_names)
+    assert "exit" not in cls_old.command_names
+
+    cls_new, _ = flobject.get_cls("n-1", creatable_info, version="251")
+    assert issubclass(cls_new, flobject.CreatableNamedObjectMixin)
+    assert "create" in cls_new.command_names
+    assert "exit" not in cls_new.command_names
+
+    non_creatable_info = {
+        "type": "named-object",
+        "user_creatable": False,
+        "object_type": {"type": "group"},
+        "commands": {
+            "create": {"type": "command"},
+            "delete": {"type": "command"},
+            "exit": {"type": "command"},
+        },
+    }
+    cls_non_creatable, _ = flobject.get_cls("n-1", non_creatable_info, version="271")
+    assert issubclass(cls_non_creatable, flobject._NonCreatableNamedObjectMixin)
+    assert "create" not in cls_non_creatable.command_names
+    assert "delete" in cls_non_creatable.command_names
+    assert "exit" not in cls_non_creatable.command_names
+
+
+def test_get_cls_aliases_allowed_values_and_deprecation_metadata():
+    info = {
+        "type": "string",
+        "deprecated_version": "22.2",
+        "has_migration_adapter": True,
+        "child_aliases": {"legacy-name": "new-name"},
+        "command_aliases": {"legacy-cmd": "../new-cmd"},
+        "allowed_values": ["yes", "1st choice", ""],
+    }
+    cls, _ = flobject.get_cls("node", info, version="271")
+
+    assert cls._deprecated_version == "22.2"
+    assert cls._has_migration_adapter is True
+    assert cls._allowed_values == ["yes", "1st choice", ""]
+
+    assert "legacy_name" in cls._child_aliases
+    assert cls._child_aliases["legacy_name"] == ("new_name", "legacy-name")
+    assert "legacy_cmd" in cls._child_aliases
+    assert cls._child_aliases["legacy_cmd"] == ("../new_cmd", "legacy-cmd")
+
+    assert str(getattr(cls, "YES")) == "yes"
+    assert str(getattr(cls, "CASE_1ST_CHOICE")) == "1st choice"
+    assert str(getattr(cls, "EMPTY_STRING")) == ""
+
+    cls_not_deprecated, _ = flobject.get_cls(
+        "node", {"type": "real", "deprecated_version": "22.1"}, version="271"
+    )
+    assert cls_not_deprecated._deprecated_version == ""
+
+
+def test_get_cls_list_command_name_handling_by_version():
+    info = {
+        "type": "named-object",
+        "user_creatable": True,
+        "object_type": {"type": "group"},
+        "commands": {
+            "list": {"type": "command"},
+            "list-properties": {"type": "command"},
+        },
+    }
+
+    cls_251, _ = flobject.get_cls("n-1", info, version="251")
+    assert "list" not in cls_251.command_names
+    assert "list_properties" not in cls_251.command_names
+    assert any(name.startswith("list") for name in cls_251.command_names)
+
+    cls_261, _ = flobject.get_cls("n-1", info, version="261")
+    assert "list" in cls_261.command_names
+    assert "list_properties" in cls_261.command_names
+
+
+def test_get_cls_argument_docstring_uses_real_newlines():
+    cls, _ = flobject.get_cls(
+        "do-work",
+        {
+            "type": "command",
+            "arguments": {
+                "arg-1": {"type": "real", "help": "first argument"},
+            },
+        },
+        version="271",
+    )
+
+    assert "Parameters\n----------\n" in cls.__doc__
+    assert "arg_1 : real\n" in cls.__doc__
+    assert "\\n" not in cls.__doc__
+
+
+@pytest.mark.parametrize("action_type", ["command", "query"])
+def test_get_cls_argument_docstring_uses_callable_names(monkeypatch, action_type):
+    monkeypatch.setattr(flobject, "_bases_by_class", {})
+    flobject.get_cls(
+        "file-name", {"type": "file", "file_purpose": "output"}, version="271"
+    )
+    cls, _ = flobject.get_cls(
+        "read-case",
+        {
+            "type": action_type,
+            "arguments": {
+                "file-name": {"type": "file", "file_purpose": "input"},
+                "part-2": {"type": "string"},
+                "path": {"type": "string"},
+            },
+        },
+        version="271",
+    )
+
+    assert cls._child_classes["file_name"].__name__ == "file_name_1"
+    assert cls.argument_names == ["file_name", "part_2", "path_1"]
+    assert "    file_name : str\n" in cls.__doc__
+    assert "    file_name_1 : str\n" not in cls.__doc__
+    assert "    part_2 : str\n" in cls.__doc__
+    assert "    path_1 : str\n" in cls.__doc__
+
+
+def test_create_generated_class_returns_context():
+    cls, parent_attr_name, taboo, user_creatable = flobject._create_generated_class(
+        "",
+        {"type": "group", "help": "root"},
+        parent=None,
+        version="271",
+        parent_taboo=None,
+    )
+
+    assert cls.__name__ == "root"
+    assert parent_attr_name == "root"
+    assert user_creatable is False
+    assert cls.exposure_level == ExposureLevel.STABLE
+    assert "command_names" in taboo
+
+
+def test_set_generated_return_type_helper():
+    legacy_cls = type("legacy", (), {})
+    flobject._set_generated_return_type(legacy_cls, {"return_type": "real"}, "")
+    assert legacy_cls.return_type == "object"
+
+    current_cls = type("current", (), {})
+    flobject._set_generated_return_type(current_cls, {"return_type": "real"}, "271")
+    assert current_cls.return_type == "real"
+
+    no_return_cls = type("no_return", (), {})
+    flobject._set_generated_return_type(no_return_cls, {}, "271")
+    assert not hasattr(no_return_cls, "return_type")
+
+
+def test_set_generated_child_object_type_helper():
+    parent_cls = type(
+        "parent",
+        (),
+        {"exposure_level": ExposureLevel.STABLE, "fluent_name": "parent"},
+    )
+    flobject._set_generated_child_object_type(
+        parent_cls,
+        {"object_type": {"type": "group"}},
+        "271",
+    )
+
+    assert issubclass(parent_cls.child_object_type, flobject.Group)
+    child = parent_cls.child_object_type("child-name")
+    assert child.get_name() == "child-name"
+
+
+def test_register_generated_commands_section_filters_exit_and_create():
+    cls = type(
+        "test_parent",
+        (),
+        {"_child_classes": {}, "exposure_level": ExposureLevel.STABLE},
+    )
+    info = {
+        "commands": {
+            "create": {"type": "command"},
+            "delete": {"type": "command"},
+            "exit": {"type": "command"},
+        }
+    }
+
+    flobject._register_generated_commands_section(
+        cls,
+        info,
+        taboo=set(),
+        version="271",
+        user_creatable=False,
+    )
+
+    assert "delete" in cls.command_names
+    assert "create" not in cls.command_names
+    assert "exit" not in cls.command_names
 
 
 def test_exposure_level_filtering(monkeypatch):
@@ -709,7 +978,7 @@ def test_exposure_level_filtering_named_object_commands(monkeypatch):
                     "n-1": {
                         "type": "named-object",
                         "user_creatable": True,
-                        "object-type": {"type": "group"},
+                        "object_type": {"type": "group"},
                         "commands": {
                             "stable-cmd": {"type": "command", "arguments": {}},
                             "beta-cmd": {
@@ -726,7 +995,7 @@ def test_exposure_level_filtering_named_object_commands(monkeypatch):
                     },
                     "l-1": {
                         "type": "list-object",
-                        "object-type": {"type": "group"},
+                        "object_type": {"type": "group"},
                         "commands": {
                             "stable-cmd": {"type": "command", "arguments": {}},
                             "beta-cmd": {
@@ -823,7 +1092,7 @@ def test_exposure_level_filtering_complete_hierarchy(monkeypatch):
                     "named-obj": {
                         "type": "named-object",
                         "user_creatable": True,
-                        "object-type": {"type": "group"},
+                        "object_type": {"type": "group"},
                         "commands": {
                             "stable-cmd": {"type": "command", "arguments": {}},
                             "beta-cmd": {
@@ -1163,9 +1432,7 @@ def _disabled_test_settings_gen():
     cls, _ = flobject.get_cls("", info)
     f = io.StringIO()
     ansys.fluent.core.codegen.settingsgen.write_settings_classes(f, cls, info)
-    assert (
-        f.getvalue()
-        == '''###
+    assert f.getvalue() == '''###
 ### THIS FILE IS AUTOGENERATED! DO NOT MODIFY!
 
 ###
@@ -1294,8 +1561,7 @@ class root(Group):
             'a_2' child of 'c_1' object
             """
             fluent_name = "a-2"
-'''
-    )  # noqa: W293
+'''  # noqa: W293
 
 
 @pytest.mark.fluent_version("latest")
@@ -1456,8 +1722,9 @@ def test_settings_matching_names(new_solver_session) -> None:
 
     assert msg.value.args[0].startswith("'setup' object has no attribute 'mod'.")
 
-    with pytest.raises(ValueError) as msg:
-        solver.setup.models.viscous.model = "k_epsilon"
+    with pytest.warns(PyFluentDeprecationWarning):
+        with pytest.raises(ValueError) as msg:
+            solver.setup.models.viscous.model = "k_epsilon"
 
     assert (
         msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
@@ -1577,7 +1844,7 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     assert isinstance(solver.settings.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
-    turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    turbulence.turbulent_specification.set_state("Intensity and Hydraulic Diameter")
     hydraulic_diameter = turbulence.hydraulic_diameter
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
@@ -1602,13 +1869,13 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     velocity = ansys.units.Quantity(
         12.0, ansys.units.UnitRegistry().ft
     ) / ansys.units.Quantity(3.0, ansys.units.UnitRegistry().s)
-    hot_inlet.momentum.velocity.value = velocity
+    hot_inlet.momentum.velocity.value.set_state(velocity)
     assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
     velocity = (1.0, "m s^-1")
-    hot_inlet.momentum.velocity = velocity
+    hot_inlet.momentum.velocity.set_state(velocity)
     assert hot_inlet.momentum.velocity.value.state_with_units() == velocity
     velocity = ansys.units.Quantity(12.0, "m s^-1")
-    hot_inlet.momentum.velocity = velocity
+    hot_inlet.momentum.velocity.set_state(velocity)
     assert hot_inlet.momentum.velocity.value() == velocity.value
     assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
     assert hot_inlet.momentum.velocity.state_with_units() == {
@@ -1677,16 +1944,16 @@ def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].momentum.velocity.value = speed.value
+    ].momentum.velocity.value.set_state(speed.value)
     assert (
         solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ].momentum.velocity.value()
         == speed.value
     )
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = (
-        speed
-    )
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].momentum.velocity.set_state(speed)
     assert (
         solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
@@ -1936,3 +2203,43 @@ def test_list_and_list_properties(new_solver_session):
         assert {"list", "list_properties"}.issubset(
             solver.settings.setup.materials.mixture.command_names
         )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_get_active_command_names_in_named_objects(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case_data(file_name=case_path)
+    active_command_names = (
+        solver.settings.results.graphics.contour.get_active_command_names()
+    )
+    assert {"create", "delete", "make_a_copy", "display", "add_to_graphics"}.issubset(
+        set(active_command_names)
+    )
+    all_command_names = solver.settings.results.graphics.contour.command_names
+    assert {
+        "create",
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "add_to_graphics",
+    }.issubset(set(all_command_names))
+
+    solver.settings.results.graphics.contour.create("c-1")
+    active_command_names = (
+        solver.settings.results.graphics.contour.get_active_command_names()
+    )
+    assert {
+        "create",
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "add_to_graphics",
+    }.issubset(set(active_command_names))

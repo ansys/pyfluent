@@ -26,12 +26,32 @@
 from collections.abc import Callable
 import functools
 import inspect
+import sys
 from typing import Any
 import warnings
 
 from deprecated.sphinx import deprecated
 
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
+
+
+def _warn_state_assignment(name: str, replacement: str | None = None) -> None:
+    stacklevel = 2
+    frame = sys._getframe(1)
+    while frame is not None and frame.f_code.co_name == "__setattr__":
+        module = frame.f_globals.get("__name__", "")
+        if module != "ansys.fluent.core" and not module.startswith(
+            "ansys.fluent.core."
+        ):
+            break
+        stacklevel += 1
+        frame = frame.f_back
+    replacement = replacement or f"{name}.set_state(value)"
+    warnings.warn(
+        f"Assigning Fluent state with '=' is deprecated; use {replacement} instead.",
+        PyFluentDeprecationWarning,
+        stacklevel=stacklevel,
+    )
 
 
 def deprecate_arguments(
@@ -111,12 +131,12 @@ def deprecate_arguments(
         reason = f"Argument {old_str} is deprecated; use {new_str} instead."
 
     def decorator(func: Callable):
-        deprecated_func = deprecated(version=version, reason=reason)(func)
-
-        @functools.wraps(deprecated_func)
+        @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # Warn only if any old arg(s) present
-            if any(arg in kwargs for arg in old_args):
+            has_deprecated_args = any(arg in kwargs for arg in old_args)
+
+            # Warn and convert only when deprecated arg(s) are actually present.
+            if has_deprecated_args:
                 warnings.warn(
                     reason,
                     warning_cls,
@@ -135,8 +155,10 @@ def deprecate_arguments(
                         f"Converter must accept either (kwargs) or (kwargs, old_args, new_args), "
                         f"but got {n_params} parameter(s): {list(params)}"
                     )
-            return deprecated_func(*args, **kwargs)
 
+            return func(*args, **kwargs)
+
+        wrapper.__signature__ = inspect.signature(func)
         return wrapper
 
     return decorator
@@ -180,6 +202,7 @@ def deprecate_function(
             warnings.warn(reason, warning_cls, stacklevel=2)
             return decorated(*args, **kwargs)
 
+        wrapper.__signature__ = inspect.signature(decorated)
         return wrapper
 
     return decorator

@@ -36,13 +36,17 @@ from ansys.fluent.core import (
     VectorFieldDataRequest,
     examples,
 )
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.fields.field_data_interfaces import (
+from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     FieldUnavailableError,
+    _AllowedSurfaceIDs,
     _Fields,
+    _ScalarFields,
+    _SurfaceIds,
+    _VectorFields,
 )
-from ansys.fluent.core.fields.live_field_data import (
+from ansys.fluent.core.fields.field_data.live_field_data import (
     CellElementType,
     ZoneType,
 )
@@ -61,9 +65,11 @@ def test_field_data_batches(new_solver_session) -> None:
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.mesh.check()
 
-    solver.setup.models.energy.enabled = True
+    solver.setup.models.energy.enabled.set_state(True)
     solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
-    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material.set_state(
+        "water-liquid"
+    )
 
     # Set up boundary conditions for CFD analysis
     cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
@@ -79,7 +85,7 @@ def test_field_data_batches(new_solver_session) -> None:
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
     hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
 
-    solver.solution.monitor.residual.options.plot = False
+    solver.solution.monitor.residual.options.plot.set_state(False)
 
     # Initialize flow field
     solver.solution.initialization.hybrid_initialize()
@@ -535,6 +541,42 @@ def test_fields_is_active_accepts_variable_descriptor() -> None:
     assert not fields.is_active(VariableCatalog.VELOCITY)
 
 
+def test_scalar_fields_is_active_rejects_vector_descriptor() -> None:
+    scalar_fields = _ScalarFields(lambda: ["velocity-magnitude"], field_info=None)
+
+    assert scalar_fields.is_active("velocity-magnitude")
+    assert scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+    with pytest.raises(TypeError):
+        scalar_fields.is_active(VariableCatalog.VELOCITY)
+
+
+def test_vector_fields_is_active_rejects_scalar_descriptor() -> None:
+    vector_fields = _VectorFields(lambda: ["velocity"])
+
+    assert vector_fields.is_active("velocity")
+    assert vector_fields.is_active(VariableCatalog.VELOCITY)
+    with pytest.raises(TypeError):
+        vector_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+
+
+def test_pathlines_request_additional_field_name_accepts_scalar_descriptor() -> None:
+    request = PathlinesFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY_X,
+        additional_field_name=VariableCatalog.PRESSURE,
+        surfaces=["inlet"],
+    )
+    assert request.additional_field_name == VariableCatalog.PRESSURE
+
+
+def test_pathlines_request_additional_field_name_rejects_vector_descriptor() -> None:
+    with pytest.raises(TypeError):
+        PathlinesFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY_X,
+            additional_field_name=VariableCatalog.VELOCITY,
+            surfaces=["inlet"],
+        )
+
+
 def test_fields_allowed_variables_filters_unmapped_names() -> None:
     fields = _Fields(lambda: ["temperature", "not-a-mapped-field"])
 
@@ -596,10 +638,12 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = {
-        "FileName": import_file_name,
-        "LengthUnit": "in",
-    }
+    meshing.workflow.TaskObject["Import Geometry"].Arguments.set_state(
+        {
+            "FileName": import_file_name,
+            "LengthUnit": "in",
+        }
+    )
     meshing.workflow.TaskObject["Import Geometry"].Execute()
 
     def has_expected_mesh_data():
@@ -858,3 +902,28 @@ def test_field_data_exceptions_using_variable_catalog(new_solver_session) -> Non
         flatten_connectivity=True,
     )
     assert path_lines_data_request
+
+
+def test_allowed_surface_ids_warngs_on_missing_surface_id_key() -> None:
+    """_AllowedSurfaceIDs.__call__ should warn when surface_id key is missing."""
+
+    class _FakeFieldInfo:
+        def _get_surfaces_info(self):
+            return {"bad-surface": {"no_surface_id_key": []}}
+
+    allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
+    with pytest.warns(Warning, match="retrieve surface id"):
+        allowed()
+
+
+def test_surface_ids_validate_raises_on_bad_surface_info() -> None:
+    """_SurfaceIds.validate should propagate LookupError when surface info is malformed."""
+
+    class _FakeFieldInfo:
+        def _get_surfaces_info(self):
+            return {"bad-surface": {"surface_id": []}}
+
+    allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
+    validator = _SurfaceIds(allowed)
+    with pytest.warns(Warning, match="not a valid surface id"):
+        validator.validate([1])

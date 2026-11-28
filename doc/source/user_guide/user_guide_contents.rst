@@ -11,7 +11,7 @@ User guide
    config_variables
    session/session_contents
    solver_settings/solver_settings_contents
-   meshing/meshing_contents
+   meshing
    fields/fields_contents
    events
    monitors
@@ -24,6 +24,7 @@ User guide
    journal
    log
    usability
+   resilient_mode
    make_container_image
    legacy/legacy_contents
    beta_feature_access
@@ -39,10 +40,10 @@ A simple example
 
 .. code:: python
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, product_version=pyfluent.FluentVersion.v251)
+  >>> from ansys.fluent.core import FluentVersion, Meshing, examples
+  >>> meshing_session = Meshing.from_install(product_version=FluentVersion.v251)
   >>> watertight = meshing_session.watertight()
-  >>> watertight.import_geometry.file_name = pyfluent.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
+  >>> watertight.import_geometry.file_name.set_state(examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow"))
   >>> watertight.import_geometry()
   >>> watertight.create_volume_mesh()
   >>> solver_session = meshing_session.switch_to_solver()
@@ -74,7 +75,7 @@ Leverage intuitive, :ref:`guided workflows <ref_meshing_guide>` to create high-q
 
 Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
+Utilize :ref:`settings objects <ref_root>` to configure and control your simulation. Get familiar
 with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction
@@ -92,8 +93,16 @@ Offline features
 
 :ref:`Get rapid access to Fluent case and solution data through offline tools<ref_offline_guide>`.
 PyFluent offers Python classes that represent case, data, and project files, enabling you to work with
-Fluent data efficiently offline. The :obj:`~ansys.fluent.core.file_session.FileSession` class mimics the functionality of live 
+Fluent data efficiently offline. The :obj:`~ansys.fluent.core.execution.session.file.FileSession` class mimics the functionality of live
 :ref:`live session objects <ref_session_guide>`, allowing you to access field data and other relevant information without a live Fluent session.
 
 .. vale Google.Spacing = YES
+
+Resilient mode
+~~~~~~~~~~~~~~
+
+Make an automated setup-and-solve run survivable with
+:ref:`resilient mode <ref_resilient_guide>`. Checkpoint automatically before
+irreversible commands and roll back when they fail, undo and redo settings
+changes, and keep running on a warm standby session when the active solver dies.
 

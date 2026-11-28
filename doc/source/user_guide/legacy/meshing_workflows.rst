@@ -1,9 +1,9 @@
 .. _ref_meshing_workflows_guide:
 
-Classic meshing workflow
-========================
-You can use PyFluent to access the classic meshing workflows
-which align with the journal syntax.
+Fluent-native interface
+=======================
+You can use PyFluent to access the Fluent-native interface for meshing workflows,
+which aligns with the journal syntax.
 
 Watertight geometry meshing workflow
 ------------------------------------
@@ -17,12 +17,11 @@ Import geometry
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core import Precision, Meshing, examples
 
     >>> import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    >>> meshing_session = pyfluent.launch_fluent(
-    >>>     mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    >>> meshing_session = Meshing.from_install(
+    >>>     precision=Precision.DOUBLE, processor_count=2
     >>> )
     >>> workflow = meshing_session.workflow
     >>> workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
@@ -48,9 +47,9 @@ Generate surface mesh
 .. code:: python
 
     >>> create_surface_mesh = tasks['Generate the Surface Mesh']
-    >>> create_surface_mesh.Arguments = {
+    >>> create_surface_mesh.Arguments.set_state({
     >>>     'CFDSurfaceMeshControls': {'MaxSize': 0.3}
-    >>> }
+    >>> })
     >>> create_surface_mesh.Execute()
 
 Describe geometry
@@ -62,9 +61,9 @@ Describe geometry
     >>> describe_geometry.UpdateChildTasks(
     >>>     SetupTypeChanged=False
     >>> )
-    >>> describe_geometry.Arguments = {
+    >>> describe_geometry.Arguments.set_state({
     >>>     SetupType: "The geometry consists of only fluid regions with no voids"
-    >>> }
+    >>> })
     >>> describe_geometry.UpdateChildTasks(SetupTypeChanged=True)
     >>> describe_geometry.Execute()
 
@@ -110,12 +109,12 @@ Generate volume mesh
 .. code:: python
 
     >>> create_volume_mesh = tasks["Generate the Volume Mesh"]
-    >>> create_volume_mesh.Arguments = {
+    >>> create_volume_mesh.Arguments.set_state({
     >>>     "VolumeFill": "poly-hexcore",
     >>>     "VolumeFillControls": {
     >>>         "HexMaxCellLength": 0.3,
     >>>     },
-    >>> }
+    >>> })
     >>> create_volume_mesh.Execute()
 
 Switch to solution mode
@@ -136,16 +135,13 @@ Import CAD and part management
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core import Precision, Meshing, examples
 
     >>> import_file_name = examples.download_file(
     >>>     "exhaust_system.fmd", "pyfluent/exhaust_system"
     >>> )
-    >>> meshing_session = pyfluent.launch_fluent(
-    >>>     precision=pyfluent.Precision.DOUBLE,
-    >>>     processor_count=2,
-    >>>     mode=pyfluent.FluentMode.MESHING
+    >>> meshing_session = Meshing.from_install(
+    >>>     precision=Precision.DOUBLE, processor_count=2
     >>> )
     >>> workflow = meshing_session.workflow
     >>> workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -608,14 +604,11 @@ Import geometry
 
 .. code:: python
 
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core import Precision, Meshing, examples
 
     >>> import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
-    >>> meshing_session = pyfluent.launch_fluent(
-    >>>     mode=pyfluent.FluentMode.MESHING,
-    >>>     precision=pyfluent.Precision.DOUBLE,
-    >>>     processor_count=2
+    >>> meshing_session = Meshing.from_install(
+    >>>     precision=Precision.DOUBLE, processor_count=2
     >>> )
     >>> workflow = meshing_session.workflow
     >>> tasks = workflow.TaskObject

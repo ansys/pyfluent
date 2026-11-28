@@ -25,11 +25,11 @@ import pytest
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_value_to_variant,
 )
-from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 class Fake:
@@ -241,8 +241,8 @@ def test_update_cache_internal_names_as_keys(
 def test_get_cached_values_in_command_arguments(new_meshing_session):
     wt = new_meshing_session.watertight(legacy=True)
     geo_import = new_meshing_session.workflow.TaskObject["Import Geometry"]
-    geo_import.Arguments = dict(FileName="Bob")
-    geo_import.Arguments = dict(FileName=None)
+    geo_import.Arguments.set_state(dict(FileName="Bob"))
+    geo_import.Arguments.set_state(dict(FileName=None))
     assert "FileName" in wt.import_geometry.command_arguments()
     assert wt.import_geometry.command_arguments()["FileName"] is None
 

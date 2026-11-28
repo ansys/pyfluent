@@ -8,7 +8,7 @@ install:
 	@flit build
 	@pip install -q --force-reinstall dist/*.whl
 	@pip install packaging
-	@python src/ansys/fluent/core/report.py
+	@python src/ansys/fluent/core/utils/report.py
 
 install-test:
 	@pip install -r requirements/requirements_build.txt
@@ -59,6 +59,11 @@ unittest-dev-271:
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@python -m pytest --fluent-version=27.1 $(PYTESTEXTRA) || python -m pytest --fluent-version=27.1 $(PYTESTRERUN)
 
+unittest-dev-272:
+	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --fluent-version=27.2 $(PYTESTEXTRA) || python -m pytest --fluent-version=27.2 $(PYTESTRERUN)
+
 unittest-all-242:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
@@ -104,6 +109,16 @@ unittest-solvermode-271:
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@python -m pytest --fluent-version=27.1 --solvermode $(PYTESTEXTRA) || python -m pytest --fluent-version=27.1 --solvermode $(PYTESTRERUN)
 
+unittest-all-272:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --nightly --fluent-version=27.2 $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=27.2 $(PYTESTRERUN)
+
+unittest-solvermode-272:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --fluent-version=27.2 --solvermode $(PYTESTEXTRA) || python -m pytest --fluent-version=27.2 --solvermode $(PYTESTRERUN)
+
 api-codegen:
 	@echo "Running API codegen"
 	@python -m venv env
@@ -119,8 +134,9 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/datamodel
 	@sudo rm -rf doc/source/api/solver/tui
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
+	@python doc/api_rstgen.py
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
-	@xvfb-run make -C doc html
+	@xvfb-run make -C doc html; rc=$$?; cat doc/build_errors.txt; exit $$rc
 
 build-all-docs:
 	@python doc/api_rstgen.py

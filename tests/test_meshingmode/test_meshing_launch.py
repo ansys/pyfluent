@@ -47,24 +47,26 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     add_local_sizing.Execute()
 
     surface_mesh_gen = workflow.TaskObject["Generate the Surface Mesh"]
-    surface_mesh_gen.Arguments = {"CFDSurfaceMeshControls": {"MaxSize": 0.3}}
+    surface_mesh_gen.Arguments.set_state({"CFDSurfaceMeshControls": {"MaxSize": 0.3}})
     surface_mesh_gen.Execute()
 
     describe_geo = workflow.TaskObject["Describe Geometry"]
     describe_geo.UpdateChildTasks(SetupTypeChanged=False)
-    describe_geo.Arguments = dict(
-        SetupType="The geometry consists of only fluid regions with no voids"
+    describe_geo.Arguments.set_state(
+        dict(SetupType="The geometry consists of only fluid regions with no voids")
     )
     describe_geo.UpdateChildTasks(SetupTypeChanged=True)
     describe_geo.Execute()
 
     boundary_update = workflow.TaskObject["Update Boundaries"]
-    boundary_update.Arguments = {
-        "BoundaryLabelList": ["wall-inlet"],
-        "BoundaryLabelTypeList": ["wall"],
-        "OldBoundaryLabelList": ["wall-inlet"],
-        "OldBoundaryLabelTypeList": ["velocity-inlet"],
-    }
+    boundary_update.Arguments.set_state(
+        {
+            "BoundaryLabelList": ["wall-inlet"],
+            "BoundaryLabelTypeList": ["wall"],
+            "OldBoundaryLabelList": ["wall-inlet"],
+            "OldBoundaryLabelTypeList": ["velocity-inlet"],
+        }
+    )
     boundary_update.Execute()
 
     workflow.TaskObject["Update Regions"].Execute()
@@ -73,18 +75,22 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     add_boundary_layers.AddChildToTask()
     add_boundary_layers.InsertCompoundChildTask()
     smooth_transition_1 = workflow.TaskObject["smooth-transition_1"]
-    smooth_transition_1.Arguments = {
-        "BLControlName": "smooth-transition_1",
-    }
-    add_boundary_layers.Arguments = {}
+    smooth_transition_1.Arguments.set_state(
+        {
+            "BLControlName": "smooth-transition_1",
+        }
+    )
+    add_boundary_layers.Arguments.set_state({})
     smooth_transition_1.Execute()
     volume_mesh_gen = workflow.TaskObject["Generate the Volume Mesh"]
-    volume_mesh_gen.Arguments = {
-        "VolumeFill": "poly-hexcore",
-        "VolumeFillControls": {
-            "HexMaxCellLength": 0.3,
-        },
-    }
+    volume_mesh_gen.Arguments.set_state(
+        {
+            "VolumeFill": "poly-hexcore",
+            "VolumeFillControls": {
+                "HexMaxCellLength": 0.3,
+            },
+        }
+    )
     volume_mesh_gen.Execute()
 
     pure_meshing_session.journal.stop()
@@ -92,8 +98,8 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
         pure_meshing_session.switch_to_solver()
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geom_name = download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
-    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=geom_name, LengthUnit="in"
+    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments.set_state(
+        dict(FileName=geom_name, LengthUnit="in")
     )
     pure_meshing_session.tui.file.read_journal(file_name)
     if os.path.exists(file_name):
@@ -108,7 +114,9 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     capsys.readouterr()
     help(meshing)
     captured = capsys.readouterr()
-    assert "Encapsulates a Fluent meshing session." in captured.out
+    assert (
+        "Fluent meshing session with the ability to switch to a solver." in captured.out
+    )
     solver = meshing.switch_to_solver()
     assert meshing.is_active() is False
     for attr in ("tui", "meshing", "workflow", "watertight"):

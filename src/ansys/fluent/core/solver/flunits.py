@@ -30,7 +30,7 @@ Example
 The following code is employed to translate the source data
 into Python data structures:
 
->>> from ansys.fluent.core.filereader import lispy
+>>> from ansys.fluent.core.file_reader import lispy
 >>> from ansys.units import Quantity, Unit
 >>> from ansys.units.quantity import get_si_value
 >>> import re
@@ -280,9 +280,14 @@ class UnhandledQuantity(RuntimeError):
         quantity: QuantityT,
     ) -> None:
         """Initialize UnhandledQuantity."""
-        super().__init__(
-            f"Could not handle the quantity, '{quantity}' for the path, {path}."
-        )
+        # Forward the raw arguments so pickle and copy.copy can reconstruct the
+        # exception via ``cls(*exc.args)``.
+        super().__init__(path, quantity)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        path, quantity = self.args[0], self.args[1]
+        return f"Could not handle the quantity, '{quantity}' for the path, {path}."
 
 
 def get_si_unit_for_fluent_quantity(

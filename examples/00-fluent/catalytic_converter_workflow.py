@@ -120,7 +120,6 @@ from ansys.fluent.core.solver import (  # noqa: E402
 
 # Launch meshing session
 meshing = pyfluent.launch_fluent(
-    product_version=FluentVersion.v252,
     mode=FluentMode.MESHING,
     ui_mode=UIMode.GUI,
     processor_count=4,
@@ -157,7 +156,9 @@ geometry_filename = examples.download_file(
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
+workflow.TaskObject["Import Geometry"].Arguments.set_state(
+    dict(FileName=geometry_filename)
+)
 workflow.TaskObject["Import Geometry"].Execute()
 
 # %%
@@ -167,23 +168,25 @@ workflow.TaskObject["Import Geometry"].Execute()
 
 # Add local sizing for sensor components
 
-workflow.TaskObject["Add Local Sizing"].Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "sensor",
-        "BOIExecution": "Curvature",
-        "BOIFaceLabelList": [
-            "sensing_element-65-solid",
-            "sensor_innertube-67-solid",
-            "sensor_protectiontube-66-solid1",
-        ],
-        "BOIMaxSize": 1.2,
-        "BOIMinSize": 0.1,
-    }
+workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+    dict(
+        {
+            "AddChild": "yes",
+            "BOIControlName": "sensor",
+            "BOIExecution": "Curvature",
+            "BOIFaceLabelList": [
+                "sensing_element-65-solid",
+                "sensor_innertube-67-solid",
+                "sensor_protectiontube-66-solid1",
+            ],
+            "BOIMaxSize": 1.2,
+            "BOIMinSize": 0.1,
+        }
+    )
 )
 workflow.TaskObject["Add Local Sizing"].AddChildToTask()
 workflow.TaskObject["Add Local Sizing"].InsertCompoundChildTask()
-workflow.TaskObject["Add Local Sizing"].Arguments = dict({"AddChild": "yes"})
+workflow.TaskObject["Add Local Sizing"].Arguments.set_state(dict({"AddChild": "yes"}))
 workflow.TaskObject["sensor"].Execute()
 
 # %%
@@ -193,15 +196,17 @@ workflow.TaskObject["sensor"].Execute()
 
 # Configure surface mesh settings
 
-workflow.TaskObject["Generate the Surface Mesh"].Arguments = dict(
-    {
-        "CFDSurfaceMeshControls": {"MinSize": 1.5},
-        "SurfaceMeshPreferences": {
-            "SMQualityImprove": "yes",
-            "SMQualityImproveLimit": 0.95,
-            "ShowSurfaceMeshPreferences": True,
-        },
-    }
+workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+    dict(
+        {
+            "CFDSurfaceMeshControls": {"MinSize": 1.5},
+            "SurfaceMeshPreferences": {
+                "SMQualityImprove": "yes",
+                "SMQualityImproveLimit": 0.95,
+                "ShowSurfaceMeshPreferences": True,
+            },
+        }
+    )
 )
 workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
@@ -213,26 +218,34 @@ workflow.TaskObject["Generate the Surface Mesh"].Execute()
 # Describe geometry type
 
 workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    {"SetupType": "The geometry consists of both fluid and solid regions and/or voids"}
+workflow.TaskObject["Describe Geometry"].Arguments.set_state(
+    dict(
+        {
+            "SetupType": "The geometry consists of both fluid and solid regions and/or voids"
+        }
+    )
 )
 workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 
 # Enable capping and wall-to-internal conversion
 
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    {
-        "CappingRequired": "Yes",
-        "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
-    }
+workflow.TaskObject["Describe Geometry"].Arguments.set_state(
+    dict(
+        {
+            "CappingRequired": "Yes",
+            "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
+        }
+    )
 )
 workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    {
-        "CappingRequired": "Yes",
-        "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
-        "WallToInternal": "Yes",
-    }
+workflow.TaskObject["Describe Geometry"].Arguments.set_state(
+    dict(
+        {
+            "CappingRequired": "Yes",
+            "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
+            "WallToInternal": "Yes",
+        }
+    )
 )
 workflow.TaskObject["Describe Geometry"].Execute()
 
@@ -243,11 +256,13 @@ workflow.TaskObject["Describe Geometry"].Execute()
 
 # Create inlet boundary
 
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = dict(
-    {
-        "LabelSelectionList": ["in1"],
-        "PatchName": "inlet",
-    }
+workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
+    dict(
+        {
+            "LabelSelectionList": ["in1"],
+            "PatchName": "inlet",
+        }
+    )
 )
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
@@ -255,11 +270,13 @@ workflow.TaskObject["inlet"].Execute()
 
 # Create outlet boundary as pressure outlet
 
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = dict(
-    {
-        "LabelSelectionList": ["out1"],
-        "PatchName": "outlet",
-    }
+workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
+    dict(
+        {
+            "LabelSelectionList": ["out1"],
+            "PatchName": "outlet",
+        }
+    )
 )
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
@@ -268,13 +285,15 @@ workflow.TaskObject["outlet"].Execute()
 # Configure outlet as pressure-outlet
 
 workflow.TaskObject["outlet"].Revert()
-workflow.TaskObject["outlet"].Arguments = dict(
-    {
-        "CompleteLabelSelectionList": ["out1"],
-        "LabelSelectionList": ["out1"],
-        "PatchName": "outlet",
-        "ZoneType": "pressure-outlet",
-    }
+workflow.TaskObject["outlet"].Arguments.set_state(
+    dict(
+        {
+            "CompleteLabelSelectionList": ["out1"],
+            "LabelSelectionList": ["out1"],
+            "PatchName": "outlet",
+            "ZoneType": "pressure-outlet",
+        }
+    )
 )
 workflow.TaskObject["outlet"].Execute()
 
@@ -289,18 +308,22 @@ workflow.TaskObject["Update Boundaries"].Execute()
 
 # Create multiple flow volumes
 
-workflow.TaskObject["Create Regions"].Arguments = dict({"NumberOfFlowVolumes": 3})
+workflow.TaskObject["Create Regions"].Arguments.set_state(
+    dict({"NumberOfFlowVolumes": 3})
+)
 workflow.TaskObject["Create Regions"].Execute()
 
 # Convert solid substrate regions to fluid regions
 
-workflow.TaskObject["Update Regions"].Arguments = dict(
-    {
-        "OldRegionNameList": ["honeycomb-solid1", "honeycomb_af0-solid1"],
-        "OldRegionTypeList": ["solid", "solid"],
-        "RegionNameList": ["fluid:substrate:1", "fluid:substrate:2"],
-        "RegionTypeList": ["fluid", "fluid"],
-    }
+workflow.TaskObject["Update Regions"].Arguments.set_state(
+    dict(
+        {
+            "OldRegionNameList": ["honeycomb-solid1", "honeycomb_af0-solid1"],
+            "OldRegionTypeList": ["solid", "solid"],
+            "RegionNameList": ["fluid:substrate:1", "fluid:substrate:2"],
+            "RegionTypeList": ["fluid", "fluid"],
+        }
+    )
 )
 workflow.TaskObject["Update Regions"].Execute()
 
@@ -313,8 +336,8 @@ workflow.TaskObject["Update Regions"].Execute()
 
 workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
 workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-workflow.TaskObject["smooth-transition_1"].Arguments = dict(
-    {"BLControlName": "smooth-transition_1"}
+workflow.TaskObject["smooth-transition_1"].Arguments.set_state(
+    dict({"BLControlName": "smooth-transition_1"})
 )
 
 workflow.TaskObject["smooth-transition_1"].Execute()
@@ -326,8 +349,8 @@ workflow.TaskObject["smooth-transition_1"].Execute()
 
 # Generate volume mesh
 
-workflow.TaskObject["Generate the Volume Mesh"].Arguments = dict(
-    {"VolumeMeshPreferences": {"MergeBodyLabels": "yes"}}
+workflow.TaskObject["Generate the Volume Mesh"].Arguments.set_state(
+    dict({"VolumeMeshPreferences": {"MergeBodyLabels": "yes"}})
 )
 workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
@@ -361,24 +384,24 @@ solver_session = meshing.switch_to_solver()
 graphics = Graphics(solver_session)
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
 graphics.views.restore_view(view_name="isometric")
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
-graphics.picture.color_mode = "color"
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
+graphics.picture.color_mode.set_state("color")
 
 # Define and display the mesh
 # First, get all wall boundary names and create a mesh object for visualization context
 
 all_walls = solver_session.settings.setup.boundary_conditions.wall.get_object_names()
 mesh = Mesh(solver_session, new_instance_name="mesh-1")
-mesh.surfaces_list = all_walls
-mesh.options.edges = True
+mesh.surfaces_list.set_state(all_walls)
+mesh.options.edges.set_state(True)
 mesh.display()
 os.makedirs("out", exist_ok=True)
 graphics.picture.save_picture(file_name="out/catalytic_converter_mesh.png")
-mesh.options.edges = False  # Turn off edges after saving the picture
+mesh.options.edges.set_state(False)  # Turn off edges after saving the picture
 
 # %%
 # .. figure:: /_static/catalytic_converter/catalytic_converter_mesh.png
@@ -400,10 +423,12 @@ general_settings.units_settings.new_unit(
 )
 # Enable energy equation
 energy_model_settings = Models(solver_session)
-energy_model_settings.energy = {
-    "enabled": True,
-    "inlet_diffusion": False,
-}
+energy_model_settings.energy.set_state(
+    {
+        "enabled": True,
+        "inlet_diffusion": False,
+    }
+)
 
 # %%
 # Materials
@@ -422,7 +447,7 @@ materials = Materials(solver_session)
 materials.database.copy_by_name(type="fluid", name="nitrogen")
 
 material_assignments = CellZoneCondition(solver_session, name="fluid:1")
-material_assignments.general = {"material": "nitrogen"}
+material_assignments.general.set_state({"material": "nitrogen"})
 
 # Copy boundary conditions to other fluid zones
 
@@ -438,22 +463,24 @@ solver_session.tui.define.boundary_conditions.copy_bc(
 # Configure first substrate zone as porous media
 
 porous_media_settings = CellZoneCondition(solver_session, name="fluid:substrate:1")
-porous_media_settings.general = {"laminar": True, "material": "nitrogen"}
-porous_media_settings.porous_zone = {
-    "solid_material": "aluminum",
-    "equib_thermal": True,
-    "relative_viscosity": {"value": 1, "option": "constant"},
-    "porosity": 1,
-    "power_law_model": [0, 0],
-    "inertial_resistance": [1000.0, 1000.0, 1000.0],
-    "alt_inertial_form": False,
-    "viscous_resistance": [1000000.0, 1000000.0, 1000.0],
-    "rel_vel_resistance": True,
-    "direction_2_vector": [0, 1, 0],
-    "direction_1_vector": [1, 0, 0],
-    "dir_spec_cond": "Cartesian",
-    "porous": True,
-}
+porous_media_settings.general.set_state({"laminar": True, "material": "nitrogen"})
+porous_media_settings.porous_zone.set_state(
+    {
+        "solid_material": "aluminum",
+        "equib_thermal": True,
+        "relative_viscosity": {"value": 1, "option": "constant"},
+        "porosity": 1,
+        "power_law_model": [0, 0],
+        "inertial_resistance": [1000.0, 1000.0, 1000.0],
+        "alt_inertial_form": False,
+        "viscous_resistance": [1000000.0, 1000000.0, 1000.0],
+        "rel_vel_resistance": True,
+        "direction_2_vector": [0, 1, 0],
+        "direction_1_vector": [1, 0, 0],
+        "dir_spec_cond": "Cartesian",
+        "porous": True,
+    }
+)
 
 
 # Copy porous media settings to second substrate zone
@@ -470,23 +497,29 @@ solver_session.tui.define.boundary_conditions.copy_bc(
 # Configure velocity inlet
 
 velocity_inlet = VelocityInlet(solver_session, name="inlet")
-velocity_inlet.momentum = {"velocity_magnitude": {"value": 125.0}}
+velocity_inlet.momentum.set_state({"velocity_magnitude": {"value": 125.0}})
 
-velocity_inlet.turbulence = {
-    "hydraulic_diameter": 0.5,  # in meters
-    "turbulence_specification": "Intensity and Hydraulic Diameter",
-}
-velocity_inlet.thermal = {"temperature": {"value": 800.0}}  # in Kelvin
+velocity_inlet.turbulence.set_state(
+    {
+        "hydraulic_diameter": 0.5,  # in meters
+        "turbulence_specification": "Intensity and Hydraulic Diameter",
+    }
+)
+velocity_inlet.thermal.set_state({"temperature": {"value": 800.0}})  # in Kelvin
 
 # Configure pressure outlet
 
 pressure_outlet = PressureOutlet(solver_session, name="outlet")
-pressure_outlet.momentum = {"gauge_pressure": {"value": 0.0}}
-pressure_outlet.turbulence = {
-    "backflow_hydraulic_diameter": 0.5,  # in meters
-    "turbulence_specification": "Intensity and Hydraulic Diameter",
-}
-pressure_outlet.thermal = {"backflow_total_temperature": {"value": 800.0}}  # in Kelvin
+pressure_outlet.momentum.set_state({"gauge_pressure": {"value": 0.0}})
+pressure_outlet.turbulence.set_state(
+    {
+        "backflow_hydraulic_diameter": 0.5,  # in meters
+        "turbulence_specification": "Intensity and Hydraulic Diameter",
+    }
+)
+pressure_outlet.thermal.set_state(
+    {"backflow_total_temperature": {"value": 800.0}}
+)  # in Kelvin
 
 
 # %%
@@ -498,23 +531,23 @@ pressure_outlet.thermal = {"backflow_total_temperature": {"value": 800.0}}  # in
 
 report_definitions = ReportDefinitions(solver_session)
 surface_report = report_definitions.surface.create(name="surf-mon-1")
-surface_report.report_type = "surface-massflowrate"
-surface_report.surface_names = ["outlet"]
+surface_report.report_type.set_state("surface-massflowrate")
+surface_report.surface_names.set_state(["outlet"])
 
 # Create report file monitor
 
 monitor = Monitor(solver_session)
 surface_monitor = monitor.report_files.create(name="surf-mon-1")
-surface_monitor.print = True
-surface_monitor.report_defs = ["surf-mon-1"]
+surface_monitor.print.set_state(True)
+surface_monitor.report_defs.set_state(["surf-mon-1"])
 os.makedirs("out", exist_ok=True)
-surface_monitor.file_name = "out/surf-mon-1.out"
+surface_monitor.file_name.set_state("out/surf-mon-1.out")
 
 # Create report plot monitor
 
 surface_plot_monitor = monitor.report_plots.create(name="surf-mon-1")
-surface_plot_monitor.print = True
-surface_plot_monitor.report_defs = ["surf-mon-1"]
+surface_plot_monitor.print.set_state(True)
+surface_plot_monitor.report_defs.set_state(["surf-mon-1"])
 
 
 # %%
@@ -532,7 +565,7 @@ solution_initialization.compute_defaults(
 
 # Set initialization method and initialize
 
-solution_initialization.initialization_type = "standard"
+solution_initialization.initialization_type.set_state("standard")
 solution_initialization.standard_initialize()
 
 # %%
@@ -543,8 +576,8 @@ solution_initialization.standard_initialize()
 # Set iteration count and run calculation
 
 run_calculation = RunCalculation(solver_session)
-run_calculation.iter_count = (
-    150  # Iteration count, keep it at 150 for demo purposes only
+run_calculation.iter_count.set_state(
+    (150)  # Iteration count, keep it at 150 for demo purposes only
 )
 run_calculation.calculate()
 
@@ -583,8 +616,8 @@ surfaces_data = [
 
 for surf_name, field_name, iso_values in surfaces_data:
     results.surfaces.iso_surface.create(name=surf_name)
-    results.surfaces.iso_surface[surf_name].field = field_name
-    results.surfaces.iso_surface[surf_name].iso_values = iso_values
+    results.surfaces.iso_surface[surf_name].field.set_state(field_name)
+    results.surfaces.iso_surface[surf_name].iso_values.set_state(iso_values)
 
 # %%
 # Velocity Analysis
@@ -759,6 +792,8 @@ solver_session.exit()
 # References
 # ----------
 # .. _References_1:
-# .. [1] `ANSYS Fluent User's Guide, ANSYS, Inc. <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent&prodver=25.2&lang=en>`_.
+#
+# 1. `ANSYS Fluent User's Guide, ANSYS, Inc. <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent&prodver=25.2&lang=en>`_.
 # .. _References_2:
-# .. [2] `Modeling Flow Through Porous Media <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_tut_catalytic_converter.html>`_.
+#
+# 2. `Modeling Flow Through Porous Media <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_tut_catalytic_converter.html>`_.

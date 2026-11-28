@@ -30,7 +30,9 @@ from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.connectivity.file_transfer_service import (
+    ContainerFileTransferStrategy,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -70,7 +72,7 @@ def test_parametric_workflow():
         inside_container = False
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
     solver_session.file.read_case(file_name=import_file_name)
-    solver_session.solution.run_calculation.iter_count = 100
+    solver_session.solution.run_calculation.iter_count.set_state(100)
     solver_session.tui.define.parameters.enable_in_TUI("yes")
 
     velocity_inlet = solver_session.tui.define.boundary_conditions.set.velocity_inlet

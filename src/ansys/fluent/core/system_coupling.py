@@ -221,7 +221,7 @@ class SystemCoupling:
             return list()
         raise TypeError(f"_get_list unexpected type of {value}")
 
-    def __get_syc_setup(self) -> dict:
+    def __get_syc_setup(self) -> dict:  # noqa: C901
         """
         This function is for backward-compatibility reasons for 24.1 and 24.2 versions.
         It tells Fluent to write the SCP file and then parses it to get the setup

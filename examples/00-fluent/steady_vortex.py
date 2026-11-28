@@ -70,15 +70,14 @@ Simulation of Steady Vortex in a Stirred Tank
 # These classes allow straightforward access to various settings without the need to
 # navigate through the settings hierarchy.
 
-# sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
-# sphinx_gallery_thumbnail_path = '_static/steady_vortex/steady_vortex_setup.png'
-
 #######################################################################################
 # Dependencies
-# =====================================================================================
+# -------------------------------------------------------------------------------------
 # ansys-fluent-core
 # imageio
 
+# sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
+# sphinx_gallery_thumbnail_path = '_static/steady_vortex/steady_vortex_setup.png'
 import os
 
 import imageio.v2 as imageio
@@ -157,27 +156,27 @@ solver_session.settings.file.read_case(file_name=vortex_mesh)
 
 # Create a middle plane to display the mesh
 y_mid_plane = PlaneSurface(solver_session, new_instance_name="y_mid_plane")
-y_mid_plane.method = "zx-plane"
-y_mid_plane.y = 0
+y_mid_plane.method.set_state("zx-plane")
+y_mid_plane.y.set_state(0)
 y_mid_plane.display()
 
 # Define and display the mesh
 mesh = Mesh(solver_session, new_instance_name="mesh")
-mesh.surfaces_list = y_mid_plane.name()
-mesh.options.edges = True
+mesh.surfaces_list.set_state(y_mid_plane.name())
+mesh.options.edges.set_state(True)
 mesh.display()
 
 # Create Graphics object to save the mesh image
 graphics = Graphics(solver_session)
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
-    graphics.picture.use_window_resolution = False
+    graphics.picture.use_window_resolution.set_state(False)
 
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
-graphics.picture.color_mode = "mono"
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
+graphics.picture.color_mode.set_state("mono")
 graphics.picture.save_picture(file_name="mesh.png")
 
 # %%
@@ -194,8 +193,8 @@ graphics.picture.save_picture(file_name="mesh.png")
 # Set gravity
 
 general_settings = General(solver_session)
-general_settings.operating_conditions.gravity.enable = True
-general_settings.operating_conditions.gravity.components = [0.0, 0.0, -g]
+general_settings.operating_conditions.gravity.enable.set_state(True)
+general_settings.operating_conditions.gravity.components.set_state([0.0, 0.0, -g])
 
 # %%
 # Copy Materials from Fluent Database
@@ -213,8 +212,8 @@ materials.database.copy_by_name(type="fluid", name="water-liquid")
 # Create a named expression for the agitation speed and specify as an input parameter.
 stirring_speed = NamedExpression(solver_session, new_instance_name="stirring_speed")
 
-stirring_speed.definition = "240 [rev min^-1]"
-stirring_speed.input_parameter = True
+stirring_speed.definition.set_state("240 [rev min^-1]")
+stirring_speed.input_parameter.set_state(True)
 
 # %%
 # MRF zone parameters
@@ -223,10 +222,10 @@ stirring_speed.input_parameter = True
 # Define MRF zone parameters for the mrf cell zone.
 
 fluid_cell_zone = CellZoneCondition(solver_session, name="mrf")
-fluid_cell_zone.reference_frame.frame_motion = True
-fluid_cell_zone.reference_frame.reference_frame_axis_origin = [0, 0, 0]
-fluid_cell_zone.reference_frame.reference_frame_axis_direction = [0, 0, 1]
-fluid_cell_zone.reference_frame.mrf_omega.value = "stirring_speed"
+fluid_cell_zone.reference_frame.frame_motion.set_state(True)
+fluid_cell_zone.reference_frame.reference_frame_axis_origin.set_state([0, 0, 0])
+fluid_cell_zone.reference_frame.reference_frame_axis_direction.set_state([0, 0, 1])
+fluid_cell_zone.reference_frame.mrf_omega.value.set_state("stirring_speed")
 
 # %%
 # Rotating Wall BC parameters
@@ -235,11 +234,11 @@ fluid_cell_zone.reference_frame.mrf_omega.value = "stirring_speed"
 # Define the rotating wall boundary condition for the shaft.
 
 wall_boundary = WallBoundary(solver_session, name="shaft_tank")
-wall_boundary.momentum.wall_motion = "Moving Wall"
-wall_boundary.momentum.relative = False
-wall_boundary.momentum.rotating = True
-wall_boundary.momentum.rotation_axis_direction = [0, 0, 1]
-wall_boundary.momentum.rotation_speed = "stirring_speed"
+wall_boundary.momentum.wall_motion.set_state("Moving Wall")
+wall_boundary.momentum.relative.set_state(False)
+wall_boundary.momentum.rotating.set_state(True)
+wall_boundary.momentum.rotation_axis_direction.set_state([0, 0, 1])
+wall_boundary.momentum.rotation_speed.set_state("stirring_speed")
 
 # %%
 # Physical Models: VOF
@@ -247,26 +246,26 @@ wall_boundary.momentum.rotation_speed = "stirring_speed"
 #
 # Enable the VOF multiphase model and update the curvature correction setting for the viscous model.
 model_setup = Models(solver_session)
-model_setup.multiphase.model = "vof"
-model_setup.multiphase.vof_parameters.vof_formulation = "implicit"
-model_setup.multiphase.vof_parameters.vof_cutoff = 1e-06
-model_setup.multiphase.advanced_formulation.implicit_body_force = True
+model_setup.multiphase.model.set_state("vof")
+model_setup.multiphase.vof_parameters.vof_formulation.set_state("implicit")
+model_setup.multiphase.vof_parameters.vof_cutoff.set_state(1e-06)
+model_setup.multiphase.advanced_formulation.implicit_body_force.set_state(True)
 
-model_setup.viscous.options.curvature_correction = True
+model_setup.viscous.options.curvature_correction.set_state(True)
 
 solution_methods = Methods(solver_session)
-solution_methods.multiphase_numerics.solution_stabilization.execute_settings_optimization = (
-    True
+solution_methods.multiphase_numerics.solution_stabilization.execute_settings_optimization.set_state(
+    (True)
 )
-solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization = (
-    True
+solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization.set_state(
+    (True)
 )
 
 # Change phase names
 solver_session.tui.define.phases.set_domain_properties.change_phases_names(
     "water", "air"
 )
-general_settings.solver.time = "steady"  # steady solver
+general_settings.solver.time.set_state("steady")  # steady solver
 
 # %%
 # Define Initial Conditions
@@ -283,20 +282,22 @@ general_settings.solver.time = "steady"  # steady solver
 #   values to ensure cells across the entire tank diameter are included.
 
 solution_initialization = Initialization(solver_session)
-solution_initialization.reference_frame = "absolute"
+solution_initialization.reference_frame.set_state("absolute")
 solution_initialization.defaults["k"] = 0.001
-solution_initialization.localized_turb_init.enabled = False
+solution_initialization.localized_turb_init.enabled.set_state(False)
 
 solver_session.settings.solution.cell_registers.create(name="liquid_patch")
 cell_register = CellRegister(solver_session, name="liquid_patch")
-cell_register.type = {
-    "option": "hexahedron",
-    "hexahedron": {
-        "inside": True,
-        "max_point": [100.0, 100.0, 0.19],
-        "min_point": [-100.0, -100.0, -100.0],
-    },
-}
+cell_register.type.set_state(
+    {
+        "option": "hexahedron",
+        "hexahedron": {
+            "inside": True,
+            "max_point": [100.0, 100.0, 0.19],
+            "min_point": [-100.0, -100.0, -100.0],
+        },
+    }
+)
 
 solution_initialization.initialize()
 
@@ -324,56 +325,62 @@ solution_initialization.patch.calculate_patch(
 # Free surface iso-surface
 solver_session.settings.results.surfaces.iso_surface.create(name="freesurface")
 freesurface = IsoSurface(solver_session, name="freesurface")
-freesurface.field = "water-vof"
-freesurface.iso_values = [0.5]
+freesurface.field.set_state("water-vof")
+freesurface.iso_values.set_state([0.5])
 
 # Wetted wall and dry wall iso-clips
 solver_session.settings.results.surfaces.iso_clip.create(name="wet_wall")
 wet_wall = IsoClip(solver_session, name="wet_wall")
-wet_wall.field = "water-vof"
-wet_wall.range = {
-    "minimum": 0.5,
-    "maximum": 1.0,
-}
-wet_wall.surfaces = ["wall_tank"]
+wet_wall.field.set_state("water-vof")
+wet_wall.range.set_state(
+    {
+        "minimum": 0.5,
+        "maximum": 1.0,
+    }
+)
+wet_wall.surfaces.set_state(["wall_tank"])
 
 
 solver_session.settings.results.surfaces.iso_clip.create(name="dry_wall")
 dry_wall = IsoClip(solver_session, name="dry_wall")
-dry_wall.field = "water-vof"
-dry_wall.range = {
-    "minimum": 0.0,
-    "maximum": 0.499,
-}
-dry_wall.surfaces = ["wall_tank"]
+dry_wall.field.set_state("water-vof")
+dry_wall.range.set_state(
+    {
+        "minimum": 0.0,
+        "maximum": 0.499,
+    }
+)
+dry_wall.surfaces.set_state(["wall_tank"])
 
 # Meshes
 internal_comp_mesh = Mesh(solver_session, new_instance_name="internals")
-internal_comp_mesh.surfaces_list = [
-    "wall_impeller",
-    "shaft_mrf",
-    "shaft_tank",
-]
+internal_comp_mesh.surfaces_list.set_state(
+    [
+        "wall_impeller",
+        "shaft_mrf",
+        "shaft_tank",
+    ]
+)
 internal_comp_mesh.surfaces_list()
 
 # dry wall
 dry_wall_comp_mesh = Mesh(solver_session, new_instance_name="drywall")
-dry_wall_comp_mesh.surfaces_list = ["dry_wall"]
+dry_wall_comp_mesh.surfaces_list.set_state(["dry_wall"])
 dry_wall_comp_mesh.surfaces_list()
 
 # wet wall
 wet_wall_comp_mesh = Mesh(solver_session, new_instance_name="wetwall")
-wet_wall_comp_mesh.surfaces_list = ["wet_wall"]
+wet_wall_comp_mesh.surfaces_list.set_state(["wet_wall"])
 wet_wall_comp_mesh.surfaces_list()
-wet_wall_comp_mesh.coloring.option = "manual"
-wet_wall_comp_mesh.coloring.manual.faces = "pastel cyan"
+wet_wall_comp_mesh.coloring.option.set_state("manual")
+wet_wall_comp_mesh.coloring.manual.faces.set_state("pastel cyan")
 
 # liquid level
 liquidlevel_comp_mesh = Mesh(solver_session, new_instance_name="liquidlevel")
-liquidlevel_comp_mesh.surfaces_list = ["freesurface"]
+liquidlevel_comp_mesh.surfaces_list.set_state(["freesurface"])
 liquidlevel_comp_mesh.surfaces_list()
-liquidlevel_comp_mesh.coloring.option = "manual"
-liquidlevel_comp_mesh.coloring.manual.faces = "pastel cyan"
+liquidlevel_comp_mesh.coloring.option.set_state("manual")
+liquidlevel_comp_mesh.coloring.manual.faces.set_state("pastel cyan")
 
 
 # Scenes
@@ -427,21 +434,21 @@ solver_session.settings.results.scene["scene-1"] = {
 # Contour plot on Y-Mid plane
 solver_session.settings.results.surfaces.iso_surface.create(name="ymid")
 y_mid_iso_surface = IsoSurface(solver_session, name="ymid")
-y_mid_iso_surface.field = "y-coordinate"
-y_mid_iso_surface.iso_values = [0]
+y_mid_iso_surface.field.set_state("y-coordinate")
+y_mid_iso_surface.iso_values.set_state([0])
 
 volume_fraction_contour = Contour(solver_session, new_instance_name="contour-1")
-volume_fraction_contour.surfaces_list = y_mid_iso_surface.name()
-volume_fraction_contour.field = "water-vof"
+volume_fraction_contour.surfaces_list.set_state(y_mid_iso_surface.name())
+volume_fraction_contour.field.set_state("water-vof")
 volume_fraction_contour.surfaces_list()
 volume_fraction_contour.display()
 
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
-graphics.picture.color_mode = "color"
-graphics.picture.use_window_resolution = False
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
+graphics.picture.color_mode.set_state("color")
+graphics.picture.use_window_resolution.set_state(False)
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
 graphics.picture.save_picture(file_name="contour.png")
 
 # %%
@@ -452,7 +459,7 @@ graphics.picture.save_picture(file_name="contour.png")
 #     Velocity Vectors
 #
 # *The velocity vectors illustrate the flow patterns within the tank, highlighting the
-#  complex interactions between the liquid and gas phases.*
+# complex interactions between the liquid and gas phases.*
 
 
 # Animation Setup
@@ -476,7 +483,9 @@ solver_session.settings.solution.calculation_activity.solution_animations[
 solver_session.settings.file.write_case_data(file_name="vortex_init.cas.h5")
 
 run_calculation = RunCalculation(solver_session)
-run_calculation.iter_count = 50  # Iteration count keep it 50 for demo only purpose
+run_calculation.iter_count.set_state(
+    50
+)  # Iteration count keep it 50 for demo only purpose
 run_calculation.calculate()
 
 # %%
@@ -486,18 +495,18 @@ run_calculation.calculate()
 # Set up the LIC (Line Integral Convolution) visualization for the midplane.
 
 lic_visualization = LIC(solver_session, new_instance_name="lic-1")
-lic_visualization.surfaces_list = y_mid_plane.name()
-lic_visualization.field = "velocity-magnitude"
-lic_visualization.lic_image_filter = "Strong Sharpen"
-lic_visualization.lic_intensity_factor = 10
-lic_visualization.texture_size = 10
+lic_visualization.surfaces_list.set_state(y_mid_plane.name())
+lic_visualization.field.set_state("velocity-magnitude")
+lic_visualization.lic_image_filter.set_state("Strong Sharpen")
+lic_visualization.lic_intensity_factor.set_state(10)
+lic_visualization.texture_size.set_state(10)
 lic_visualization.display()
 
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
-graphics.picture.use_window_resolution = False
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
+graphics.picture.use_window_resolution.set_state(False)
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
 graphics.picture.save_picture(file_name="lic-1.png")
 
 # %%
@@ -519,9 +528,9 @@ vortex_scene.display()
 graphics.views.restore_view(view_name="top")
 graphics.views.auto_scale()
 
-graphics.picture.use_window_resolution = False
-graphics.picture.x_resolution = 600
-graphics.picture.y_resolution = 600
+graphics.picture.use_window_resolution.set_state(False)
+graphics.picture.x_resolution.set_state(600)
+graphics.picture.y_resolution.set_state(600)
 graphics.picture.save_picture(file_name="vortex.png")
 
 # %%

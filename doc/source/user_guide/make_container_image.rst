@@ -125,10 +125,10 @@ Run Docker container using PyFluent
 .. code:: python
 
     import os
-    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import Solver
     os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
     custom_config = {'fluent_image': 'ansys_inc:latest', 'mount_source': f"{os.getcwd()}", 'auto_remove': False}
-    solver_session = pyfluent.launch_fluent(container_dict=custom_config, user_docker_compose=True)
+    solver_session = Solver.from_container(container_dict=custom_config, use_docker_compose=True)
 
 
 Run Podman container using the command line
@@ -174,8 +174,8 @@ Run Podman container using PyFluent
 .. code:: python
 
     import os
-    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import Solver
     os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
     custom_config = {'fluent_image': 'ansys_inc:latest', 'mount_source': f"{os.getcwd()}", 'auto_remove': False}
-    solver_session = pyfluent.launch_fluent(container_dict=custom_config, use_podman_compose=True)
+    solver_session = Solver.from_container(container_dict=custom_config, use_podman_compose=True)
 

@@ -36,8 +36,10 @@ from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, walk_api
 from ansys.fluent.core.solver import _docstrings
 from ansys.fluent.core.solver.flobject import (
+    _NAMED_OBJECT_COMMANDS,
     ListObject,
     NamedObject,
+    _NamedObjectCommandBase,
     get_cls,
     to_constant_name,
     to_python_name,
@@ -112,7 +114,11 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data = {
         "version": version,
         "name": cls.__name__,
-        "bases": [base.__name__ for base in cls.__bases__],
+        "bases": [
+            base.__name__
+            for base in cls.__bases__
+            if not issubclass(base, _NamedObjectCommandBase)
+        ],
     }
     if "command" in cls.__doc__:
         data["doc"] = strip_parameters(cls.__doc__)
@@ -173,6 +179,10 @@ _NAME_BY_HASH = {}
 # See the implementation note in _write_data() for more details.
 _CLASS_WRITTEN = set()
 
+_NAMED_OBJECT_MIXINS = {}
+_NAMED_OBJECT_MIXINS_WRITTEN = set()
+_NAMED_OBJECT_MIXIN_STUBS_WRITTEN = set()
+
 
 def _get_unique_name(name):
     names = _NAME_BY_HASH.values()
@@ -215,24 +225,30 @@ def _write_function_stub(name, data, s_stub):
     s_stub.write('        """\n')
 
 
-def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
-    # We are traversing the class tree from root to leaves. But the class definitions must
-    # be written to the file from leaves to root. We gather the parent definition within
-    # in a string buffer which is written after writing the child class definitions.
-    s = StringIO()
-    s_stub = StringIO()
-    child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
-    bases = _construct_bases(data["bases"], child_object_name)
-    bases = ", ".join(bases)
-    bases_stub = _construct_bases_stub(data["bases"], child_object_name)
-    bases_stub = ", ".join(bases_stub)
+def _write_command_stub(data, s_stub):
+    args = []
+    for arg_name in data["argument_names"]:
+        arg_type = data["child_classes"][arg_name]["bases"][0]
+        py_arg_type = _arg_type_strings.get(arg_type, "Any")
+        args.append(f"{arg_name}: {py_arg_type} = ...")
+    if "CommandWithPositionalArgs" not in data["bases"] and args:
+        args.insert(0, "*")
+    signature = ", ".join(args)
+    if signature:
+        signature = f", {signature}"
+    s_stub.write(f"    def __call__(self{signature}) -> StateType | None: ...\n")
+
+
+def _write_class_header(s, s_stub, cls_name, bases, bases_stub, data):
+    doc = data["doc"].strip().replace("\n", "\n    ")
     s.write(f"class {cls_name}({bases}):\n")
     s_stub.write(f"class {cls_name}({bases_stub}):\n")
-    doc = data["doc"]
-    doc = doc.strip().replace("\n", "\n    ")
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
+
+
+def _write_scalar_attrs(s, s_stub, python_name, data):
     s.write(f"    _version = {data['version']!r}\n")
     deprecated = data["deprecated_version"]
     if deprecated:
@@ -247,12 +263,27 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s_stub.write("    _version: str\n")
     s_stub.write("    fluent_name: str\n")
     s_stub.write("    _python_name: str\n")
+
+
+def _write_name_lists(s, s_stub, data, command_mixin=None, shared_commands=()):
     child_names = data["child_names"]
     if child_names:
         s.write(f"    child_names = {child_names}\n")
         s_stub.write("    child_names: list[str]\n")
     command_names = data["command_names"]
-    if command_names:
+    if command_mixin and len(command_names) > len(shared_commands):
+        extra_commands = [
+            (index, name)
+            for index, name in enumerate(command_names)
+            if name not in shared_commands
+        ]
+        s.write(
+            "    command_names = _merge_named_object_command_names(\n"
+            f"        {command_mixin}.command_names, {extra_commands!r}\n"
+            "    )\n"
+        )
+        s_stub.write("    command_names: list[str]\n")
+    elif command_names and not command_mixin:
         s.write(f"    command_names = {command_names}\n")
         s_stub.write("    command_names: list[str]\n")
     query_names = data["query_names"]
@@ -263,47 +294,91 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if argument_names:
         s.write(f"    argument_names = {argument_names}\n")
         s_stub.write("    argument_names: list[str]\n")
-    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
-    if data["child_classes"]:
-        s.write("    _child_classes = dict(\n")
-        for k, v in data["child_classes"].items():
-            name = v["name"]
-            # Retrieving the original python name before get_cls() modifies it.
-            child_python_name = to_python_name(v["fluent_name"])
-            hash_ = _gethash(v)
-            # We are within a tree-traversal, so the global _NAME_BY_HASH dict
-            # must be updated immediately at the point of lookup. Same lookup
-            # can happen at a child-level which will be evaluated incorrectly
-            # without the previous lookup result.
-            unique_name = _NAME_BY_HASH.get(hash_)
-            if not unique_name:
-                unique_name = _get_unique_name(name)
-                _NAME_BY_HASH[hash_] = unique_name
-            s.write(f"        {k}={unique_name},\n")
-            # We include the child-class to write irrespective of the above
-            # _NAME_BY_HASH lookup result and later use the global _CLASS_WRITTEN
-            # set to avoid duplicate writes. This is necessary because class
-            # definition must be written to the file before writing its usage.
-            # If we didn't have this constraint, we could include the child-class
-            # to write only if it is not found in the _NAME_BY_HASH dict and avoid
-            # the _CLASS_WRITTEN set.
-            if k in command_names + query_names:
-                _write_function_stub(k, v, s_stub)
-                classes_to_write[unique_name] = (child_python_name, v, hash_, False)
-            else:
-                s_stub.write(f"    {k}: {unique_name}\n")
-                classes_to_write[unique_name] = (child_python_name, v, hash_, True)
+
+
+def _write_child_class_mapping(s, children, shared_commands):
+    shared_children = {k: v for k, v in children.items() if k in shared_commands}
+    command_mixin = None
+    if shared_children:
+        # Command classes encode version- and container-specific metadata.
+        key = (tuple(shared_commands), tuple(shared_children.items()))
+        command_mixin = _NAMED_OBJECT_MIXINS.get(key)
+        if command_mixin is None:
+            command_mixin = _get_unique_name("_NamedObjectCommands")
+            _NAME_BY_HASH[_gethash(("named-object-commands", key))] = command_mixin
+            _NAMED_OBJECT_MIXINS[key] = command_mixin
+
+    other_children = [
+        (index, k, v)
+        for index, (k, v) in enumerate(children.items())
+        if k not in shared_children
+    ]
+    if other_children or not command_mixin:
+        if command_mixin:
+            s.write("    _child_classes = _merge_named_object_child_classes(\n")
+            s.write(f"        {command_mixin}._child_classes,\n")
+            s.write("        [\n")
+            for index, k, name in other_children:
+                s.write(f"            ({index}, {k!r}, {name}),\n")
+            s.write("        ],\n")
+        else:
+            s.write("    _child_classes = dict(\n")
+            for _, k, name in other_children:
+                s.write(f"        {k}={name},\n")
         s.write("    )\n")
-    if child_object_name:
-        child_object_type = data["child_object_type"]
-        s.write(f"    child_object_type = {child_object_name}\n")
-        classes_to_write[child_object_name] = (
-            f"{python_name}_child",
-            child_object_type,
-            _gethash(child_object_type),
-            True,
-        )
-        s_stub.write(f"    child_object_type: {child_object_name}\n")
+    return command_mixin, shared_children
+
+
+def _collect_child_classes(s, s_stub, data, classes_to_write):
+    if not data["child_classes"]:
+        return None, (), {}
+    command_names = data["command_names"]
+    query_names = data["query_names"]
+    shared_commands = []
+    if "NamedObject" in data["bases"]:
+        for name in command_names:
+            if data["child_classes"][name]["fluent_name"] in _NAMED_OBJECT_COMMANDS:
+                shared_commands.append(name)
+
+    children = {}
+    for k, v in data["child_classes"].items():
+        name = v["name"]
+        # Retrieving the original python name before get_cls() modifies it.
+        child_python_name = to_python_name(v["fluent_name"])
+        hash_ = _gethash(v)
+        # We are within a tree-traversal, so the global _NAME_BY_HASH dict
+        # must be updated immediately at the point of lookup. Same lookup
+        # can happen at a child-level which will be evaluated incorrectly
+        # without the previous lookup result.
+        unique_name = _NAME_BY_HASH.get(hash_)
+        if not unique_name:
+            unique_name = _get_unique_name(name)
+            _NAME_BY_HASH[hash_] = unique_name
+        children[k] = unique_name
+        # We include the child-class to write irrespective of the above
+        # _NAME_BY_HASH lookup result and later use the global _CLASS_WRITTEN
+        # set to avoid duplicate writes. This is necessary because class
+        # definition must be written to the file before writing its usage.
+        # If we didn't have this constraint, we could include the child-class
+        # to write only if it is not found in the _NAME_BY_HASH dict and avoid
+        # the _CLASS_WRITTEN set.
+        if k in command_names:
+            if k not in shared_commands:
+                s_stub.write(f"    {k}: {unique_name}\n")
+            classes_to_write[unique_name] = (child_python_name, v, hash_, True)
+        elif k in query_names:
+            _write_function_stub(k, v, s_stub)
+            classes_to_write[unique_name] = (child_python_name, v, hash_, False)
+        else:
+            s_stub.write(f"    {k}: {unique_name}\n")
+            classes_to_write[unique_name] = (child_python_name, v, hash_, True)
+    command_mixin, shared_children = _write_child_class_mapping(
+        s, children, shared_commands
+    )
+    return command_mixin, tuple(shared_commands), shared_children
+
+
+def _write_optional_attrs(s, s_stub, data):
     child_aliases = data["child_aliases"]
     if child_aliases:
         s.write("    _child_aliases = dict(\n")
@@ -328,6 +403,46 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if data["has_migration_adapter"]:
         s.write("    _has_migration_adapter = True\n")
         s_stub.write("    _has_migration_adapter: bool\n")
+
+
+def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
+    # We are traversing the class tree from root to leaves. But the class definitions must
+    # be written to the file from leaves to root. We gather the parent definition within
+    # in a string buffer which is written after writing the child class definitions.
+    s = StringIO()
+    s_stub = StringIO()
+    child_code = StringIO()
+    child_stub = StringIO()
+    child_object_name = f"{cls_name}_item" if data["child_object_type"] else None
+    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
+    command_mixin, shared_commands, shared_children = _collect_child_classes(
+        child_code, child_stub, data, classes_to_write
+    )
+    bases = _construct_bases(data["bases"], child_object_name)
+    bases_stub = _construct_bases_stub(data["bases"], child_object_name)
+    if command_mixin:
+        bases.insert(0, command_mixin)
+        bases_stub.insert(0, command_mixin)
+    bases = ", ".join(bases)
+    bases_stub = ", ".join(bases_stub)
+    _write_class_header(s, s_stub, cls_name, bases, bases_stub, data)
+    _write_scalar_attrs(s, s_stub, python_name, data)
+    _write_name_lists(s, s_stub, data, command_mixin, shared_commands)
+    s.write(child_code.getvalue())
+    s_stub.write(child_stub.getvalue())
+    if "Command" in data["bases"] or "CommandWithPositionalArgs" in data["bases"]:
+        _write_command_stub(data, s_stub)
+    if child_object_name:
+        child_object_type = data["child_object_type"]
+        s.write(f"    child_object_type = {child_object_name}\n")
+        classes_to_write[child_object_name] = (
+            f"{python_name}_item",
+            child_object_type,
+            _gethash(child_object_type),
+            True,
+        )
+        s_stub.write(f"    child_object_type: {child_object_name}\n")
+    _write_optional_attrs(s, s_stub, data)
     s.write("\n")
     s_stub.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
@@ -336,6 +451,28 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
                 name, python_name, data, f, f_stub if should_write_stub else None
             )
             _CLASS_WRITTEN.add(name)
+    if command_mixin and command_mixin not in _NAMED_OBJECT_MIXINS_WRITTEN:
+        f.write(f"class {command_mixin}(_NamedObjectCommandBase):\n")
+        f.write(f"    command_names = {list(shared_commands)!r}\n")
+        f.write("    _child_classes = dict(\n")
+        for name, child_class in shared_children.items():
+            f.write(f"        {name}={child_class},\n")
+        f.write("    )\n")
+        for name, child_class in shared_children.items():
+            f.write(f"    {name} = {child_class}\n")
+        f.write("\n")
+        _NAMED_OBJECT_MIXINS_WRITTEN.add(command_mixin)
+    if (
+        f_stub
+        and command_mixin
+        and command_mixin not in _NAMED_OBJECT_MIXIN_STUBS_WRITTEN
+    ):
+        f_stub.write(f"class {command_mixin}(_NamedObjectCommandBase):\n")
+        f_stub.write("    command_names: list[str]\n")
+        for name, child_class in shared_children.items():
+            f_stub.write(f"    {name}: {child_class}\n")
+        f_stub.write("\n")
+        _NAMED_OBJECT_MIXIN_STUBS_WRITTEN.add(command_mixin)
     f.write(s.getvalue())
     if f_stub:
         f_stub.write(s_stub.getvalue())
@@ -364,19 +501,24 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     start_time = time.time()
     api_tree = {}
     sinfo = static_infos.get(StaticInfoType.SETTINGS)
-    shash = _gethash(sinfo)
     if not sinfo:
         return {"<solver_session>": api_tree}
-    output_dir = (pyfluent.config.codegen_outdir / "solver").resolve()
+    version_dir = pyfluent.codegen.get_codegen_version_dir(
+        version, pyfluent.config.codegen_outdir
+    )
+    output_dir = (version_dir / "solver").resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_file = output_dir / f"settings_{version}.py"
-    output_stub_file = output_dir / f"settings_{version}.pyi"
+    output_file = output_dir / "settings.py"
+    output_stub_file = output_dir / "settings.pyi"
     cls, _ = get_cls("", sinfo, version=version)
     # _populate_data() collects all strings to write to the file in a nested dict.
     # which is then written to the file using _write_data().
     data = _populate_data(cls, api_tree, version)
     _NAME_BY_HASH.clear()
     _CLASS_WRITTEN.clear()
+    _NAMED_OBJECT_MIXINS.clear()
+    _NAMED_OBJECT_MIXINS_WRITTEN.clear()
+    _NAMED_OBJECT_MIXIN_STUBS_WRITTEN.clear()
     if verbose:
         print(f"{str(output_file)}")
         print(f"{str(output_stub_file)}")
@@ -391,6 +533,9 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write("    ExposureLevel,\n")
         header.write("    _ChildNamedObjectAccessorMixin,\n")
         header.write("    _NonCreatableNamedObjectMixin,\n")
+        header.write("    _NamedObjectCommandBase,\n")
+        header.write("    _merge_named_object_child_classes,\n")
+        header.write("    _merge_named_object_command_names,\n")
         header.write("    _InputFile,\n")
         header.write("    _OutputFile,\n")
         header.write("    _InOutFile,\n")
@@ -399,7 +544,6 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
         f_stub.write("from typing import Any, Final\n\n")
-        f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
         _write_data(name, name, data, f, f_stub)

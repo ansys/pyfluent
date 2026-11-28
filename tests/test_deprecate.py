@@ -21,6 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import inspect
 import warnings
 
 import pytest
@@ -49,7 +50,7 @@ def test_deprecate_argument_warns():
         result = example_func(a=1, b=2, c=3, x1=2, x2=4)
 
     # Check that the warnings were raised
-    assert len(w) == 6
+    assert len(w) == 3
     warning = w[0]
     assert issubclass(warning.category, PyFluentDeprecationWarning)
     assert "'a', 'b'" in str(warning.message)
@@ -92,13 +93,28 @@ def test_deprecate_argument_warns_with_custom_converter():
         result = example_func(a=1, b=2, c=3)
 
     # Check that the warnings were raised
-    assert len(w) == 4
+    assert len(w) == 2
     warning = w[0]
     assert issubclass(warning.category, PyFluentDeprecationWarning)
     assert "'a', 'b'" in str(warning.message)
     assert "'d'" in str(warning.message)
 
     assert result == {"d": (1, 2), "e": 3}
+
+
+def test_deprecate_argument_does_not_warn_without_deprecated_args():
+    """Test that no warning is emitted when deprecated arguments are not passed."""
+
+    @deprecate_arguments(old_args="a", new_args="b", version="3.0.0")
+    def example_func(**kwargs):
+        return kwargs
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        result = example_func(b=10)
+
+    assert result == {"b": 10}
+    assert len(w) == 0
 
 
 def test_deprecate_argument_raises_value_error_without_converter():
@@ -156,3 +172,42 @@ def test_deprecate_function():
     assert "3.0.0" in str(warning.message)
 
     assert result == 3
+
+
+def test_deprecate_arguments_preserves_signature():
+    """Test that deprecate_arguments decorator preserves function signature."""
+
+    @deprecate_arguments(old_args="old_param", new_args="new_param", version="3.0.0")
+    def example_func(new_param: int, other: str = "default"):
+        return new_param, other
+
+    # Check that the signature is preserved
+    sig = inspect.signature(example_func)
+    params = list(sig.parameters.keys())
+    assert params == [
+        "new_param",
+        "other",
+    ], f"Expected ['new_param', 'other'], got {params}"
+
+    # Check parameter annotations
+    assert sig.parameters["new_param"].annotation == int
+    assert sig.parameters["other"].annotation == str
+    assert sig.parameters["other"].default == "default"
+
+
+def test_deprecate_function_preserves_signature():
+    """Test that deprecate_function decorator preserves function signature."""
+
+    @deprecate_function(version="3.0.0", new_func="new_multiply")
+    def old_multiply(x: int, y: int) -> int:
+        return x * y
+
+    # Check that the signature is preserved
+    sig = inspect.signature(old_multiply)
+    params = list(sig.parameters.keys())
+    assert params == ["x", "y"], f"Expected ['x', 'y'], got {params}"
+
+    # Check parameter annotations
+    assert sig.parameters["x"].annotation == int
+    assert sig.parameters["y"].annotation == int
+    assert sig.return_annotation == int
