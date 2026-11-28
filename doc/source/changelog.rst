@@ -9,6 +9,154 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.45.0 <https://github.com/ansys/pyfluent/releases/tag/v0.45.0>`_ - November 26, 2026
+======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Resilient mode
+          - `#5571 <https://github.com/ansys/pyfluent/pull/5571>`_
+
+        * - Add CaseSnapshot to apply the complete setup of a case to solver sessions
+          - `#5573 <https://github.com/ansys/pyfluent/pull/5573>`_
+
+        * - Switch_to_meshing stable feature
+          - `#5634 <https://github.com/ansys/pyfluent/pull/5634>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Raise proper error in SVAR \`get_data\` for large cases.
+          - `#5542 <https://github.com/ansys/pyfluent/pull/5542>`_
+
+        * - Remove \`arguments\` from \`state\` of task objects.
+          - `#5604 <https://github.com/ansys/pyfluent/pull/5604>`_
+
+        * - Get callable objects type hints for settings commands.
+          - `#5605 <https://github.com/ansys/pyfluent/pull/5605>`_
+
+        * - Auto suggestion for workflow and task objects.
+          - `#5623 <https://github.com/ansys/pyfluent/pull/5623>`_
+
+        * - Fix callback self-unregistration to release its active solver hold without
+  disrupting event streaming. Add interrupt/resume iteration-count tests and
+  run-control guidance.
+          - `#5639 <https://github.com/ansys/pyfluent/pull/5639>`_
+
+        * - Support solver callback self-unregistration and interrupt/resume
+          - `#5640 <https://github.com/ansys/pyfluent/pull/5640>`_
+
+        * - Command arg names in docs.
+          - `#5642 <https://github.com/ansys/pyfluent/pull/5642>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add a ``set_zone_type`` example to the wildcards section of the solver settings user guide.
+          - `#5593 <https://github.com/ansys/pyfluent/pull/5593>`_
+
+        * - Update meshing named objects and user guide improvements.
+          - `#5627 <https://github.com/ansys/pyfluent/pull/5627>`_
+
+        * - Add a reference to MCP banner in the documentation.
+          - `#5641 <https://github.com/ansys/pyfluent/pull/5641>`_
+
+        * - Update CONTRIBUTORS.md with the latest contributors
+          - `#5646 <https://github.com/ansys/pyfluent/pull/5646>`_
+
+        * - Make execution.using canonical and clarify the solver API docs
+          - `#5653 <https://github.com/ansys/pyfluent/pull/5653>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add 429 support for pulling images
+          - `#4940 <https://github.com/ansys/pyfluent/pull/4940>`_
+
+        * - Add AGENTS.md
+          - `#5449 <https://github.com/ansys/pyfluent/pull/5449>`_
+
+        * - Update CHANGELOG for v0.44.0
+          - `#5592 <https://github.com/ansys/pyfluent/pull/5592>`_
+
+        * - Support Fluent 27R2.
+          - `#5597 <https://github.com/ansys/pyfluent/pull/5597>`_
+
+        * - Update CHANGELOG for v0.43.1
+          - `#5607 <https://github.com/ansys/pyfluent/pull/5607>`_
+
+        * - Migrate fork PR (5594)
+          - `#5608 <https://github.com/ansys/pyfluent/pull/5608>`_
+
+        * - Migrate fork PR (5599)
+          - `#5609 <https://github.com/ansys/pyfluent/pull/5609>`_
+
+        * - Migrate fork PR (5600)
+          - `#5610 <https://github.com/ansys/pyfluent/pull/5610>`_
+
+        * - Migrate fork PR (5466)
+          - `#5612 <https://github.com/ansys/pyfluent/pull/5612>`_
+
+        * - Migrate fork PR (5603)
+          - `#5618 <https://github.com/ansys/pyfluent/pull/5618>`_
+
+        * - Migrate fork PR (5615)
+          - `#5619 <https://github.com/ansys/pyfluent/pull/5619>`_
+
+        * - Migrate fork PR (5602)
+          - `#5620 <https://github.com/ansys/pyfluent/pull/5620>`_
+
+        * - Migrate fork PR (5601)
+          - `#5621 <https://github.com/ansys/pyfluent/pull/5621>`_
+
+        * - Migrate fork PR (5595)
+          - `#5622 <https://github.com/ansys/pyfluent/pull/5622>`_
+
+        * - Update force Update stable Fluent image to include 27R2 image.
+          - `#5626 <https://github.com/ansys/pyfluent/pull/5626>`_
+
+        * - (Minor) Clean up docs and tests before release.
+          - `#5666 <https://github.com/ansys/pyfluent/pull/5666>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Move common settings dependencies into \`_tools\`.
+          - `#5616 <https://github.com/ansys/pyfluent/pull/5616>`_
+
+        * - Have shared commands for settings named objects.
+          - `#5633 <https://github.com/ansys/pyfluent/pull/5633>`_
+
+        * - Cheat-sheet updated
+          - `#5638 <https://github.com/ansys/pyfluent/pull/5638>`_
+
+        * - Deprecate direct value assignments for leaf nodes.
+          - `#5643 <https://github.com/ansys/pyfluent/pull/5643>`_
+
+
 `0.43.1 <https://github.com/ansys/pyfluent/releases/tag/v0.43.1>`_ - November 16, 2026
 ======================================================================================
 
