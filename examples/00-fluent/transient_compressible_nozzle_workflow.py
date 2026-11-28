@@ -60,6 +60,11 @@ Modeling Transient Compressible Flow
 #    :alt: Transient Compressible Flow Model
 
 # %%
+# Dependencies
+# ------------
+# ansys-fluent-core
+
+# %%
 # Import modules
 # --------------
 #
@@ -67,16 +72,17 @@ Modeling Transient Compressible Flow
 #   Importing the following classes offer streamlined access to key solver settings,
 #   eliminating the need to manually browse through the full settings structure.
 
-import os
+from pathlib import Path
 import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
-    BoundaryConditions,
-    CellRegisters,
+    BoundaryCondition,
+    CellRegister,
     Contour,
     Controls,
+    FluidMaterial,
     General,
     Graphics,
     Initialization,
@@ -84,24 +90,29 @@ from ansys.fluent.core.solver import (
     PressureInlet,
     PressureOutlet,
     ReportDefinitions,
-    ReportFiles,
-    ReportPlots,
+    ReportFile,
+    ReportPlot,
     RunCalculation,
     Setup,
+    calculate,
+    iterate,
+    write_case,
 )
 from ansys.fluent.visualization import GraphicsWindow, Monitor
+from ansys.units import VariableCatalog
+from ansys.units.common import Pa, s
 
 # %%
 # Launch Fluent session in meshing mode
 # -------------------------------------
 
-session = pyfluent.launch_fluent(mode="meshing")
+meshing = pyfluent.Meshing.from_install()
 
 # %%
 # Meshing workflow
 # ----------------
 
-workflow = session.workflow
+workflow = meshing.workflow
 
 filenames = {
     "Windows": "nozzle.dsco",
@@ -111,8 +122,11 @@ filenames = {
 geometry_filename = examples.download_file(
     filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/transient_compressible_simulation",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
+
+# Upload geometry to the Meshing session so tasks can operate on it
+meshing.upload(geometry_filename)
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 workflow.TaskObject["Import Geometry"].Arguments.set_state(
@@ -202,15 +216,15 @@ workflow.TaskObject["Generate the Volume Mesh"].Execute()
 # Switch to solver
 # ----------------
 
-solver = session.switch_to_solver()
+solver = meshing.switch_to_solver()
 
 # %%
 # Display mesh
 # ------------
 
 graphics = Graphics(solver)
-mesh = Mesh(solver, new_instance_name="mesh-1")
-boundary_conditions = BoundaryConditions(solver)
+mesh = Mesh.create(solver, name="mesh-1")
+boundary_conditions = BoundaryCondition(solver)
 
 graphics.picture.x_resolution.set_state(
     650
@@ -219,10 +233,8 @@ graphics.picture.y_resolution.set_state(
     450
 )  # Vertical resolution matching typical aspect ratio
 
-all_walls = mesh.surfaces_list.allowed_values()
-
-mesh.surfaces_list.set_state(all_walls)
-mesh.options.edges.set_state(True)
+mesh.surfaces_list = mesh.surfaces_list.allowed_values()
+mesh.options.edges = True
 mesh.display()
 graphics.views.restore_view(view_name="isometric")
 graphics.picture.save_picture(file_name="transient_compressible_2.png")
@@ -248,24 +260,25 @@ solver_general_settings.operating_conditions.operating_pressure.set_state(0)
 
 setup = Setup(solver)
 
-setup.models.energy.enabled.set_state(True)
-setup.materials.fluid["air"].density.set_state({"option": "ideal-gas"})
+setup.models.energy.enabled = True
+air = FluidMaterial(solver, name="air")
+air.density.option = "ideal-gas"
 
 # %%
 # Set boundary conditions
 # -----------------------
 
-inlet = PressureInlet(solver, name="inlet")
-outlet = PressureOutlet(solver, name="outlet")
+inlet = PressureInlet.get(solver, name="inlet")
+outlet = PressureOutlet.get(solver, name="outlet")
 
-inlet.momentum.gauge_total_pressure.value.set_state(91192.5)  # Pa
-inlet.momentum.supersonic_or_initial_gauge_pressure.value.set_state(74666.3925)  # Pa
+inlet.momentum.gauge_total_pressure = 91192.5 * Pa
+inlet.momentum.supersonic_or_initial_gauge_pressure = 74666.3925 * Pa
 
 # Low turbulent intensity of 1.5% for smooth inlet flow, typical for nozzle simulations.
 inlet.turbulence.turbulent_intensity.set_state(0.015)
 
-outlet.momentum.gauge_pressure.value.set_state(74666.3925)  # Pa
-outlet.turbulence.backflow_turbulent_intensity.set_state(0.015)
+outlet.momentum.gauge_pressure = 74666.3925 * Pa
+outlet.turbulence.backflow_turbulent_intensity = 0.015
 
 # %%
 # Set solution controls
@@ -278,96 +291,71 @@ controls.courant_number.set_state(25)
 # Define report definition
 # ------------------------
 
-report_definitions = ReportDefinitions(solver)
+mass_report = ReportDefinitions(solver).surface.create(
+    name="mass-flow-rate",
+    report_type="surface-massflowrate",
+    surface_names=[outlet],
+)
 
+mass_rfile = ReportFile.create(
+    solver,
+    name="mass_flow_rate_out_rfile",
+    report_defs=[mass_report],
+    print=True,
+    file_name="nozzle_ss.out",
+)
 
-report_definitions.surface.create("mass-flow-rate")
-report_definitions.surface["mass-flow-rate"] = {
-    "report_type": "surface-massflowrate",
-    "surface_names": ["outlet"],
-}
-
-report_files = ReportFiles(solver)
-report_files.create(name="mass_flow_rate_out_rfile")
-report_files["mass_flow_rate_out_rfile"] = {
-    "report_defs": ["mass-flow-rate"],
-    "print": True,
-    "file_name": "nozzle_ss.out",
-}
-
-report_plots = ReportPlots(solver)
-
-report_plots.create("mass_flow_rate_out_rplot")
-report_plots["mass_flow_rate_out_rplot"] = {
-    "report_defs": ["mass-flow-rate"],
-    "print": True,
-}
+mass_rplot = ReportPlot.create(
+    solver, "mass_flow_rate_out_rplot", report_defs=[mass_report], print=True
+)
 
 # %%
 # Steady-State Initialization and Mesh Adaptation
 # -----------------------------------------------
 
-solver.settings.file.write_case(file_name="nozzle_steady.cas.h5")
+write_case(solver, file_name="nozzle_steady.cas.h5")
 
 initialize = Initialization(solver)
 initialize.hybrid_initialize()
 
-cell_register = CellRegisters(solver)
+cell_register = CellRegister(solver)
 
 # Refinement register: Mark cells where density gradient >50% of domain average
-cell_register.create(name="density_scaled_gradient_refn")
-cell_register["density_scaled_gradient_refn"] = {
-    "type": {
-        "option": "field-value",
-        "field_value": {
-            "derivative": {"option": "gradient"},
-            "scaling": {"option": "scale-by-global-average"},
-            "option": {
-                "option": "more-than",
-                "more_than": 0.5,  # Threshold: >50% average
-            },
-            "field": "density",
-        },
-    }
-}
+density_refn = CellRegister.create(solver, name="density_scaled_gradient_refn")
+density_refn.type.option = "field-value"
+density_refn.type.field_value.derivative = "gradient"
+density_refn.type.field_value.scaling = "scale-by-global-average"
+density_refn.type.field_value.option.option = "more-than"
+density_refn.type.field_value.option.more_than = 0.5  # Threshold: >50% average
+density_refn.type.field_value.field = "density"
+
 # Coarsening register: Mark cells where density gradient <45% of domain average
-cell_register.create(name="density_scaled_gradient_crsn")
-cell_register["density_scaled_gradient_crsn"] = {
-    "type": {
-        "option": "field-value",
-        "field_value": {
-            "derivative": {"option": "gradient"},
-            "scaling": {"option": "scale-by-global-average"},
-            "option": {
-                "option": "less-than",
-                "less_than": 0.45,  # Threshold: <45% average
-            },
-            "field": "density",
-        },
-    }
-}
+density_crsn = CellRegister.create(solver, name="density_scaled_gradient_crsn")
+density_crsn.type.option = "field-value"
+density_crsn.type.field_value.derivative = "gradient"
+density_crsn.type.field_value.scaling = "scale-by-global-average"
+density_crsn.type.field_value.option.option = "less-than"
+density_crsn.type.field_value.option.less_than = 0.45  # Threshold: <45% average
+density_crsn.type.field_value.field = "density"
 
 # Define adaptation criteria: Refine if gradient is high and refinement level <2; coarsen if low
-solver.settings.mesh.adapt.manual_refinement_criteria.set_state(
-    ("AND(density_scaled_gradient_refn, CellRefineLevel < 2)")
+mesh.adapt.manual_refinement_criteria = (
+    "AND(density_scaled_gradient_refn, CellRefineLevel < 2)"
 )
-solver.settings.mesh.adapt.manual_coarsening_criteria.set_state(
-    "density_scaled_gradient_crsn"
-)
+mesh.adapt.manual_coarsening_criteria = "density_scaled_gradient_crsn"
 
-solver.tui.mesh.adapt.manage_criteria.add("adaption_criteria_0")
+mesh.adapt.manage_criteria.add("F")
 
-calculation = RunCalculation(solver)
-calculation.iterate(iter_count=400)
+iterate(solver, iter_count=400)
 
 # %%
 # Post-processing
 # ---------------
 
 # Create pressure contour
-pressure_contour = Contour(solver, new_instance_name="pressure_contour")
-
-pressure_contour.surfaces_list.set_state(["symmetry"])
+pressure_contour = Contour.create(
+    solver, name="pressure_contour", surfaces_list=["symmetry"]
+)
 pressure_contour.display()
 
 graphics.views.restore_view(view_name="front")
@@ -379,17 +367,19 @@ graphics.picture.save_picture(file_name="transient_compressible_3.png")
 #    :alt: Transient Compressible Flow Pressure Contour
 
 # Create velocity contour
-velocity_contour = Contour(solver, new_instance_name="velocity_contour")
-
-velocity_contour.field.set_state("velocity-magnitude")
-velocity_contour.surfaces_list.set_state(["symmetry"])
+velocity_contour = Contour.create(
+    solver,
+    name="velocity_contour",
+    field=VariableCatalog.VELOCITY_MAGNITUDE,
+    surfaces_list=["symmetry"],
+)
 velocity_contour.display()
 
 graphics.views.restore_view(view_name="front")
 graphics.picture.save_picture(file_name="transient_compressible_4.jpg")
 
 # save the case and data file
-solver.settings.file.write_case_data(file_name="steady_state_nozzle")
+write_case(solver, file_name="steady_state_nozzle.cas.h5")
 
 # %%
 # .. image:: ../../_static/transient_compressible_4.jpg
@@ -403,32 +393,23 @@ solver.settings.file.write_case_data(file_name="steady_state_nozzle")
 solver_general_settings.solver.time.set_state("unsteady-1st-order")
 
 # Sinusoidal pressure variation at 2200 Hz simulates pulsating flow, with mean pressure of 0.737 atm.
-outlet.momentum.gauge_pressure.value.set_state(
-    "(0.12*sin(2200[Hz]*t)+0.737)*101325.0[Pa]"
-)
+outlet.momentum.gauge_pressure = "(0.12*sin(2200[Hz]*t)+0.737)*101325.0[Pa]"
 
 # Configure mesh adaptation: Refine every 25 iterations
-solver.tui.mesh.adapt.manage_criteria.edit("adaption_criteria_0", "frequency", "25")
+mesh.adapt.manage_criteria.edit("adaption_criteria_0", "frequency", "25")
 
-report_files["mass_flow_rate_out_rfile"] = {
-    "file_name": "trans-nozzle-rfile.out",
-}
+mass_rfile.file_name = "trans-nozzle-rfile.out"
 
-report_plots["mass_flow_rate_out_rplot"].x_label.set_state("time-step")
+mass_rplot.x_label = "time-step"
 
-solver.settings.file.write_case(file_name="nozzle_unsteady.cas.h5")
+write_case(solver, file_name="nozzle_unsteady.cas.h5")
 
-Transient_controls = solver.settings.solution.run_calculation.transient_controls
+transient_controls = RunCalculation(solver).transient_controls
+transient_controls.time_step_count = 100
+transient_controls.time_step_size = 2.85596e-05 * s
+transient_controls.max_iter_per_time_step = 10
 
-Transient_controls.time_step_count.set_state(100)
-Transient_controls.time_step_size.set_state(
-    2.85596e-05
-)  # s: Resolves 2200 Hz oscillations
-Transient_controls.max_iter_per_time_step.set_state(
-    (10)  # Ensures convergence within each time step
-)
-
-calculation.calculate()
+calculate(solver)
 
 mass_bal_rplot = Monitor(solver=solver, monitor_set_name="mass_flow_rate_out_rplot")
 plot_window = GraphicsWindow()

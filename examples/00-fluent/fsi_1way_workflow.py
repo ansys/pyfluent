@@ -61,6 +61,11 @@ Modeling One-Way Fluid-Structure Interaction
 #    :alt: One-Way Fluid-Structure Interaction Model
 
 # %%
+# Dependencies
+# ------------
+# ansys-fluent-core
+
+# %%
 # Import modules
 # --------------
 #
@@ -68,29 +73,35 @@ Modeling One-Way Fluid-Structure Interaction
 #   Importing the following classes offer streamlined access to key solver settings,
 #   eliminating the need to manually browse through the full settings structure.
 
-import os
+from pathlib import Path
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import FluentMode, Precision, examples
+from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
-    BoundaryConditions,
+    BoundaryCondition,
     Contour,
+    Controls,
     Graphics,
     Initialization,
-    RunCalculation,
+    Materials,
     Setup,
-    Solution,
+    SolidCellZone,
+    Structure,
     VelocityInlet,
+    WallBoundary,
+    iterate,
+    read_case,
+    write_case,
+    write_case_data,
 )
+from ansys.units import VariableCatalog
+from ansys.units.common import m, s
 
 # %%
 # Launch Fluent session in solver mode
 # ------------------------------------
 
-solver = pyfluent.launch_fluent(
-    precision=Precision.DOUBLE,
-    mode=FluentMode.SOLVER,
-)
+solver = pyfluent.Solver.from_install(precision=pyfluent.Precision.DOUBLE)
 
 # %%
 # Download and read the mesh file
@@ -99,20 +110,18 @@ solver = pyfluent.launch_fluent(
 mesh_file = examples.download_file(
     "fsi_1way.msh.h5",
     "pyfluent/fsi_1way",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
-solver.settings.file.read_case(file_name=mesh_file)
+read_case(solver, file_name=mesh_file)
 
 # %%
 # Configure solver settings for fluid flow
 # ----------------------------------------
 
-velocity_inlet = VelocityInlet(solver, name="velocity_inlet")
-velocity_inlet.momentum.velocity_magnitude.set_state(
-    100.0
-)  # High-speed inlet flow (m/s)
-velocity_inlet.turbulence.turbulent_viscosity_ratio.set_state(
-    (5)  # Dimensionless, typically 1-10 for moderate turbulence
+velocity_inlet = VelocityInlet(solver).get(name="velocity_inlet")
+velocity_inlet.momentum.velocity_magnitude = 100.0 * m / s  # High-speed inlet flow
+velocity_inlet.turbulence.turbulent_viscosity_ratio = (
+    5  # Dimensionless, typically 1-10 for moderate turbulence
 )
 
 # %%
@@ -122,8 +131,7 @@ velocity_inlet.turbulence.turbulent_viscosity_ratio.set_state(
 initialize = Initialization(solver)
 initialize.hybrid_initialize()
 
-calculation = RunCalculation(solver)
-calculation.iterate(iter_count=100)
+iterate(solver, iter_count=100)
 
 # %%
 # Post-processing
@@ -137,13 +145,13 @@ graphics.picture.y_resolution.set_state(
     450
 )  # Vertical resolution matching typical aspect ratio
 
-graphics.contour["contour-vel"] = {
-    "field": "velocity-magnitude",
-    "surfaces_list": ["fluid-symmetry"],
-    "coloring": {"option": "banded"},
-}
-
-graphics.contour["contour-vel"].display()
+contour_vel = Contour(solver).create(
+    name="contour-vel",
+    field=VariableCatalog.VELOCITY_MAGNITUDE,
+    surfaces_list=["fluid-symmetry"],
+)
+contour_vel.colorings.banded = True
+contour_vel.display()
 graphics.views.restore_view(view_name="front")
 
 graphics.picture.save_picture(file_name="fsi_1way_2.png")
@@ -161,12 +169,13 @@ graphics.picture.save_picture(file_name="fsi_1way_2.png")
 # Linear Elasticity Structural model is chosen
 
 setup = Setup(solver)
-setup.models.structure.model.set_state("linear-elasticity")
+structure = Structure(solver)
+structure.model = "linear-elasticity"
 
 # Copy materials from the database and assign to solid zone
-
-setup.materials.database.copy_by_name(type="solid", name="steel")
-setup.cell_zone_conditions.solid["solid"] = {"general": {"material": "steel"}}
+steel = Materials(solver).database.copy_by_name(type="solid", name="steel")
+solid_zone = SolidCellZone(solver).get(name="solid")
+solid_zone.general.material = steel
 
 # %%
 # Structural boundary conditions
@@ -174,39 +183,40 @@ setup.cell_zone_conditions.solid["solid"] = {"general": {"material": "steel"}}
 # configure Fluent to define the steel probe's support and movement using
 # structural boundary conditions
 
-wall_boundary = BoundaryConditions(solver)
+wall_boundaries = WallBoundary(solver)
 
 # Configure solid-symmetry boundary
-wall_boundary.wall["solid-symmetry"] = {
-    "structure": {
-        "z_disp_boundary_value": 0,
-        "z_disp_boundary_condition": "Node Z-Displacement",
-    }
-}
+solid_sym = wall_boundaries.get(name="solid-symmetry")
+solid_sym.structure.z_disp_boundary_value.value = 0
+solid_sym.structure.z_disp_boundary_condition = (
+    solid_sym.structure.z_disp_boundary_condition.NODE_Z_DISPLACEMENT
+)
 
 # Set solid-top boundary (fully fixed)
-wall_boundary.wall["solid-top"] = {
-    "structure": {
-        "z_disp_boundary_value": 0,
-        "z_disp_boundary_condition": "Node Z-Displacement",
-        "y_disp_boundary_value": 0,
-        "y_disp_boundary_condition": "Node Y-Displacement",
-        "x_disp_boundary_value": 0,
-        "x_disp_boundary_condition": "Node X-Displacement",
-    }
-}
+solid_top = wall_boundaries.get(name="solid-top")
+solid_top.structure.z_disp_boundary_value.value = 0
+solid_top.structure.z_disp_boundary_condition = (
+    solid_top.structure.z_disp_boundary_condition.NODE_Z_DISPLACEMENT
+)
+solid_top.structure.y_disp_boundary_value.value = 0
+solid_top.structure.y_disp_boundary_condition = (
+    solid_top.structure.y_disp_boundary_condition.NODE_Y_DISPLACEMENT
+)
+solid_top.structure.x_disp_boundary_value.value = 0
+solid_top.structure.x_disp_boundary_condition = (
+    solid_top.structure.x_disp_boundary_condition.NODE_X_DISPLACEMENT
+)
 
-# Copy boundary conditions from solid-symmetry to solid-symmetry:011
-wall_boundary.copy(from_="solid-symmetry", to=["solid-symmetry:011"])
+# Copy boundary conditions
+BoundaryCondition(solver).copy(from_="solid-symmetry", to=["solid-symmetry:011"])
 
 # Configure FSI surface
-wall_boundary.wall["fsisurface-solid"] = {
-    "structure": {
-        "x_disp_boundary_condition": "Intrinsic FSI",
-        "y_disp_boundary_condition": "Intrinsic FSI",
-        "z_disp_boundary_condition": "Intrinsic FSI",
-    }
-}
+fsi_surface = wall_boundaries.get(name="fsisurface-solid")
+fsi_surface.structure.x_disp_boundary_condition = (
+    "Intrinsic FSI"  # Using a string as no enum is currently available
+)
+fsi_surface.structure.y_disp_boundary_condition = "Intrinsic FSI"
+fsi_surface.structure.z_disp_boundary_condition = "Intrinsic FSI"
 
 # %%
 # Inclusion of Operating Pressure in Fluid-Structure Interaction Forces
@@ -214,40 +224,41 @@ wall_boundary.wall["fsisurface-solid"] = {
 # Fluent uses gauge pressure for fluid-structure interaction force calculations.
 # By setting  ``include_pop_in_fsi_force`` to  ``True``, Fluent uses absolute pressure.
 
-setup.models.structure.expert.include_pop_in_fsi_force.set_state(True)
+structure.expert.include_pop_in_fsi_force = True
 
 # %%
 # Configure flow settings
 # -----------------------
 # Disable flow equations for structural simulation
 
-solution = Solution(solver)
-solution.controls.equations["flow"] = False
-solution.controls.equations["kw"] = False
+controls = Controls(solver)
+controls.equations["flow"] = False
+controls.equations["kw"] = False
 
 # %%
 # Run FSI simulation
 # ------------------
 
-solver.settings.file.write_case(file_name="probe_fsi_1way.cas.h5")
+write_case(solver, file_name="probe_fsi_1way.cas.h5")
 
-calculation.iterate(iter_count=2)
+iterate(solver, iter_count=2)
 
 # %%
 # Structural Postprocessing
 # -------------------------
 
-displacement_contour = Contour(solver, new_instance_name="displacement_contour")
-
-displacement_contour.field.set_state("total-displacement")
-displacement_contour.surfaces_list.set_state(["fsisurface-solid"])
+displacement_contour = Contour(solver).create(
+    name="displacement_contour",
+    field=VariableCatalog.TOTAL_DISPLACEMENT,
+    surfaces_list=["fsisurface-solid"],
+)
 
 displacement_contour.display()
 graphics.views.restore_view(view_name="isometric")
 graphics.picture.save_picture(file_name="fsi_1way_3.png")
 
 # save the case and data file
-solver.settings.file.write_case_data(file_name="probe_fsi_1way")
+write_case_data(solver, file_name="probe_fsi_1way")
 
 # %%
 # .. image:: ../../_static/fsi_1way_3.png

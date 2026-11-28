@@ -94,18 +94,37 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 
 # sphinx_gallery_thumbnail_path = '_static/lunar_lander_thermal_thumbnail.png'
 from itertools import chain
-import os
+from pathlib import Path
 
 import numpy as np
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import ScalarFieldDataRequest, examples
+from ansys.fluent.core import ScalarFieldDataRequest, Solver, examples
+from ansys.fluent.core.solver import (
+    BoundaryCondition,
+    CellZoneCondition,
+    Energy,
+    General,
+    Initialization,
+    Monitor,
+    Radiation,
+    ReportDefinitions,
+    RunCalculation,
+    SolidCellZone,
+    SolidMaterial,
+    Viscous,
+    WallBoundary,
+    calculate,
+    write_case,
+)
+from ansys.units import VariableCatalog
+from ansys.units.common import J, K, W, kg, m, s
 
 lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
     examples.download_file(
         f,
         "pyfluent/lunar_lander_thermal",
-        save_path=os.getcwd(),
+        save_path=Path.cwd(),
     )
     for f in [
         "lander_geom.scdoc",
@@ -132,15 +151,15 @@ lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
 # Lunar axial obliquity relative to ecliptic
 moon_obliquity = np.deg2rad(1.54)
 
-# Louver setpoint temperature [K]
-louver_setpoint_temp = 273
+# Louver setpoint temperature
+louver_setpoint_temp = 273 * K
 
 # Lander coordinates (Apollo 17 landing site)
 land_lat = np.deg2rad(20.1908)
 land_lon = np.deg2rad(30.7717)
 
 # Timestep size of 1 Earth day
-step_size = 86400
+step_size = 86400 * s
 
 # Run simulation for 60 Earth days
 n_steps = 60
@@ -234,7 +253,7 @@ def sun_vec_to_beam_dir(
 
 def get_surf_mean_temp(
     surf_names: list[str],
-    solver: pyfluent.Solver,
+    solver: Solver,
 ) -> float:
     """Calculate mean surface temperature."""
     # Get temperature data on the requested surfaces
@@ -256,18 +275,17 @@ def get_surf_mean_temp(
 # Launch Fluent and print Fluent version
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver_session = pyfluent.launch_fluent(
-    precision="double",
+solver = pyfluent.Solver.from_install(
+    precision=pyfluent.Precision.DOUBLE,
     processor_count=12,
-    mode="solver",
 )
-print(solver_session.get_fluent_version())
+print(solver.get_fluent_version())
 
 ###############################################################################
 # Load the mesh
 # ~~~~~~~~~~~~~
 
-solver_session.settings.file.read_mesh(file_name=lander_mesh_file)
+solver.settings.file.read_mesh(file_name=lander_mesh_file)
 
 ###############################################################################
 # Case Setup
@@ -281,15 +299,14 @@ solver_session.settings.file.read_mesh(file_name=lander_mesh_file)
 # Since we are only running 1 timestep at a time, the time step count is set to
 # 1.
 
-# Set solution to transient
-solver_session.settings.setup.general.solver.time.set_state("unsteady-2nd-order")
+general = General(solver)
+general.solver.time = general.solver.time.UNSTEADY_2ND_ORDER
 
-# Set transient settings
-trans_controls = solver_session.settings.solution.run_calculation.transient_controls
-trans_controls.type.set_state("Fixed")
-trans_controls.max_iter_per_time_step.set_state(20)
-trans_controls.time_step_count.set_state(1)
-trans_controls.time_step_size.set_state(step_size)
+trans_controls = RunCalculation(solver).transient_controls
+trans_controls.type = trans_controls.type.FIXED
+trans_controls.max_iter_per_time_step = 20
+trans_controls.time_step_count = 1
+trans_controls.time_step_size = step_size
 
 ###############################################################################
 # Enable models
@@ -297,9 +314,11 @@ trans_controls.time_step_size.set_state(step_size)
 # Enable the energy model. Since fluid flow is not simulated, we will set the
 # viscosity model to laminar.
 
-models = solver_session.settings.setup.models
-models.energy.enabled.set_state(True)
-models.viscous.model.set_state("laminar")
+energy = Energy(solver)
+energy.enabled = True
+
+viscous = Viscous(solver)
+viscous.model = viscous.model.LAMINAR
 
 ###############################################################################
 # Set up radiation model
@@ -315,26 +334,18 @@ models.viscous.model.set_state("laminar")
 # space industry best practices [4_].
 
 
-# Set up radiation model
-radiation = models.radiation
-radiation.model.set_state("monte-carlo")
-radiation.monte_carlo.number_of_histories.set_state(1e7)
+radiation = Radiation(solver)
+radiation.model = "monte-carlo"
+radiation.monte_carlo.number_of_histories = 1e7
 
-# Define range of solar wavelengths
-radiation.multiband["solar"] = {
-    "start": 0,
-    "end": 2.8,
-}
-# Define range of thermal IR wavelengths
-radiation.multiband["thermal-ir"] = {
-    "start": 2.8,
-    "end": 100,
-}
+radiation.multiband["solar"].start = 0
+radiation.multiband["solar"].end = 2.8
+radiation.multiband["thermal-ir"].start = 2.8
+radiation.multiband["thermal-ir"].end = 100
 
-# Solve radiation once per timestep
 radiation_freq = radiation.solve_frequency
-radiation_freq.method.set_state("time-step")
-radiation_freq.time_step_interval.set_state(1)
+radiation_freq.method = radiation_freq.method.TIME_STEP
+radiation_freq.time_step_interval = 1
 
 ###############################################################################
 # Define materials
@@ -344,41 +355,39 @@ radiation_freq.time_step_interval.set_state(1)
 # (soil). The thermal conductivity of the regolith and the surface 'fluff' is
 # strongly temperature-dependent and so must be modelled using an expression.
 
+materials = SolidMaterial(solver)
+
 # --- Properties of vacuum ---
 # Thermal conductivity: 0
-
-vacuum = solver_session.settings.setup.materials.solid.create("vacuum")
-vacuum.chemical_formula.set_state("")
-vacuum.thermal_conductivity.value.set_state(0)
-vacuum.absorption_coefficient.value.set_state(0)
-vacuum.refractive_index.value.set_state(1)
+vacuum = materials.create(
+    name="vacuum",
+    thermal_conductivity=0 * W / (m * K),
+    absorption_coefficient=0,
+    refractive_index=1,
+)
 
 # --- Properties of fluff (see ref. [2]) ---
 # Density: 1000 [kg m^-3]
 # Specific heat capacity: 1050 [J kg^-1 K^-1]
 # Thermal conductivity: 9.22e-4*(1 + 1.48*(temperature/350 K)^3) [W m^-1 K^-1]
-
-fluff = solver_session.settings.setup.materials.solid.create("fluff")
-fluff.chemical_formula.set_state("")
-fluff.density.value.set_state(1000)
-fluff.specific_heat.value.set_state(1050)
-fluff.thermal_conductivity.option.set_state("expression")
-fluff.thermal_conductivity.expression.set_state(
-    ("9.22e-4[W m^-1 K^-1]*(1 + 1.48*(StaticTemperature/350[K])^3)")
+fluff = materials.create(
+    name="fluff", density=1000 * kg / m**3, specific_heat=1050 * J / (kg * K)
+)
+fluff.thermal_conductivity.option = "expression"
+fluff.thermal_conductivity.expression = (
+    "9.22e-4[W m^-1 K^-1]*(1 + 1.48*(StaticTemperature/350[K])^3)"
 )
 
 # --- Properties of regolith (see ref. [2]) ---
 # Density: 2000 [kg m^-3]
 # Specific heat capacity: 1050 [J kg^-1 K^-1]
 # Thermal conductivity: 9.30e-4*(1 + 0.73*(temperature/350 K)^3) [W m^-1 K^-1]
-
-regolith = solver_session.settings.setup.materials.solid.create("regolith")
-regolith.chemical_formula.set_state("")
-regolith.density.value.set_state(2000)
-regolith.specific_heat.value.set_state(1050)
-regolith.thermal_conductivity.option.set_state("expression")
-regolith.thermal_conductivity.expression.set_state(
-    ("9.30e-4[W m^-1 K^-1]*(1 + 0.73*(StaticTemperature/350[K])^3)")
+regolith = materials.create(
+    name="regolith", density=2000 * kg / m**3, specific_heat=1050 * J / (kg * K)
+)
+regolith.thermal_conductivity.option = regolith.thermal_conductivity.option.EXPRESSION
+regolith.thermal_conductivity.expression = (
+    "9.30e-4[W m^-1 K^-1]*(1 + 0.73*(StaticTemperature/350[K])^3)"
 )
 
 ###############################################################################
@@ -389,12 +398,13 @@ regolith.thermal_conductivity.expression.set_state(
 # lander. This cell zone must be set to be a solid so that the fluid equations
 # are not solved there, then it must be assigned to the vacuum material.
 
-cellzones = solver_session.settings.setup.cell_zone_conditions
-cellzones.set_zone_type(
+CellZoneCondition(solver).set_zone_type(
     zone_list=["geom-2_domain"],
     new_type="solid",
 )
-cellzones.solid["geom-2_domain"].material.set_state("vacuum")
+
+vacuum_zone = SolidCellZone(solver).get(name="geom-2_domain")
+vacuum_zone.general.material = vacuum
 
 ###############################################################################
 # Regolith boundary condition
@@ -404,43 +414,34 @@ cellzones.solid["geom-2_domain"].material.set_state("vacuum")
 # used to represent the geothermal heat from the Moon's interior that heats
 # the regolith from the bottom.
 
-# --- Regolith BC ---
-# Thickness of layers: 0.02, 0.04, 0.08, 0.16, 0.32 [m]
-# Heating at base: 0.031 [W m^-2]
-# Surface absorptivity: 0.87
-# Surface emissivity: 0.97
+wall_boundaries = WallBoundary(solver)
+regolith_bc = wall_boundaries.get("regolith")
 
-regolith_bc = solver_session.settings.setup.boundary_conditions.wall["regolith"]
-
-regolith_bc.thermal.q.value.set_state(0.031)
-regolith_bc.thermal.planar_conduction.set_state(True)
-regolith_bc.thermal.shell_conduction.set_state(
-    [
-        {
-            "thickness": 0.02,
-            "material": "fluff",
-        },
-        {
-            "thickness": 0.04,
-            "material": "regolith",
-        },
-        {
-            "thickness": 0.08,
-            "material": "regolith",
-        },
-        {
-            "thickness": 0.16,
-            "material": "regolith",
-        },
-        {
-            "thickness": 0.32,
-            "material": "regolith",
-        },
-    ]
-)
-regolith_bc.radiation.internal_emissivity_band.set_state(
-    {"solar": 0.87, "thermal-ir": 0.97}
-)
+regolith_bc.thermal.q = 0.031 * W / m**2
+regolith_bc.thermal.planar_conduction = True
+regolith_bc.thermal.shell_conduction = [
+    {
+        "thickness": 0.02,
+        "material": "fluff",
+    },
+    {
+        "thickness": 0.04,
+        "material": "regolith",
+    },
+    {
+        "thickness": 0.08,
+        "material": "regolith",
+    },
+    {
+        "thickness": 0.16,
+        "material": "regolith",
+    },
+    {
+        "thickness": 0.32,
+        "material": "regolith",
+    },
+]
+regolith_bc.radiation.internal_emissivity_band = {"solar": 0.87, "thermal-ir": 0.97}
 
 ###############################################################################
 # Space boundary condition
@@ -448,26 +449,23 @@ regolith_bc.radiation.internal_emissivity_band.set_state(
 # The space boundary condition represents deep space and also acts as the
 # source of the Sun's illumination in the simulation.
 
-# --- Set up space boundary condition ---
-# Temperature: 3 [K]
-# Emissivity: 1
-# Absorptivity: 1
-# Solar flux: 1414 [W m^-2]
+space_bc = wall_boundaries.get("space")
 
-space_bc = solver_session.settings.setup.boundary_conditions.wall["space"]
-
-space_bc.thermal.thermal_bc.set_state("Temperature")
-space_bc.thermal.t.value.set_state(3)
-space_bc.thermal.material.set_state("vacuum")
-space_bc.radiation.mc_bsource_p.set_state(True)
-space_bc.radiation.direct_irradiation_settings.direct_irradiation["solar"] = 1414
-space_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band.set_state(
-    {
-        "solar": 0,
-        "thermal-ir": 0,
-    }
+space_bc.thermal.thermal_bc = "Temperature"
+space_bc.thermal.t.value = 3 * K
+space_bc.thermal.material = vacuum
+space_bc.radiation.mc_bsource_p = True
+space_bc.radiation.direct_irradiation_settings.direct_irradiation.create(
+    "solar", value=1414 * W / m**2
 )
-space_bc.radiation.internal_emissivity_band.set_state({"solar": 1, "thermal-ir": 1})
+space_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band.create(
+    "solar", value=0
+)
+space_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band.create(
+    "thermal-ir", value=0
+)
+space_bc.radiation.internal_emissivity_band.create("solar", value=1)
+space_bc.radiation.internal_emissivity_band.create("thermal-ir", value=1)
 
 ###############################################################################
 # Spacecraft walls boundary condition
@@ -475,26 +473,17 @@ space_bc.radiation.internal_emissivity_band.set_state({"solar": 1, "thermal-ir":
 # The spacecraft is covered in reflective MLI (multilayer insulation) and heat
 # transfer through the aluminum shell can be simulated using shell conduction.
 
-# --- Set up spacecraft shell boundary condition ---
-# Thickness: 0.03 [m]
-# Material: aluminum
-# Absorptivity: 0.05
-# Emissivity: 0.05
+sc_mli_bc = wall_boundaries.get("sc-mli")
 
-sc_mli_bc = solver_session.settings.setup.boundary_conditions.wall["sc-mli"]
-
-sc_mli_bc.thermal.planar_conduction.set_state(True)
-sc_mli_bc.thermal.shell_conduction.set_state(
-    [
-        {
-            "thickness": 0.03,
-            "material": "aluminum",
-        },
-    ]
-)
-sc_mli_bc.radiation.internal_emissivity_band.set_state(
-    {"solar": 0.05, "thermal-ir": 0.05}
-)
+sc_mli_bc.thermal.planar_conduction = True
+sc_mli_bc.thermal.shell_conduction = [
+    {
+        "thickness": 0.03,
+        "material": "aluminum",
+    },
+]
+sc_mli_bc.radiation.internal_emissivity_band.create("solar", value=0.05)
+sc_mli_bc.radiation.internal_emissivity_band.create("thermal-ir", value=0.05)
 
 ###############################################################################
 # Spacecraft radiator boundary condition
@@ -509,18 +498,16 @@ sc_mli_bc.radiation.internal_emissivity_band.set_state(
 # Absorptivity: 0.17
 # Emissivity: 0.09 below 273 K, 0.70 otherwise
 
-sc_rad_bc = solver_session.settings.setup.boundary_conditions.wall["sc-radiator"]
+sc_rad_bc = wall_boundaries.get("sc-radiator")
 
-sc_rad_bc.thermal.planar_conduction.set_state(True)
-sc_rad_bc.thermal.shell_conduction.set_state(
-    [
-        {
-            "thickness": 0.03,
-            "material": "aluminum",
-        },
-    ]
-)
-sc_rad_bc.radiation.internal_emissivity_band.set_state({"solar": 0.17})
+sc_rad_bc.thermal.planar_conduction = True
+sc_rad_bc.thermal.shell_conduction = [
+    {
+        "thickness": 0.03,
+        "material": "aluminum",
+    },
+]
+sc_rad_bc.radiation.internal_emissivity_band.create("solar", value=0.17)
 
 ###############################################################################
 # Initialize simulation
@@ -530,8 +517,8 @@ sc_rad_bc.radiation.internal_emissivity_band.set_state({"solar": 0.17})
 # definitions on them in the next step. The entire domain will be initialized
 # to a temperature of 230 K, or -43 °C.
 
-sim_init = solver_session.settings.solution.initialization
-sim_init.defaults["temperature"] = 230
+sim_init = Initialization(solver)
+sim_init.defaults.temperature = 230 * K
 sim_init.initialize()
 
 ###############################################################################
@@ -539,78 +526,88 @@ sim_init.initialize()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create reports for the spacecraft's minimum, mean, and maximum temperatures.
 
-surf_report_defs = solver_session.settings.solution.report_definitions.surface
+report_defs = ReportDefinitions(solver)
 
 sc_surfs = ["sc-radiator", "sc-mli"]
 
-surf_report_defs["sc-min-temp"] = {
-    "surface_names": sc_surfs,
-    "report_type": "surface-facetmin",
-    "field": "temperature",
-}
-surf_report_defs["sc-avg-temp"] = {
-    "surface_names": sc_surfs,
-    "report_type": "surface-facetavg",
-    "field": "temperature",
-}
-surf_report_defs["sc-max-temp"] = {
-    "surface_names": sc_surfs,
-    "report_type": "surface-facetmax",
-    "field": "temperature",
-}
-
+sc_min_temp = report_defs.surface.create(
+    name="sc-min-temp",
+    surface_names=sc_surfs,
+    report_type="surface-facetmin",
+    field=VariableCatalog.TEMPERATURE,
+)
+sc_avg_temp = report_defs.surface.create(
+    name="sc-avg-temp",
+    surface_names=sc_surfs,
+    report_type="surface-facetavg",
+    field=VariableCatalog.TEMPERATURE,
+)
+sc_max_temp = report_defs.surface.create(
+    name="sc-max-temp",
+    surface_names=sc_surfs,
+    report_type="surface-facetmax",
+    field=VariableCatalog.TEMPERATURE,
+)
 ###############################################################################
 # Regolith temperature reports
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create reports for the mean temperatures of each regolith layer. We will
 # store the report names for use later.
 
-surf_report_defs = solver_session.settings.solution.report_definitions.surface
+regolith_reports = [
+    report_defs.surface.create(
+        name=f"regolith-layer-{i}-temp",
+        report_type="surface-facetavg",
+        field=VariableCatalog.TEMPERATURE,
+        surface_names=[f"regolith{f'-{i - 1}:{i}' if i > 1 else ''}"],
+    )
+    for i in range(1, 5 + 1)
+]
 
-# Loop over all regolith reports to set common properties
-regolith_report_names = []
-for i in range(1, 5 + 1):
-    report_name = f"regolith-layer-{i}-temp"
-    surf_report_defs[report_name] = {
-        "report_type": "surface-facetavg",
-        "field": "temperature",
-    }
-    regolith_report_names.extend([report_name])
-
-surf_report_defs["regolith-layer-1-temp"].surface_names.set_state(["regolith"])
-surf_report_defs["regolith-layer-2-temp"].surface_names.set_state(["regolith-1:2"])
-surf_report_defs["regolith-layer-3-temp"].surface_names.set_state(["regolith-2:3"])
-surf_report_defs["regolith-layer-4-temp"].surface_names.set_state(["regolith-3:4"])
-surf_report_defs["regolith-layer-5-temp"].surface_names.set_state(["regolith-4:5"])
 
 ###############################################################################
 # Temperature report files
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Create temperature report files for post-processing.
 
-surf_report_files = solver_session.settings.solution.monitor.report_files
+monitor = Monitor(solver)
+surf_report_files = monitor.report_files
 
 # Spacecraft temperatures
-surf_report_files["sc-temps-rfile"] = {
-    "report_defs": ["flow-time", "sc-min-temp", "sc-avg-temp", "sc-max-temp"],
-}
+surf_report_files.create(
+    "sc-temps-rfile",
+    report_defs=[
+        "flow-time",
+        "sc-min-temp",
+        "sc-avg-temp",
+        "sc-max-temp",
+    ],
+)
 
 # Regolith temperatures
-surf_report_files["regolith-temps-rfile"] = {
-    "report_defs": [*regolith_report_names, "flow-time"],
-}
+surf_report_files.create(
+    "regolith-temps-rfile",
+    report_defs=[
+        *regolith_reports,
+        "flow-time",
+    ],
+)
 
 ###############################################################################
 # Autosave
 # ~~~~~~~~
 # Set the case to save only the data file at each timestep for post-processing.
 
-autosave = solver_session.settings.solution.calculation_activity.auto_save
+autosave = solver.settings.solution.calculation_activity.auto_save
 
-autosave.case_frequency.set_state("if-mesh-is-modified")
-autosave.data_frequency.set_state(1)
-autosave.save_data_file_every.frequency_type.set_state("time-step")
-autosave.append_file_name_with.file_suffix_type.set_state("time-step")
+autosave.case_frequency = autosave.case_frequency.IF_MESH_IS_MODIFIED
+autosave.data_frequency = 1
+autosave.save_data_file_every.frequency_type = (
+    autosave.save_data_file_every.frequency_type.TIME_STEP
+)
+autosave.append_file_name_with.file_suffix_type = (
+    autosave.append_file_name_with.file_suffix_type.TIME_STEP
+)
 
 ###############################################################################
 # Convergence criteria
@@ -618,19 +615,19 @@ autosave.append_file_name_with.file_suffix_type.set_state("time-step")
 # Turn off the convergence criteria pertaining to fluid flow as there is no
 # fluid flow in this simulation. Keep only the energy convergence criterion.
 
-residuals = solver_session.settings.solution.monitor.residual.equations
+residuals = monitor.residual.equations
 
-for criterion in ["continuity", "x-velocity", "y-velocity", "z-velocity"]:
-    residuals[criterion].check_convergence.set_state(False)
-    residuals[criterion].monitor.set_state(False)
+for criterion in {"continuity", "x-velocity", "y-velocity", "z-velocity"}:
+    residuals[criterion].check_convergence = False
+    residuals[criterion].monitor = False
 
 ###############################################################################
 # Write case file
 # ~~~~~~~~~~~~~~~
-# Write the case file. Enable overwrite.
+# Write the case file.
 
-solver_session.settings.file.batch_options.confirm_overwrite.set_state(True)
-solver_session.settings.file.write(
+write_case(
+    solver,
     file_name="lunar_lander_thermal.cas.h5",
     file_type="case",
 )
@@ -648,7 +645,7 @@ solver_session.settings.file.write(
 
 for i in range(n_steps):
     # Get current simulation time
-    t = solver_session.rp_vars("flow-time")
+    t = solver.rp_vars("flow-time")
 
     # Calculate sun vector
     sun_alt, sun_azm = calc_sun_vecs_for_moon(
@@ -664,40 +661,37 @@ for i in range(n_steps):
     )
 
     # Set beam direction
-    solver_session.settings.setup.boundary_conditions.wall[
-        "space"
-    ].radiation.direct_irradiation_settings.beam_direction.set_state(
-        [
-            beam_x,
-            beam_y,
-            beam_z,
-        ]
+    bcs = BoundaryCondition(solver)
+    bcs.wall["space"].radiation.direct_irradiation_settings.beam_direction = (
+        beam_x,
+        beam_y,
+        beam_z,
     )
 
     # Calculate radiator mean temperature
     rad_mean_temp = get_surf_mean_temp(
         ["sc-radiator"],
-        solver_session,
+        solver,
     )
 
     # Simulate closing louvers below 273 K by changing emissivity
-    radiation_emission = solver_session.settings.setup.boundary_conditions.wall[
-        "sc-radiator"
-    ].radiation.internal_emissivity_band["thermal-ir"]
+    radiation_emission = bcs.wall["sc-radiator"].radiation.internal_emissivity_band[
+        "thermal-ir"
+    ]
     if rad_mean_temp < 273:
         radiation_emission.value.set_state(0.09)
     else:
         radiation_emission.value.set_state(0.70)
 
     # Run simulation for 1 timestep
-    solver_session.settings.solution.run_calculation.calculate()
+    calculate(solver)
 
 ###############################################################################
 # Close Fluent
 # ~~~~~~~~~~~~
 # Shut down the solver.
 
-solver_session.exit()
+solver.exit()
 
 ###############################################################################
 # Post-process
@@ -736,7 +730,7 @@ def clean_col_names(df):
 # alphabetical character, implemented as negative lookarounds in a regular
 # expression.
 
-root = Path(os.getcwd())
+root = Path.cwd()
 sep = r"(?<![a-zA-Z])\s+(?![a-zA-Z])"
 
 # Read in regolith data
